@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimulationAccuracyExperiment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">experiments</a> &gt; <span class="el_source">SimulationAccuracyExperiment.java</span></div><h1>SimulationAccuracyExperiment.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package experiments;
+
+import ephemeris.EphemerisDE405;
+import ephemeris.IEphemeris;
+import ephemeris.SolarSystemParameters;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+import particlesystem.Particle;
+import particlesystem.ParticleSystem;
+import util.Vector3D;
+
+/**
+ * Experiment to determine accuracy of simulation results for the following bodies of
+ * the Solar System: Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, Uranus, and
+ * Pluto.
+ * Simulation results using Newton Mechanics and General Relativity are compared to
+ * ephemeris data from DE405 over a period of 300 years. Simulation time step is 1 hour.
+ * 
+ * @author Nico Kuijpers
+ */
+public class SimulationAccuracyExperiment {
+    
+    // Ephemeris
+    private IEphemeris ephemeris;
+
+    // Particle system
+    private ParticleSystem particleSystem;
+    
+    // Names of bodies to be simulated (except Sun)
+    private List&lt;String&gt; bodyNames;
+    
+    // Simulation date/time
+    private GregorianCalendar simulationDateTime;
+    
+    // Simulation time step [seconds]
+    private final long deltaT;
+    
+    // Store deviations in position to compute average
+    private Map&lt;String,List&lt;Double&gt;&gt; deviations;
+    
+    /**
+     * Constructor.
+     * Set ephemeris, names of Solar System bodies, and simulation time step.
+     */
+<span class="nc" id="L69">    public SimulationAccuracyExperiment() {</span>
+        // Set ephemeris
+<span class="nc" id="L71">        ephemeris = EphemerisDE405.getInstance();</span>
+        
+        // Define the bodies of the Solar System to be simulated (except Sun)
+<span class="nc" id="L74">        bodyNames = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L75">        bodyNames.add(&quot;mercury&quot;);</span>
+<span class="nc" id="L76">        bodyNames.add(&quot;venus&quot;);</span>
+<span class="nc" id="L77">        bodyNames.add(&quot;earth&quot;);</span>
+<span class="nc" id="L78">        bodyNames.add(&quot;moon&quot;);</span>
+<span class="nc" id="L79">        bodyNames.add(&quot;mars&quot;);</span>
+<span class="nc" id="L80">        bodyNames.add(&quot;jupiter&quot;);</span>
+<span class="nc" id="L81">        bodyNames.add(&quot;saturn&quot;);</span>
+<span class="nc" id="L82">        bodyNames.add(&quot;uranus&quot;);</span>
+<span class="nc" id="L83">        bodyNames.add(&quot;neptune&quot;);</span>
+<span class="nc" id="L84">        bodyNames.add(&quot;pluto&quot;);</span>
+
+        // Set simulation time step to 1 hour
+<span class="nc" id="L87">        deltaT = (long) (60 * 60);</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Initialize simulation.
+     * Simulation will start January 1st, 1900.
+     */
+    private void initSimulation() {
+        // Start simulation at January 1st, 1900
+        // Note that January is month 0
+<span class="nc" id="L97">        simulationDateTime = new GregorianCalendar(1900,0,1);</span>
+        
+        // https://www.timeanddate.com/time/aboututc.html
+        // Use Coordinated Universal Time (UTC) to avoid 
+        // sudden changes in ephemeris due to changes from 
+        // winter time to summer time and vice versa
+<span class="nc" id="L103">        simulationDateTime.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+
+        // Store deviations in position to compute average
+<span class="nc" id="L106">        deviations = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        for (String name : bodyNames) {</span>
+<span class="nc" id="L108">            deviations.put(name, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L109">        }</span>
+        
+        // Create the Solar System
+<span class="nc" id="L112">        particleSystem = new ParticleSystem();</span>
+        
+        // Create the Sun 
+<span class="nc" id="L115">        Vector3D positionSun = new Vector3D(); // Origin</span>
+<span class="nc" id="L116">        Vector3D velocitySun = new Vector3D(); // Zero velocity</span>
+<span class="nc" id="L117">        double massSun = SolarSystemParameters.getInstance().getMass(&quot;sun&quot;);</span>
+<span class="nc" id="L118">        double muSun   = SolarSystemParameters.getInstance().getMu(&quot;sun&quot;);</span>
+<span class="nc" id="L119">        particleSystem.addParticle(&quot;sun&quot;,massSun,muSun,positionSun,velocitySun);</span>
+        
+        // Create the remaining bodies of the Solar System
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        for (String name : bodyNames) {</span>
+<span class="nc" id="L123">            createBody(name,simulationDateTime);</span>
+<span class="nc" id="L124">        } </span>
+<span class="nc" id="L125">    }</span>
+
+    
+    /**
+     * Run simulation for given number of years.
+     * Simulation time step is 1 hour. Position of Solar System bodies is
+     * checked against ephemeris data each day.
+     * @param nrYears number of years
+     */
+    private void runSimulation(int nrYears) {
+        // End date/time of the simulation
+<span class="nc" id="L136">        GregorianCalendar simulationEndDateTime = (GregorianCalendar) simulationDateTime.clone();</span>
+<span class="nc" id="L137">        simulationEndDateTime.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+<span class="nc" id="L138">        simulationEndDateTime.add(Calendar.YEAR, nrYears);</span>
+        
+        // Check initial position and velocity
+<span class="nc" id="L141">        int hour = 0;</span>
+<span class="nc" id="L142">        int day = 0;</span>
+<span class="nc" id="L143">        checkPosition(simulationDateTime,day);</span>
+        
+        // Run simulation
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        while (simulationDateTime.before(simulationEndDateTime)) {</span>
+            // Advance 1 hour
+<span class="nc" id="L148">            particleSystem.advanceRungeKutta(deltaT);</span>
+            
+            // Correction for position of Sun
+<span class="nc" id="L151">            particleSystem.correctDrift();</span>
+            
+            // Update simulation date/time
+<span class="nc" id="L154">            simulationDateTime.add(Calendar.SECOND, (int) deltaT);</span>
+            
+            // Check position of Solar System bodies each day
+<span class="nc" id="L157">            hour++;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            if (hour == 24) {</span>
+<span class="nc" id="L159">                hour = 0;</span>
+<span class="nc" id="L160">                day++;</span>
+<span class="nc" id="L161">                checkPosition(simulationDateTime,day);</span>
+            }   
+        }
+<span class="nc" id="L164">    }</span>
+
+    /**
+     * Run simulation using Newton Mechanics for given number of years.
+     * @param nrYears number of years
+     */
+    public void simulateNewtonMechanics(int nrYears) {
+        // Initialize simulation
+<span class="nc" id="L172">        initSimulation();</span>
+        
+        // Do not apply General Relativity when computing acceleration
+<span class="nc" id="L175">        particleSystem.setGeneralRelativityFlag(false);</span>
+        
+        // Show message on screen
+<span class="nc" id="L178">        System.out.println(&quot;Running simulation using Newton Mechanics for &quot; + nrYears + &quot; years&quot;);</span>
+        
+        // Run simulation
+<span class="nc" id="L181">        runSimulation(nrYears);</span>
+<span class="nc" id="L182">    }</span>
+
+    /**
+     * Run simulation using General Relativity for given number of years.
+     * @param nrYears number of years
+     */
+    public void simulateGeneralRelativity(int nrYears) {
+        // Initialize simulation
+<span class="nc" id="L190">        initSimulation();</span>
+        
+        // Apply General Relativity when computing acceleration
+<span class="nc" id="L193">        particleSystem.setGeneralRelativityFlag(true);</span>
+        
+        // Show message on screen
+<span class="nc" id="L196">        System.out.println(&quot;Running simulation using General Relativity for &quot; + nrYears + &quot; years&quot;);</span>
+        
+        // Run simulation
+<span class="nc" id="L199">        runSimulation(nrYears);</span>
+<span class="nc" id="L200">    }</span>
+    
+    /**
+     * Check position of Solar System bodies against ephemeris data.
+     * @param dateTime simulation date/time
+     * @param day      current day of simulation
+     */
+    private void checkPosition(GregorianCalendar dateTime, int day) {
+        
+        // Position [m] of the Sun
+<span class="nc" id="L210">        Particle sun = particleSystem.getParticle(&quot;sun&quot;);</span>
+<span class="nc" id="L211">        Vector3D positionSun = sun.getPosition();</span>
+
+        // Position [m] of the other bodies
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        for (String name : bodyNames) {</span>
+            // Expected position [m] of body with respect to the Sun
+<span class="nc" id="L216">            Vector3D positionExpected = ephemeris.getBodyPosition(name,dateTime);</span>
+
+            // Actual position [m] of body
+<span class="nc" id="L219">            Particle planet = particleSystem.getParticle(name);</span>
+<span class="nc" id="L220">            Vector3D positionBody = planet.getPosition();</span>
+
+            // Actual position of body with respect to the Sun
+<span class="nc" id="L223">            Vector3D positionActual = positionBody.minus(positionSun);</span>
+
+            // Deviation [m] between actual position to expected position
+<span class="nc" id="L226">            double deviationPosition = positionActual.euclideanDistance(positionExpected);</span>
+            
+            // Store deviation in position to compute average
+<span class="nc" id="L229">            (deviations.get(name)).add(deviationPosition);</span>
+            
+            // Show average deviation after 365 days of simulation
+<span class="nc bnc" id="L232" title="All 2 branches missed.">            if (day % 365 == 0) {</span>
+                // Compute average deviation in position over the past 365 days
+<span class="nc" id="L234">                double sumDeviations = 0.0;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                for (double deviation : deviations.get(name)) {</span>
+<span class="nc" id="L236">                    sumDeviations += deviation;</span>
+<span class="nc" id="L237">                }</span>
+<span class="nc" id="L238">                double averageDeviation = sumDeviations / (deviations.get(name)).size();</span>
+<span class="nc" id="L239">                (deviations.get(name)).clear();</span>
+                
+                // Show average deviation on screen
+<span class="nc" id="L242">                System.out.println(&quot;Year: &quot; + day/365 + &quot; body: &quot; + name +</span>
+                        &quot; average deviation: &quot; + averageDeviation/1000 + &quot; km&quot;);
+            }
+<span class="nc" id="L245">        }</span>
+<span class="nc" id="L246">    }</span>
+    
+    /**
+     * Create body of the Solar System corresponding to given name.
+     * Create and initialize a new particle with mass, standard gravitational
+     * parameter, position, and velocity corresponding to given date/time.
+     * The new particle will be added to the particle system.
+     * @param name     name of the body
+     * @param dateTime date/time to initialize position and velocity
+     */
+    private void createBody(String name, GregorianCalendar dateTime) {
+        // Obtain mass of body
+<span class="nc" id="L258">        double mass = SolarSystemParameters.getInstance().getMass(name);</span>
+        
+        // Obtain parameter mu = G * m, where G = Gravitational constant and m = mass
+<span class="nc" id="L261">        double mu = SolarSystemParameters.getInstance().getMu(name);</span>
+         
+        // Obtain initial (x,y,z) position [m] from ephemeris
+<span class="nc" id="L264">        Vector3D position = ephemeris.getBodyPosition(name, dateTime);</span>
+        
+        // Obtain intial (x,y,z) velocity [m/s] from ephemeris
+<span class="nc" id="L267">        Vector3D velocity = ephemeris.getBodyVelocity(name, dateTime);</span>
+        
+        // Add particle for simulation
+<span class="nc" id="L270">        particleSystem.addParticle(name, mass, mu, position, velocity);</span>
+<span class="nc" id="L271">    }</span>
+    
+    /**
+     * Main method.
+     * Run two simulations for 300 years using Newton Mechanics and General Relativity, 
+     * respectively. Simulation results are compared to Ephemeris DE405 data. 
+     * Simulation time step is 1 hour.
+     * @param args input arguments (not used)
+     */
+    public static void main (String[] args) {
+        // Experiment set-up
+<span class="nc" id="L282">        SimulationAccuracyExperiment experiment = new SimulationAccuracyExperiment();</span>
+        
+        // Run simulation using Newton Mechanics for 300 years
+<span class="nc" id="L285">        experiment.simulateNewtonMechanics(300);</span>
+        
+        // Run simulation using General Relativity for 300 years
+<span class="nc" id="L288">        experiment.simulateGeneralRelativity(300);</span>
+<span class="nc" id="L289">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

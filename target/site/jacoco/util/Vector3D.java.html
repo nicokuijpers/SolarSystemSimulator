@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Vector3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">util</a> &gt; <span class="el_source">Vector3D.java</span></div><h1>Vector3D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package util;
+
+import java.io.Serializable;
+
+/**
+ * Vector in 3D space.
+ * @author Nico Kuijpers
+ */
+public class Vector3D implements Serializable {
+    
+    // Default serialVersion id
+    private static final long serialVersionUID = 1L;
+    
+    private double x;
+    private double y;
+    private double z;
+    
+    /**
+     * Default constructor.
+     * Initialize (x,y,z) with (0,0,0).
+     */
+<span class="fc" id="L41">    public Vector3D() {</span>
+<span class="fc" id="L42">        this.x = 0.0;</span>
+<span class="fc" id="L43">        this.y = 0.0;</span>
+<span class="fc" id="L44">        this.z = 0.0;</span>
+<span class="fc" id="L45">    }</span>
+    
+    /**
+     * Constructor.
+     * Initialize (x,y,z) with given values.
+     * @param x x-value
+     * @param y y-value
+     * @param z z-value
+     */
+<span class="fc" id="L54">    public Vector3D(double x, double y, double z) {</span>
+<span class="fc" id="L55">        this.x = x;</span>
+<span class="fc" id="L56">        this.y = y;</span>
+<span class="fc" id="L57">        this.z = z;</span>
+<span class="fc" id="L58">    }</span>
+    
+    /**
+     * Copy constructor.
+     * Initialize (x,y,z) with given vector.
+     * @param v vector to initialize (x,y,z)
+     */
+<span class="fc" id="L65">    public Vector3D(Vector3D v) {</span>
+<span class="fc" id="L66">        this.x = v.x;</span>
+<span class="fc" id="L67">        this.y = v.y;</span>
+<span class="fc" id="L68">        this.z = v.z;</span>
+<span class="fc" id="L69">    }</span>
+    
+    /**
+     * Get x-value of vector.
+     * @return x-value
+     */
+    public double getX() {
+<span class="fc" id="L76">        return x;</span>
+    }
+    
+    /**
+     * Get y-value of vector.
+     * @return y-value
+     */
+    public double getY() {
+<span class="fc" id="L84">        return y;</span>
+    }
+    
+    /**
+     * Get z-value of vector.
+     * @return z-value
+     */
+    public double getZ() {
+<span class="fc" id="L92">        return z;</span>
+    }
+    
+    /**
+     * Normalized vector for this vector.
+     * @return normalized vector
+     */
+    public Vector3D normalize() {
+<span class="fc" id="L100">        double mag = magnitude();</span>
+<span class="fc" id="L101">        Vector3D normal = new Vector3D();</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (Math.abs(mag) &gt; 0.0) {</span>
+<span class="fc" id="L103">            normal = new Vector3D(x/mag,y/mag,z/mag);</span>
+        }
+<span class="fc" id="L105">        return normal;</span>
+    }
+    
+    /**
+     * Direction from this vector to other vector.
+     * @param v other vector
+     * @return direction to other vector
+     */
+    public Vector3D direction(Vector3D v) {
+<span class="fc" id="L114">        Vector3D direction = new Vector3D(v.x - x,v.y - y,v.z - z);</span>
+<span class="fc" id="L115">        return direction.normalize();</span>
+    }
+    
+    /**
+     * Magnitude of this vector.
+     * @return magnitude
+     */
+    public double magnitude() {
+<span class="fc" id="L123">        return Math.sqrt(x*x + y*y + z*z);</span>
+    }
+    
+    /**
+     * Square of magnitude of this vector
+     * @return square of magnitude
+     */
+    public double magnitudeSquare() {
+<span class="fc" id="L131">        return x*x + y*y + z*z;</span>
+    }
+    
+    /**
+     * Euclidean distance between this vector and other vector.
+     * @param v other vector
+     * @return Euclidean distance to other vector
+     */
+    public double euclideanDistance(Vector3D v) {
+<span class="fc" id="L140">        double dx = v.x - x;</span>
+<span class="fc" id="L141">        double dy = v.y - y;</span>
+<span class="fc" id="L142">        double dz = v.z - z;</span>
+<span class="fc" id="L143">        return Math.sqrt(dx*dx + dy*dy + dz*dz);</span>
+    }
+    
+    /**
+     * Square of Euclidean distance between this vector and other vector.
+     * @param v
+     * @return square of Euclidean distance to other vector
+     */
+    public double euclideanDistanceSquare(Vector3D v) {
+<span class="fc" id="L152">        double dx = v.x - x;</span>
+<span class="fc" id="L153">        double dy = v.y - y;</span>
+<span class="fc" id="L154">        double dz = v.z - z;</span>
+<span class="fc" id="L155">        return dx*dx + dy*dy + dz*dz;</span>
+    }
+    
+    /**
+     * Add other vector to this vector.
+     * @param v other vector
+     * @return new vector which is equal to sum of this vector and other vector
+     */
+    public Vector3D plus(Vector3D v) {
+<span class="fc" id="L164">        return new Vector3D(x+v.x,y+v.y,z+v.z);</span>
+    }
+    
+    /**
+     * Subtract other vector from this vector.
+     * @param v other vector
+     * @return new vector which is equal to other vector subtracted
+     * from this vector
+     */
+    public Vector3D minus(Vector3D v) {
+<span class="fc" id="L174">        return new Vector3D(x-v.x,y-v.y,z-v.z);</span>
+    }
+    
+    /**
+     * Scalar product of this vector and given scalar.
+     * @param scalar scalar
+     * @return new vector which is scalar product of this vector and
+     * given scalar
+     */
+    public Vector3D scalarProduct(double scalar) {
+<span class="fc" id="L184">        return new Vector3D(x*scalar,y*scalar,z*scalar);</span>
+    }
+    
+    /**
+     * Dot product of this vector and other vector.
+     * @param v other vector
+     * @return dot product of this vector and other vector
+     */
+    public double dotProduct(Vector3D v) {
+        // Use algebraic definition of dot product
+<span class="fc" id="L194">        return x*v.x + y*v.y + z*v.z;</span>
+    }
+    
+    /**
+     * Cross product of this vector and other vector.
+     * @param v other vector
+     * @return cross product of this vector and other vector
+     */
+    public Vector3D crossProduct(Vector3D v) {
+        // https://en.wikipedia.org/wiki/Cross_product
+<span class="fc" id="L204">        double rx = (y * v.z) - (z * v.y);</span>
+<span class="fc" id="L205">        double ry = (z * v.x) - (x * v.z);</span>
+<span class="fc" id="L206">        double rz = (x * v.y) - (y * v.x); </span>
+<span class="fc" id="L207">        return new Vector3D(rx,ry,rz);</span>
+    }
+    
+    /**
+     * Rotate vector along x-axis
+     * @param angle rotation angle in degrees
+     * @return new vector which is rotated along x-axis
+     */
+    public Vector3D rotateXdeg(double angle) {
+        // https://en.wikipedia.org/wiki/Rotation_matrix
+<span class="fc" id="L217">        double ry = y * Math.cos(Math.toRadians(angle)) - </span>
+<span class="fc" id="L218">                    z * Math.sin(Math.toRadians(angle));</span>
+<span class="fc" id="L219">        double rz = y * Math.sin(Math.toRadians(angle)) + </span>
+<span class="fc" id="L220">                    z * Math.cos(Math.toRadians(angle));</span>
+<span class="fc" id="L221">        return new Vector3D(x,ry,rz);</span>
+    }
+    
+    /**
+     * Rotate vector along y-axis.
+     * @param angle rotation angle in degrees
+     * @return new vector which is rotated along y-axis
+     */
+    public Vector3D rotateYdeg(double angle) {
+        // https://en.wikipedia.org/wiki/Rotation_matrix
+<span class="fc" id="L231">        double rx =  x * Math.cos(Math.toRadians(angle)) +</span>
+<span class="fc" id="L232">                     z * Math.sin(Math.toRadians(angle));</span>
+<span class="fc" id="L233">        double rz = -x * Math.sin(Math.toRadians(angle)) +</span>
+<span class="fc" id="L234">                     z * Math.cos(Math.toRadians(angle));</span>
+<span class="fc" id="L235">        return new Vector3D(rx,y,rz);</span>
+    }
+    
+    /**
+     * Rotate vector along z-axis.
+     * @param angle rotation angle in degrees
+     * @return new vector which is rotated along z-axis
+     */
+    public Vector3D rotateZdeg(double angle) {
+        // https://en.wikipedia.org/wiki/Rotation_matrix
+<span class="fc" id="L245">        double rx = x * Math.cos(Math.toRadians(angle)) -</span>
+<span class="fc" id="L246">                    y * Math.sin(Math.toRadians(angle));</span>
+<span class="fc" id="L247">        double ry = x * Math.sin(Math.toRadians(angle)) +</span>
+<span class="fc" id="L248">                    y * Math.cos(Math.toRadians(angle));</span>
+<span class="fc" id="L249">        return new Vector3D(rx,ry,z);</span>
+    }
+    
+    /**
+     * Rotate vector along x-axis.
+     * @param angle rotation angle in radians
+     * @return new vector which is rotated along x-axis.
+     */
+    public Vector3D rotateXrad(double angle) {
+        // https://en.wikipedia.org/wiki/Rotation_matrix
+<span class="fc" id="L259">        double ry = y * Math.cos(angle) - </span>
+<span class="fc" id="L260">                    z * Math.sin(angle);</span>
+<span class="fc" id="L261">        double rz = y * Math.sin(angle) + </span>
+<span class="fc" id="L262">                    z * Math.cos(angle);</span>
+<span class="fc" id="L263">        return new Vector3D(x,ry,rz);</span>
+    }
+    
+    /**
+     * Rotate vector along y-axis.
+     * @param angle rotation angle in radians
+     * @return new vector which is rotated along y-axis
+     */
+    public Vector3D rotateYrad(double angle) {
+        // https://en.wikipedia.org/wiki/Rotation_matrix
+<span class="fc" id="L273">        double rx =  x * Math.cos(angle) +</span>
+<span class="fc" id="L274">                     z * Math.sin(angle);</span>
+<span class="fc" id="L275">        double rz = -x * Math.sin(angle) +</span>
+<span class="fc" id="L276">                     z * Math.cos(angle);</span>
+<span class="fc" id="L277">        return new Vector3D(rx,y,rz);</span>
+    }
+    
+    /**
+     * Rotate vector along z-axis
+     * @param angle rotation angle in radians
+     * @return new vector which is rotated along y-axis
+     */
+    public Vector3D rotateZrad(double angle) {
+        // https://en.wikipedia.org/wiki/Rotation_matrix
+<span class="fc" id="L287">        double rx = x * Math.cos(angle) -</span>
+<span class="fc" id="L288">                    y * Math.sin(angle);</span>
+<span class="fc" id="L289">        double ry = x * Math.sin(angle) +</span>
+<span class="fc" id="L290">                    y * Math.cos(angle);</span>
+<span class="fc" id="L291">        return new Vector3D(rx,ry,z);</span>
+    }
+    
+    
+    /**
+     * Add vector to this vector.
+     * @param vector vector to be added
+     */
+    public void addVector(Vector3D vector) {
+<span class="fc" id="L300">        this.x += vector.x;</span>
+<span class="fc" id="L301">        this.y += vector.y;</span>
+<span class="fc" id="L302">        this.z += vector.z;</span>
+<span class="fc" id="L303">    }</span>
+    
+    @Override
+    public String toString() {
+<span class="fc" id="L307">        return &quot;(&quot; + x + &quot;,&quot; + y + &quot;,&quot; + z + &quot;)&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

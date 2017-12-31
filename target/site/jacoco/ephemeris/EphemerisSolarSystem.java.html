@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EphemerisSolarSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">ephemeris</a> &gt; <span class="el_source">EphemerisSolarSystem.java</span></div><h1>EphemerisSolarSystem.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package ephemeris;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
+import util.Vector3D;
+
+/**
+ *
+ * @author Nico Kuijpers
+ */
+public class EphemerisSolarSystem implements IEphemeris {
+    
+    // Orbit period of the Moon in days
+    // Obtained from from HORIZONS web interface 
+    // https://ssd.jpl.nasa.gov/horizons.cgi#results.
+    private static final double ORBITPERIODMOON = 27.321582;
+
+    // Accurate Ephemeris for Sun, Moon, and major planets including Pluto
+    private final IEphemeris ephemerisAccurate;
+    
+    // Approximate Ephemeris for major planets including Pluto
+    private final IEphemeris ephemerisApproximate;
+    
+    // Solar system parameters
+    private final SolarSystemParameters solarSystemParameters;
+    
+    // First valid date
+    private final GregorianCalendar firstValidDate;
+    
+    // Last valid date
+    private final GregorianCalendar lastValidDate;
+    
+    // Bodies for which ephemeris can be computed or approximated
+    private static List&lt;String&gt; bodies;
+    
+    // Singleton instance
+<span class="nc" id="L60">    private static IEphemeris instance = null;</span>
+    
+    /**
+     * Constructor. Singleton pattern.
+     */
+<span class="nc" id="L65">    private EphemerisSolarSystem() {</span>
+        
+        // Accurate Ephemeris for Sun, Moon, and major planets including Pluto
+<span class="nc" id="L68">        ephemerisAccurate = EphemerisDE405.getInstance();        </span>
+
+        // Approximate Ephemeris for major planets including Pluto
+<span class="nc" id="L71">        ephemerisApproximate = EphemerisApproximate.getInstance();</span>
+        
+        // Solar System parameters
+<span class="nc" id="L74">        solarSystemParameters = SolarSystemParameters.getInstance();</span>
+        
+        // Bodies for which ephemeris can be computed or approximated
+<span class="nc" id="L77">        bodies = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L78">        bodies.add(&quot;sun&quot;);</span>
+<span class="nc" id="L79">        bodies.addAll(solarSystemParameters.getPlanets());</span>
+<span class="nc" id="L80">        bodies.addAll(solarSystemParameters.getMoons());</span>
+     
+        // First valid date 3000 BC
+<span class="nc" id="L83">        firstValidDate = new GregorianCalendar(3000,0,1);</span>
+<span class="nc" id="L84">        firstValidDate.set(Calendar.ERA, GregorianCalendar.BC);</span>
+<span class="nc" id="L85">        firstValidDate.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+        
+        // Last valid date 3000 AD
+<span class="nc" id="L88">        lastValidDate = new GregorianCalendar(3000,0,1);</span>
+<span class="nc" id="L89">        lastValidDate.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+<span class="nc" id="L90">    }</span>
+    
+    /**
+     * Get instance of EphemerisSolarSystem.
+     * @return instance
+     */
+    public static IEphemeris getInstance() {
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (instance == null) {</span>
+<span class="nc" id="L98">            instance = new EphemerisSolarSystem();</span>
+        }
+<span class="nc" id="L100">        return instance;</span>
+    }
+    
+    
+    @Override
+    public GregorianCalendar getFirstValidDate() {
+<span class="nc" id="L106">        return firstValidDate;</span>
+    }
+
+    @Override
+    public GregorianCalendar getLastValidDate() {
+<span class="nc" id="L111">        return lastValidDate;</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getBodies() {
+<span class="nc" id="L116">        return Collections.unmodifiableList(bodies);</span>
+    }
+
+    @Override
+    public Vector3D getBodyPosition(String name, GregorianCalendar date) {
+        // Check whether body name is valid
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (!bodies.contains(name)) {</span>
+<span class="nc" id="L123">            throw new IllegalArgumentException(&quot;Unknown body &quot; + name + &quot; for Solar System Ephemeris&quot;);</span>
+        }
+        
+        // Check whether date is valid
+<span class="nc bnc" id="L127" title="All 4 branches missed.">        if (date.before(firstValidDate) || date.after(lastValidDate)) {</span>
+<span class="nc" id="L128">            throw new IllegalArgumentException(&quot;Date not valid for Solar System Ephemeris&quot;);</span>
+        }
+        
+        // Check whether Accurate Ephemeris can be used
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (ephemerisAccurate.getBodies().contains(name) &amp;&amp;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            date.after(ephemerisAccurate.getFirstValidDate()) &amp;&amp; </span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            date.before(ephemerisAccurate.getLastValidDate())) {</span>
+            
+            // (x,y,z) position [m] from Accurate Ephemeris
+<span class="nc" id="L137">            return ephemerisAccurate.getBodyPosition(name, date);</span>
+        }
+       
+        // Check whether Approximate Ephemeris can be used
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (ephemerisApproximate.getBodies().contains(name) &amp;&amp;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            date.after(ephemerisApproximate.getFirstValidDate()) &amp;&amp; </span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">            date.before(ephemerisApproximate.getLastValidDate())) {</span>
+            
+            // (x,y,z) position [m] from Approximate Ephemeris
+<span class="nc" id="L146">            return ephemerisApproximate.getBodyPosition(name, date);</span>
+        }
+        
+        // Approximate position and velocity of the Moon
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (&quot;moon&quot;.equals(name)) {</span>
+            // Return position vector (index = 0)
+<span class="nc" id="L152">            return approximatePositionVelocityMoon(date)[0];</span>
+        }
+        
+        // Compute position from Solar System parameters
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (bodies.contains(name)) {</span>
+            
+            // Obtain orbit parameters
+<span class="nc" id="L159">            double[] orbitPars = solarSystemParameters.getOrbitParameters(name);</span>
+        
+            // Compute orbital elements for given date
+<span class="nc" id="L162">            double[] orbitElements = EphemerisUtil.computeOrbitalElements(orbitPars,date);</span>
+         
+            // Compute (x,y,z) position [m] from orbital elements
+<span class="nc" id="L165">            return EphemerisUtil.computePosition(orbitElements);</span>
+        }
+        
+<span class="nc" id="L168">        return null;</span>
+    }
+                
+    @Override
+    public Vector3D getBodyVelocity(String name, GregorianCalendar date) {
+        // Check whether body name is valid
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (!bodies.contains(name)) {</span>
+<span class="nc" id="L175">            throw new IllegalArgumentException(&quot;Unknown body &quot; + name + &quot; for Solar System Ephemeris&quot;);</span>
+        }
+        
+        // Check whether date is valid
+<span class="nc bnc" id="L179" title="All 4 branches missed.">        if (date.before(firstValidDate) || date.after(lastValidDate)) {</span>
+<span class="nc" id="L180">            throw new IllegalArgumentException(&quot;Date not valid for Solar System Ephemeris&quot;);</span>
+        }
+        
+        // Check whether Accurate Ephemeris can be used
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (ephemerisAccurate.getBodies().contains(name) &amp;&amp;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            date.after(ephemerisAccurate.getFirstValidDate()) &amp;&amp; </span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            date.before(ephemerisAccurate.getLastValidDate())) {</span>
+            
+            // (x,y,z) velocity [m/s] from Accurate Ephemeris
+<span class="nc" id="L189">            return ephemerisAccurate.getBodyVelocity(name, date);</span>
+        }
+       
+        // Check whether Approximate Ephemeris can be used
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (ephemerisApproximate.getBodies().contains(name) &amp;&amp;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">            date.after(ephemerisApproximate.getFirstValidDate()) &amp;&amp; </span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">            date.before(ephemerisApproximate.getLastValidDate())) {</span>
+            
+            // (x,y,z) velocity [m/s] from Approximate Ephemeris
+<span class="nc" id="L198">            return ephemerisApproximate.getBodyVelocity(name, date);</span>
+        }
+        
+        // Approximate position and velocity of the Moon
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if (&quot;moon&quot;.equals(name)) {</span>
+            // Return velocity vector (index = 1)
+<span class="nc" id="L204">            return approximatePositionVelocityMoon(date)[1];</span>
+        }
+        
+        // Compute velocity from Solar System parameters
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (bodies.contains(name)) {</span>
+            
+            // Obtain orbit parameters
+<span class="nc" id="L211">            double[] orbitPars = solarSystemParameters.getOrbitParameters(name);</span>
+        
+            // Compute orbital elements for given date
+<span class="nc" id="L214">            double[] orbitElements = EphemerisUtil.computeOrbitalElements(orbitPars,date);</span>
+         
+            // Compute (x,y,z) velocity [m/s] from orbital elements
+<span class="nc" id="L217">            return EphemerisUtil.computeVelocity(orbitElements);</span>
+        }
+        
+<span class="nc" id="L220">        return null;</span>
+    }
+
+    @Override
+    public Vector3D[] getBodyPositionVelocity(String name, GregorianCalendar date) {
+        // Check whether body name is valid
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (!bodies.contains(name)) {</span>
+<span class="nc" id="L227">            throw new IllegalArgumentException(&quot;Unknown body &quot; + name + &quot; for Solar System Ephemeris&quot;);</span>
+        }
+        
+        // Check whether date is valid
+<span class="nc bnc" id="L231" title="All 4 branches missed.">        if (date.before(firstValidDate) || date.after(lastValidDate)) {</span>
+<span class="nc" id="L232">            throw new IllegalArgumentException(&quot;Date not valid for Solar System Ephemeris&quot;);</span>
+        }
+        
+        // Check whether Accurate Ephemeris can be used
+<span class="nc bnc" id="L236" title="All 2 branches missed.">        if (ephemerisAccurate.getBodies().contains(name) &amp;&amp;</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">            date.after(ephemerisAccurate.getFirstValidDate()) &amp;&amp; </span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            date.before(ephemerisAccurate.getLastValidDate())) {</span>
+            
+            // (x,y,z) position [m] and velocity [m/s] from Accurate Ephemeris
+<span class="nc" id="L241">            return ephemerisAccurate.getBodyPositionVelocity(name, date);</span>
+        }
+       
+        // Check whether Approximate Ephemeris can be used
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (ephemerisApproximate.getBodies().contains(name) &amp;&amp;</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            date.after(ephemerisApproximate.getFirstValidDate()) &amp;&amp; </span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            date.before(ephemerisApproximate.getLastValidDate())) {</span>
+            
+            // (x,y,z) position [m] and velocity [m/s] from Approximate Ephemeris
+<span class="nc" id="L250">            return ephemerisApproximate.getBodyPositionVelocity(name, date);</span>
+        }
+        
+        // Approximate position and velocity of the Moon
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        if (&quot;moon&quot;.equals(name)) {</span>
+<span class="nc" id="L255">            return approximatePositionVelocityMoon(date);</span>
+        }
+        
+        // Compute position and velocity from Solar System parameters
+<span class="nc bnc" id="L259" title="All 2 branches missed.">        if (bodies.contains(name)) {</span>
+            
+            // Obtain orbit parameters
+<span class="nc" id="L262">            double[] orbitPars = solarSystemParameters.getOrbitParameters(name);</span>
+        
+            // Compute orbital elements for given date
+<span class="nc" id="L265">            double[] orbitElements = EphemerisUtil.computeOrbitalElements(orbitPars,date);</span>
+         
+            // Compute (x,y,z) position [m] from orbital elements
+<span class="nc" id="L268">            Vector3D position = EphemerisUtil.computePosition(orbitElements);</span>
+            
+            // Compute (x,y,z) velocity [m/s] from orbital elements
+<span class="nc" id="L271">            Vector3D velocity = EphemerisUtil.computeVelocity(orbitElements);</span>
+            
+            // Position and velocity as array
+<span class="nc" id="L274">            return new Vector3D[]{position,velocity};</span>
+        }
+        
+<span class="nc" id="L277">        return null;</span>
+    }
+
+    @Override
+    public Vector3D getBodyPositionBarycenter(String name, GregorianCalendar date) {
+<span class="nc" id="L282">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    @Override
+    public Vector3D getBodyVelocityBarycenter(String name, GregorianCalendar date) {
+<span class="nc" id="L287">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    @Override
+    public Vector3D[] getBodyPositionVelocityBarycenter(String name, GregorianCalendar date) {
+<span class="nc" id="L292">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+
+    /**
+     * Approximate position [m] and velocity [m/s] of the Moon.
+     * It is assumed that position and velocity of the Moon relative to the Earth
+     * are the same each orbit of the Moon around the Earth.
+     * @param date date/time 
+     * @return array containing position [m] and velocity [m/s]
+     */
+    private Vector3D[] approximatePositionVelocityMoon(GregorianCalendar date) {
+        // It is assumed that position and velocity of the Moon relative to the Earth
+        // are the same each orbit of the Moon around the Earth.
+        // Find a date for which accurate position and velocity of both 
+        // the Earth and the Moon are known
+<span class="nc" id="L307">        double julianDate = JulianDateConverter.convertCalendarToJulianDate(date);</span>
+<span class="nc" id="L308">        double julianDateValid = julianDate;</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (date.before(ephemerisAccurate.getFirstValidDate())) {</span>
+<span class="nc" id="L310">            double julianDateFirstValid = </span>
+<span class="nc" id="L311">                JulianDateConverter.convertCalendarToJulianDate(ephemerisAccurate.getFirstValidDate());</span>
+<span class="nc" id="L312">            int nrMoonOrbits = (int) Math.ceil((julianDateFirstValid - julianDate) / ORBITPERIODMOON);</span>
+<span class="nc" id="L313">            julianDateValid = julianDate + nrMoonOrbits * ORBITPERIODMOON;</span>
+        }
+<span class="nc bnc" id="L315" title="All 2 branches missed.">        if (date.after(ephemerisAccurate.getLastValidDate())) {</span>
+<span class="nc" id="L316">            double julianDateLastValid = </span>
+<span class="nc" id="L317">                JulianDateConverter.convertCalendarToJulianDate(ephemerisAccurate.getLastValidDate());</span>
+<span class="nc" id="L318">            int nrMoonOrbits = (int) Math.ceil((julianDate - julianDateLastValid) / ORBITPERIODMOON);</span>
+<span class="nc" id="L319">            julianDateValid = julianDate - nrMoonOrbits * ORBITPERIODMOON;</span>
+        }
+<span class="nc" id="L321">        GregorianCalendar dateValid = JulianDateConverter.convertJulianDateToCalendar(julianDateValid);</span>
+        
+        // Accurate position and velocity of the Earth for valid date
+<span class="nc" id="L324">        Vector3D[] positionVelocityEarthValid = ephemerisAccurate.getBodyPositionVelocity(&quot;earth&quot;,dateValid);</span>
+<span class="nc" id="L325">        Vector3D positionEarthValid = positionVelocityEarthValid[0];</span>
+<span class="nc" id="L326">        Vector3D velocityEarthValid = positionVelocityEarthValid[1];</span>
+        
+        // Accurate position and velocity of the Moon for valid date
+<span class="nc" id="L329">        Vector3D[] positionVelocityMoonValid = ephemerisAccurate.getBodyPositionVelocity(&quot;moon&quot;,dateValid);</span>
+<span class="nc" id="L330">        Vector3D positionMoonValid = positionVelocityMoonValid[0];</span>
+<span class="nc" id="L331">        Vector3D velocityMoonValid = positionVelocityMoonValid[1];</span>
+        
+        // Approximate position and velocity of the Earth for given date
+<span class="nc" id="L334">        Vector3D[] positionVelocityEarth = ephemerisApproximate.getBodyPositionVelocity(&quot;earth&quot;,date);</span>
+<span class="nc" id="L335">        Vector3D positionEarth = positionVelocityEarth[0];</span>
+<span class="nc" id="L336">        Vector3D velocityEarth = positionVelocityEarth[1];</span>
+        
+        // Approximate position and velocity of the Moon for given date
+<span class="nc" id="L339">        Vector3D positionMoon = positionEarth.plus(positionMoonValid.minus(positionEarthValid));</span>
+<span class="nc" id="L340">        Vector3D velocityMoon = velocityEarth.plus(velocityMoonValid.minus(velocityEarthValid));</span>
+<span class="nc" id="L341">        return new Vector3D[]{positionMoon,velocityMoon};</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

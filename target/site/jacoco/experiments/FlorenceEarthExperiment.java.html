@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FlorenceEarthExperiment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">experiments</a> &gt; <span class="el_source">FlorenceEarthExperiment.java</span></div><h1>FlorenceEarthExperiment.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package experiments;
+
+import ephemeris.EphemerisSolarSystem;
+import ephemeris.IEphemeris;
+import ephemeris.SolarSystemParameters;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+import particlesystem.Particle;
+import solarsystem.SolarSystem;
+import solarsystem.SolarSystemBody;
+import util.Vector3D;
+
+/**
+ * Asteroid 3122 Florence passed Earth at a distance of 7,066,000 km on 
+ * September 1st, 2017.
+ * In this simulation experiment the minimum distance between Earth and Florence 
+ * is determined as wel as the date/time it occurred.
+ * 
+ * @author Nico Kuijpers
+ */
+public class FlorenceEarthExperiment {
+    
+    // Ephemeris
+    private IEphemeris ephemeris;
+    
+    // The Solar System
+    private final SolarSystem solarSystem;
+    
+    // Start date for simulation
+    private final GregorianCalendar simulationStartDateTime;
+    
+    // End date for simulation
+    private final GregorianCalendar simulationEndDateTime;
+    
+    // Simulation time step in s
+    private final long deltaT;
+    
+    /**
+     * Constructor.
+     * Set simulation start and end date. Create the Solar System.
+     */
+<span class="nc" id="L62">    public FlorenceEarthExperiment() {</span>
+        // Set ephemeris
+<span class="nc" id="L64">        ephemeris = EphemerisSolarSystem.getInstance();</span>
+        
+        // Start simulation at April 1st, 2017
+        // Note that January is month 0
+<span class="nc" id="L68">        simulationStartDateTime = new GregorianCalendar(2017,3,1);</span>
+        
+        // https://www.timeanddate.com/time/aboututc.html
+        // Use Coordinated Universal Time (UTC) to avoid 
+        // sudden changes in ephemeris due to changes from 
+        // winter time to summer time and vice versa
+<span class="nc" id="L74">        simulationStartDateTime.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+        
+        // Stop simulation at April 1st, 2018
+<span class="nc" id="L77">        simulationEndDateTime = new GregorianCalendar(2018,3,1);</span>
+<span class="nc" id="L78">        simulationEndDateTime.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+        
+        // Create the Solar System
+<span class="nc" id="L81">        solarSystem = new SolarSystem(simulationStartDateTime);</span>
+        
+        // Set General Relativity flag
+        // True means General Relativity is applied
+        // False means Newton Mechanics is applied
+        // solarSystem.setGeneralRelativityFlag(true);
+<span class="nc" id="L87">        solarSystem.setGeneralRelativityFlag(false);</span>
+        
+        // Set simulation time step in seconds
+        // deltaT = (long) 60; // 1 minute
+<span class="nc" id="L91">        deltaT = (long) (60*60); // 1 hour</span>
+<span class="nc" id="L92">    }</span>
+
+    /**
+     * Simulate passage of Florence.
+     */
+    public void simulateFlorenceEarthPassage() {
+        // Planet Earth (simulation particle)
+<span class="nc" id="L99">        Particle earth = solarSystem.getParticle(&quot;earth&quot;);</span>
+        
+        // Asteroid 3122 Florence (simulation particle)
+<span class="nc" id="L102">        Particle florence = solarSystem.getParticle(&quot;florence&quot;);</span>
+        
+        // Initialize minimum distance between Earth and Florence
+<span class="nc" id="L105">        double minimumDistance = SolarSystemParameters.ASTRONOMICALUNIT;</span>
+        
+        // Initialize date/time of minimum distance
+<span class="nc" id="L108">        GregorianCalendar minimumDistanceDateTime = (GregorianCalendar)simulationStartDateTime.clone();</span>
+        
+        // Initialize simulation date/time
+        GregorianCalendar simulationDateTime;
+<span class="nc" id="L112">        simulationDateTime = (GregorianCalendar)simulationStartDateTime.clone();</span>
+<span class="nc" id="L113">        simulationDateTime.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+        
+        // Run simulation
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        while(simulationDateTime.before(simulationEndDateTime)) {</span>
+            // Advance one time step
+<span class="nc" id="L118">            solarSystem.advanceRungeKutta(deltaT);</span>
+            
+            // Correction for position of Sun
+<span class="nc" id="L121">            solarSystem.correctDrift();</span>
+            
+            // Update simulation date/time
+<span class="nc" id="L124">            simulationDateTime.add(Calendar.SECOND, (int)deltaT);</span>
+            
+            // Position of planet Earth
+<span class="nc" id="L127">            Vector3D positionEarth = earth.getPosition();</span>
+            
+            // Position of asteroid 3122 Florence
+<span class="nc" id="L130">            Vector3D positionFlorence = florence.getPosition();</span>
+            
+            // Current distance between Earth and Florence
+<span class="nc" id="L133">            double currentDistance = positionFlorence.euclideanDistance(positionEarth);</span>
+            
+            // Minimum distance and time of minimum distance
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (currentDistance &lt; minimumDistance) {</span>
+<span class="nc" id="L137">                minimumDistance = currentDistance;</span>
+<span class="nc" id="L138">                minimumDistanceDateTime = (GregorianCalendar)simulationDateTime.clone();</span>
+            }
+<span class="nc" id="L140">        }</span>
+        
+        // Asteroid 3122 Florence passed Earth at a distance of 7,066,000 km 
+        // on September 1st, 2017.  
+<span class="nc" id="L144">        double expectedDistance = 7066000000.0; // Distance [m]</span>
+        
+        // Show results on screen
+<span class="nc" id="L147">        System.out.println(&quot;Results from simulation:&quot;);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (solarSystem.getGeneralRelativityFlag()) {</span>
+<span class="nc" id="L149">            System.out.println(&quot;General Relativity with time step &quot; + deltaT + &quot; seconds&quot;);</span>
+        }
+        else {
+<span class="nc" id="L152">            System.out.println(&quot;Newton Mechanics with time step &quot; + deltaT + &quot; seconds&quot;);</span>
+        }
+<span class="nc" id="L154">        System.out.println(&quot;Expected minimum distance between Earth and Florence: &quot; + expectedDistance/1000 + &quot; km&quot;);</span>
+<span class="nc" id="L155">        System.out.println(&quot;Expected date of minimum distance is September 1, 2017&quot;);</span>
+<span class="nc" id="L156">        System.out.println(&quot;Actual minimum distance between Earth and Florence:  &quot; + minimumDistance/1000 + &quot; km&quot;);</span>
+<span class="nc" id="L157">        System.out.println(&quot;Actual date/time of minimum distance: &quot; + calendarToString(minimumDistanceDateTime));</span>
+<span class="nc" id="L158">    }</span>
+    
+    
+    /**
+     * Compute passage of Florence from ephemeris.
+     */
+    public void computeFlorenceEarthPassage() {
+        
+        // Initialize minimum distance between Earth and Florence
+<span class="nc" id="L167">        double minimumDistance = SolarSystemParameters.ASTRONOMICALUNIT;</span>
+        
+        // Initialize date/time of minimum distance
+<span class="nc" id="L170">        GregorianCalendar minimumDistanceDateTime = (GregorianCalendar)simulationStartDateTime.clone();</span>
+        
+        // Initialize current date/time
+        GregorianCalendar currentDateTime;
+<span class="nc" id="L174">        currentDateTime = (GregorianCalendar)simulationStartDateTime.clone();</span>
+<span class="nc" id="L175">        currentDateTime.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+        
+        // Compute ephemeris for each time step
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        while(currentDateTime.before(simulationEndDateTime)) {</span>
+           
+            // Update simulation date/time
+<span class="nc" id="L181">            currentDateTime.add(Calendar.SECOND, (int)deltaT);</span>
+            
+            // Position of planet Earth
+<span class="nc" id="L184">            Vector3D positionEarth = ephemeris.getBodyPosition(&quot;earth&quot;, currentDateTime);</span>
+            
+            // Position of asteroid 3122 Florence
+<span class="nc" id="L187">            Vector3D positionFlorence = ephemeris.getBodyPosition(&quot;florence&quot;, currentDateTime);</span>
+            
+            // Current distance between Earth and Florence
+<span class="nc" id="L190">            double currentDistance = positionFlorence.euclideanDistance(positionEarth);</span>
+            
+            // Minimum distance and time of minimum distance
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            if (currentDistance &lt; minimumDistance) {</span>
+<span class="nc" id="L194">                minimumDistance = currentDistance;</span>
+<span class="nc" id="L195">                minimumDistanceDateTime = (GregorianCalendar)currentDateTime.clone();</span>
+            }
+<span class="nc" id="L197">        }</span>
+        
+        // Asteroid 3122 Florence passed Earth at a distance of 7,066,000 km 
+        // on September 1st, 2017.  
+<span class="nc" id="L201">        double expectedDistance = 7066000000.0; // Distance [m]</span>
+        
+        // Show results on screen
+<span class="nc" id="L204">        System.out.println(&quot;Results from Ephemeris:&quot;);</span>
+<span class="nc" id="L205">        System.out.println(&quot;Expected minimum distance between Earth and Florence: &quot; + expectedDistance/1000 + &quot; km&quot;);</span>
+<span class="nc" id="L206">        System.out.println(&quot;Expected date of minimum distance is September 1, 2017&quot;);</span>
+<span class="nc" id="L207">        System.out.println(&quot;Actual minimum distance between Earth and Florence:  &quot; + minimumDistance/1000 + &quot; km&quot;);</span>
+<span class="nc" id="L208">        System.out.println(&quot;Actual date/time of minimum distance: &quot; + calendarToString(minimumDistanceDateTime));</span>
+<span class="nc" id="L209">    }</span>
+    
+    
+    /**
+     * Convert GregorianCalendar to String.
+     * @param calendar GregorianCalendar-object
+     * @return era, date, and time as string
+     */
+    private String calendarToString(GregorianCalendar calendar) {
+        // Obtain era, date, and time from calendar
+<span class="nc" id="L219">        int era = calendar.get(Calendar.ERA);</span>
+<span class="nc" id="L220">        int year = calendar.get(Calendar.YEAR);</span>
+<span class="nc" id="L221">        int month = calendar.get(Calendar.MONTH); // 0 - 11</span>
+<span class="nc" id="L222">        int day = calendar.get(Calendar.DAY_OF_MONTH);</span>
+<span class="nc" id="L223">        int hour = calendar.get(Calendar.HOUR_OF_DAY);</span>
+<span class="nc" id="L224">        int minute = calendar.get(Calendar.MINUTE);</span>
+        
+        // Construct string representing era, date, and time
+<span class="nc" id="L227">        StringBuilder result = new StringBuilder();</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (era == GregorianCalendar.BC) {</span>
+<span class="nc" id="L229">            result.append(&quot;BC&quot;);</span>
+        }
+        else {
+<span class="nc" id="L232">            result.append(&quot;AD&quot;);</span>
+        }
+<span class="nc" id="L234">        result.append(&quot; &quot;);</span>
+<span class="nc" id="L235">        result.append(String.format(&quot;%04d&quot;, year)).append(&quot;-&quot;);</span>
+<span class="nc" id="L236">        result.append(String.format(&quot;%02d&quot;, month+1)).append(&quot;-&quot;);</span>
+<span class="nc" id="L237">        result.append(String.format(&quot;%02d&quot;, day)).append(&quot; &quot;);</span>
+<span class="nc" id="L238">        result.append(String.format(&quot;%02d&quot;, hour)).append(&quot;:&quot;);</span>
+<span class="nc" id="L239">        result.append(String.format(&quot;%02d&quot;, minute));</span>
+        
+        // Add time zone
+<span class="nc" id="L242">        result.append(&quot; (&quot;);</span>
+<span class="nc" id="L243">        result.append(calendar.getTimeZone().getID());</span>
+<span class="nc" id="L244">        result.append(&quot;)&quot;);</span>
+        
+<span class="nc" id="L246">        return result.toString();</span>
+    }
+    
+    /**
+     * Main method.
+     * Simulate and compute passage of Florence.
+     * @param args input arguments (not used)
+     */
+    public static void main (String[] args) {
+        // Experiment set-up
+<span class="nc" id="L256">        FlorenceEarthExperiment experiment = new FlorenceEarthExperiment();</span>
+        
+        // Run simulation to find shortest distance
+<span class="nc" id="L259">        experiment.simulateFlorenceEarthPassage();</span>
+        
+        // Use ephemeris to find shortest distance
+<span class="nc" id="L262">        experiment.computeFlorenceEarthPassage();</span>
+<span class="nc" id="L263">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JulianDateConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">ephemeris</a> &gt; <span class="el_source">JulianDateConverter.java</span></div><h1>JulianDateConverter.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package ephemeris;
+
+import java.security.InvalidParameterException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+/**
+ * Convert Gregorian calendar date to Julian date and vice versa.
+ * @author Nico Kuijpers
+ */
+<span class="nc" id="L31">public class JulianDateConverter {</span>
+    
+    /**
+     * Convert Gregorian calendar date to Julian date.
+     * Conversion of a date before October 15, 1582 is done assuming the
+     * the Julian Calendar. Conversion of date October 15, 1582 or later 
+     * is done assuming the Gregorian Calendar. Conversion of a date before 
+     * Jan 1, 4713 BC, 12h is not supported and an InvalidParameterException 
+     * will be thrown.
+     * @param date date (Julian of Gregorian Calendar)
+     * @return Julian date
+     * @throws InvalidParameterException
+     */
+    public static double convertCalendarToJulianDate(GregorianCalendar date) 
+        throws InvalidParameterException {
+        
+        // Obtain era, year, month, day, hour, minute
+        // Note that the month-value is zero-based, i.e., Jan = 0, Feb = 1, etc.
+<span class="fc" id="L49">        int era = date.get(Calendar.ERA);</span>
+<span class="fc" id="L50">        int year = date.get(Calendar.YEAR);</span>
+<span class="fc" id="L51">        int month = date.get(Calendar.MONTH) + 1; // Month is zero-based</span>
+<span class="fc" id="L52">        int day = date.get(Calendar.DAY_OF_MONTH);</span>
+<span class="fc" id="L53">        int hour = date.get(Calendar.HOUR_OF_DAY);</span>
+<span class="fc" id="L54">        int minute = date.get(Calendar.MINUTE);</span>
+        
+        // Adjust year for era (BC or AD)
+        // The sequence of years at the transition from BC to AD is
+        // ..., 2 BC, 1 BC, 1 AD, 2 AD,...
+        // https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (era == GregorianCalendar.BC) {</span>
+<span class="fc" id="L61">            year = -year + 1;</span>
+        }
+ 
+        // https://quasar.as.utexas.edu/BillInfo/JulianDatesG.html
+        // If the month is January or February, subtract 1 from the year, 
+        // and add 12 to the month. Thus, January and February are considered
+        // the 13th and 14th month of the previous year.
+<span class="fc bfc" id="L68" title="All 4 branches covered.">        if (month == 1 || month == 2) {</span>
+<span class="fc" id="L69">           year = year - 1;</span>
+<span class="fc" id="L70">           month = month + 12;</span>
+        }
+<span class="fc" id="L72">        int a = year / 100;</span>
+<span class="fc" id="L73">        int b = a / 4;</span>
+<span class="fc" id="L74">        int c = 2 - a + b;</span>
+<span class="fc" id="L75">        double e = Math.floor(365.25 * (year + 4716));</span>
+<span class="fc" id="L76">        double f = Math.floor(30.6001 * (month + 1));</span>
+<span class="fc" id="L77">        double julianDate = c + day + e + f - 1524.5 + ((hour + (minute / 60.0)) / 24.0);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (julianDate &lt; 2299160.5) {</span>
+            // Date occurs before Gregorian change on October 15, 1582 (Gregorian)
+<span class="fc" id="L80">            julianDate = julianDate - c;</span>
+        } 
+        
+        // Check result
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (julianDate &lt; 0.0) {</span>
+<span class="fc" id="L85">            throw new InvalidParameterException(&quot;Julian date before Jan 1, 4713 BC 12:00 not supported&quot;);</span>
+        }
+<span class="fc" id="L87">        return julianDate;</span>
+    }
+    
+    /**
+     * Convert Julian date to Gregorian calendar date.
+     * Conversion of date October 15, 1582 or later is done assuming 
+     * the Gregorian Calendar. Conversion of a date before October 15, 1582 
+     * is not supported and an InvalidParameterException will be thrown.
+     * The result will be a GregorianCalendar object with time zone UTC.
+     * @param julianDate Julian date
+     * @return Gregorian calendar date
+     * @throws InvalidParameterException
+     */
+    public static GregorianCalendar convertJulianDateToCalendar(double julianDate) 
+        throws InvalidParameterException {
+        // Check input Julian date
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (julianDate &lt; 2299160.5) {</span>
+<span class="fc" id="L104">            throw new InvalidParameterException(&quot;Julian date before 2299160.5 not supported&quot;);</span>
+        }
+        
+        // https://quasar.as.utexas.edu/BillInfo/JulianDatesG.html
+<span class="fc" id="L108">        double q = julianDate + 0.5;</span>
+<span class="fc" id="L109">        int z = (int) Math.floor(q);</span>
+<span class="fc" id="L110">        int w = (int) Math.floor((z - 1867216.25)/36524.25);</span>
+<span class="fc" id="L111">        int x = (int) Math.floor(w/4.0);</span>
+<span class="fc" id="L112">        int a = z + 1 + w - x;</span>
+<span class="fc" id="L113">        int b = a + 1524;</span>
+<span class="fc" id="L114">        int c = (int) Math.floor((b - 122.1)/365.25);</span>
+<span class="fc" id="L115">        int d = (int) Math.floor(365.25 * c);</span>
+<span class="fc" id="L116">        int e = (int) Math.floor((b - d)/30.6001);</span>
+<span class="fc" id="L117">        int f = (int) Math.floor(30.6001 * e);</span>
+<span class="fc" id="L118">        int minute = (int) Math.floor((q - z)*24*60) % 60;</span>
+<span class="fc" id="L119">        int hour = (int) Math.floor((q - z)*24);</span>
+<span class="fc" id="L120">        int day = (int) Math.floor(b - d - f + (q - z));</span>
+<span class="fc" id="L121">        int month = e - 1;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (month &gt; 12) {</span>
+<span class="fc" id="L123">            month = month - 12;</span>
+        }
+<span class="fc" id="L125">        int year = c - 4715;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (month &gt; 2) {</span>
+<span class="fc" id="L127">            year = year - 1;</span>
+        }
+        
+        // Note that the month-value is zero-based, i.e., Jan = 0, Feb = 1, etc.
+<span class="fc" id="L131">        GregorianCalendar date = new GregorianCalendar(year,month-1,day,hour,minute);</span>
+<span class="fc" id="L132">        date.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+<span class="fc" id="L133">        return date;</span>
+    }   
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

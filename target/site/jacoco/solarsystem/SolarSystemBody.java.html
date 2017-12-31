@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SolarSystemBody.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">solarsystem</a> &gt; <span class="el_source">SolarSystemBody.java</span></div><h1>SolarSystemBody.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package solarsystem;
+
+import java.io.Serializable;
+import util.Vector3D;
+
+/**
+ * Represents a body of the Solar System.
+ * @author Nico Kuijpers
+ */
+public class SolarSystemBody implements Serializable {
+    
+    // Default serialVersion id
+    private static final long serialVersionUID = 1L;
+    
+    private String name;
+    private Vector3D position;
+    private Vector3D[] orbit;
+    private double diameter;
+    private SolarSystemBody centerBody;
+
+    /**
+     * Constructor.
+     * @param name       name of body
+     * @param position   position in m
+     * @param orbit      orbit
+     * @param diameter   diameter in m
+     * @param centerBody center body
+     */
+    public SolarSystemBody(String name, Vector3D position, Vector3D[] orbit, 
+<span class="nc" id="L49">            double diameter, SolarSystemBody centerBody) {</span>
+<span class="nc" id="L50">        this.name = name;</span>
+<span class="nc" id="L51">        this.position = position;</span>
+<span class="nc" id="L52">        this.orbit = orbit;</span>
+<span class="nc" id="L53">        this.diameter = diameter;</span>
+<span class="nc" id="L54">        this.centerBody = centerBody;</span>
+<span class="nc" id="L55">    }</span>
+    
+    /**
+     * Get name of body.
+     * @return
+     */
+    public String getName() {
+<span class="nc" id="L62">        return name;</span>
+    }
+
+    /**
+     * Set name of body.
+     * @param name
+     */
+    public void setName(String name) {
+<span class="nc" id="L70">        this.name = name;</span>
+<span class="nc" id="L71">    }</span>
+    
+    /**
+     * Get position of body in m.
+     * @return position
+     */
+    public Vector3D getPosition() {
+<span class="nc" id="L78">        return position;</span>
+    }
+    
+    /**
+     * Set position of body.
+     * @param position new position in m
+     */
+    public void setPosition(Vector3D position) {
+<span class="nc" id="L86">        this.position = position;</span>
+<span class="nc" id="L87">    }</span>
+    
+    /**
+     * Get orbit of body.
+     * @return orbit
+     */
+    public Vector3D[] getOrbit() {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (centerBody == null) {</span>
+            // This body is a planet with center body sun
+<span class="nc" id="L96">            return orbit;</span>
+        }
+        else {
+            // This body is a moon with a planet as center body
+<span class="nc" id="L100">            Vector3D planetPosition = centerBody.getPosition();</span>
+<span class="nc" id="L101">            Vector3D[] orbitAroundCenterBody = new Vector3D[orbit.length];</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            for (int i = 0; i &lt; orbit.length; i++) {</span>
+<span class="nc" id="L103">                orbitAroundCenterBody[i] = planetPosition.plus(orbit[i]);</span>
+            }
+<span class="nc" id="L105">            return orbitAroundCenterBody;</span>
+        }
+    }
+    
+    /**
+     * Set orbit of body.
+     * @param orbit new orbit in m
+     */
+    public void setOrbit(Vector3D[] orbit) {
+<span class="nc" id="L114">        this.orbit = orbit;</span>
+<span class="nc" id="L115">    }</span>
+    
+    /**
+     * Get diameter of body in m.
+     * @return diameter
+     */
+    public double getDiameter() {
+<span class="nc" id="L122">        return diameter;</span>
+    }
+    
+    /**
+     * Set diameter of body.
+     * @param diameter new diameter in m
+     */
+    public void setDiameter(double diameter) {
+<span class="nc" id="L130">        this.diameter = diameter;</span>
+<span class="nc" id="L131">    }</span>
+    
+     /**
+     * Get reference to center body.
+     * @return name of center body
+     */
+    public SolarSystemBody getCenterBody() {
+<span class="nc" id="L138">        return centerBody;</span>
+    }
+
+    /**
+     * Set reference to center body.
+     * @param centerBody reference to center body
+     */
+    public void setCenterBody(SolarSystemBody centerBody) {
+<span class="nc" id="L146">        this.centerBody = centerBody;</span>
+<span class="nc" id="L147">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Particle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">particlesystem</a> &gt; <span class="el_source">Particle.java</span></div><h1>Particle.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package particlesystem;
+
+import java.io.Serializable;
+import java.util.Collection;
+import util.Vector3D;
+
+/**
+ * Represents a single particle of a particle system.
+ * @author Nico Kuijpers
+ */
+public class Particle implements Serializable {
+    
+    // Default serialVersion id
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Gravitational constant G = 6.67408(31) x 10^-11 m3 kg-1 s-2
+     */
+    //  https://en.wikipedia.org/wiki/Gravitational_constant
+    public static final double GRAVITATIONALCONSTANT = 6.6740831E-11;
+    
+    /**
+     * Light speed c = 299792458.0 m/s
+     */
+    // https://simple.wikipedia.org/wiki/Speed_of_light
+    // https://ipnpr.jpl.nasa.gov/progress_report/42-196/196C.pdf
+    // Page 47, Table 4
+    public static final double LIGHTSPEED = 299792458.0;
+    public static final double LIGHTSPEEDSQUARE = 8987551787368176400.0;
+    
+    private double mass;
+    private double mu;
+    private Vector3D position;
+    private Vector3D velocity;
+    private Vector3D acceleration;
+    private Vector3D accelerationNewtonMechanics;
+    private double potentialEnergy;
+    
+    // Runge-Kutta method
+    Vector3D formerPosition, k1, k2, k3, k4;
+    Vector3D formerVelocity, l1, l2, l3, l4;
+    
+    /**
+     * Constructor when standard gravitational parameter is not known.
+     * @param mass      mass in kg
+     * @param position  position in m
+     * @param velocity  velocity in m/s
+     */
+<span class="nc" id="L68">    public Particle(double mass, Vector3D position, Vector3D velocity) {</span>
+<span class="nc" id="L69">        this.mass = mass;</span>
+<span class="nc" id="L70">        this.mu = GRAVITATIONALCONSTANT * mass;</span>
+<span class="nc" id="L71">        this.position = position;</span>
+<span class="nc" id="L72">        this.velocity = velocity;</span>
+<span class="nc" id="L73">    }</span>
+    
+    /**
+     * Constructor when standard gravitational parameter is known.
+     * @param mass      mass in kg
+     * @param mu        standard gravitational parameter in m3/s2
+     * @param position  position in m
+     * @param velocity  velocity in m/s
+     */
+<span class="nc" id="L82">    public Particle(double mass, double mu, Vector3D position, Vector3D velocity) {</span>
+<span class="nc" id="L83">        this.mass = mass;</span>
+<span class="nc" id="L84">        this.mu = mu;</span>
+<span class="nc" id="L85">        this.position = position;</span>
+<span class="nc" id="L86">        this.velocity = velocity;</span>
+<span class="nc" id="L87">    }</span>
+
+    /**
+     * Get mass of particle in kg.
+     * @return mass in kg
+     */
+    public double getMass() {
+<span class="nc" id="L94">        return mass;</span>
+    }
+    
+    /**
+     * Set mass of particle in kg.
+     * standard gravitational parameter will be adjusted.
+     * @param mass in kg
+     */
+    public void setMass(double mass) {
+<span class="nc" id="L103">        this.mass = mass;</span>
+<span class="nc" id="L104">        this.mu = GRAVITATIONALCONSTANT * mass;</span>
+<span class="nc" id="L105">    }</span>
+    
+    /**
+     * Get position of particle in m.
+     * @return position in m
+     */
+    public Vector3D getPosition() {
+<span class="nc" id="L112">        return position;</span>
+    }
+    
+    /**
+     * Set position of particle in m.
+     * @param position in m
+     */
+    public void setPosition(Vector3D position) {
+<span class="nc" id="L120">        this.position = position;</span>
+<span class="nc" id="L121">    }</span>
+    
+    /**
+     * Get velocity of particle in m/s.
+     * @return velocity in m/s
+     */
+    public Vector3D getVelocity() {
+<span class="nc" id="L128">        return velocity;</span>
+    }
+    
+    /**
+     * Set velocity of particle in m/s.
+     * @param velocity in m/s
+     */
+    public void setVelocity(Vector3D velocity) {
+<span class="nc" id="L136">        this.velocity = velocity;</span>
+<span class="nc" id="L137">    }</span>
+    
+    /**
+     * Get momentum of particle in kg m/s.
+     * Momentum p is defined by p = m * v, where m is mass 
+     * and v is velocity.
+     * @return momentum in kg m/s
+     */
+    public Vector3D getMomentum() {
+        // https://en.wikipedia.org/wiki/Momentum
+<span class="nc" id="L147">        return velocity.scalarProduct(mass);</span>
+    }
+    
+    /**
+     * Get kinetic energy of particle in J.
+     * @return kinetic energy in J
+     */
+    public double getKineticEnergy() {
+        // https://en.wikipedia.org/wiki/Kinetic_energy
+        // Note that a non-rotating particle is assumed
+<span class="nc" id="L157">        double v = velocity.magnitude();</span>
+<span class="nc" id="L158">        return 0.5 * mass * v*v;</span>
+    }
+    
+    /**
+     * Get potential energy of particle in J.
+     * @return potential energy in J
+     */
+    public double getPotentialEnergy() {
+<span class="nc" id="L166">        return potentialEnergy;</span>
+    }
+    
+    /**
+     * Correct for drift in position and velocity
+     * @param driftPosition  drift in position to correct for
+     * @param driftVelocity  drift in velocity to correct for
+     */
+    public void correctDrift(Vector3D driftPosition, Vector3D driftVelocity) {
+<span class="nc" id="L175">        position = position.minus(driftPosition);</span>
+<span class="nc" id="L176">        velocity = velocity.minus(driftVelocity);</span>
+<span class="nc" id="L177">    }</span>
+    
+    /**
+     * Adjust kinetic energy of particle.
+     * @param factor factor to adjust kinetic engergy
+     */
+    public void adjustKineticEnergy(double factor) {
+        // Ekin = 0.5 * mass * v*v
+<span class="nc" id="L185">        velocity = velocity.scalarProduct(Math.sqrt(factor));</span>
+<span class="nc" id="L186">    }</span>
+    
+    /**
+     * Compute total acceleration applied to this particle using
+     * Newton Mechanics.
+     * The potential energy for this particle is also computed.
+     * @param particles all particles
+     */
+    public void computeAccelerationNewtonMechanics(Collection&lt;Particle&gt; particles) {
+<span class="nc" id="L195">        acceleration = new Vector3D();</span>
+<span class="nc" id="L196">        potentialEnergy = 0.0;</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        for (Particle p : particles) {</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            if (p != this) {</span>
+                // Add acceleration from other particle
+<span class="nc" id="L200">                acceleration.addVector(accelerationNewtonMechanics(p));</span>
+                // Add contribution to potential energy
+<span class="nc" id="L202">                potentialEnergy += potentialEngergy(p);</span>
+            }
+<span class="nc" id="L204">        }</span>
+        // Every pair of particles is counted twice, so divide by 2
+<span class="nc" id="L206">        potentialEnergy = 0.5 * potentialEnergy;</span>
+        
+        // Set acceleration computed by Newton Mechanics
+        // such that it can be used to compute acceleration by
+        // General Relativity
+<span class="nc" id="L211">        accelerationNewtonMechanics = new Vector3D(acceleration);   </span>
+<span class="nc" id="L212">    }</span>
+    
+    /**
+     * Compute total acceleration applied to this particle using
+     * General Relativity.
+     * Note that the acceleration computed using Newton Mechanics
+     * is used to compute acceleration using General Relativity.
+     * @param particles all particles
+     */
+    public void computeAccelerationGeneralRelativity(Collection&lt;Particle&gt; particles) {
+        /*
+         * The gravitational acceleration of each body due to external
+         * point masses is derived from the isotropic, parameterized
+         * post-Newtonian (PPN) n-body metric.
+         * See Equation (27) from W.M. Folkner et al., 
+         * The Planetary and Lunar Ephemerides DE430 and DE431,
+         * IPN Progress Report 42-196, February 15, 2014
+         * https://ipnpr.jpl.nasa.gov/progress_report/42-196/196C.pdf
+         */
+        
+        /* 
+         * In Equation (27), the term acceleration of body B
+         * appears in two terms on the right-hand side. Since
+         * these terms are divided by c2, using the Newtonian
+         * acceleration for these terms is accurate to O(c^(-2)).
+         */
+        
+        // beta is PPN parameter measuring the nonlinearity in super
+        // position of gravity (Page 47, Table 4)
+<span class="nc" id="L241">        double beta = 1.0;</span>
+                
+        // gamma is the PPn parameter measuring space curvature produced
+        // by unit rest mass (Page 47, Table 4)
+<span class="nc" id="L245">        double gamma = 1.0;</span>
+        
+        // Notation:
+        // Particle A = this, Particle B = p, and Particle C = q
+        // GM_A, GM_B, and GM_C = standard gravitational parameter mu = G*M for particle A, B, and C
+        // vec_r_A, vec_r_B, and vec_r_C = (x,y,z) position of particle A, B, and C
+        // vec_v_A, vec_v_B, and vec_v_C = (x,y,z) velocity of particle A, B, and C
+        // vec_a_A, vec_a_B, and vec_a_C = (x,y,z) acceleration of particle A, B, and C
+        // v_A, v_B, and v_C = velocity magnitude of particle A, B, and C
+        // c = speed of light
+        // distAB = r_AB = Euclidean distance between Particle A and Particle B
+        // diffPositionAB = vec_r_A - vec_r_B = difference between (x,y,z) position A and (x,y,z) position B
+        // diffVelocityAB = vec_v_A - vec_v_B = difference between (x,y,z) velocity A and (x,y,z) velocity B
+        
+        // Compute first term of Equation (27)
+<span class="nc" id="L260">        Vector3D firstTermVector = new Vector3D();</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        for (Particle p : particles) {</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">            if (p != this) {</span>
+                // distAB = r_AB = Euclidean distance between A and B
+<span class="nc" id="L264">                double distAB = this.position.euclideanDistance(p.position);</span>
+                
+                // factor = GM_B / r_AB^3
+<span class="nc" id="L267">                double factor = p.mu/(distAB*distAB*distAB);</span>
+                
+                // sumCnotA = (Sum C : C != A : GM_C / r_AC)
+<span class="nc" id="L270">                double sumCnotA = 0.0;</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">                for (Particle q : particles) {</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">                    if (q != this) {</span>
+<span class="nc" id="L273">                        double distAC = this.position.euclideanDistance(q.position);</span>
+<span class="nc" id="L274">                        sumCnotA = sumCnotA + q.mu/distAC;</span>
+                    }
+<span class="nc" id="L276">                }</span>
+                
+                // sumCnotB = (Sum C : C != B : GM_C / r_BC)
+<span class="nc" id="L279">                double sumCnotB = 0.0;</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                for (Particle q : particles) {</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                    if (q != p) {</span>
+<span class="nc" id="L282">                        double distBC = p.position.euclideanDistance(q.position);</span>
+<span class="nc" id="L283">                        sumCnotB = sumCnotB + q.mu/distBC;</span>
+                    }
+<span class="nc" id="L285">                }</span>
+                
+                // vAdivc = v_A/c
+<span class="nc" id="L288">                double vAdivc = this.velocity.magnitude()/LIGHTSPEED;</span>
+                
+                // vBdivc = v_B/c
+<span class="nc" id="L291">                double vBdivc = p.velocity.magnitude()/LIGHTSPEED;</span>
+                
+                // vAdotvB = vec_v_A . vec_v_B (= vector dot product of v_A and v_B)
+<span class="nc" id="L294">                double vAdotvB = this.velocity.dotProduct(p.velocity);</span>
+                
+                // diffPositionAB = vec_r_A - vec_r_B
+<span class="nc" id="L297">                Vector3D diffPositionAB = this.position.minus(p.position);</span>
+                
+                // diffPositionBA = vec_r_B - vec_r_A
+<span class="nc" id="L300">                Vector3D diffPositionBA = p.position.minus(this.position);</span>
+                
+                // rAminrBdotvBdivrAB = (vec_r_A - vec_r_B) . vec_v_B / r_AB
+<span class="nc" id="L303">                double rAminrBdotvBdivrAB = diffPositionAB.dotProduct(p.velocity) / distAB;</span>
+                
+                // rBminrAdotaB = (vec_r_B - vec_r_A) . vec_a_B
+                // Use acceleration computed using Newton Mechanics
+<span class="nc" id="L307">                double rBminrAdotaB = diffPositionBA.dotProduct(p.accelerationNewtonMechanics);</span>
+                
+                // factorCurlyBraces = the part of Equation (27) between curly braces
+<span class="nc" id="L310">                double factorCurlyBraces = </span>
+                    1.0 - 
+                    (2*(beta + gamma)*sumCnotA)/(LIGHTSPEED*LIGHTSPEED) -
+                    ((2*beta - 1.0)*sumCnotB)/(LIGHTSPEED*LIGHTSPEED) +
+                    gamma*vAdivc*vAdivc + 
+                    (1.0 + gamma)*vBdivc*vBdivc - 
+                    (2.0*(1.0 + gamma)*vAdotvB)/(LIGHTSPEED*LIGHTSPEED) -
+                    (3.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rAminrBdotvBdivrAB*rAminrBdotvBdivrAB +
+                    (1.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rBminrAdotaB;
+
+                // Add factor * (vec_r_B - vec_r_A) * factorCurlyBraces to the first term
+<span class="nc" id="L321">                firstTermVector.addVector(diffPositionBA.scalarProduct(factor*factorCurlyBraces));</span>
+            }
+<span class="nc" id="L323">        }</span>
+        
+        // Compute second term of Equation (27)
+<span class="nc" id="L326">        Vector3D secondTermVector = new Vector3D();</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">        for (Particle p : particles) {</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">            if (p != this) {</span>
+                // distAB = r_AB = Euclidean distance between A and B
+<span class="nc" id="L330">                double distAB = this.position.euclideanDistance(p.position);</span>
+                
+                // factor = GM_B / r_AB^3
+<span class="nc" id="L333">                double factor = p.mu/(distAB*distAB*distAB);</span>
+                
+                // diffPositionAB = vec_r_A - vec_r_B
+<span class="nc" id="L336">                Vector3D diffPositionAB = this.position.minus(p.position);</span>
+                
+                // vAgamma = (2 + 2*gamma)*vec_v_A
+<span class="nc" id="L339">                Vector3D vAgamma = this.velocity.scalarProduct(2.0 + 2.0*gamma);</span>
+                
+                // vBgamma = (1 + 2*gamma)*vec_v_B
+<span class="nc" id="L342">                Vector3D vBgamma = p.velocity.scalarProduct(1.0 + 2.0*gamma);</span>
+                
+                // vAgammaminusvBgamma = (2 + 2*gamma)*vec_v_A - (1 + 2*gamma)*vec_v_B
+<span class="nc" id="L345">                Vector3D vAgammaminusvBgamma = vAgamma.minus(vBgamma);</span>
+                
+                // dotProduct = [vec_r_A - vec_r_B].[(2 + 2*gamma)*vec_v_A - (1 + 2*gamma)*vec_v_B]
+<span class="nc" id="L348">                double dotProduct = diffPositionAB.dotProduct(vAgammaminusvBgamma);</span>
+                
+                // diffVelocityAB = vec_v_A - vec_v_B
+<span class="nc" id="L351">                Vector3D diffVelocityAB = this.velocity.minus(p.velocity);</span>
+               
+                // Add factor * dotProduct * (vec_v_A - vec_v_B) to the second term
+<span class="nc" id="L354">                secondTermVector.addVector(diffVelocityAB.scalarProduct(factor*dotProduct));</span>
+            }
+<span class="nc" id="L356">        }</span>
+        
+        // Multiply second term vector with 1.0/c^2
+<span class="nc" id="L359">        double secondTermFactor = 1.0/(LIGHTSPEED*LIGHTSPEED);</span>
+<span class="nc" id="L360">        secondTermVector = secondTermVector.scalarProduct(secondTermFactor);</span>
+        
+        // Compute third term of Equation (27)
+<span class="nc" id="L363">        Vector3D thirdTermVector = new Vector3D();</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">        for (Particle p : particles) {</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">            if (p != this) {</span>
+                // distAB = r_AB = Euclidean distance between A and B
+<span class="nc" id="L367">                double distAB = this.position.euclideanDistance(p.position);</span>
+                
+                // factor = GM_B / r_AB
+<span class="nc" id="L370">                double factor = p.mu/distAB;</span>
+                
+                // Add (GM_B / r_AB) * vec_a_B to the third term
+                // Use acceleration computed using Newton Mechanics
+<span class="nc" id="L374">                thirdTermVector.addVector(p.accelerationNewtonMechanics.scalarProduct(factor));</span>
+            }
+<span class="nc" id="L376">        }</span>
+        
+        // Multiply third term vector with (3 + 4*gamma)/(2*c^2)
+<span class="nc" id="L379">        double thirdTermFactor = (3.0 + 4.0*gamma) / (2*LIGHTSPEED*LIGHTSPEED);</span>
+<span class="nc" id="L380">        thirdTermVector = thirdTermVector.scalarProduct(thirdTermFactor);</span>
+        
+        // Add first, second, and third term to obtain acceleration
+<span class="nc" id="L383">        acceleration = new Vector3D();</span>
+<span class="nc" id="L384">        acceleration.addVector(firstTermVector);</span>
+<span class="nc" id="L385">        acceleration.addVector(secondTermVector);</span>
+<span class="nc" id="L386">        acceleration.addVector(thirdTermVector);</span>
+<span class="nc" id="L387">    }</span>
+
+    /**
+     * Initialize velocity for leapfrog algorithm.
+     * @param deltaT time step in s
+     */
+    public void initStateLeapfrog(long deltaT) {
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+        // Compute velocity v(-1/2) at time -0.5 * deltaT
+        // v(-1/2) = v(0) - 0.5 * deltaT * a(0)
+<span class="nc" id="L397">        velocity = velocity.minus(acceleration.scalarProduct(0.5*deltaT));</span>
+<span class="nc" id="L398">    }</span>
+
+    /**
+     * Update velocity and position of particle using leapfrog algorithm.
+     * @param deltaT time step in s
+     */
+    public void updateStateLeapfrog(long deltaT) {
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+        // Compute velocity v(n+1/2)
+        // v(n+1/2) = v(n-1/2) + deltaT * a(n)
+<span class="nc" id="L408">        velocity.addVector(acceleration.scalarProduct(deltaT));</span>
+        // Compute position p(n+1)
+        // p(n+1) = p(n) + deltaT * v(n+1/2)
+<span class="nc" id="L411">        position.addVector(velocity.scalarProduct(deltaT));</span>
+<span class="nc" id="L412">    }</span>
+    
+    /**
+     * Update velocity and position of particle using Runge-Kutta method.
+     * Step 1: compute k1 and l1.
+     * @param deltaT time step in s
+     */
+    public void updateStateRungeKuttaA(long deltaT) {
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+        // Store position and velocity of current simulation time
+<span class="nc" id="L422">        formerPosition = new Vector3D(position);</span>
+<span class="nc" id="L423">        formerVelocity = new Vector3D(velocity);</span>
+        // Compute k1 and l1 for Runge-Kutta method
+<span class="nc" id="L425">        k1 = acceleration.scalarProduct(deltaT);</span>
+<span class="nc" id="L426">        l1 = formerVelocity.scalarProduct(deltaT);</span>
+        // Set velocity for General Relativity step B
+<span class="nc" id="L428">        velocity = formerVelocity.plus(k1.scalarProduct(0.5));</span>
+        // Set position to compute forces for RK step B
+<span class="nc" id="L430">        position = formerPosition.plus(l1.scalarProduct(0.5));</span>
+<span class="nc" id="L431">    }</span>
+    
+    /**
+     * Update velocity and position of particle using Runge-Kutta method.
+     * Step 2: compute k2 and l2.
+     * @param deltaT time step in s
+     */
+    public void updateStateRungeKuttaB(long deltaT) {
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+        // Compute k2 and l2 for Runge-Kutta method
+<span class="nc" id="L441">        k2 = acceleration.scalarProduct(deltaT);</span>
+<span class="nc" id="L442">        l2 = (formerVelocity.plus(k1.scalarProduct(0.5))).scalarProduct(deltaT);</span>
+        // Set velocity for General Relativity step C
+<span class="nc" id="L444">        velocity = formerVelocity.plus(k2.scalarProduct(0.5));</span>
+        // Set position to compute forces for RK step C
+<span class="nc" id="L446">        position = formerPosition.plus(l2.scalarProduct(0.5));</span>
+<span class="nc" id="L447">    }</span>
+    
+    /**
+     * Update velocity and position of particle using Runge-Kutta method.
+     * Step 3: compute k3 and l3.
+     * @param deltaT time step in s
+     */
+    public void updateStateRungeKuttaC(long deltaT) {
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+        // Compute k3 and l3 for Runge-Kutta method
+<span class="nc" id="L457">        k3 = acceleration.scalarProduct(deltaT);</span>
+<span class="nc" id="L458">        l3 = (formerVelocity.plus(k2.scalarProduct(0.5))).scalarProduct(deltaT);</span>
+        // Set velocity for General Relativity step D
+<span class="nc" id="L460">        velocity = formerVelocity.plus(k3);</span>
+        // Set position to compute forces for RK step D
+<span class="nc" id="L462">        position = formerPosition.plus(l3);   </span>
+<span class="nc" id="L463">    }</span>
+    
+    /**
+     * Update velocity and position of particle using Runge-Kutta method.
+     * Step 4: compute k4 and l4; compute new position and velocity.
+     * @param deltaT time step in s
+     */
+    public void updateStateRungeKuttaD(long deltaT) {
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+        // Compute k4 and l4 for Runge-Kutta method
+<span class="nc" id="L473">        k4 = acceleration.scalarProduct(deltaT);</span>
+<span class="nc" id="L474">        l4 = (formerVelocity.plus(k3)).scalarProduct(deltaT);</span>
+        // Compute new velocity using k1, k2, k3, k4
+<span class="nc" id="L476">        velocity = new Vector3D(formerVelocity);</span>
+<span class="nc" id="L477">        Vector3D velocityTerm = new Vector3D();</span>
+<span class="nc" id="L478">        velocityTerm.addVector(k1);</span>
+<span class="nc" id="L479">        velocityTerm.addVector(k2.scalarProduct(2.0));</span>
+<span class="nc" id="L480">        velocityTerm.addVector(k3.scalarProduct(2.0));</span>
+<span class="nc" id="L481">        velocityTerm.addVector(k4);</span>
+<span class="nc" id="L482">        velocity.addVector(velocityTerm.scalarProduct(1.0/6.0));</span>
+        // Compute new position using l1, l2, l3, l4
+<span class="nc" id="L484">        position = new Vector3D(formerPosition);</span>
+<span class="nc" id="L485">        Vector3D positionTerm = new Vector3D();</span>
+<span class="nc" id="L486">        positionTerm.addVector(l1);</span>
+<span class="nc" id="L487">        positionTerm.addVector(l2.scalarProduct(2.0));</span>
+<span class="nc" id="L488">        positionTerm.addVector(l3.scalarProduct(2.0));</span>
+<span class="nc" id="L489">        positionTerm.addVector(l4);</span>
+<span class="nc" id="L490">        position.addVector(positionTerm.scalarProduct(1.0/6.0));</span>
+<span class="nc" id="L491">    }</span>
+
+    /**
+     * Compute acceleration applied by another particle using Newton Mechanics.
+     * @param p other particle
+     * @return acceleration in m/s2
+     */
+    private Vector3D accelerationNewtonMechanics(Particle p) {
+
+        /*
+         * Gravitational force = (G*M*m)/r2 = (mu*m)/r2, where
+         * G = gravitational constant, M = mass of the other body, mu = G*M,
+         * m = mass of this body, and r is distance between the bodies.
+         * Acceleration = Gravitational force / mass, thus
+         * Acceleration = (G*M)/r2 = mu/r2
+         */
+        
+        // Square of distance r2
+<span class="nc" id="L509">        double distanceSquare = position.euclideanDistanceSquare(p.position);</span>
+        
+        // Magnitude of acceleration = mu/r2
+<span class="nc" id="L512">        double accelerationMagnitude = p.mu/distanceSquare;</span>
+        
+        // Direction of gravitational force
+<span class="nc" id="L515">        Vector3D direction = position.direction(p.position);</span>
+        
+        // Acceleration
+<span class="nc" id="L518">        return direction.scalarProduct(accelerationMagnitude);</span>
+    }
+    
+    /**
+     * Compute contribution to potential energy by another particle.
+     * @param p other particle
+     * @return contribution to potential energy in J
+     */
+    private double potentialEngergy(Particle p) {
+        // Distance
+<span class="nc" id="L528">        double distance = position.euclideanDistance(p.position);</span>
+        
+        // Contribution to potential energy
+        // http://www.physics.arizona.edu/~varnes/Teaching/141Hspring2004/Notes/Lecture38.pdf
+        // Use standard gravitional parameter mu = G*M of other particle
+<span class="nc" id="L533">        double Epot  = -(p.mu * this.mass) / distance;</span>
+        
+        // Contribution to potential energy
+<span class="nc" id="L536">        return Epot;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

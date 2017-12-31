@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SolarSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">solarsystem</a> &gt; <span class="el_source">SolarSystem.java</span></div><h1>SolarSystem.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package solarsystem;
+
+import particlesystem.ParticleSystem;
+import particlesystem.Particle;
+import ephemeris.SolarSystemParameters;
+import ephemeris.EphemerisSolarSystem;
+import ephemeris.EphemerisUtil;
+import ephemeris.IEphemeris;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+import util.Vector3D;
+
+/**
+ * Represents the Solar System.
+ * @author Nico Kuijpers
+ */
+public class SolarSystem extends ParticleSystem {
+    
+    // The Sun
+    private SolarSystemBody sun;
+
+    // Planets of the Solar System
+    private Map&lt;String,SolarSystemBody&gt; planets;
+    
+    // Moons of the Solar System
+    private Map&lt;String,SolarSystemBody&gt; moons;
+    
+    // Center bodies of moons
+    private Map&lt;String,String&gt; centerBodies;
+    
+    // Ephemeris for the Solar System
+    private final IEphemeris ephemeris;
+    
+    // Solar System parameters
+    private final SolarSystemParameters solarSystemParameters;
+    
+    // Simulation date/time
+    private GregorianCalendar simulationDateTime;
+    
+    // Simulation time step (1 hour)
+<span class="nc" id="L70">    private final long deltaT = (long) (60 * 60);</span>
+    
+    /**
+     * Constructor: create the Solar System and initialize for current date/time.
+     */
+    public SolarSystem() {
+<span class="nc" id="L76">        this(new GregorianCalendar());</span>
+<span class="nc" id="L77">    }</span>
+        
+    /**
+     * Constructor: create the Solar System and initialize for given date/time.
+     * @param dateTime initial simulation date/time
+     */
+    public SolarSystem(GregorianCalendar dateTime) {
+        // Constructor of ParticleSystem
+<span class="nc" id="L85">        super();</span>
+        
+        // Initialize simulation date/time
+<span class="nc" id="L88">        simulationDateTime = new GregorianCalendar();</span>
+        
+        // https://www.timeanddate.com/time/aboututc.html
+        // Use Coordinated Universal Time (UTC) to avoid 
+        // sudden changes in ephemeris due to changes from 
+        // winter time to summer time and vice versa
+<span class="nc" id="L94">        simulationDateTime.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+        
+        // Set simulation dateTime/time to given dateTime/time
+<span class="nc" id="L97">        simulationDateTime.set(Calendar.ERA, dateTime.get(Calendar.ERA));</span>
+<span class="nc" id="L98">        simulationDateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR));</span>
+<span class="nc" id="L99">        simulationDateTime.set(Calendar.MONTH, dateTime.get(Calendar.MONTH));</span>
+<span class="nc" id="L100">        simulationDateTime.set(Calendar.DAY_OF_MONTH, dateTime.get(Calendar.DAY_OF_MONTH));</span>
+<span class="nc" id="L101">        simulationDateTime.set(Calendar.HOUR_OF_DAY, dateTime.get(Calendar.HOUR_OF_DAY));</span>
+<span class="nc" id="L102">        simulationDateTime.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));</span>
+<span class="nc" id="L103">        simulationDateTime.set(Calendar.SECOND, 0);</span>
+<span class="nc" id="L104">        simulationDateTime.set(Calendar.MILLISECOND, 0);</span>
+        
+        // Ephemeris for Solar System
+<span class="nc" id="L107">        ephemeris = EphemerisSolarSystem.getInstance();</span>
+        
+        // Solar System parameters
+<span class="nc" id="L110">        solarSystemParameters = SolarSystemParameters.getInstance();</span>
+        
+        // Initialize hash maps for planets and moons
+<span class="nc" id="L113">        planets = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L114">        moons = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L115">        centerBodies = new HashMap&lt;&gt;();</span>
+        
+        // Create the Sun
+<span class="nc" id="L118">        Vector3D positionSun = new Vector3D(); // Origin</span>
+<span class="nc" id="L119">        Vector3D velocitySun = new Vector3D(); // Zero velocity</span>
+<span class="nc" id="L120">        double massSun = solarSystemParameters.getMass(&quot;sun&quot;);</span>
+<span class="nc" id="L121">        double muSun   = solarSystemParameters.getMu(&quot;sun&quot;);</span>
+<span class="nc" id="L122">        double diameterSun = solarSystemParameters.getDiameter(&quot;sun&quot;);</span>
+<span class="nc" id="L123">        sun = new SolarSystemBody(&quot;sun&quot;, positionSun, null, diameterSun, null);</span>
+<span class="nc" id="L124">        this.addParticle(&quot;sun&quot;, massSun, muSun, positionSun, velocitySun);</span>
+
+        // Create the planets
+<span class="nc" id="L127">        List&lt;String&gt; planetNames = solarSystemParameters.getPlanets();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (String name : planetNames) {</span>
+<span class="nc" id="L129">            double mass = solarSystemParameters.getMass(name);</span>
+<span class="nc" id="L130">            double mu = solarSystemParameters.getMu(name);</span>
+<span class="nc" id="L131">            double diameter = solarSystemParameters.getDiameter(name);</span>
+<span class="nc" id="L132">            createBody(name, mass, mu, diameter, simulationDateTime);</span>
+<span class="nc" id="L133">        }</span>
+
+        // Create the moons
+<span class="nc" id="L136">        List&lt;String&gt; moonNames = solarSystemParameters.getMoons();</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        for (String moonName : moonNames) {</span>
+<span class="nc" id="L138">            String planetName = solarSystemParameters.getPlanetOfMoon(moonName);</span>
+<span class="nc" id="L139">            double mass = solarSystemParameters.getMass(moonName);</span>
+<span class="nc" id="L140">            double mu = solarSystemParameters.getMu(moonName);</span>
+<span class="nc" id="L141">            double diameter = solarSystemParameters.getDiameter(moonName);</span>
+<span class="nc" id="L142">            createMoon(planetName, moonName, mass, mu, diameter, simulationDateTime);</span>
+<span class="nc" id="L143">        }</span>
+<span class="nc" id="L144">    }</span>
+    
+    /**
+     * Get current simulation date/time.
+     * @return current simulation date/time
+     */
+    public GregorianCalendar getSimulationDateTime() {
+<span class="nc" id="L151">        return (GregorianCalendar) simulationDateTime.clone();</span>
+    }
+    
+    /**
+     * Initialize simulation for given era, date, and time.
+     * @param dateTime era, date, and time
+     * @throws SolarSystemException when date before 3000 BC or after AD 3000
+     */
+    public void initializeSimulation(GregorianCalendar dateTime) throws SolarSystemException {
+        // Check whether simulation date/time is valid
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        if (dateTime.before(ephemeris.getFirstValidDate())) {</span>
+<span class="nc" id="L162">            throw new SolarSystemException(&quot;Date not valid before 3000 BC&quot;);</span>
+        }
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (dateTime.after(ephemeris.getLastValidDate())) {</span>
+<span class="nc" id="L165">            throw new SolarSystemException(&quot;Date not valid after AD 3000&quot;);</span>
+        }
+
+        // Set simulation date/time to given date/time
+<span class="nc" id="L169">        simulationDateTime.set(Calendar.ERA, dateTime.get(Calendar.ERA));</span>
+<span class="nc" id="L170">        simulationDateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR));</span>
+<span class="nc" id="L171">        simulationDateTime.set(Calendar.MONTH, dateTime.get(Calendar.MONTH));</span>
+<span class="nc" id="L172">        simulationDateTime.set(Calendar.DAY_OF_MONTH, dateTime.get(Calendar.DAY_OF_MONTH));</span>
+<span class="nc" id="L173">        simulationDateTime.set(Calendar.HOUR_OF_DAY, dateTime.get(Calendar.HOUR_OF_DAY));</span>
+<span class="nc" id="L174">        simulationDateTime.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));</span>
+<span class="nc" id="L175">        simulationDateTime.set(Calendar.SECOND, 0);</span>
+<span class="nc" id="L176">        simulationDateTime.set(Calendar.MILLISECOND, 0);</span>
+        
+        // Compute new positions and orbits for all bodies
+        // corresponding to current simulation date/time
+<span class="nc" id="L180">        moveBodies();</span>
+        
+        // Move corresponding particles to positions
+        // corresponding to current simulation date/time
+<span class="nc" id="L184">        moveBodyParticles();</span>
+<span class="nc" id="L185">    } </span>
+
+    /**
+     * Advance forward in time for given number of simulation time steps.
+     * @param nrTimeSteps number of time steps
+     */
+    public void advanceSimulationForward(int nrTimeSteps) {
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        for (int i = 0; i &lt; nrTimeSteps; i++) {</span>
+            // Advance using Runge-Kutta scheme
+<span class="nc" id="L194">            advanceRungeKutta(deltaT);</span>
+<span class="nc" id="L195">            correctDrift();</span>
+<span class="nc" id="L196">            simulationDateTime.add(Calendar.SECOND, (int) deltaT);</span>
+        }
+        // Compute new positions and orbits for all bodies
+        // corresponding to current simulation date
+<span class="nc" id="L200">        moveBodies();</span>
+<span class="nc" id="L201">    }</span>
+    
+    /**
+     * Advance backward in time for given number of simulation time steps.
+     * @param nrTimeSteps number of time steps
+     */
+    public void advanceSimulationBackward(int nrTimeSteps) {
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        for (int i = 0; i &lt; nrTimeSteps; i++) {</span>
+            // Advance using Runge-Kutta scheme
+<span class="nc" id="L210">            advanceRungeKutta(-deltaT);</span>
+<span class="nc" id="L211">            correctDrift();</span>
+<span class="nc" id="L212">            simulationDateTime.add(Calendar.SECOND, (int) -deltaT);</span>
+        }
+        // Compute new positions and orbits for all bodies
+        // corresponding to current simulation date
+<span class="nc" id="L216">        moveBodies();</span>
+<span class="nc" id="L217">    }</span>
+
+    /**
+     * Advance a single time step forward or backward.
+     * Note that the time step should not exceed 1 hour.
+     * @param timeStep time step in seconds
+     */
+    public void advanceSimulationSingleStep(int timeStep) {
+        // Advance using Runge-Kutta scheme
+<span class="nc" id="L226">        timeStep = Math.min(timeStep,3600);</span>
+<span class="nc" id="L227">        timeStep = Math.max(timeStep,-3600);</span>
+<span class="nc" id="L228">        advanceRungeKutta((long) timeStep);</span>
+<span class="nc" id="L229">        correctDrift();</span>
+<span class="nc" id="L230">        simulationDateTime.add(Calendar.SECOND, timeStep);</span>
+        // Compute new positions and orbits for all bodies
+        // corresponding to current simulation date
+<span class="nc" id="L233">        moveBodies();</span>
+<span class="nc" id="L234">    }</span>
+    
+    /**
+     * Get body with given name.
+     * @param name  Name of the body
+     * @return body with given name
+     */
+    public SolarSystemBody getBody(String name) {
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        if (&quot;sun&quot;.equals(name)) {</span>
+<span class="nc" id="L243">            return sun;</span>
+        }
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (planets.containsKey(name)) {</span>
+<span class="nc" id="L246">            return planets.get(name);</span>
+        }
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        if (moons.containsKey(name)) {</span>
+<span class="nc" id="L249">            return moons.get(name);</span>
+        }
+<span class="nc" id="L251">        return null;</span>
+    }
+    
+    /**
+     * Move all bodies to positions corresponding to simulation date/time.
+     * Bodies are moved when the simulation date/time is valid, i.e.,
+     * between 3000 BC and AD 3000.
+     * Note that the corresponding particles are not moved.
+     */
+    private void moveBodies() {
+        // Check whether simulation date/time is valid for ephemeris
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (simulationDateTime.before(ephemeris.getFirstValidDate()) ||</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">            simulationDateTime.after(ephemeris.getLastValidDate())) {</span>
+<span class="nc" id="L264">            return;</span>
+        }
+        
+        // Move each planet to position of simulation date/time
+<span class="nc bnc" id="L268" title="All 2 branches missed.">        for (String name : planets.keySet()) {</span>
+<span class="nc" id="L269">            SolarSystemBody planet = planets.get(name);</span>
+<span class="nc" id="L270">            Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(name, simulationDateTime);</span>
+<span class="nc" id="L271">            Vector3D position = positionAndVelocity[0];</span>
+<span class="nc" id="L272">            Vector3D velocity = positionAndVelocity[1];</span>
+<span class="nc" id="L273">            Vector3D[] orbit = EphemerisUtil.computeOrbit(&quot;sun&quot;,position,velocity);</span>
+<span class="nc" id="L274">            planet.setPosition(position);</span>
+<span class="nc" id="L275">            planet.setOrbit(orbit);</span>
+<span class="nc" id="L276">        }</span>
+        
+        // Move each moon to position of simulation date/time
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        for (String name : moons.keySet()) {</span>
+            // Obtain position and velocity of moon from Ephemeris
+<span class="nc" id="L281">            SolarSystemBody moon = moons.get(name);</span>
+<span class="nc" id="L282">            Vector3D[] positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(name, simulationDateTime);</span>
+<span class="nc" id="L283">            Vector3D positionMoon = positionAndVelocityMoon[0];</span>
+<span class="nc" id="L284">            Vector3D velocityMoon = positionAndVelocityMoon[1];</span>
+        
+            // Obtain position and velocity of planet from Ephemeris
+<span class="nc" id="L287">            String planetName = centerBodies.get(name);</span>
+<span class="nc" id="L288">            Vector3D[] positionAndVelocityPlanet = ephemeris.getBodyPositionVelocity(planetName, simulationDateTime);</span>
+<span class="nc" id="L289">            Vector3D positionPlanet = positionAndVelocityPlanet[0];</span>
+<span class="nc" id="L290">            Vector3D velocityPlanet = positionAndVelocityPlanet[1];</span>
+        
+            // Compute orbit of moon relative to planet
+<span class="nc" id="L293">            Vector3D positionRelativeToPlanet = positionMoon.minus(positionPlanet);</span>
+<span class="nc" id="L294">            Vector3D velocityRelativeToPlanet = velocityMoon.minus(velocityPlanet);</span>
+<span class="nc" id="L295">            Vector3D[] orbitMoon = EphemerisUtil.computeOrbit(planetName,</span>
+                positionRelativeToPlanet,velocityRelativeToPlanet);
+            
+            // Set position and orbit
+<span class="nc" id="L299">            moon.setPosition(positionMoon);</span>
+<span class="nc" id="L300">            moon.setOrbit(orbitMoon);</span>
+<span class="nc" id="L301">        }    </span>
+<span class="nc" id="L302">    }</span>
+    
+    /**
+     * Move all body particles to positions corresponding to simulation date/time.
+     * Particles are moved when the simulation date/time is valid, i.e.,
+     * between 3000 BC and AD 3000.
+     */
+    private void moveBodyParticles() {
+        // Check whether simulation date/time is valid for ephemeris
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (simulationDateTime.before(ephemeris.getFirstValidDate()) ||</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">            simulationDateTime.after(ephemeris.getLastValidDate())) {</span>
+<span class="nc" id="L313">            return;</span>
+        }
+        
+        // Move each planet particle to position of present date
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        for (String name : planets.keySet()) {</span>
+<span class="nc" id="L318">            Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(name, simulationDateTime);</span>
+<span class="nc" id="L319">            Vector3D position = positionAndVelocity[0];</span>
+<span class="nc" id="L320">            Vector3D velocity = positionAndVelocity[1];</span>
+<span class="nc" id="L321">            Particle particle = getParticle(name);</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">            if (particle != null) {</span>
+<span class="nc" id="L323">                particle.setPosition(position);</span>
+<span class="nc" id="L324">                particle.setVelocity(velocity);</span>
+            }
+<span class="nc" id="L326">        }</span>
+        
+        // Move each moon particle to position of present date
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        for (String name : moons.keySet()) {</span>
+<span class="nc" id="L330">            Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(name, simulationDateTime);</span>
+<span class="nc" id="L331">            Vector3D position = positionAndVelocity[0];</span>
+<span class="nc" id="L332">            Vector3D velocity = positionAndVelocity[1];</span>
+<span class="nc" id="L333">            Particle particle = getParticle(name);</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">            if (particle != null) {</span>
+<span class="nc" id="L335">                particle.setPosition(position);</span>
+<span class="nc" id="L336">                particle.setVelocity(velocity);</span>
+            }
+<span class="nc" id="L338">        }    </span>
+<span class="nc" id="L339">    }</span>
+    
+    /**
+     * Create body, compute position and velocity, and add the body 
+     * as well as corresponding particle to the Solar System.
+     * It is assumed that the body is orbiting the Sun.
+     * @param name      Name of the body
+     * @param mass      Mass of the body in kg
+     * @param mu        Standard gravitational parameter in m3/s2
+     * @param diameter  Diameter of the body in m
+     * @param date      Date to determine position of the moon.
+     */
+    private void createBody(String name, double mass, double mu, double diameter, GregorianCalendar date) {
+        
+        // Obtain position and velocity from Ephemeris
+<span class="nc" id="L354">        Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(name, date);</span>
+<span class="nc" id="L355">        Vector3D position = positionAndVelocity[0];</span>
+<span class="nc" id="L356">        Vector3D velocity = positionAndVelocity[1];</span>
+        
+        // Compute orbit relative to the sun
+<span class="nc" id="L359">        Vector3D[] orbit = EphemerisUtil.computeOrbit(&quot;sun&quot;,position,velocity);</span>
+        
+        // Add the new body to the solar system for computation
+<span class="nc" id="L362">        this.planets.put(name, new SolarSystemBody(name, position, orbit, diameter, null));</span>
+        
+        // Add the new planet as particle for simulation
+<span class="nc" id="L365">        this.addParticle(name, mass, mu, position, velocity);</span>
+<span class="nc" id="L366">    }</span>
+    
+    /**
+     * Create moon, compute position and velocity, and add the moon 
+     * as well as corresponding particle to the Solar System.
+     * @param planetName  Name of the planet
+     * @param moonName    Name of the moon
+     * @param mass        Mass of the moon in kg
+     * @param mu          Standard gravitational parameter in m3/s2
+     * @param diameter    Diameter of the moon in m
+     * @param date        Date to determine position of the moon.
+     */
+    private void createMoon(String planetName, String moonName, 
+            double mass, double mu, double diameter, GregorianCalendar date) {
+ 
+        // Obtain position and velocity of moon from Ephemeris
+<span class="nc" id="L382">        Vector3D[] positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, date);</span>
+<span class="nc" id="L383">        Vector3D positionMoon = positionAndVelocityMoon[0];</span>
+<span class="nc" id="L384">        Vector3D velocityMoon = positionAndVelocityMoon[1];</span>
+        
+        // Obtain position and velocity of planet from Ephemeris
+<span class="nc" id="L387">        Vector3D[] positionAndVelocityPlanet = ephemeris.getBodyPositionVelocity(planetName, date);</span>
+<span class="nc" id="L388">        Vector3D positionPlanet = positionAndVelocityPlanet[0];</span>
+<span class="nc" id="L389">        Vector3D velocityPlanet = positionAndVelocityPlanet[1];</span>
+        
+        // Compute orbit of moon relative to planet
+<span class="nc" id="L392">        Vector3D positionRelativeToPlanet = positionMoon.minus(positionPlanet);</span>
+<span class="nc" id="L393">        Vector3D velocityRelativeToPlanet = velocityMoon.minus(velocityPlanet);</span>
+<span class="nc" id="L394">        Vector3D[] orbit = EphemerisUtil.computeOrbit(planetName,</span>
+                positionRelativeToPlanet,velocityRelativeToPlanet);
+        
+        // Add the new moon to the Solar System for computation
+<span class="nc" id="L398">        SolarSystemBody planet = this.getBody(planetName);</span>
+<span class="nc" id="L399">        this.moons.put(moonName, </span>
+                new SolarSystemBody(moonName, positionMoon, orbit, diameter, planet));
+        
+        // Add the new moon as particle for simulation
+<span class="nc" id="L403">        this.addParticle(moonName, mass, mu, positionMoon, velocityMoon);</span>
+        
+        // Define center body for this moon
+<span class="nc" id="L406">        centerBodies.put(moonName, planetName);</span>
+<span class="nc" id="L407">    }</span>
+
+    /**
+     * Load simulation state from file.
+     * @param file file to load state from
+     * @throws SolarSystemException when simulation state cannot be loaded or read from file
+     */
+    public void loadSimulationState(File file) throws SolarSystemException {
+        try {
+<span class="nc" id="L416">            FileInputStream fileIn = new FileInputStream(file);</span>
+<span class="nc" id="L417">            try (ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {</span>
+<span class="nc" id="L418">                simulationDateTime = (GregorianCalendar) objectIn.readObject();</span>
+<span class="nc" id="L419">                particles = (Map&lt;String,Particle&gt;) objectIn.readObject();</span>
+<span class="nc" id="L420">                sun = (SolarSystemBody) objectIn.readObject();</span>
+<span class="nc" id="L421">                planets = (Map&lt;String,SolarSystemBody&gt;) objectIn.readObject();</span>
+<span class="nc" id="L422">                moons = (Map&lt;String,SolarSystemBody&gt;) objectIn.readObject();</span>
+<span class="nc" id="L423">                centerBodies = (Map&lt;String,String&gt;) objectIn.readObject();</span>
+<span class="nc bnc" id="L424" title="All 8 branches missed.">            }</span>
+<span class="nc" id="L425">        } catch (IOException ex) {</span>
+<span class="nc" id="L426">            throw new SolarSystemException(&quot;Cannot load simulation state from file &quot; + file.getName());</span>
+<span class="nc" id="L427">        } catch (ClassNotFoundException ex) {</span>
+<span class="nc" id="L428">            throw new SolarSystemException(&quot;Cannot read simulation state from file &quot; + file.getName());</span>
+<span class="nc" id="L429">        }</span>
+<span class="nc" id="L430">    }</span>
+        
+    /**
+     * Save simulation state to file.
+     * @param file to save state to
+     * @throws SolarSystemException when simulation state cannot be saved to file
+     */
+    public void saveSimulationState(File file) throws SolarSystemException {
+        try {
+<span class="nc" id="L439">            FileOutputStream fileOut = new FileOutputStream(file);</span>
+<span class="nc" id="L440">            try (ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {</span>
+<span class="nc" id="L441">                objectOut.writeObject(simulationDateTime);</span>
+<span class="nc" id="L442">                objectOut.writeObject(particles);</span>
+<span class="nc" id="L443">                objectOut.writeObject(sun);</span>
+<span class="nc" id="L444">                objectOut.writeObject(planets);</span>
+<span class="nc" id="L445">                objectOut.writeObject(moons);</span>
+<span class="nc" id="L446">                objectOut.writeObject(centerBodies);</span>
+<span class="nc bnc" id="L447" title="All 8 branches missed.">            }</span>
+<span class="nc" id="L448">        } catch (IOException ex) {</span>
+<span class="nc" id="L449">            throw new SolarSystemException(&quot;Cannot save simulation state to file&quot;);</span>
+<span class="nc" id="L450">        }</span>
+<span class="nc" id="L451">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

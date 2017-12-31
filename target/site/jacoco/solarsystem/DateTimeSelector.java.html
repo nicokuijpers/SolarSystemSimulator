@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DateTimeSelector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">solarsystem</a> &gt; <span class="el_source">DateTimeSelector.java</span></div><h1>DateTimeSelector.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package solarsystem;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+import javafx.scene.control.TextField;
+
+/**
+ * Selector to view and set era, date, and time.
+ * The format is &quot;G yyyy-MM-dd HH:mm&quot;, where 
+ * G represents era, either &quot;BC&quot; or &quot;AD&quot;
+ * yyyy represents the year (4 digits)
+ * MM represents month (2 digits), 01-12
+ * dd represents day of month (2 digits), 01-31
+ * HH represents hour of day (2 digits), 00-23
+ * mm represent minutes (2 digits), 00-59
+ * @author Nico Kuijpers
+ */
+public class DateTimeSelector extends TextField {
+
+<span class="nc" id="L40">    public DateTimeSelector(GregorianCalendar dateTime) {</span>
+        // Set text representing given date/time
+<span class="nc" id="L42">        setDateTime(dateTime);</span>
+<span class="nc" id="L43">    }</span>
+    
+    /**
+     * Set era, date, and time.
+     * @param dateTime GregorianCalender-object with era, date, and time
+     */
+    public final void setDateTime(GregorianCalendar dateTime) {
+<span class="nc" id="L50">        this.setText(calendarToString(dateTime));</span>
+<span class="nc" id="L51">    }</span>
+    
+    /**
+     * Get era, date, and time.
+     * @return GregorianCalendar-object with era, date, and time
+     * @throws SolarSystemException when date/time is not valid 
+     */
+    public GregorianCalendar getDateTime() throws SolarSystemException {
+        try {
+<span class="nc" id="L60">            GregorianCalendar calendar = stringToCalendar(getText());</span>
+<span class="nc" id="L61">            this.setText(calendarToString(calendar));</span>
+<span class="nc" id="L62">            return calendar;</span>
+        }
+<span class="nc" id="L64">        catch (NumberFormatException ex) {</span>
+<span class="nc" id="L65">            throw new SolarSystemException(getText() + &quot; is not a valid date&quot;);</span>
+        }
+    }
+    
+    /**
+     * Convert GregorianCalendar to String.
+     * @param calendar GregorianCalendar-object
+     * @return era, date, and time as string
+     */
+    private String calendarToString(GregorianCalendar calendar) {
+        // Obtain era, date, and time from calendar
+<span class="nc" id="L76">        int era = calendar.get(Calendar.ERA);</span>
+<span class="nc" id="L77">        int year = calendar.get(Calendar.YEAR);</span>
+<span class="nc" id="L78">        int month = calendar.get(Calendar.MONTH); // 0 - 11</span>
+<span class="nc" id="L79">        int day = calendar.get(Calendar.DAY_OF_MONTH);</span>
+<span class="nc" id="L80">        int hour = calendar.get(Calendar.HOUR_OF_DAY);</span>
+<span class="nc" id="L81">        int minute = calendar.get(Calendar.MINUTE);</span>
+        
+        // Construct string representing era, date, and time
+<span class="nc" id="L84">        StringBuilder result = new StringBuilder();</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (era == GregorianCalendar.BC) {</span>
+<span class="nc" id="L86">            result.append(&quot;BC&quot;);</span>
+        }
+        else {
+<span class="nc" id="L89">            result.append(&quot;AD&quot;);</span>
+        }
+<span class="nc" id="L91">        result.append(&quot; &quot;);</span>
+<span class="nc" id="L92">        result.append(String.format(&quot;%04d&quot;, year)).append(&quot;-&quot;);</span>
+<span class="nc" id="L93">        result.append(String.format(&quot;%02d&quot;, month+1)).append(&quot;-&quot;);</span>
+<span class="nc" id="L94">        result.append(String.format(&quot;%02d&quot;, day)).append(&quot; &quot;);</span>
+<span class="nc" id="L95">        result.append(String.format(&quot;%02d&quot;, hour)).append(&quot;:&quot;);</span>
+<span class="nc" id="L96">        result.append(String.format(&quot;%02d&quot;, minute));</span>
+        
+        // Add time zone
+<span class="nc" id="L99">        result.append(&quot; (&quot;);</span>
+<span class="nc" id="L100">        result.append(calendar.getTimeZone().getID());</span>
+<span class="nc" id="L101">        result.append(&quot;)&quot;);</span>
+        
+<span class="nc" id="L103">        return result.toString();</span>
+    }
+    
+    /**
+     * Convert String to GregorianCalendar.
+     * @param text era, date, and time as string
+     * @return GregorianCalendar object corresponding to given string
+     */
+    private GregorianCalendar stringToCalendar(String text) {
+        // Obatain era, date, and time from string
+<span class="nc" id="L113">        int era = GregorianCalendar.AD;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (text.startsWith(&quot;BC&quot;)) {</span>
+<span class="nc" id="L115">            era = GregorianCalendar.BC;</span>
+        }
+<span class="nc" id="L117">        int year = Integer.parseInt(text.substring(3,7));</span>
+<span class="nc" id="L118">        int month = Integer.parseInt(text.substring(8,10));</span>
+<span class="nc" id="L119">        int day = Integer.parseInt(text.substring(11,13));</span>
+<span class="nc" id="L120">        int hour = Integer.parseInt(text.substring(14,16));</span>
+<span class="nc" id="L121">        int minute = Integer.parseInt(text.substring(17,19));</span>
+        
+        // Create new GregorianCalendar-object corresponding to era, date, and time
+<span class="nc" id="L124">        GregorianCalendar calendar = new GregorianCalendar(year,month-1,day,hour,minute);</span>
+<span class="nc" id="L125">        calendar.set(Calendar.ERA, era);</span>
+<span class="nc" id="L126">        calendar.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+<span class="nc" id="L127">        return calendar;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

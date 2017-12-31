@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ParticleSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SolarSystemSimulator</a> &gt; <a href="index.source.html" class="el_package">particlesystem</a> &gt; <span class="el_source">ParticleSystem.java</span></div><h1>ParticleSystem.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package particlesystem;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import util.Vector3D;
+
+/**
+ * Represents a particle system.
+ * @author Nico Kuijpers
+ */
+public class ParticleSystem implements Serializable {
+    
+    /*
+     * Flag to indicate whether general relativity
+     * should be applied when computing acceleration.
+     */
+<span class="nc" id="L37">    private boolean generalRelativityFlag = false;</span>
+    
+    /**
+     * List of particles.
+     */
+    protected Map&lt;String,Particle&gt; particles;
+    
+    /**
+     * Default constructor.
+     */
+<span class="nc" id="L47">    public ParticleSystem() {</span>
+<span class="nc" id="L48">        particles = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L49">    }</span>
+    
+    /**
+     * Set/reset flag to apply general relativity when computing
+     * acceleration.
+     * @param flag flag 
+     */
+    public void setGeneralRelativityFlag(boolean flag) {
+<span class="nc" id="L57">        generalRelativityFlag = flag;</span>
+<span class="nc" id="L58">    }</span>
+    
+    /**
+     * Get value of flag to apply general relativity when computing
+     * acceleration.
+     * @return true when flag is set, false otherwise
+     */
+    public boolean getGeneralRelativityFlag() {
+<span class="nc" id="L66">        return generalRelativityFlag;</span>
+    }
+    
+    /**
+     * Add new particle to particle system when 
+     * standard gravitational parameter is not known.
+     * @param name     Name of particle
+     * @param mass     Mass of particle in kg
+     * @param position Initial 3D position vector of particle in m
+     * @param velocity Initial 3D velocity vector of particle in m/s
+     */
+    public final void addParticle(String name, double mass, 
+            Vector3D position, Vector3D velocity) {
+<span class="nc" id="L79">        Particle particle = new Particle(mass,position,velocity);</span>
+<span class="nc" id="L80">        particles.put(name,particle);</span>
+<span class="nc" id="L81">    }</span>
+    
+    /**
+     * Add new particle to particle system when 
+     * standard gravitational parameter is known.
+     * @param name     Name of particle
+     * @param mass     Mass of particle in kg
+     * @param mu       Standard gravitational parameter in m3/s2
+     * @param position Initial 3D position vector of particle in m
+     * @param velocity Initial 3D velocity vector of particle in m/s
+     */
+    public final void addParticle(String name, double mass, double mu, 
+            Vector3D position, Vector3D velocity) {
+<span class="nc" id="L94">        Particle particle = new Particle(mass,mu,position,velocity);</span>
+<span class="nc" id="L95">        particles.put(name,particle);</span>
+<span class="nc" id="L96">    }</span>
+    
+    /**
+     * Get reference to particle with given name.
+     * @param name    Name of particle
+     * @return particle with given name
+     */
+    public Particle getParticle(String name) {
+<span class="nc" id="L104">        return particles.get(name);</span>
+    }
+     
+    /**
+     * Initialize state for leapfrog algorithm.
+     * @param deltaT time step in s
+     */
+    public void initLeapfrog(long deltaT) {
+        // Initialalize state for leapfrog algorithm
+<span class="nc" id="L113">        computeAcceleration();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L115">            p.initStateLeapfrog(deltaT);</span>
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">    }</span>
+    
+    /**
+     * Advance a time step using leapfrog algorithm
+     * @param deltaT time step in s
+     */
+    public void advanceLeapfrog(long deltaT) {
+        // Use leapfrog algorithm
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+<span class="nc" id="L126">        computeAcceleration();</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L128">            p.updateStateLeapfrog(deltaT);</span>
+<span class="nc" id="L129">        }</span>
+<span class="nc" id="L130">    }</span>
+    
+    /**
+     * Advance a time step using Runge-Kutta method
+     * @param deltaT time step in s
+     */
+    public void advanceRungeKutta(long deltaT) {
+        // Use Runge-Kutta method
+        // http://physics.bu.edu/py502/lectures3/cmotion.pdf
+<span class="nc" id="L139">        computeAcceleration();</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L141">            p.updateStateRungeKuttaA(deltaT);</span>
+<span class="nc" id="L142">        }</span>
+<span class="nc" id="L143">        computeAcceleration();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L145">            p.updateStateRungeKuttaB(deltaT);</span>
+<span class="nc" id="L146">        }</span>
+<span class="nc" id="L147">        computeAcceleration();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L149">            p.updateStateRungeKuttaC(deltaT);</span>
+<span class="nc" id="L150">        }</span>
+<span class="nc" id="L151">        computeAcceleration();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L153">            p.updateStateRungeKuttaD(deltaT);</span>
+<span class="nc" id="L154">        }</span>
+<span class="nc" id="L155">    }</span>
+    
+    /**
+     * Compute acceleration for all particles.
+     */
+    private void computeAcceleration() {
+        // Compute acceleration using Newton mechanics
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L163">            p.computeAccelerationNewtonMechanics(particles.values());</span>
+<span class="nc" id="L164">        }</span>
+        // Compute acceleration using General Relativity
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (generalRelativityFlag) {</span>
+            // Note that the acceleration computed by Newton mechanics
+            // is used to compute acceleration using General Relativity
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            for (Particle p : particles.values()) {</span>
+<span class="nc" id="L170">                p.computeAccelerationGeneralRelativity(particles.values());</span>
+<span class="nc" id="L171">            }</span>
+        }
+<span class="nc" id="L173">    }</span>
+    
+    /**
+     * Correct for drift of entire particle system by adjusting
+     * position and velocity of all particles.
+     * In case the particle system contains a particle named &quot;sun&quot;
+     * drift is corrected for by subtracting position and velocity of
+     * the particle named &quot;sun&quot; for all particles, including &quot;sun&quot;.
+     * In case the system does not contain a particle named &quot;sun&quot;
+     * drift is corrected for by subtracting position and velocity of
+     * the center of mass of the particle system.
+     */
+    public void correctDrift() {
+        // Check whether solar system contains particle named &quot;sun&quot;
+<span class="nc" id="L187">        Particle sun = getParticle(&quot;sun&quot;);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (sun != null) {</span>
+            // Current position and velocity of the sun
+<span class="nc" id="L190">            Vector3D positionSun = sun.getPosition();</span>
+<span class="nc" id="L191">            Vector3D velocitySun = sun.getVelocity();</span>
+            
+            // Adjust position and velocity of all particles
+<span class="nc" id="L194">            correctDrift(positionSun,velocitySun);</span>
+<span class="nc" id="L195">        }</span>
+        else {
+            // Determine position and velocity of the center of mass
+<span class="nc" id="L198">            Vector3D positionCenterMass = new Vector3D();</span>
+<span class="nc" id="L199">            Vector3D velocityCenterMass = new Vector3D();</span>
+<span class="nc" id="L200">            double totalMass = 0.0;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">            for (Particle p : particles.values()) {</span>
+<span class="nc" id="L202">                positionCenterMass.addVector(p.getPosition().scalarProduct(p.getMass()));</span>
+<span class="nc" id="L203">                velocityCenterMass.addVector(p.getVelocity().scalarProduct(p.getMass()));</span>
+<span class="nc" id="L204">                totalMass += p.getMass();</span>
+<span class="nc" id="L205">            }</span>
+<span class="nc" id="L206">            positionCenterMass = positionCenterMass.scalarProduct(1.0 / totalMass);</span>
+<span class="nc" id="L207">            velocityCenterMass = velocityCenterMass.scalarProduct(1.0 / totalMass);</span>
+            
+            // Adjust position and velocity of all particles
+<span class="nc" id="L210">            correctDrift(positionCenterMass,velocityCenterMass);</span>
+        }
+<span class="nc" id="L212">    }</span>
+    
+    /**
+     * Correct for drift of the particle system by adjusting
+     * position and velocity of all particles.
+     * @param driftPosition  drift in position to correct for
+     * @param driftVelocity  drift in velocity to correct for
+     */
+    private void correctDrift(Vector3D driftPosition, Vector3D driftVelocity) {
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L222">            p.correctDrift(driftPosition,driftVelocity);</span>
+<span class="nc" id="L223">        }</span>
+<span class="nc" id="L224">    }</span>
+
+    /**
+     * Compute total kinetic energy of the particle system.
+     * @return total kinetic energy in J
+     */
+    private double computeKineticEnergy() {
+<span class="nc" id="L231">        double kineticEnergy = 0.0;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L233">            kineticEnergy += p.getKineticEnergy();</span>
+<span class="nc" id="L234">        }</span>
+<span class="nc" id="L235">        return kineticEnergy;</span>
+    }
+    
+    /**
+     * Compute total potential energy of the particle system.
+     * @return total potential energy in J
+     */
+    private double computePotentialEnergy() {
+<span class="nc" id="L243">        double potentialEnergy = 0.0;</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        for (Particle p : particles.values()) {</span>
+<span class="nc" id="L245">            potentialEnergy += p.getPotentialEnergy();</span>
+<span class="nc" id="L246">        }</span>
+<span class="nc" id="L247">        return potentialEnergy;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,64 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>nl.fhict.solarsystem</groupId>
+    <artifactId>SolarSystemSimulator</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    
+    <name>SolarSystemSimulator</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <compilerArguments>
+                        <bootclasspath>${sun.boot.class.path}${path.separator}${java.home}/lib/jfxrt.jar</bootclasspath>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.9</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+</project>
