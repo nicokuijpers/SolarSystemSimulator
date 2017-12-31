@@ -5,7 +5,9 @@ While simulating, both simulated positions and ephemeris data are visualised for
 availaible under the MIT licence.
 
 User's manual: SolarSystemManual.pdf
+
 Technical notes: SolarSystemTechnicalNotes.pdf
+
 Required ephemeris files: DE405EphemerisFiles (directory containing ephemeris data as text files)
 
 Copyright (c) 2017 Nico Kuijpers  
