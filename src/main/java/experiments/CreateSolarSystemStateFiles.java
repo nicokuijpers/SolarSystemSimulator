@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Nico Kuijpers
+ * Copyright (c) 2017 Nico Kuijpers
  * Permission is hereby granted, free of charge, to any person obtaining a copy 
  * of this software and associated documentation files (the "Software"), to deal 
  * in the Software without restriction, including without limitation the rights 
@@ -19,13 +19,12 @@
  */
 package experiments;
 
-import java.io.*;
+import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
-import application.SolarSystemException;
 import solarsystem.SolarSystem;
+import solarsystem.SolarSystemException;
 
 /**
  * Program to create Solar System state files with extension .sol.
@@ -134,18 +133,10 @@ public class CreateSolarSystemStateFiles {
     public void saveStateFile(GregorianCalendar dateTime) {
         String fileName = calendarToString(dateTime) + EXTENSION;
         File file = new File(filePath,fileName);
-        System.out.println("Save simulation state to file " + file);
-        FileOutputStream fileOut = null;
         try {
-            fileOut = new FileOutputStream(file);
-        }
-        catch (FileNotFoundException ex) {
-            System.err.println("Error: file not found");
-        }
-        try (ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-            objectOut.writeObject(solarSystem);
-        }
-        catch (IOException ex) {
+            System.out.println("Save simulation state to file " + file);
+            solarSystem.saveSimulationState(file);
+        } catch (SolarSystemException ex) {
             System.err.println("Cannot save simulation state to file " + fileName);
         }
     }    

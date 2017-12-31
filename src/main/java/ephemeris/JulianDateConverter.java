@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2019 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the "Software"), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
  * to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
  * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package ephemeris;
@@ -52,8 +52,6 @@ public class JulianDateConverter {
         int day = date.get(Calendar.DAY_OF_MONTH);
         int hour = date.get(Calendar.HOUR_OF_DAY);
         int minute = date.get(Calendar.MINUTE);
-        int second = date.get(Calendar.SECOND);
-        int millisecond = date.get(Calendar.MILLISECOND);
         
         // Adjust year for era (BC or AD)
         // The sequence of years at the transition from BC to AD is
@@ -76,8 +74,7 @@ public class JulianDateConverter {
         int c = 2 - a + b;
         double e = Math.floor(365.25 * (year + 4716));
         double f = Math.floor(30.6001 * (month + 1));
-        double julianDate = c + day + e + f - 1524.5 +
-                ((hour + (minute / 60.0) + (second / 3600.0) + (millisecond / 3.6E6)) / 24.0);
+        double julianDate = c + day + e + f - 1524.5 + ((hour + (minute / 60.0)) / 24.0);
         if (julianDate < 2299160.5) {
             // Date occurs before Gregorian change on October 15, 1582 (Gregorian)
             julianDate = julianDate - c;
@@ -118,8 +115,6 @@ public class JulianDateConverter {
         int d = (int) Math.floor(365.25 * c);
         int e = (int) Math.floor((b - d)/30.6001);
         int f = (int) Math.floor(30.6001 * e);
-        int millisecond = (int) Math.floor((q - z)*24*3600*1000) % 1000;
-        int second = (int) Math.floor((q - z)*24*3600) % 60;
         int minute = (int) Math.floor((q - z)*24*60) % 60;
         int hour = (int) Math.floor((q - z)*24);
         int day = (int) Math.floor(b - d - f + (q - z));
@@ -133,10 +128,8 @@ public class JulianDateConverter {
         }
         
         // Note that the month-value is zero-based, i.e., Jan = 0, Feb = 1, etc.
-        GregorianCalendar date = new GregorianCalendar(year,month-1,day,hour,minute,second);
+        GregorianCalendar date = new GregorianCalendar(year,month-1,day,hour,minute);
         date.setTimeZone(TimeZone.getTimeZone("UTC"));
-        date.add(Calendar.MILLISECOND,millisecond);
-
         return date;
     }   
 }

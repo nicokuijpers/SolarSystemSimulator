@@ -27,13 +27,14 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import particlesystem.Particle;
 import solarsystem.SolarSystem;
+import solarsystem.SolarSystemBody;
 import util.Vector3D;
 
 /**
  * Asteroid 3122 Florence passed Earth at a distance of 7,066,000 km on 
  * September 1st, 2017.
  * In this simulation experiment the minimum distance between Earth and Florence 
- * is determined as well as the date/time it occurred.
+ * is determined as wel as the date/time it occurred.
  * 
  * @author Nico Kuijpers
  */
@@ -95,10 +96,10 @@ public class FlorenceEarthExperiment {
      */
     public void simulateFlorenceEarthPassage() {
         // Planet Earth (simulation particle)
-        Particle earth = solarSystem.getParticle("Earth");
+        Particle earth = solarSystem.getParticle("earth");
         
         // Asteroid 3122 Florence (simulation particle)
-        Particle florence = solarSystem.getParticle("Florence");
+        Particle florence = solarSystem.getParticle("florence");
         
         // Initialize minimum distance between Earth and Florence
         double minimumDistance = SolarSystemParameters.ASTRONOMICALUNIT;
@@ -180,10 +181,10 @@ public class FlorenceEarthExperiment {
             currentDateTime.add(Calendar.SECOND, (int)deltaT);
             
             // Position of planet Earth
-            Vector3D positionEarth = ephemeris.getBodyPosition("Earth", currentDateTime);
+            Vector3D positionEarth = ephemeris.getBodyPosition("earth", currentDateTime);
             
             // Position of asteroid 3122 Florence
-            Vector3D positionFlorence = ephemeris.getBodyPosition("Florence", currentDateTime);
+            Vector3D positionFlorence = ephemeris.getBodyPosition("florence", currentDateTime);
             
             // Current distance between Earth and Florence
             double currentDistance = positionFlorence.euclideanDistance(positionEarth);
@@ -260,55 +261,4 @@ public class FlorenceEarthExperiment {
         // Use ephemeris to find shortest distance
         experiment.computeFlorenceEarthPassage();
     }
-
-      /*
-        Results from simulation:
-        Newton Mechanics with time step 60 seconds
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7053326.356664629 km
-        Actual date/time of minimum distance: AD 2017-09-01 11:55 (UTC)
-        Results from Ephemeris:
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7066675.81549663 km
-        Actual date/time of minimum distance: AD 2017-09-01 12:07 (UTC)
-
-        Results from simulation:
-        Newton Mechanics with time step 3600 seconds
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7053327.450819062 km
-        Actual date/time of minimum distance: AD 2017-09-01 12:00 (UTC)
-        Results from Ephemeris:
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7066677.970615582 km
-        Actual date/time of minimum distance: AD 2017-09-01 12:00 (UTC)
-
-
-        Results from simulation:
-        General Relativity with time step 60 seconds
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7053314.460991571 km
-        Actual date/time of minimum distance: AD 2017-09-01 11:55 (UTC)
-        Results from Ephemeris:
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7066675.81549663 km
-        Actual date/time of minimum distance: AD 2017-09-01 12:07 (UTC)
-
-        Results from simulation:
-        General Relativity with time step 3600 seconds
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7053315.555544677 km
-        Actual date/time of minimum distance: AD 2017-09-01 12:00 (UTC)
-        Results from Ephemeris:
-        Expected minimum distance between Earth and Florence: 7066000.0 km
-        Expected date of minimum distance is September 1, 2017
-        Actual minimum distance between Earth and Florence:  7066677.970615582 km
-        Actual date/time of minimum distance: AD 2017-09-01 12:00 (UTC)
-     */
 }

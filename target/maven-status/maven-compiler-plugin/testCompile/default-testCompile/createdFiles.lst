@@ -1,4 +1,3 @@
-ephemeris/JulianDateConverterTest.class
-ephemeris/EphemerisAccurateTest.class
-util/Vector3DTest.class
 ephemeris/EphemerisUtilTest.class
+util/Vector3DTest.class
+ephemeris/JulianDateConverterTest.class

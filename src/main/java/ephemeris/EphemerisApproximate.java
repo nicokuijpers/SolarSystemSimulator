@@ -1,27 +1,31 @@
 /*
- * Copyright (c) 2019 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the "Software"), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
  * to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
  * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package ephemeris;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
 import util.Vector3D;
-
-import java.util.*;
 
 /**
  * Approximate Ephemeris for major planets including Pluto.
@@ -48,15 +52,15 @@ public class EphemerisApproximate implements IEphemeris {
     private EphemerisApproximate() {
         // Names of major planets for which ephemeris can be approximated
         majorPlanets = new ArrayList<>();
-        majorPlanets.add("Mercury");
-        majorPlanets.add("Venus");
-        majorPlanets.add("Earth");
-        majorPlanets.add("Mars");
-        majorPlanets.add("Jupiter");
-        majorPlanets.add("Saturn");
-        majorPlanets.add("Uranus");
-        majorPlanets.add("Neptune");
-        majorPlanets.add("Pluto");
+        majorPlanets.add("mercury");
+        majorPlanets.add("venus");
+        majorPlanets.add("earth");
+        majorPlanets.add("mars");
+        majorPlanets.add("jupiter");
+        majorPlanets.add("saturn");
+        majorPlanets.add("uranus");
+        majorPlanets.add("neptune");
+        majorPlanets.add("pluto");
      
         // First valid date 3000 BC
         firstValidDate = new GregorianCalendar(3000,0,1);
@@ -111,7 +115,7 @@ public class EphemerisApproximate implements IEphemeris {
         double[] orbitPars = SolarSystemParameters.getInstance().getOrbitParameters(name);
         
         // Compute orbital elements for given date
-        double[] orbitElements = EphemerisUtil.computeOrbitalElements(orbitPars,date);
+        double orbitElements[] = EphemerisUtil.computeOrbitalElements(orbitPars,date);
          
         // Compute (x,y,z) position [m] from orbital elements
         Vector3D position = EphemerisUtil.computePosition(orbitElements);
@@ -134,11 +138,10 @@ public class EphemerisApproximate implements IEphemeris {
         double[] orbitPars = SolarSystemParameters.getInstance().getOrbitParameters(name);
         
         // Compute orbital elements for given date
-        double orbitElements[] = EphemerisUtil.computeOrbitalElements(orbitPars,date);
+        double orbitElementsEarth[] = EphemerisUtil.computeOrbitalElements(orbitPars,date);
          
         // Compute (x,y,z) velocity [m/s] from orbital elements
-        double mu = SolarSystemParameters.getInstance().getMu("Sun");
-        Vector3D velocity = EphemerisUtil.computeVelocity(mu, orbitElements);
+        Vector3D velocity = EphemerisUtil.computeVelocity(orbitElementsEarth);
         return velocity;
     }
 
@@ -164,8 +167,7 @@ public class EphemerisApproximate implements IEphemeris {
         Vector3D position = EphemerisUtil.computePosition(orbitElements);
         
         // Compute (x,y,z) velocity [m/s] from orbital elements
-        double mu = SolarSystemParameters.getInstance().getMu("Sun");
-        Vector3D velocity = EphemerisUtil.computeVelocity(mu, orbitElements);
+        Vector3D velocity = EphemerisUtil.computeVelocity(orbitElements);
         
         // Position and velocity as array
         return new Vector3D[]{position,velocity};

@@ -1,27 +1,31 @@
 /*
- * Copyright (c) 2019 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the "Software"), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
  * to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
  * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package ephemeris;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
 import util.Vector3D;
-
-import java.util.*;
 
 /**
  *
@@ -39,18 +43,6 @@ public class EphemerisSolarSystem implements IEphemeris {
     
     // Approximate Ephemeris for major planets including Pluto
     private final IEphemeris ephemerisApproximate;
-
-    // Ephemeris for Galilean moons
-    private final IEphemeris ephemerisGalileanMoons;
-
-    // Ephemeris for Saturn moons
-    private final IEphemeris ephemerisSaturnMoons;
-
-    // Ephemeris for Uranus moons
-    private final IEphemeris ephemerisUranusMoons;
-
-    // Ephemeris for Neptune moons
-    private final IEphemeris ephemerisNeptuneMoons;
     
     // Solar system parameters
     private final SolarSystemParameters solarSystemParameters;
@@ -73,30 +65,17 @@ public class EphemerisSolarSystem implements IEphemeris {
     private EphemerisSolarSystem() {
         
         // Accurate Ephemeris for Sun, Moon, and major planets including Pluto
-        ephemerisAccurate = EphemerisAccurate.getInstance();
+        ephemerisAccurate = EphemerisDE405.getInstance();        
 
         // Approximate Ephemeris for major planets including Pluto
         ephemerisApproximate = EphemerisApproximate.getInstance();
-
-        // Ephemeris for Galilean moons
-        ephemerisGalileanMoons = EphemerisGalileanMoons.getInstance();
-
-        // Ephemeris for Saturn moons
-        ephemerisSaturnMoons = EphemerisSaturnMoons.getInstance();
-
-        // Ephemeris for Uranus moons
-        ephemerisUranusMoons = EphemerisUranusMoons.getInstance();
-
-        // Ephemeris for Neptune moons
-        ephemerisNeptuneMoons = EphemerisNeptuneMoons.getInstance();
         
         // Solar System parameters
         solarSystemParameters = SolarSystemParameters.getInstance();
         
         // Bodies for which ephemeris can be computed or approximated
         bodies = new ArrayList<>();
-        bodies.add("Sun");
-        bodies.add("EarthMoonBarycenter");
+        bodies.add("sun");
         bodies.addAll(solarSystemParameters.getPlanets());
         bodies.addAll(solarSystemParameters.getMoons());
      
@@ -151,8 +130,8 @@ public class EphemerisSolarSystem implements IEphemeris {
         
         // Check whether Accurate Ephemeris can be used
         if (ephemerisAccurate.getBodies().contains(name) &&
-                date.after(ephemerisAccurate.getFirstValidDate()) &&
-                date.before(ephemerisAccurate.getLastValidDate())) {
+            date.after(ephemerisAccurate.getFirstValidDate()) && 
+            date.before(ephemerisAccurate.getLastValidDate())) {
             
             // (x,y,z) position [m] from Accurate Ephemeris
             return ephemerisAccurate.getBodyPosition(name, date);
@@ -160,52 +139,16 @@ public class EphemerisSolarSystem implements IEphemeris {
        
         // Check whether Approximate Ephemeris can be used
         if (ephemerisApproximate.getBodies().contains(name) &&
-                date.after(ephemerisApproximate.getFirstValidDate()) &&
-                date.before(ephemerisApproximate.getLastValidDate())) {
+            date.after(ephemerisApproximate.getFirstValidDate()) && 
+            date.before(ephemerisApproximate.getLastValidDate())) {
             
             // (x,y,z) position [m] from Approximate Ephemeris
             return ephemerisApproximate.getBodyPosition(name, date);
         }
-
-        // Check whether ephemeris for Galilean moons can be used
-        if (ephemerisGalileanMoons.getBodies().contains(name) &&
-                date.after(ephemerisGalileanMoons.getFirstValidDate()) &&
-                date.before(ephemerisGalileanMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] from Galilean Moons Ephemeris
-            return ephemerisGalileanMoons.getBodyPosition(name, date);
-        }
-
-        // Check whether ephemeris for Saturn moons can be used
-        if (ephemerisSaturnMoons.getBodies().contains(name) &&
-                date.after(ephemerisSaturnMoons.getFirstValidDate()) &&
-                date.before(ephemerisSaturnMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] from Saturn Moons Ephemeris
-            return ephemerisSaturnMoons.getBodyPosition(name, date);
-        }
-
-        // Check whether ephemeris for Uranus moons can be used
-        if (ephemerisUranusMoons.getBodies().contains(name) &&
-                date.after(ephemerisUranusMoons.getFirstValidDate()) &&
-                date.before(ephemerisUranusMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] from Uranus Moons Ephemeris
-            return ephemerisUranusMoons.getBodyPosition(name, date);
-        }
-
-        // Check whether ephemeris for Neptune moons can be used
-        if (ephemerisNeptuneMoons.getBodies().contains(name) &&
-                date.after(ephemerisNeptuneMoons.getFirstValidDate()) &&
-                date.before(ephemerisNeptuneMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] and velocity [m/s] from Neptune Moons Ephemeris
-            return ephemerisNeptuneMoons.getBodyPosition(name, date);
-        }
-
+        
         // Approximate position and velocity of the Moon
-        if ("Moon".equals(name)) {
-            // Position vector (index = 0)
+        if ("moon".equals(name)) {
+            // Return position vector (index = 0)
             return approximatePositionVelocityMoon(date)[0];
         }
         
@@ -221,7 +164,7 @@ public class EphemerisSolarSystem implements IEphemeris {
             // Compute (x,y,z) position [m] from orbital elements
             return EphemerisUtil.computePosition(orbitElements);
         }
-
+        
         return null;
     }
                 
@@ -254,46 +197,10 @@ public class EphemerisSolarSystem implements IEphemeris {
             // (x,y,z) velocity [m/s] from Approximate Ephemeris
             return ephemerisApproximate.getBodyVelocity(name, date);
         }
-
-        // Check whether ephemeris for Galilean moons can be used
-        if (ephemerisGalileanMoons.getBodies().contains(name) &&
-                date.after(ephemerisGalileanMoons.getFirstValidDate()) &&
-                date.before(ephemerisGalileanMoons.getLastValidDate())) {
-
-            // (x,y,z) velocity [m/s] from Galilean Moons Ephemeris
-            return ephemerisGalileanMoons.getBodyVelocity(name, date);
-        }
-
-        // Check whether ephemeris for Saturn moons can be used
-        if (ephemerisSaturnMoons.getBodies().contains(name) &&
-                date.after(ephemerisSaturnMoons.getFirstValidDate()) &&
-                date.before(ephemerisSaturnMoons.getLastValidDate())) {
-
-            // (x,y,z) velocity [m/s] from Saturn Moons Ephemeris
-            return ephemerisSaturnMoons.getBodyVelocity(name, date);
-        }
-
-        // Check whether ephemeris for Uranus moons can be used
-        if (ephemerisUranusMoons.getBodies().contains(name) &&
-                date.after(ephemerisUranusMoons.getFirstValidDate()) &&
-                date.before(ephemerisUranusMoons.getLastValidDate())) {
-
-            // (x,y,z) velocity [m/s] from Uranus Moons Ephemeris
-            return ephemerisUranusMoons.getBodyVelocity(name, date);
-        }
-
-        // Check whether ephemeris for Neptune moons can be used
-        if (ephemerisNeptuneMoons.getBodies().contains(name) &&
-                date.after(ephemerisNeptuneMoons.getFirstValidDate()) &&
-                date.before(ephemerisNeptuneMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] and velocity [m/s] from Neptune Moons Ephemeris
-            return ephemerisNeptuneMoons.getBodyVelocity(name, date);
-        }
-
+        
         // Approximate position and velocity of the Moon
-        if ("Moon".equals(name)) {
-            // Velocity vector (index = 1)
+        if ("moon".equals(name)) {
+            // Return velocity vector (index = 1)
             return approximatePositionVelocityMoon(date)[1];
         }
         
@@ -307,17 +214,9 @@ public class EphemerisSolarSystem implements IEphemeris {
             double[] orbitElements = EphemerisUtil.computeOrbitalElements(orbitPars,date);
          
             // Compute (x,y,z) velocity [m/s] from orbital elements
-            String centerBody;
-            if (solarSystemParameters.getMoons().contains(name)) {
-                centerBody = solarSystemParameters.getPlanetOfMoon(name);
-            }
-            else {
-                centerBody = "Sun";
-            }
-            double mu = solarSystemParameters.getMu(centerBody);
-            return EphemerisUtil.computeVelocity(mu, orbitElements);
+            return EphemerisUtil.computeVelocity(orbitElements);
         }
-
+        
         return null;
     }
 
@@ -332,7 +231,7 @@ public class EphemerisSolarSystem implements IEphemeris {
         if (date.before(firstValidDate) || date.after(lastValidDate)) {
             throw new IllegalArgumentException("Date not valid for Solar System Ephemeris");
         }
-
+        
         // Check whether Accurate Ephemeris can be used
         if (ephemerisAccurate.getBodies().contains(name) &&
             date.after(ephemerisAccurate.getFirstValidDate()) && 
@@ -350,45 +249,9 @@ public class EphemerisSolarSystem implements IEphemeris {
             // (x,y,z) position [m] and velocity [m/s] from Approximate Ephemeris
             return ephemerisApproximate.getBodyPositionVelocity(name, date);
         }
-
-        // Check whether ephemeris for Galilean moons can be used
-        if (ephemerisGalileanMoons.getBodies().contains(name) &&
-                date.after(ephemerisGalileanMoons.getFirstValidDate()) &&
-                date.before(ephemerisGalileanMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] and velocity [m/s] from Galilean Moons Ephemeris
-            return ephemerisGalileanMoons.getBodyPositionVelocity(name, date);
-        }
-
-        // Check whether ephemeris for Saturn moons can be used
-        if (ephemerisSaturnMoons.getBodies().contains(name) &&
-                date.after(ephemerisSaturnMoons.getFirstValidDate()) &&
-                date.before(ephemerisSaturnMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] and velocity [m/s] from Saturn Moons Ephemeris
-            return ephemerisSaturnMoons.getBodyPositionVelocity(name, date);
-        }
-
-        // Check whether ephemeris for Uranus moons can be used
-        if (ephemerisUranusMoons.getBodies().contains(name) &&
-                date.after(ephemerisUranusMoons.getFirstValidDate()) &&
-                date.before(ephemerisUranusMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] and velocity [m/s] from Uranus Moons Ephemeris
-            return ephemerisUranusMoons.getBodyPositionVelocity(name, date);
-        }
-
-        // Check whether ephemeris for Neptune moons can be used
-        if (ephemerisNeptuneMoons.getBodies().contains(name) &&
-                date.after(ephemerisNeptuneMoons.getFirstValidDate()) &&
-                date.before(ephemerisNeptuneMoons.getLastValidDate())) {
-
-            // (x,y,z) position [m] and velocity [m/s] from Neptune Moons Ephemeris
-            return ephemerisNeptuneMoons.getBodyPositionVelocity(name, date);
-        }
-
+        
         // Approximate position and velocity of the Moon
-        if ("Moon".equals(name)) {
+        if ("moon".equals(name)) {
             return approximatePositionVelocityMoon(date);
         }
         
@@ -405,19 +268,12 @@ public class EphemerisSolarSystem implements IEphemeris {
             Vector3D position = EphemerisUtil.computePosition(orbitElements);
             
             // Compute (x,y,z) velocity [m/s] from orbital elements
-            String centerBody;
-            if (solarSystemParameters.getMoons().contains(name)) {
-                centerBody = solarSystemParameters.getPlanetOfMoon(name);
-            }
-            else {
-                centerBody = "Sun";
-            }
-            double mu = solarSystemParameters.getMu(centerBody);
-            Vector3D velocity = EphemerisUtil.computeVelocity(mu, orbitElements);
-
+            Vector3D velocity = EphemerisUtil.computeVelocity(orbitElements);
+            
+            // Position and velocity as array
             return new Vector3D[]{position,velocity};
         }
-
+        
         return null;
     }
 
@@ -465,17 +321,17 @@ public class EphemerisSolarSystem implements IEphemeris {
         GregorianCalendar dateValid = JulianDateConverter.convertJulianDateToCalendar(julianDateValid);
         
         // Accurate position and velocity of the Earth for valid date
-        Vector3D[] positionVelocityEarthValid = ephemerisAccurate.getBodyPositionVelocity("Earth",dateValid);
+        Vector3D[] positionVelocityEarthValid = ephemerisAccurate.getBodyPositionVelocity("earth",dateValid);
         Vector3D positionEarthValid = positionVelocityEarthValid[0];
         Vector3D velocityEarthValid = positionVelocityEarthValid[1];
         
         // Accurate position and velocity of the Moon for valid date
-        Vector3D[] positionVelocityMoonValid = ephemerisAccurate.getBodyPositionVelocity("Moon",dateValid);
+        Vector3D[] positionVelocityMoonValid = ephemerisAccurate.getBodyPositionVelocity("moon",dateValid);
         Vector3D positionMoonValid = positionVelocityMoonValid[0];
         Vector3D velocityMoonValid = positionVelocityMoonValid[1];
         
         // Approximate position and velocity of the Earth for given date
-        Vector3D[] positionVelocityEarth = ephemerisApproximate.getBodyPositionVelocity("Earth",date);
+        Vector3D[] positionVelocityEarth = ephemerisApproximate.getBodyPositionVelocity("earth",date);
         Vector3D positionEarth = positionVelocityEarth[0];
         Vector3D velocityEarth = positionVelocityEarth[1];
         

@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2019 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
+ * Copyright (c) 2017 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the "Software"), to deal 
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is furnished 
  * to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
  * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package util;
@@ -193,39 +193,7 @@ public class Vector3D implements Serializable {
         // Use algebraic definition of dot product
         return x*v.x + y*v.y + z*v.z;
     }
-
-    /**
-     * Angle in radians between this vector and other vector.
-     * @param v other vector
-     * @return angle in radians between this vector and other vector
-     */
-    public double angleRad(Vector3D v) {
-        return Math.acos(this.dotProduct(v) / (this.magnitude() * v.magnitude()));
-    }
-
-    /**
-     * Angle in degrees between this vector and other vector.
-     * @param v other vector
-     * @return angle in radians between this vector and other vector
-     */
-    public double angleDeg(Vector3D v) {
-        return Math.toDegrees(angleRad(v));
-    }
-
-    /**
-     * Rotate vector along three axes defined by three vectors.
-     * @param vx
-     * @param vy
-     * @param vz
-     * @return rotated vector
-     */
-    public Vector3D rotate (Vector3D vx, Vector3D vy, Vector3D vz) {
-        double rx = vx.x*x + vx.y*y + vx.z*z;
-        double ry = vy.x*x + vy.y*y + vy.z*z;
-        double rz = vz.x*x + vz.y*y + vz.z*z;
-        return new Vector3D(rx,ry,rz);
-    }
-
+    
     /**
      * Cross product of this vector and other vector.
      * @param v other vector
@@ -322,7 +290,8 @@ public class Vector3D implements Serializable {
                     y * Math.cos(angle);
         return new Vector3D(rx,ry,z);
     }
-
+    
+    
     /**
      * Add vector to this vector.
      * @param vector vector to be added
