@@ -27,14 +27,13 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import particlesystem.Particle;
 import solarsystem.SolarSystem;
-import solarsystem.SolarSystemBody;
 import util.Vector3D;
 
 /**
  * Asteroid 3122 Florence passed Earth at a distance of 7,066,000 km on 
  * September 1st, 2017.
  * In this simulation experiment the minimum distance between Earth and Florence 
- * is determined as wel as the date/time it occurred.
+ * is determined as well as the date/time it occurred.
  * 
  * @author Nico Kuijpers
  */
