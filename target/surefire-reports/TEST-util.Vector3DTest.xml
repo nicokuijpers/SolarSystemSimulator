@@ -62,7 +62,7 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="testNormalizeX" classname="util.Vector3DTest" time="0.003"/>
+  <testcase name="testNormalizeX" classname="util.Vector3DTest" time="0.004"/>
   <testcase name="testNormalizeY" classname="util.Vector3DTest" time="0"/>
   <testcase name="testNormalizeZ" classname="util.Vector3DTest" time="0"/>
   <testcase name="testMagnitudeSquare" classname="util.Vector3DTest" time="0"/>
@@ -71,14 +71,14 @@
   <testcase name="testDirectionEqualVectors" classname="util.Vector3DTest" time="0"/>
   <testcase name="testMinus" classname="util.Vector3DTest" time="0"/>
   <testcase name="testPlus" classname="util.Vector3DTest" time="0"/>
-  <testcase name="testToString" classname="util.Vector3DTest" time="0.003"/>
+  <testcase name="testToString" classname="util.Vector3DTest" time="0.002"/>
   <testcase name="testCrossProductA" classname="util.Vector3DTest" time="0"/>
-  <testcase name="testCrossProductB" classname="util.Vector3DTest" time="0"/>
+  <testcase name="testCrossProductB" classname="util.Vector3DTest" time="0.001"/>
   <testcase name="testCrossProductC" classname="util.Vector3DTest" time="0"/>
   <testcase name="testScalarProduct" classname="util.Vector3DTest" time="0"/>
   <testcase name="testRotateXdeg" classname="util.Vector3DTest" time="0"/>
   <testcase name="testRotateXrad" classname="util.Vector3DTest" time="0.001"/>
-  <testcase name="testRotateYdeg" classname="util.Vector3DTest" time="0.001"/>
+  <testcase name="testRotateYdeg" classname="util.Vector3DTest" time="0"/>
   <testcase name="testRotateYrad" classname="util.Vector3DTest" time="0"/>
   <testcase name="testRotateZdeg" classname="util.Vector3DTest" time="0"/>
   <testcase name="testRotateZrad" classname="util.Vector3DTest" time="0"/>

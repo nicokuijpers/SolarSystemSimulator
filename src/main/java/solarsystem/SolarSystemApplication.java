@@ -38,6 +38,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -45,6 +46,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
@@ -671,6 +673,13 @@ public class SolarSystemApplication extends Application {
                 + "was visible to the naked eye for 18 months.",
                 false), hor, ver++, horsize, versize);
         
+        // Set font for all labeled objects
+        for (Node n : grid.getChildren()) {
+            if (n instanceof Labeled) {
+                ((Labeled) n).setFont(new Font("Arial",13));
+            }
+        }
+
         // Define title and assign the scene for main window
         primaryStage.setTitle("Solar System Simulator");
         primaryStage.setScene(scene);

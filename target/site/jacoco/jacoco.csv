@@ -25,7 +25,7 @@ SolarSystemSimulator,solarsystem,SolarSystemApplication.new EventHandler() {...}
 SolarSystemSimulator,solarsystem,DateTimeSelector,227,0,4,0,42,0,7,0,5,0
 SolarSystemSimulator,solarsystem,SolarSystemApplication.new EventHandler() {...},18,0,2,0,5,0,3,0,2,0
 SolarSystemSimulator,solarsystem,SolarSystemApplication.new EventHandler() {...},18,0,2,0,5,0,3,0,2,0
-SolarSystemSimulator,solarsystem,SolarSystemApplication,3048,0,118,0,627,0,100,0,41,0
+SolarSystemSimulator,solarsystem,SolarSystemApplication,3071,0,122,0,631,0,102,0,41,0
 SolarSystemSimulator,solarsystem,SolarSystemBody,85,0,4,0,28,0,13,0,11,0
 SolarSystemSimulator,solarsystem,SolarSystemApplication.new EventHandler() {...},17,0,0,0,3,0,2,0,2,0
 SolarSystemSimulator,solarsystem,SolarSystemApplication.new EventHandler() {...},42,0,2,0,8,0,3,0,2,0

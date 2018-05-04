@@ -38,6 +38,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -45,6 +46,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
@@ -62,47 +64,47 @@ import util.Vector3D;
  * Solar System Application.
  * @author Nico Kuijpers
  */
-<span class="nc" id="L65">public class SolarSystemApplication extends Application {</span>
+<span class="nc" id="L67">public class SolarSystemApplication extends Application {</span>
     
     // Screen to display the bodies of the Solar System
     private Canvas screen;
-<span class="nc" id="L69">    private final int BORDERSIZE = 10;</span>
-<span class="nc" id="L70">    private final int SCREENWIDTH = 900;</span>
-<span class="nc" id="L71">    private final int SCREENHEIGHT = 900;</span>
-<span class="nc" id="L72">    private final double SCREENSCALE = 180.0 * SolarSystemParameters.ASTRONOMICALUNIT;</span>
+<span class="nc" id="L71">    private final int BORDERSIZE = 10;</span>
+<span class="nc" id="L72">    private final int SCREENWIDTH = 900;</span>
+<span class="nc" id="L73">    private final int SCREENHEIGHT = 900;</span>
+<span class="nc" id="L74">    private final double SCREENSCALE = 180.0 * SolarSystemParameters.ASTRONOMICALUNIT;</span>
     
     // Animation timer for drawing
-<span class="nc" id="L75">    private AnimationTimer animationTimer = null;</span>
+<span class="nc" id="L77">    private AnimationTimer animationTimer = null;</span>
     
     // Thread for simulation   
-<span class="nc" id="L78">    private Thread threadSimulate = null;</span>
+<span class="nc" id="L80">    private Thread threadSimulate = null;</span>
     
     // Flag to indicate whether simulation is running
-<span class="nc" id="L81">    private boolean simulationIsRunning = false;</span>
+<span class="nc" id="L83">    private boolean simulationIsRunning = false;</span>
     
     // Flag to indicate whether simulation is running in step mode
-<span class="nc" id="L84">    private boolean simulationIsRunningStepMode = false;</span>
+<span class="nc" id="L86">    private boolean simulationIsRunningStepMode = false;</span>
     
     // Flag to indicate whether simulation is running fast
-<span class="nc" id="L87">    private boolean simulationIsRunningFast = false;</span>
+<span class="nc" id="L89">    private boolean simulationIsRunningFast = false;</span>
     
     // Flag to indicate whether simulation is running forward
-<span class="nc" id="L90">    private boolean simulationIsRunningForward = true;</span>
+<span class="nc" id="L92">    private boolean simulationIsRunningForward = true;</span>
     
     // Lock to enforce synchronization between simulating and drawing
-<span class="nc" id="L93">    private final ReentrantLock simulationLock = new ReentrantLock();</span>
+<span class="nc" id="L95">    private final ReentrantLock simulationLock = new ReentrantLock();</span>
     
     // Condition to indicate that simulation state may be drawn
-<span class="nc" id="L96">    private final Condition simulationMayBeDrawn = simulationLock.newCondition();</span>
+<span class="nc" id="L98">    private final Condition simulationMayBeDrawn = simulationLock.newCondition();</span>
     
     // Condition to indicate that simulation may advance
-<span class="nc" id="L99">    private final Condition simulationMayAdvance = simulationLock.newCondition();</span>
+<span class="nc" id="L101">    private final Condition simulationMayAdvance = simulationLock.newCondition();</span>
     
     // Flag to indicate that simulation state is being drawn
-<span class="nc" id="L102">    private boolean simulationIsBeingDrawn = false;</span>
+<span class="nc" id="L104">    private boolean simulationIsBeingDrawn = false;</span>
     
     // Flag to indicate that simulation state is being updated
-<span class="nc" id="L105">    private boolean simulationIsBeingUpdated = false;</span>
+<span class="nc" id="L107">    private boolean simulationIsBeingUpdated = false;</span>
     
     // Date/time selector to view and set simulation era, date, and time
     private DateTimeSelector dateTimeSelector;
@@ -126,10 +128,10 @@ import util.Vector3D;
     CheckBox checkBoxStepMode;
     
     // Translate
-<span class="nc" id="L129">    private double translateX = 0.0;</span>
-<span class="nc" id="L130">    private double translateY = 0.0;</span>
-<span class="nc" id="L131">    private double lastDragX = 0.0;</span>
-<span class="nc" id="L132">    private double lastDragY = 0.0;</span>
+<span class="nc" id="L131">    private double translateX = 0.0;</span>
+<span class="nc" id="L132">    private double translateY = 0.0;</span>
+<span class="nc" id="L133">    private double lastDragX = 0.0;</span>
+<span class="nc" id="L134">    private double lastDragY = 0.0;</span>
     
     // The Solar System
     private SolarSystem solarSystem;
@@ -146,751 +148,758 @@ import util.Vector3D;
     private String selectedBody;
     
     // Flag to indicate whether ephemeris is shown on screen
-<span class="nc" id="L149">    private boolean showEphemeris = true;</span>
+<span class="nc" id="L151">    private boolean showEphemeris = true;</span>
     
     // Flag to indicate whether simulation results are shown on screen 
-<span class="nc" id="L152">    private boolean showSimulation = true;</span>
+<span class="nc" id="L154">    private boolean showSimulation = true;</span>
     
     // Flag to indicate whether view from Earth to the Sun is selected
-<span class="nc" id="L155">    private boolean earthToSunView = false;</span>
+<span class="nc" id="L157">    private boolean earthToSunView = false;</span>
     
     // Flag to indicate whether ruler is shown on screen
-<span class="nc" id="L158">    private boolean showRuler = false;</span>
+<span class="nc" id="L160">    private boolean showRuler = false;</span>
     
     // Flag to indicate whether step mode for simulation is selected
-<span class="nc" id="L161">    private boolean stepMode = false;</span>
+<span class="nc" id="L163">    private boolean stepMode = false;</span>
    
     @Override
     public void start(final Stage primaryStage) {
         
         // Define grid pane
         GridPane grid;
-<span class="nc" id="L168">        grid = new GridPane();</span>
-<span class="nc" id="L169">        grid.setHgap(10);</span>
-<span class="nc" id="L170">        grid.setVgap(10);</span>
-<span class="nc" id="L171">        grid.setPadding(new Insets(BORDERSIZE,BORDERSIZE,BORDERSIZE,BORDERSIZE));</span>
+<span class="nc" id="L170">        grid = new GridPane();</span>
+<span class="nc" id="L171">        grid.setHgap(10);</span>
+<span class="nc" id="L172">        grid.setVgap(10);</span>
+<span class="nc" id="L173">        grid.setPadding(new Insets(BORDERSIZE,BORDERSIZE,BORDERSIZE,BORDERSIZE));</span>
         
         // For debug purposes
         // Make the grid lines visible
         // grid.setGridLinesVisible(true);
         
         // Screen to draw trajectories
-<span class="nc" id="L178">        screen = new Canvas(SCREENWIDTH,SCREENHEIGHT);</span>
-<span class="nc" id="L179">        grid.add(screen,0,0,1,31);</span>
-<span class="nc" id="L180">        initTranslate();</span>
-<span class="nc" id="L181">        clearScreen();</span>
+<span class="nc" id="L180">        screen = new Canvas(SCREENWIDTH,SCREENHEIGHT);</span>
+<span class="nc" id="L181">        grid.add(screen,0,0,1,31);</span>
+<span class="nc" id="L182">        initTranslate();</span>
+<span class="nc" id="L183">        clearScreen();</span>
         
         // Add mouse clicked event to screen
-<span class="nc" id="L184">        screen.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
-<span class="nc" id="L185">            new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L186">        screen.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
+<span class="nc" id="L187">            new EventHandler&lt;MouseEvent&gt;() {</span>
                 @Override
                 public void handle(MouseEvent event) {
-<span class="nc" id="L188">                    screenMouseClicked(event);</span>
-<span class="nc" id="L189">                }</span>
+<span class="nc" id="L190">                    screenMouseClicked(event);</span>
+<span class="nc" id="L191">                }</span>
             });
         
         // Add mouse pressed event to screen
-<span class="nc" id="L193">        screen.addEventHandler(MouseEvent.MOUSE_PRESSED,</span>
-<span class="nc" id="L194">            new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L195">        screen.addEventHandler(MouseEvent.MOUSE_PRESSED,</span>
+<span class="nc" id="L196">            new EventHandler&lt;MouseEvent&gt;() {</span>
                 @Override
                 public void handle(MouseEvent event) {
-<span class="nc" id="L197">                    screenMousePressed(event);</span>
-<span class="nc" id="L198">                }</span>
+<span class="nc" id="L199">                    screenMousePressed(event);</span>
+<span class="nc" id="L200">                }</span>
             });
         
         // Add mouse dragged event to screen
-<span class="nc" id="L202">        screen.setOnMouseDragged(new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L204">        screen.setOnMouseDragged(new EventHandler&lt;MouseEvent&gt;() {</span>
             @Override
             public void handle(MouseEvent event) {
-<span class="nc" id="L205">                screenMouseDragged(event);</span>
-<span class="nc" id="L206">            }</span>
+<span class="nc" id="L207">                screenMouseDragged(event);</span>
+<span class="nc" id="L208">            }</span>
         });
         
         // Create the scene and add the grid pane
-<span class="nc" id="L210">        Group root = new Group();</span>
-<span class="nc" id="L211">        Scene scene = new Scene(root, SCREENWIDTH+2*BORDERSIZE+330, SCREENHEIGHT+2*BORDERSIZE);</span>
-<span class="nc" id="L212">        root.getChildren().add(grid);</span>
+<span class="nc" id="L212">        Group root = new Group();</span>
+<span class="nc" id="L213">        Scene scene = new Scene(root, SCREENWIDTH+2*BORDERSIZE+330, SCREENHEIGHT+2*BORDERSIZE);</span>
+<span class="nc" id="L214">        root.getChildren().add(grid);</span>
         
         // Create the Solar System
-<span class="nc" id="L215">        solarSystem = new SolarSystem();</span>
+<span class="nc" id="L217">        solarSystem = new SolarSystem();</span>
         
         // Date/time selector to view and set era, date, and time
-<span class="nc" id="L218">        dateTimeSelector = new DateTimeSelector(solarSystem.getSimulationDateTime());</span>
-<span class="nc" id="L219">        dateTimeSelector.setFont(new Font(&quot;Courier&quot;,16));</span>
-<span class="nc" id="L220">        dateTimeSelector.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L220">        dateTimeSelector = new DateTimeSelector(solarSystem.getSimulationDateTime());</span>
+<span class="nc" id="L221">        dateTimeSelector.setFont(new Font(&quot;Courier&quot;,16));</span>
+<span class="nc" id="L222">        dateTimeSelector.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc bnc" id="L223" title="All 2 branches missed.">                if (!simulationIsRunning()) {</span>
-<span class="nc" id="L224">                    initializeSimulation();</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">                if (!simulationIsRunning()) {</span>
+<span class="nc" id="L226">                    initializeSimulation();</span>
                 }
-<span class="nc" id="L226">            }</span>
+<span class="nc" id="L228">            }</span>
         });
-<span class="nc" id="L228">        grid.add(dateTimeSelector,1,1,28,1);</span>
+<span class="nc" id="L230">        grid.add(dateTimeSelector,1,1,28,1);</span>
         
         // Button to initialize simulation
-<span class="nc" id="L231">        Button buttonInitialize = new Button(&quot;Initialize&quot;);</span>
-<span class="nc" id="L232">        Tooltip tooltipInitialize = </span>
+<span class="nc" id="L233">        Button buttonInitialize = new Button(&quot;Initialize&quot;);</span>
+<span class="nc" id="L234">        Tooltip tooltipInitialize = </span>
                 new Tooltip(&quot;Initialize simulation state for given date&quot;);
-<span class="nc" id="L234">        buttonInitialize.setTooltip(tooltipInitialize);</span>
-<span class="nc" id="L235">        buttonInitialize.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L236">        buttonInitialize.setTooltip(tooltipInitialize);</span>
+<span class="nc" id="L237">        buttonInitialize.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L238">                initializeSimulation();</span>
-<span class="nc" id="L239">            }</span>
+<span class="nc" id="L240">                initializeSimulation();</span>
+<span class="nc" id="L241">            }</span>
         });
-<span class="nc" id="L241">        buttonInitialize.setMinWidth(70.0);</span>
-<span class="nc" id="L242">        grid.add(buttonInitialize,1,2,9,1);</span>
+<span class="nc" id="L243">        buttonInitialize.setMinWidth(70.0);</span>
+<span class="nc" id="L244">        grid.add(buttonInitialize,1,2,9,1);</span>
         
         // Button to load simulation state from file
-<span class="nc" id="L245">        Button buttonLoadState = new Button(&quot;Load&quot;);</span>
-<span class="nc" id="L246">        Tooltip tooltipLoadState = </span>
+<span class="nc" id="L247">        Button buttonLoadState = new Button(&quot;Load&quot;);</span>
+<span class="nc" id="L248">        Tooltip tooltipLoadState = </span>
                 new Tooltip(&quot;Load simulation state from file&quot;);
-<span class="nc" id="L248">        buttonLoadState.setTooltip(tooltipLoadState);</span>
-<span class="nc" id="L249">        buttonLoadState.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L250">        buttonLoadState.setTooltip(tooltipLoadState);</span>
+<span class="nc" id="L251">        buttonLoadState.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L252">                loadSimulationState(primaryStage);</span>
-<span class="nc" id="L253">            }</span>
+<span class="nc" id="L254">                loadSimulationState(primaryStage);</span>
+<span class="nc" id="L255">            }</span>
         });
-<span class="nc" id="L255">        buttonLoadState.setMinWidth(70.0);</span>
-<span class="nc" id="L256">        grid.add(buttonLoadState,8,2,10,1);</span>
+<span class="nc" id="L257">        buttonLoadState.setMinWidth(70.0);</span>
+<span class="nc" id="L258">        grid.add(buttonLoadState,8,2,10,1);</span>
         
         // Button to save current simulation state to file
-<span class="nc" id="L259">        Button buttonSaveState = new Button(&quot;Save&quot;);</span>
-<span class="nc" id="L260">        Tooltip tooltipSaveState = </span>
+<span class="nc" id="L261">        Button buttonSaveState = new Button(&quot;Save&quot;);</span>
+<span class="nc" id="L262">        Tooltip tooltipSaveState = </span>
                 new Tooltip(&quot;Save simulation state to file&quot;);
-<span class="nc" id="L262">        buttonSaveState.setTooltip(tooltipSaveState);</span>
-<span class="nc" id="L263">        buttonSaveState.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L264">        buttonSaveState.setTooltip(tooltipSaveState);</span>
+<span class="nc" id="L265">        buttonSaveState.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L266">                saveSimulationState(primaryStage);</span>
-<span class="nc" id="L267">            }</span>
+<span class="nc" id="L268">                saveSimulationState(primaryStage);</span>
+<span class="nc" id="L269">            }</span>
         });
-<span class="nc" id="L269">        buttonSaveState.setMinWidth(70.0);</span>
-<span class="nc" id="L270">        grid.add(buttonSaveState,15,2,10,1);</span>
+<span class="nc" id="L271">        buttonSaveState.setMinWidth(70.0);</span>
+<span class="nc" id="L272">        grid.add(buttonSaveState,15,2,10,1);</span>
         
         // Button to pause simulation
-<span class="nc" id="L273">        Button buttonPause = new Button(&quot;Pause&quot;);</span>
-<span class="nc" id="L274">        Tooltip tooltipPause = </span>
+<span class="nc" id="L275">        Button buttonPause = new Button(&quot;Pause&quot;);</span>
+<span class="nc" id="L276">        Tooltip tooltipPause = </span>
                 new Tooltip(&quot;Pause simulation to view current state&quot;);
-<span class="nc" id="L276">        buttonPause.setTooltip(tooltipPause);</span>
-<span class="nc" id="L277">        buttonPause.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L278">        buttonPause.setTooltip(tooltipPause);</span>
+<span class="nc" id="L279">        buttonPause.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L280">                pauseSimulation();</span>
-<span class="nc" id="L281">            }</span>
+<span class="nc" id="L282">                pauseSimulation();</span>
+<span class="nc" id="L283">            }</span>
         });
-<span class="nc" id="L283">        buttonPause.setMinWidth(70.0);</span>
-<span class="nc" id="L284">        grid.add(buttonPause,22,2,10,1);</span>
+<span class="nc" id="L285">        buttonPause.setMinWidth(70.0);</span>
+<span class="nc" id="L286">        grid.add(buttonPause,22,2,10,1);</span>
         
         // Button to start fast backward simulation
-<span class="nc" id="L287">        Button buttonFastBackward = new Button(&quot;&lt;&lt;&quot;);</span>
-<span class="nc" id="L288">        Tooltip tooltipFastBackward = </span>
+<span class="nc" id="L289">        Button buttonFastBackward = new Button(&quot;&lt;&lt;&quot;);</span>
+<span class="nc" id="L290">        Tooltip tooltipFastBackward = </span>
                 new Tooltip(&quot;Normal mode: fast backward, step mode: backward with selected speed&quot;);
-<span class="nc" id="L290">        buttonFastBackward.setTooltip(tooltipFastBackward);</span>
-<span class="nc" id="L291">        buttonFastBackward.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L292">        buttonFastBackward.setTooltip(tooltipFastBackward);</span>
+<span class="nc" id="L293">        buttonFastBackward.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc bnc" id="L294" title="All 2 branches missed.">                if (stepMode) {</span>
-<span class="nc" id="L295">                    startSimulationStepModeBackward();</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">                if (stepMode) {</span>
+<span class="nc" id="L297">                    startSimulationStepModeBackward();</span>
                 }
                 else {
-<span class="nc" id="L298">                    startSimulationFastBackward();</span>
+<span class="nc" id="L300">                    startSimulationFastBackward();</span>
                 }
-<span class="nc" id="L300">            }</span>
+<span class="nc" id="L302">            }</span>
         });
-<span class="nc" id="L302">        buttonFastBackward.setMinWidth(70.0);</span>
-<span class="nc" id="L303">        grid.add(buttonFastBackward,1,3,7,1);</span>
+<span class="nc" id="L304">        buttonFastBackward.setMinWidth(70.0);</span>
+<span class="nc" id="L305">        grid.add(buttonFastBackward,1,3,7,1);</span>
         
         // Button to start backward simulation
-<span class="nc" id="L306">        Button buttonBackward = new Button(&quot;&lt;&quot;);</span>
-<span class="nc" id="L307">        Tooltip tooltipBackward = </span>
+<span class="nc" id="L308">        Button buttonBackward = new Button(&quot;&lt;&quot;);</span>
+<span class="nc" id="L309">        Tooltip tooltipBackward = </span>
                 new Tooltip(&quot;Normal mode: backward with selected speed, step mode: single step of 60 s&quot;);
-<span class="nc" id="L309">        buttonBackward.setTooltip(tooltipBackward);</span>
-<span class="nc" id="L310">        buttonBackward.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L311">        buttonBackward.setTooltip(tooltipBackward);</span>
+<span class="nc" id="L312">        buttonBackward.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc bnc" id="L313" title="All 2 branches missed.">                if (stepMode) {</span>
-<span class="nc" id="L314">                    smallStepBackward();</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">                if (stepMode) {</span>
+<span class="nc" id="L316">                    smallStepBackward();</span>
                 }
                 else {
-<span class="nc" id="L317">                    startSimulationBackward();</span>
+<span class="nc" id="L319">                    startSimulationBackward();</span>
                 }
-<span class="nc" id="L319">            }</span>
+<span class="nc" id="L321">            }</span>
         });
-<span class="nc" id="L321">        buttonBackward.setMinWidth(70.0);</span>
-<span class="nc" id="L322">        grid.add(buttonBackward,8,3,7,1);</span>
+<span class="nc" id="L323">        buttonBackward.setMinWidth(70.0);</span>
+<span class="nc" id="L324">        grid.add(buttonBackward,8,3,7,1);</span>
         
         // Button to start forward simulation
-<span class="nc" id="L325">        Button buttonForward = new Button(&quot;&gt;&quot;);</span>
-<span class="nc" id="L326">        Tooltip tooltipForward = </span>
+<span class="nc" id="L327">        Button buttonForward = new Button(&quot;&gt;&quot;);</span>
+<span class="nc" id="L328">        Tooltip tooltipForward = </span>
                 new Tooltip(&quot;Normal mode: forward with selected speed, step mode: single step of 60 s&quot;);
-<span class="nc" id="L328">        buttonForward.setTooltip(tooltipForward);</span>
-<span class="nc" id="L329">        buttonForward.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L330">        buttonForward.setTooltip(tooltipForward);</span>
+<span class="nc" id="L331">        buttonForward.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc bnc" id="L332" title="All 2 branches missed.">                if (stepMode) {</span>
-<span class="nc" id="L333">                    smallStepForward();</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">                if (stepMode) {</span>
+<span class="nc" id="L335">                    smallStepForward();</span>
                 }
                 else {
-<span class="nc" id="L336">                    startSimulationForward();</span>
+<span class="nc" id="L338">                    startSimulationForward();</span>
                 }
-<span class="nc" id="L338">            }</span>
+<span class="nc" id="L340">            }</span>
         });
-<span class="nc" id="L340">        buttonForward.setMinWidth(70.0);</span>
-<span class="nc" id="L341">        grid.add(buttonForward,15,3,7,1);</span>
+<span class="nc" id="L342">        buttonForward.setMinWidth(70.0);</span>
+<span class="nc" id="L343">        grid.add(buttonForward,15,3,7,1);</span>
         
         // Button to start fast forward simulation
-<span class="nc" id="L344">        Button buttonFastForward = new Button(&quot;&gt;&gt;&quot;);</span>
-<span class="nc" id="L345">        Tooltip tooltipFastForward = </span>
+<span class="nc" id="L346">        Button buttonFastForward = new Button(&quot;&gt;&gt;&quot;);</span>
+<span class="nc" id="L347">        Tooltip tooltipFastForward = </span>
                 new Tooltip(&quot;Normal mode: fast forward, step mode: forward with selected speed&quot;);
-<span class="nc" id="L347">        buttonFastForward.setTooltip(tooltipFastForward);</span>
-<span class="nc" id="L348">        buttonFastForward.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L349">        buttonFastForward.setTooltip(tooltipFastForward);</span>
+<span class="nc" id="L350">        buttonFastForward.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc bnc" id="L351" title="All 2 branches missed.">                if (stepMode) {</span>
-<span class="nc" id="L352">                    startSimulationStepModeForward();</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">                if (stepMode) {</span>
+<span class="nc" id="L354">                    startSimulationStepModeForward();</span>
                 }
                 else {
-<span class="nc" id="L355">                    startSimulationFastForward();</span>
+<span class="nc" id="L357">                    startSimulationFastForward();</span>
                 }
-<span class="nc" id="L357">            }</span>
+<span class="nc" id="L359">            }</span>
         });
-<span class="nc" id="L359">        buttonFastForward.setMinWidth(70.0);</span>
-<span class="nc" id="L360">        grid.add(buttonFastForward,22,3,7,1);</span>
+<span class="nc" id="L361">        buttonFastForward.setMinWidth(70.0);</span>
+<span class="nc" id="L362">        grid.add(buttonFastForward,22,3,7,1);</span>
         
         // Radio buttons to set simulation method
         // 1. Newton Mechanics
         // 2. General Relativity
-<span class="nc" id="L365">        Label labelSimulationMethod = new Label(&quot;Simulation Method:&quot;);</span>
-<span class="nc" id="L366">        grid.add(labelSimulationMethod,1,4,20,1);</span>
-<span class="nc" id="L367">        RadioButton radioNewtonMechanics =</span>
+<span class="nc" id="L367">        Label labelSimulationMethod = new Label(&quot;Simulation Method:&quot;);</span>
+<span class="nc" id="L368">        grid.add(labelSimulationMethod,1,4,20,1);</span>
+<span class="nc" id="L369">        RadioButton radioNewtonMechanics =</span>
                 new RadioButton(&quot;Newton Mechanics&quot;);
-<span class="nc" id="L369">        Tooltip tooltipNewtonMechanics = </span>
+<span class="nc" id="L371">        Tooltip tooltipNewtonMechanics = </span>
                 new Tooltip(&quot;Simulation based on Newton Mechanics is faster&quot;);
-<span class="nc" id="L371">        radioNewtonMechanics.setTooltip(tooltipNewtonMechanics);</span>
-<span class="nc" id="L372">        radioNewtonMechanics.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L373">        radioNewtonMechanics.setTooltip(tooltipNewtonMechanics);</span>
+<span class="nc" id="L374">        radioNewtonMechanics.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L375">                solarSystem.setGeneralRelativityFlag(false);</span>
-<span class="nc" id="L376">            }</span>
+<span class="nc" id="L377">                solarSystem.setGeneralRelativityFlag(false);</span>
+<span class="nc" id="L378">            }</span>
         });
-<span class="nc" id="L378">        RadioButton radioGeneralRelativity =</span>
+<span class="nc" id="L380">        RadioButton radioGeneralRelativity =</span>
                 new RadioButton(&quot;General Relativity&quot;);
-<span class="nc" id="L380">        Tooltip tooltipGeneralRelativity = </span>
+<span class="nc" id="L382">        Tooltip tooltipGeneralRelativity = </span>
                 new Tooltip(&quot;Simulation based on General Relativity is even more accurate&quot;);
-<span class="nc" id="L382">        radioGeneralRelativity.setTooltip(tooltipGeneralRelativity);</span>
-<span class="nc" id="L383">        radioGeneralRelativity.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L384">        radioGeneralRelativity.setTooltip(tooltipGeneralRelativity);</span>
+<span class="nc" id="L385">        radioGeneralRelativity.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L386">                solarSystem.setGeneralRelativityFlag(true);</span>
-<span class="nc" id="L387">            }</span>
+<span class="nc" id="L388">                solarSystem.setGeneralRelativityFlag(true);</span>
+<span class="nc" id="L389">            }</span>
         });
-<span class="nc" id="L389">        ToggleGroup simulationMethod = new ToggleGroup();</span>
-<span class="nc" id="L390">        radioNewtonMechanics.setToggleGroup(simulationMethod);</span>
-<span class="nc" id="L391">        radioGeneralRelativity.setToggleGroup(simulationMethod);</span>
-<span class="nc" id="L392">        radioNewtonMechanics.setSelected(true);</span>
-<span class="nc" id="L393">        grid.add(radioNewtonMechanics,1,5,20,1);</span>
-<span class="nc" id="L394">        grid.add(radioGeneralRelativity,1,6,20,1);</span>
+<span class="nc" id="L391">        ToggleGroup simulationMethod = new ToggleGroup();</span>
+<span class="nc" id="L392">        radioNewtonMechanics.setToggleGroup(simulationMethod);</span>
+<span class="nc" id="L393">        radioGeneralRelativity.setToggleGroup(simulationMethod);</span>
+<span class="nc" id="L394">        radioNewtonMechanics.setSelected(true);</span>
+<span class="nc" id="L395">        grid.add(radioNewtonMechanics,1,5,20,1);</span>
+<span class="nc" id="L396">        grid.add(radioGeneralRelativity,1,6,20,1);</span>
         
         // Radio buttons to set visualization of ephemeris/simulation results
         // 1. Show ephemeris only
         // 2. Show simulation only
         // 3. Show ephemeris and simulation
-<span class="nc" id="L400">        Label labelVisualization = new Label(&quot;Visualization:&quot;);</span>
-<span class="nc" id="L401">        grid.add(labelVisualization,1,7,20,1);</span>
-<span class="nc" id="L402">        RadioButton radioEphemerisOnly = </span>
+<span class="nc" id="L402">        Label labelVisualization = new Label(&quot;Visualization:&quot;);</span>
+<span class="nc" id="L403">        grid.add(labelVisualization,1,7,20,1);</span>
+<span class="nc" id="L404">        RadioButton radioEphemerisOnly = </span>
                 new RadioButton(&quot;Ephemeris only&quot;);
-<span class="nc" id="L404">        Tooltip tooltipEphemerisOnly = </span>
+<span class="nc" id="L406">        Tooltip tooltipEphemerisOnly = </span>
                 new Tooltip(&quot;Show ephemeris only; simulation results are not shown&quot;);
-<span class="nc" id="L406">        radioEphemerisOnly.setTooltip(tooltipEphemerisOnly);</span>
-<span class="nc" id="L407">        radioEphemerisOnly.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L408">        radioEphemerisOnly.setTooltip(tooltipEphemerisOnly);</span>
+<span class="nc" id="L409">        radioEphemerisOnly.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L410">                showEphemeris = true;</span>
-<span class="nc" id="L411">                showSimulation = false;</span>
-<span class="nc" id="L412">            }</span>
+<span class="nc" id="L412">                showEphemeris = true;</span>
+<span class="nc" id="L413">                showSimulation = false;</span>
+<span class="nc" id="L414">            }</span>
         });
-<span class="nc" id="L414">        RadioButton radioSimulationOnly = </span>
+<span class="nc" id="L416">        RadioButton radioSimulationOnly = </span>
                 new RadioButton(&quot;Simulation only&quot;);
-<span class="nc" id="L416">        Tooltip tooltipSimulationOnly = </span>
+<span class="nc" id="L418">        Tooltip tooltipSimulationOnly = </span>
                 new Tooltip(&quot;Show simulation only; ephemeris is not shown&quot;);
-<span class="nc" id="L418">        radioSimulationOnly.setTooltip(tooltipSimulationOnly);</span>
-<span class="nc" id="L419">        radioSimulationOnly.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L420">        radioSimulationOnly.setTooltip(tooltipSimulationOnly);</span>
+<span class="nc" id="L421">        radioSimulationOnly.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L422">                showEphemeris = false;</span>
-<span class="nc" id="L423">                showSimulation = true;</span>
-<span class="nc" id="L424">            }</span>
+<span class="nc" id="L424">                showEphemeris = false;</span>
+<span class="nc" id="L425">                showSimulation = true;</span>
+<span class="nc" id="L426">            }</span>
         });
-<span class="nc" id="L426">        RadioButton radioEphemerisAndSimulation = </span>
+<span class="nc" id="L428">        RadioButton radioEphemerisAndSimulation = </span>
                 new RadioButton(&quot;Ephemeris and simulation&quot;);
-<span class="nc" id="L428">        Tooltip tooltipEphemerisAndSimulation = </span>
+<span class="nc" id="L430">        Tooltip tooltipEphemerisAndSimulation = </span>
                 new Tooltip(&quot;Show ephemeris (green) and simulation results (blue)&quot;);
-<span class="nc" id="L430">        radioEphemerisAndSimulation.setTooltip(tooltipEphemerisAndSimulation);</span>
-<span class="nc" id="L431">        radioEphemerisAndSimulation.setOnAction(new EventHandler() {</span>
+<span class="nc" id="L432">        radioEphemerisAndSimulation.setTooltip(tooltipEphemerisAndSimulation);</span>
+<span class="nc" id="L433">        radioEphemerisAndSimulation.setOnAction(new EventHandler() {</span>
             @Override
             public void handle(Event event) {
-<span class="nc" id="L434">                showEphemeris = true;</span>
-<span class="nc" id="L435">                showSimulation = true;</span>
-<span class="nc" id="L436">            }</span>
+<span class="nc" id="L436">                showEphemeris = true;</span>
+<span class="nc" id="L437">                showSimulation = true;</span>
+<span class="nc" id="L438">            }</span>
         });
-<span class="nc" id="L438">        ToggleGroup visualizationMethod = new ToggleGroup();</span>
-<span class="nc" id="L439">        radioEphemerisOnly.setToggleGroup(visualizationMethod);</span>
-<span class="nc" id="L440">        radioSimulationOnly.setToggleGroup(visualizationMethod);</span>
-<span class="nc" id="L441">        radioEphemerisAndSimulation.setToggleGroup(visualizationMethod);</span>
-<span class="nc" id="L442">        radioEphemerisAndSimulation.setSelected(true);</span>
-<span class="nc" id="L443">        grid.add(radioEphemerisOnly,1,8,20,1);</span>
-<span class="nc" id="L444">        grid.add(radioSimulationOnly,1,9,20,1);</span>
-<span class="nc" id="L445">        grid.add(radioEphemerisAndSimulation,1,10,20,1);</span>
+<span class="nc" id="L440">        ToggleGroup visualizationMethod = new ToggleGroup();</span>
+<span class="nc" id="L441">        radioEphemerisOnly.setToggleGroup(visualizationMethod);</span>
+<span class="nc" id="L442">        radioSimulationOnly.setToggleGroup(visualizationMethod);</span>
+<span class="nc" id="L443">        radioEphemerisAndSimulation.setToggleGroup(visualizationMethod);</span>
+<span class="nc" id="L444">        radioEphemerisAndSimulation.setSelected(true);</span>
+<span class="nc" id="L445">        grid.add(radioEphemerisOnly,1,8,20,1);</span>
+<span class="nc" id="L446">        grid.add(radioSimulationOnly,1,9,20,1);</span>
+<span class="nc" id="L447">        grid.add(radioEphemerisAndSimulation,1,10,20,1);</span>
         
         // Check box to select Earth-to-Sun view
-<span class="nc" id="L448">        checkBoxEarthToSunView = new CheckBox(&quot;Set view from Earth to Sun&quot;);</span>
-<span class="nc" id="L449">        checkBoxEarthToSunView.setSelected(earthToSunView);</span>
-<span class="nc" id="L450">        checkBoxEarthToSunView.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
-<span class="nc" id="L451">                new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L450">        checkBoxEarthToSunView = new CheckBox(&quot;Set view from Earth to Sun&quot;);</span>
+<span class="nc" id="L451">        checkBoxEarthToSunView.setSelected(earthToSunView);</span>
+<span class="nc" id="L452">        checkBoxEarthToSunView.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
+<span class="nc" id="L453">                new EventHandler&lt;MouseEvent&gt;() {</span>
             @Override
             public void handle(MouseEvent event) {
-<span class="nc" id="L454">                earthToSunView = checkBoxEarthToSunView.selectedProperty().getValue();</span>
-<span class="nc bnc" id="L455" title="All 2 branches missed.">                if (earthToSunView) {</span>
-<span class="nc" id="L456">                    sliderTopFrontView.setValue(0.0);</span>
-<span class="nc" id="L457">                    checkBoxStepMode.setSelected(true);</span>
-<span class="nc" id="L458">                    stepMode = true;</span>
+<span class="nc" id="L456">                earthToSunView = checkBoxEarthToSunView.selectedProperty().getValue();</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">                if (earthToSunView) {</span>
+<span class="nc" id="L458">                    sliderTopFrontView.setValue(0.0);</span>
+<span class="nc" id="L459">                    checkBoxStepMode.setSelected(true);</span>
+<span class="nc" id="L460">                    stepMode = true;</span>
                 }
                 else {
-<span class="nc" id="L461">                    sliderTopFrontView.setValue(90.0);</span>
+<span class="nc" id="L463">                    sliderTopFrontView.setValue(90.0);</span>
                 }
-<span class="nc" id="L463">            }</span>
+<span class="nc" id="L465">            }</span>
         });
-<span class="nc" id="L465">        Tooltip toolTipEarthToSunView = </span>
+<span class="nc" id="L467">        Tooltip toolTipEarthToSunView = </span>
                 new Tooltip(&quot;Check to set view from surface of the Earth toward the Sun&quot;);
-<span class="nc" id="L467">        checkBoxEarthToSunView.setTooltip(toolTipEarthToSunView);</span>
-<span class="nc" id="L468">        grid.add(checkBoxEarthToSunView,1,11,20,1);</span>
+<span class="nc" id="L469">        checkBoxEarthToSunView.setTooltip(toolTipEarthToSunView);</span>
+<span class="nc" id="L470">        grid.add(checkBoxEarthToSunView,1,11,20,1);</span>
         
         // Check box to indicate whether ruler should be shown
-<span class="nc" id="L471">        checkBoxShowRuler = new CheckBox(&quot;Show ruler&quot;);</span>
-<span class="nc" id="L472">        checkBoxShowRuler.setSelected(showRuler);</span>
-<span class="nc" id="L473">        checkBoxShowRuler.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
-<span class="nc" id="L474">                new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L473">        checkBoxShowRuler = new CheckBox(&quot;Show ruler&quot;);</span>
+<span class="nc" id="L474">        checkBoxShowRuler.setSelected(showRuler);</span>
+<span class="nc" id="L475">        checkBoxShowRuler.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
+<span class="nc" id="L476">                new EventHandler&lt;MouseEvent&gt;() {</span>
             @Override
             public void handle(MouseEvent event) {
-<span class="nc" id="L477">                showRuler = checkBoxShowRuler.selectedProperty().getValue();</span>
-<span class="nc" id="L478">            }</span>
+<span class="nc" id="L479">                showRuler = checkBoxShowRuler.selectedProperty().getValue();</span>
+<span class="nc" id="L480">            }</span>
         });
-<span class="nc" id="L480">        Tooltip toolTipShowRuler = </span>
+<span class="nc" id="L482">        Tooltip toolTipShowRuler = </span>
                 new Tooltip(&quot;Check to show ruler indicating distance or angular diameter&quot;);
-<span class="nc" id="L482">        checkBoxShowRuler.setTooltip(toolTipShowRuler);</span>
-<span class="nc" id="L483">        grid.add(checkBoxShowRuler,1,12,20,1);</span>
+<span class="nc" id="L484">        checkBoxShowRuler.setTooltip(toolTipShowRuler);</span>
+<span class="nc" id="L485">        grid.add(checkBoxShowRuler,1,12,20,1);</span>
         
         // Check box to select step mode
-<span class="nc" id="L486">        checkBoxStepMode = new CheckBox(&quot;Single-step mode&quot;);</span>
-<span class="nc" id="L487">        checkBoxStepMode.setSelected(stepMode);</span>
-<span class="nc" id="L488">        checkBoxStepMode.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
-<span class="nc" id="L489">                new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L488">        checkBoxStepMode = new CheckBox(&quot;Single-step mode&quot;);</span>
+<span class="nc" id="L489">        checkBoxStepMode.setSelected(stepMode);</span>
+<span class="nc" id="L490">        checkBoxStepMode.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
+<span class="nc" id="L491">                new EventHandler&lt;MouseEvent&gt;() {</span>
             @Override
             public void handle(MouseEvent event) {
-<span class="nc" id="L492">                stepMode = checkBoxStepMode.selectedProperty().getValue();</span>
-<span class="nc bnc" id="L493" title="All 2 branches missed.">                if (stepMode) {</span>
-<span class="nc" id="L494">                    pauseSimulation();</span>
+<span class="nc" id="L494">                stepMode = checkBoxStepMode.selectedProperty().getValue();</span>
+<span class="nc bnc" id="L495" title="All 2 branches missed.">                if (stepMode) {</span>
+<span class="nc" id="L496">                    pauseSimulation();</span>
                 }
-<span class="nc" id="L496">            }</span>
+<span class="nc" id="L498">            }</span>
         });
-<span class="nc" id="L498">        Tooltip toolTipStepMode = </span>
+<span class="nc" id="L500">        Tooltip toolTipStepMode = </span>
                 new Tooltip(&quot;Check to simulate in single-step mode and advance 60 s at a time&quot;);
-<span class="nc" id="L500">        checkBoxStepMode.setTooltip(toolTipStepMode);</span>
-<span class="nc" id="L501">        grid.add(checkBoxStepMode,1,13,20,1);</span>
+<span class="nc" id="L502">        checkBoxStepMode.setTooltip(toolTipStepMode);</span>
+<span class="nc" id="L503">        grid.add(checkBoxStepMode,1,13,20,1);</span>
         
         // Slider to set top-bottom view
-<span class="nc" id="L504">        Label labelView = new Label(&quot;View&quot;);</span>
-<span class="nc" id="L505">        grid.add(labelView,1,14,9,1);</span>
-<span class="nc" id="L506">        sliderTopFrontView = new Slider();</span>
-<span class="nc" id="L507">        sliderTopFrontView.setMin(-90);</span>
-<span class="nc" id="L508">        sliderTopFrontView.setMax(90);</span>
-<span class="nc" id="L509">        sliderTopFrontView.setValue(90);</span>
-<span class="nc" id="L510">        sliderTopFrontView.setShowTickLabels(true);</span>
-<span class="nc" id="L511">        sliderTopFrontView.setShowTickMarks(true);</span>
-<span class="nc" id="L512">        sliderTopFrontView.setSnapToTicks(false);</span>
-<span class="nc" id="L513">        sliderTopFrontView.setMajorTickUnit(20);</span>
-<span class="nc" id="L514">        sliderTopFrontView.setMinorTickCount(10);</span>
-<span class="nc" id="L515">        sliderTopFrontView.setBlockIncrement(10);</span>
-<span class="nc" id="L516">        grid.add(sliderTopFrontView,1,15,28,1);</span>
+<span class="nc" id="L506">        Label labelView = new Label(&quot;View&quot;);</span>
+<span class="nc" id="L507">        grid.add(labelView,1,14,9,1);</span>
+<span class="nc" id="L508">        sliderTopFrontView = new Slider();</span>
+<span class="nc" id="L509">        sliderTopFrontView.setMin(-90);</span>
+<span class="nc" id="L510">        sliderTopFrontView.setMax(90);</span>
+<span class="nc" id="L511">        sliderTopFrontView.setValue(90);</span>
+<span class="nc" id="L512">        sliderTopFrontView.setShowTickLabels(true);</span>
+<span class="nc" id="L513">        sliderTopFrontView.setShowTickMarks(true);</span>
+<span class="nc" id="L514">        sliderTopFrontView.setSnapToTicks(false);</span>
+<span class="nc" id="L515">        sliderTopFrontView.setMajorTickUnit(20);</span>
+<span class="nc" id="L516">        sliderTopFrontView.setMinorTickCount(10);</span>
+<span class="nc" id="L517">        sliderTopFrontView.setBlockIncrement(10);</span>
+<span class="nc" id="L518">        grid.add(sliderTopFrontView,1,15,28,1);</span>
         
         // Slider to set zoom of view
-<span class="nc" id="L519">        Label labelZoom = new Label(&quot;Zoom&quot;);</span>
-<span class="nc" id="L520">        grid.add(labelZoom,1,16,9,1);</span>
-<span class="nc" id="L521">        sliderZoomView = new Slider();</span>
-<span class="nc" id="L522">        sliderZoomView.setMin(0);</span>
-<span class="nc" id="L523">        sliderZoomView.setMax(100);</span>
-<span class="nc" id="L524">        sliderZoomView.setValue(30);</span>
-<span class="nc" id="L525">        sliderZoomView.setShowTickLabels(true);</span>
-<span class="nc" id="L526">        sliderZoomView.setShowTickMarks(true);</span>
-<span class="nc" id="L527">        sliderZoomView.setSnapToTicks(false);</span>
-<span class="nc" id="L528">        sliderZoomView.setMajorTickUnit(10);</span>
-<span class="nc" id="L529">        sliderZoomView.setMinorTickCount(10);</span>
-<span class="nc" id="L530">        sliderZoomView.setBlockIncrement(10);</span>
-<span class="nc" id="L531">        grid.add(sliderZoomView,1,17,28,1);</span>
+<span class="nc" id="L521">        Label labelZoom = new Label(&quot;Zoom&quot;);</span>
+<span class="nc" id="L522">        grid.add(labelZoom,1,16,9,1);</span>
+<span class="nc" id="L523">        sliderZoomView = new Slider();</span>
+<span class="nc" id="L524">        sliderZoomView.setMin(0);</span>
+<span class="nc" id="L525">        sliderZoomView.setMax(100);</span>
+<span class="nc" id="L526">        sliderZoomView.setValue(30);</span>
+<span class="nc" id="L527">        sliderZoomView.setShowTickLabels(true);</span>
+<span class="nc" id="L528">        sliderZoomView.setShowTickMarks(true);</span>
+<span class="nc" id="L529">        sliderZoomView.setSnapToTicks(false);</span>
+<span class="nc" id="L530">        sliderZoomView.setMajorTickUnit(10);</span>
+<span class="nc" id="L531">        sliderZoomView.setMinorTickCount(10);</span>
+<span class="nc" id="L532">        sliderZoomView.setBlockIncrement(10);</span>
+<span class="nc" id="L533">        grid.add(sliderZoomView,1,17,28,1);</span>
         
         // Slider to set simulation speed
-<span class="nc" id="L534">        Label labelSpeed = new Label(&quot;Speed&quot;);</span>
-<span class="nc" id="L535">        grid.add(labelSpeed,1,18,9,1);</span>
-<span class="nc" id="L536">        sliderSimulationSpeed = new Slider();</span>
-<span class="nc" id="L537">        sliderSimulationSpeed.setMin(0);</span>
-<span class="nc" id="L538">        sliderSimulationSpeed.setMax(100);</span>
-<span class="nc" id="L539">        sliderSimulationSpeed.setValue(50);</span>
-<span class="nc" id="L540">        sliderSimulationSpeed.setShowTickLabels(true);</span>
-<span class="nc" id="L541">        sliderSimulationSpeed.setShowTickMarks(true);</span>
-<span class="nc" id="L542">        sliderSimulationSpeed.setSnapToTicks(false);</span>
-<span class="nc" id="L543">        sliderSimulationSpeed.setMajorTickUnit(10);</span>
-<span class="nc" id="L544">        sliderSimulationSpeed.setMinorTickCount(10);</span>
-<span class="nc" id="L545">        sliderSimulationSpeed.setBlockIncrement(10);</span>
-<span class="nc" id="L546">        grid.add(sliderSimulationSpeed,1,19,28,1);</span>
+<span class="nc" id="L536">        Label labelSpeed = new Label(&quot;Speed&quot;);</span>
+<span class="nc" id="L537">        grid.add(labelSpeed,1,18,9,1);</span>
+<span class="nc" id="L538">        sliderSimulationSpeed = new Slider();</span>
+<span class="nc" id="L539">        sliderSimulationSpeed.setMin(0);</span>
+<span class="nc" id="L540">        sliderSimulationSpeed.setMax(100);</span>
+<span class="nc" id="L541">        sliderSimulationSpeed.setValue(50);</span>
+<span class="nc" id="L542">        sliderSimulationSpeed.setShowTickLabels(true);</span>
+<span class="nc" id="L543">        sliderSimulationSpeed.setShowTickMarks(true);</span>
+<span class="nc" id="L544">        sliderSimulationSpeed.setSnapToTicks(false);</span>
+<span class="nc" id="L545">        sliderSimulationSpeed.setMajorTickUnit(10);</span>
+<span class="nc" id="L546">        sliderSimulationSpeed.setMinorTickCount(10);</span>
+<span class="nc" id="L547">        sliderSimulationSpeed.setBlockIncrement(10);</span>
+<span class="nc" id="L548">        grid.add(sliderSimulationSpeed,1,19,28,1);</span>
         
         // Define circles for each body of the Solar System
         // Functions as storage for position, radius, and color of circles
         // representing the bodies of the Solar System.
-<span class="nc" id="L551">        bodies = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L552">        bodiesShown = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L553">        createCircle(&quot;sun&quot;, 10, Color.YELLOW);</span>
-<span class="nc" id="L554">        createCircle(&quot;mercury&quot;, 3, Color.ORANGE);</span>
-<span class="nc" id="L555">        createCircle(&quot;venus&quot;, 5, Color.BROWN);</span>
-<span class="nc" id="L556">        createCircle(&quot;moon&quot;, 3, Color.GRAY);</span>
-<span class="nc" id="L557">        createCircle(&quot;earth&quot;, 5, Color.AQUAMARINE);</span>
-<span class="nc" id="L558">        createCircle(&quot;mars&quot;, 4, Color.RED);</span>
-<span class="nc" id="L559">        createCircle(&quot;jupiter&quot;, 10, Color.ROSYBROWN);</span>
-<span class="nc" id="L560">        createCircle(&quot;saturn&quot;, 9, Color.ORANGE);</span>
-<span class="nc" id="L561">        createCircle(&quot;uranus&quot;, 7, Color.LIGHTBLUE);</span>
-<span class="nc" id="L562">        createCircle(&quot;neptune&quot;, 7, Color.BLUE);</span>
-<span class="nc" id="L563">        createCircle(&quot;pluto&quot;, 3, Color.LIGHTBLUE);</span>
-<span class="nc" id="L564">        createCircle(&quot;eris&quot;, 3, Color.LIGHTSALMON);</span>
-<span class="nc" id="L565">        createCircle(&quot;chiron&quot;, 4, Color.CRIMSON);</span>
-<span class="nc" id="L566">        createCircle(&quot;ceres&quot;, 3, Color.ORANGE);</span>
-<span class="nc" id="L567">        createCircle(&quot;pallas&quot;, 3, Color.LIGHTGREEN);</span>
-<span class="nc" id="L568">        createCircle(&quot;juno&quot;, 3, Color.ROSYBROWN);</span>
-<span class="nc" id="L569">        createCircle(&quot;vesta&quot;, 3, Color.YELLOW);</span>
-<span class="nc" id="L570">        createCircle(&quot;eros&quot;, 3, Color.LIGHTBLUE);</span>
-<span class="nc" id="L571">        createCircle(&quot;halley&quot;, 7, Color.YELLOW);</span>
-<span class="nc" id="L572">        createCircle(&quot;encke&quot;, 6, Color.LIGHTGREEN);</span>
-<span class="nc" id="L573">        createCircle(&quot;p67cg&quot;, 5, Color.ORANGE);</span>
-<span class="nc" id="L574">        createCircle(&quot;halebopp&quot;, 5, Color.LIGHTBLUE);</span>
-<span class="nc" id="L575">        createCircle(&quot;shoelevy9&quot;, 5, Color.PINK);</span>
-<span class="nc" id="L576">        createCircle(&quot;florence&quot;, 3, Color.LIGHTGREEN);</span>
+<span class="nc" id="L553">        bodies = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L554">        bodiesShown = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L555">        createCircle(&quot;sun&quot;, 10, Color.YELLOW);</span>
+<span class="nc" id="L556">        createCircle(&quot;mercury&quot;, 3, Color.ORANGE);</span>
+<span class="nc" id="L557">        createCircle(&quot;venus&quot;, 5, Color.BROWN);</span>
+<span class="nc" id="L558">        createCircle(&quot;moon&quot;, 3, Color.GRAY);</span>
+<span class="nc" id="L559">        createCircle(&quot;earth&quot;, 5, Color.AQUAMARINE);</span>
+<span class="nc" id="L560">        createCircle(&quot;mars&quot;, 4, Color.RED);</span>
+<span class="nc" id="L561">        createCircle(&quot;jupiter&quot;, 10, Color.ROSYBROWN);</span>
+<span class="nc" id="L562">        createCircle(&quot;saturn&quot;, 9, Color.ORANGE);</span>
+<span class="nc" id="L563">        createCircle(&quot;uranus&quot;, 7, Color.LIGHTBLUE);</span>
+<span class="nc" id="L564">        createCircle(&quot;neptune&quot;, 7, Color.BLUE);</span>
+<span class="nc" id="L565">        createCircle(&quot;pluto&quot;, 3, Color.LIGHTBLUE);</span>
+<span class="nc" id="L566">        createCircle(&quot;eris&quot;, 3, Color.LIGHTSALMON);</span>
+<span class="nc" id="L567">        createCircle(&quot;chiron&quot;, 4, Color.CRIMSON);</span>
+<span class="nc" id="L568">        createCircle(&quot;ceres&quot;, 3, Color.ORANGE);</span>
+<span class="nc" id="L569">        createCircle(&quot;pallas&quot;, 3, Color.LIGHTGREEN);</span>
+<span class="nc" id="L570">        createCircle(&quot;juno&quot;, 3, Color.ROSYBROWN);</span>
+<span class="nc" id="L571">        createCircle(&quot;vesta&quot;, 3, Color.YELLOW);</span>
+<span class="nc" id="L572">        createCircle(&quot;eros&quot;, 3, Color.LIGHTBLUE);</span>
+<span class="nc" id="L573">        createCircle(&quot;halley&quot;, 7, Color.YELLOW);</span>
+<span class="nc" id="L574">        createCircle(&quot;encke&quot;, 6, Color.LIGHTGREEN);</span>
+<span class="nc" id="L575">        createCircle(&quot;p67cg&quot;, 5, Color.ORANGE);</span>
+<span class="nc" id="L576">        createCircle(&quot;halebopp&quot;, 5, Color.LIGHTBLUE);</span>
+<span class="nc" id="L577">        createCircle(&quot;shoelevy9&quot;, 5, Color.PINK);</span>
+<span class="nc" id="L578">        createCircle(&quot;florence&quot;, 3, Color.LIGHTGREEN);</span>
 
         // Define check box for each body of the solar system
-<span class="nc" id="L579">        int hor = 1;</span>
-<span class="nc" id="L580">        int ver = 20;</span>
-<span class="nc" id="L581">        int horsize = 10;</span>
-<span class="nc" id="L582">        int versize = 1;</span>
-<span class="nc" id="L583">        grid.add(createCheckBox(&quot;sun&quot;, &quot;Sun&quot;,</span>
+<span class="nc" id="L581">        int hor = 1;</span>
+<span class="nc" id="L582">        int ver = 20;</span>
+<span class="nc" id="L583">        int horsize = 10;</span>
+<span class="nc" id="L584">        int versize = 1;</span>
+<span class="nc" id="L585">        grid.add(createCheckBox(&quot;sun&quot;, &quot;Sun&quot;,</span>
                 &quot;The Sun is in fact a star and is the largest object in our &quot;
                 + &quot;Solar System.&quot;,
                 true), hor, ver++, horsize, versize);
-<span class="nc" id="L587">        grid.add(createCheckBox(&quot;mercury&quot;, &quot;Mercury&quot;,</span>
+<span class="nc" id="L589">        grid.add(createCheckBox(&quot;mercury&quot;, &quot;Mercury&quot;,</span>
                 &quot;Mercury is the smallest and innermost planet. &quot;
                 + &quot;It orbits around the Sun in 88 days.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L591">        grid.add(createCheckBox(&quot;venus&quot;, &quot;Venus&quot;,</span>
+<span class="nc" id="L593">        grid.add(createCheckBox(&quot;venus&quot;, &quot;Venus&quot;,</span>
                 &quot;Venus is the second planet from the Sun and is of similar size &quot;
                 + &quot; as the Earth.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L595">        grid.add(createCheckBox(&quot;earth&quot;, &quot;Earth&quot;,</span>
+<span class="nc" id="L597">        grid.add(createCheckBox(&quot;earth&quot;, &quot;Earth&quot;,</span>
                 &quot;Earth is the third planet from the Sun and the only &quot;
                 + &quot;planet known to harbor life.&quot;,
                 true), hor, ver++, horsize, versize);
-<span class="nc" id="L599">        grid.add(createCheckBox(&quot;moon&quot;, &quot;Moon&quot;,</span>
+<span class="nc" id="L601">        grid.add(createCheckBox(&quot;moon&quot;, &quot;Moon&quot;,</span>
                 &quot;Zoom in to see the moon orbiting around the Earth.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L602">        grid.add(createCheckBox(&quot;mars&quot;, &quot;Mars&quot;,</span>
+<span class="nc" id="L604">        grid.add(createCheckBox(&quot;mars&quot;, &quot;Mars&quot;,</span>
                 &quot;Mars is the second-smallest planet and is also known as the Red Planet.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L605">        grid.add(createCheckBox(&quot;jupiter&quot;, &quot;Jupiter&quot;,</span>
+<span class="nc" id="L607">        grid.add(createCheckBox(&quot;jupiter&quot;, &quot;Jupiter&quot;,</span>
                 &quot;Jupiter is the largest planet in the Solar System. &quot;
                 + &quot;Galileo Galilei discovered the four largest moons in 1610.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L609">        grid.add(createCheckBox(&quot;saturn&quot;, &quot;Saturn&quot;,</span>
+<span class="nc" id="L611">        grid.add(createCheckBox(&quot;saturn&quot;, &quot;Saturn&quot;,</span>
                 &quot;Saturn is the second-largest planet and is famous for his rings.&quot;,
                 // &quot;Visited by Pioneer 11, Voyager 1 and 2, and Cassini-Huygens.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L613">        grid.add(createCheckBox(&quot;uranus&quot;, &quot;Uranus&quot;,</span>
+<span class="nc" id="L615">        grid.add(createCheckBox(&quot;uranus&quot;, &quot;Uranus&quot;,</span>
                 &quot;Uranus was discovered in 1781 by William Hershel. &quot;
                 + &quot;Visited by Voyager 2 in 1986.&quot;, false), hor, ver++, horsize, versize);
-<span class="nc" id="L616">        grid.add(createCheckBox(&quot;neptune&quot;, &quot;Neptune&quot;,</span>
+<span class="nc" id="L618">        grid.add(createCheckBox(&quot;neptune&quot;, &quot;Neptune&quot;,</span>
                 &quot;Neptune was discovered in 1846. &quot;
                 + &quot;Visited by Voyager 2 on 25 August 1989.&quot;, false), hor, ver++, horsize, versize);
-<span class="nc" id="L619">        hor = hor + 9;</span>
-<span class="nc" id="L620">        ver = 20;</span>
-<span class="nc" id="L621">        grid.add(createCheckBox(&quot;pluto&quot;, &quot;Pluto&quot;,</span>
+<span class="nc" id="L621">        hor = hor + 9;</span>
+<span class="nc" id="L622">        ver = 20;</span>
+<span class="nc" id="L623">        grid.add(createCheckBox(&quot;pluto&quot;, &quot;Pluto&quot;,</span>
                 &quot;Pluto was discovered in 1930 and was considered the &quot;
                 + &quot;ninth planet until 2006. Visited by New Horizons on 14 July 2015.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L625">        grid.add(createCheckBox(&quot;eris&quot;, &quot;Eris&quot;,</span>
+<span class="nc" id="L627">        grid.add(createCheckBox(&quot;eris&quot;, &quot;Eris&quot;,</span>
                 &quot;Eris is the most massive and second-largest dwarf planet known &quot;
                 + &quot;in the Solar System.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L629">        grid.add(createCheckBox(&quot;chiron&quot;, &quot;Chiron&quot;,</span>
+<span class="nc" id="L631">        grid.add(createCheckBox(&quot;chiron&quot;, &quot;Chiron&quot;,</span>
                 &quot;Chiron was discovered in 1977 and orbits between Saturn and Uranus. &quot;
                 + &quot;It is the first object of the Centaur class&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L633">        grid.add(createCheckBox(&quot;ceres&quot;, &quot;Ceres&quot;,</span>
+<span class="nc" id="L635">        grid.add(createCheckBox(&quot;ceres&quot;, &quot;Ceres&quot;,</span>
                 &quot;Ceres is a dwarf planet and the largest object in the asteroid belt.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L636">        grid.add(createCheckBox(&quot;pallas&quot;, &quot;2 Pallas&quot;,</span>
+<span class="nc" id="L638">        grid.add(createCheckBox(&quot;pallas&quot;, &quot;2 Pallas&quot;,</span>
                 &quot;Pallas was the second asteroid discovered after Ceres and &quot;
                 + &quot;the third-most-massive asteroid after Vesta&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L640">        grid.add(createCheckBox(&quot;juno&quot;, &quot;3 Juno&quot;,</span>
+<span class="nc" id="L642">        grid.add(createCheckBox(&quot;juno&quot;, &quot;3 Juno&quot;,</span>
                 &quot;Juno was the third asteroid discovered and is the 11th largest asteroid&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L643">        grid.add(createCheckBox(&quot;vesta&quot;, &quot;4 Vesta&quot;,</span>
+<span class="nc" id="L645">        grid.add(createCheckBox(&quot;vesta&quot;, &quot;4 Vesta&quot;,</span>
                 &quot;Vesta is the second-largest body in the asteroid belt after Ceres&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L646">        grid.add(createCheckBox(&quot;eros&quot;, &quot;433 Eros&quot;,</span>
+<span class="nc" id="L648">        grid.add(createCheckBox(&quot;eros&quot;, &quot;433 Eros&quot;,</span>
                 &quot;Eros is a near-Earth astroid. NASA spacecraft NEAR Shoemaker &quot;
                 + &quot;entered orit around Eros in 2000, and landed in 2001.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L650">        grid.add(createCheckBox(&quot;florence&quot;, &quot;Florence&quot;,</span>
+<span class="nc" id="L652">        grid.add(createCheckBox(&quot;florence&quot;, &quot;Florence&quot;,</span>
                 &quot;Asteroid 3122 Florence approached Earth within 0.047 au on &quot;
                 + &quot;1 September 2017.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L654">        hor = hor + 9;</span>
-<span class="nc" id="L655">        ver = 20;</span>
-<span class="nc" id="L656">        grid.add(createCheckBox(&quot;halley&quot;, &quot;1P/Halley&quot;,</span>
+<span class="nc" id="L656">        hor = hor + 9;</span>
+<span class="nc" id="L657">        ver = 20;</span>
+<span class="nc" id="L658">        grid.add(createCheckBox(&quot;halley&quot;, &quot;1P/Halley&quot;,</span>
                 &quot;Halley's Comet has a period of 76 years. Last perihelion 9 Feb 1986. &quot;
                 + &quot;Next perihelion 28 July 2061.&quot;, false), hor, ver++, horsize, versize);
-<span class="nc" id="L659">        grid.add(createCheckBox(&quot;encke&quot;, &quot;2P/Encke&quot;,</span>
+<span class="nc" id="L661">        grid.add(createCheckBox(&quot;encke&quot;, &quot;2P/Encke&quot;,</span>
                 &quot;P2/Encke was the first periodic comet discovered after &quot;
                 + &quot;Halley's Comet.&quot;, false), hor, ver++, horsize, versize);
-<span class="nc" id="L662">        grid.add(createCheckBox(&quot;p67cg&quot;, &quot;67P/Ch-Ge&quot;,</span>
+<span class="nc" id="L664">        grid.add(createCheckBox(&quot;p67cg&quot;, &quot;67P/Ch-Ge&quot;,</span>
                 &quot;67P/Churyumov-Gerasimenko was visited &quot;
                 + &quot;by ESA's Rosetta mission on 6 August 2014.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L666">        grid.add(createCheckBox(&quot;shoelevy9&quot;, &quot;Shoe-Lev 9&quot;,</span>
+<span class="nc" id="L668">        grid.add(createCheckBox(&quot;shoelevy9&quot;, &quot;Shoe-Lev 9&quot;,</span>
                 &quot;Shoemaker-Levy 9 collided with Jupiter in July 1994.&quot;,
                 false), hor, ver++, horsize, versize);
-<span class="nc" id="L669">        grid.add(createCheckBox(&quot;halebopp&quot;, &quot;Hale-Bopp&quot;,</span>
+<span class="nc" id="L671">        grid.add(createCheckBox(&quot;halebopp&quot;, &quot;Hale-Bopp&quot;,</span>
                 &quot;Hale-Bopp passed perihelion on 1 April 1997 and &quot;
                 + &quot;was visible to the naked eye for 18 months.&quot;,
                 false), hor, ver++, horsize, versize);
         
+        // Set font for all labeled objects
+<span class="nc bnc" id="L677" title="All 2 branches missed.">        for (Node n : grid.getChildren()) {</span>
+<span class="nc bnc" id="L678" title="All 2 branches missed.">            if (n instanceof Labeled) {</span>
+<span class="nc" id="L679">                ((Labeled) n).setFont(new Font(&quot;Arial&quot;,13));</span>
+            }
+<span class="nc" id="L681">        }</span>
+
         // Define title and assign the scene for main window
-<span class="nc" id="L675">        primaryStage.setTitle(&quot;Solar System Simulator&quot;);</span>
-<span class="nc" id="L676">        primaryStage.setScene(scene);</span>
-<span class="nc" id="L677">        primaryStage.show();</span>
+<span class="nc" id="L684">        primaryStage.setTitle(&quot;Solar System Simulator&quot;);</span>
+<span class="nc" id="L685">        primaryStage.setScene(scene);</span>
+<span class="nc" id="L686">        primaryStage.show();</span>
         
         // Start thread to simulate the Solar System
-<span class="nc" id="L680">        threadSimulate = new Thread(new SimRunnable());</span>
-<span class="nc" id="L681">        threadSimulate.start();</span>
+<span class="nc" id="L689">        threadSimulate = new Thread(new SimRunnable());</span>
+<span class="nc" id="L690">        threadSimulate.start();</span>
         
         // Start animation timer to draw the Solar System each 20 ms
-<span class="nc" id="L684">        animationTimer = new DrawAnimationTimer();</span>
-<span class="nc" id="L685">        animationTimer.start();</span>
-<span class="nc" id="L686">    }</span>
+<span class="nc" id="L693">        animationTimer = new DrawAnimationTimer();</span>
+<span class="nc" id="L694">        animationTimer.start();</span>
+<span class="nc" id="L695">    }</span>
     
     private synchronized void initializeSimulation() {
         // Simulation is not running
-<span class="nc" id="L690">        simulationIsRunning = false;</span>
-<span class="nc" id="L691">        simulationIsRunningFast = false;</span>
-<span class="nc" id="L692">        simulationIsRunningForward = true;</span>
+<span class="nc" id="L699">        simulationIsRunning = false;</span>
+<span class="nc" id="L700">        simulationIsRunningFast = false;</span>
+<span class="nc" id="L701">        simulationIsRunningForward = true;</span>
         
         // Initialize simulation
         try {
-<span class="nc" id="L696">            solarSystem.initializeSimulation(dateTimeSelector.getDateTime());</span>
-<span class="nc" id="L697">        } catch (SolarSystemException ex) {</span>
-<span class="nc" id="L698">            showMessage(&quot;Error&quot;,ex.getMessage());</span>
-<span class="nc" id="L699">        }</span>
-<span class="nc" id="L700">    }</span>
+<span class="nc" id="L705">            solarSystem.initializeSimulation(dateTimeSelector.getDateTime());</span>
+<span class="nc" id="L706">        } catch (SolarSystemException ex) {</span>
+<span class="nc" id="L707">            showMessage(&quot;Error&quot;,ex.getMessage());</span>
+<span class="nc" id="L708">        }</span>
+<span class="nc" id="L709">    }</span>
     
     private synchronized void startSimulationFastBackward() {
-<span class="nc" id="L703">        simulationIsRunning = true;</span>
-<span class="nc" id="L704">        simulationIsRunningStepMode = false;</span>
-<span class="nc" id="L705">        simulationIsRunningFast = true;</span>
-<span class="nc" id="L706">        simulationIsRunningForward = false;</span>
+<span class="nc" id="L712">        simulationIsRunning = true;</span>
+<span class="nc" id="L713">        simulationIsRunningStepMode = false;</span>
+<span class="nc" id="L714">        simulationIsRunningFast = true;</span>
+<span class="nc" id="L715">        simulationIsRunningForward = false;</span>
         // Start thread to simulate solar system
         // threadSimulate = new Thread(new SimRunnable());
         // threadSimulate.start();
-<span class="nc" id="L710">    }</span>
+<span class="nc" id="L719">    }</span>
     
     private synchronized void startSimulationBackward() {
-<span class="nc" id="L713">        simulationIsRunning = true;</span>
-<span class="nc" id="L714">        simulationIsRunningStepMode = false;</span>
-<span class="nc" id="L715">        simulationIsRunningFast = false;</span>
-<span class="nc" id="L716">        simulationIsRunningForward = false;</span>
+<span class="nc" id="L722">        simulationIsRunning = true;</span>
+<span class="nc" id="L723">        simulationIsRunningStepMode = false;</span>
+<span class="nc" id="L724">        simulationIsRunningFast = false;</span>
+<span class="nc" id="L725">        simulationIsRunningForward = false;</span>
         // Start thread to simulate solar system
         // threadSimulate = new Thread(new SimRunnable());
         // threadSimulate.start();
-<span class="nc" id="L720">    }</span>
+<span class="nc" id="L729">    }</span>
     
     private synchronized void startSimulationStepModeBackward() {
-<span class="nc" id="L723">        simulationIsRunning = true;</span>
-<span class="nc" id="L724">        simulationIsRunningStepMode = true;</span>
-<span class="nc" id="L725">        simulationIsRunningFast = false;</span>
-<span class="nc" id="L726">        simulationIsRunningForward = false;</span>
-<span class="nc" id="L727">    }</span>
+<span class="nc" id="L732">        simulationIsRunning = true;</span>
+<span class="nc" id="L733">        simulationIsRunningStepMode = true;</span>
+<span class="nc" id="L734">        simulationIsRunningFast = false;</span>
+<span class="nc" id="L735">        simulationIsRunningForward = false;</span>
+<span class="nc" id="L736">    }</span>
     
     private synchronized void smallStepBackward() {
         // Pause simulation when running
-<span class="nc" id="L731">        pauseSimulation();</span>
+<span class="nc" id="L740">        pauseSimulation();</span>
         
         // Advance 1 minute backward
-<span class="nc" id="L734">        solarSystem.advanceSimulationSingleStep(-60);</span>
+<span class="nc" id="L743">        solarSystem.advanceSimulationSingleStep(-60);</span>
         
         // Update simulation date/time shown in date/time selector
-<span class="nc" id="L737">        dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
-<span class="nc" id="L738">    }</span>
+<span class="nc" id="L746">        dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
+<span class="nc" id="L747">    }</span>
     
     private synchronized void smallStepForward() {
         // Pause simulation when running
-<span class="nc" id="L742">        pauseSimulation();</span>
+<span class="nc" id="L751">        pauseSimulation();</span>
         
         // Advance 1 minute forward
-<span class="nc" id="L745">        solarSystem.advanceSimulationSingleStep(60);</span>
+<span class="nc" id="L754">        solarSystem.advanceSimulationSingleStep(60);</span>
         
         // Update simulation date/time shown in date/time selector
-<span class="nc" id="L748">        dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
-<span class="nc" id="L749">    }</span>
+<span class="nc" id="L757">        dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
+<span class="nc" id="L758">    }</span>
     
     private synchronized void startSimulationStepModeForward() {
-<span class="nc" id="L752">        simulationIsRunning = true;</span>
-<span class="nc" id="L753">        simulationIsRunningStepMode = true;</span>
-<span class="nc" id="L754">        simulationIsRunningFast = false;</span>
-<span class="nc" id="L755">        simulationIsRunningForward = true;</span>
-<span class="nc" id="L756">    }</span>
+<span class="nc" id="L761">        simulationIsRunning = true;</span>
+<span class="nc" id="L762">        simulationIsRunningStepMode = true;</span>
+<span class="nc" id="L763">        simulationIsRunningFast = false;</span>
+<span class="nc" id="L764">        simulationIsRunningForward = true;</span>
+<span class="nc" id="L765">    }</span>
     
     private synchronized void startSimulationForward() {
-<span class="nc" id="L759">        simulationIsRunning = true;</span>
-<span class="nc" id="L760">        simulationIsRunningStepMode = false;</span>
-<span class="nc" id="L761">        simulationIsRunningFast = false;</span>
-<span class="nc" id="L762">        simulationIsRunningForward = true;</span>
+<span class="nc" id="L768">        simulationIsRunning = true;</span>
+<span class="nc" id="L769">        simulationIsRunningStepMode = false;</span>
+<span class="nc" id="L770">        simulationIsRunningFast = false;</span>
+<span class="nc" id="L771">        simulationIsRunningForward = true;</span>
         // Start thread to simulate solar system
         // threadSimulate = new Thread(new SimRunnable());
         // threadSimulate.start();
-<span class="nc" id="L766">    }</span>
+<span class="nc" id="L775">    }</span>
     
     private synchronized void startSimulationFastForward() {
-<span class="nc" id="L769">        simulationIsRunning = true;</span>
-<span class="nc" id="L770">        simulationIsRunningStepMode = false;</span>
-<span class="nc" id="L771">        simulationIsRunningFast = true;</span>
-<span class="nc" id="L772">        simulationIsRunningForward = true;</span>
+<span class="nc" id="L778">        simulationIsRunning = true;</span>
+<span class="nc" id="L779">        simulationIsRunningStepMode = false;</span>
+<span class="nc" id="L780">        simulationIsRunningFast = true;</span>
+<span class="nc" id="L781">        simulationIsRunningForward = true;</span>
         // Start thread to simulate solar system
         // threadSimulate = new Thread(new SimRunnable());
         // threadSimulate.start();
-<span class="nc" id="L776">    }</span>
+<span class="nc" id="L785">    }</span>
     
     private synchronized void pauseSimulation() {
-<span class="nc" id="L779">        simulationIsRunning = false;</span>
-<span class="nc" id="L780">        simulationIsRunningFast = false;</span>
-<span class="nc" id="L781">        simulationIsRunningForward = true;</span>
+<span class="nc" id="L788">        simulationIsRunning = false;</span>
+<span class="nc" id="L789">        simulationIsRunningFast = false;</span>
+<span class="nc" id="L790">        simulationIsRunningForward = true;</span>
         // Stop thread to simulate solar system
         // threadSimulate = new Thread(new SimRunnable());
         // threadSimulate.interrupt();
-<span class="nc" id="L785">    }</span>
+<span class="nc" id="L794">    }</span>
     
     private synchronized boolean simulationIsRunning() {
-<span class="nc" id="L788">        return simulationIsRunning;</span>
+<span class="nc" id="L797">        return simulationIsRunning;</span>
     }
     
     private synchronized void loadSimulationState(Stage stage) {
-<span class="nc bnc" id="L792" title="All 2 branches missed.">        if (simulationIsRunning()) {</span>
-<span class="nc" id="L793">            pauseSimulation();</span>
+<span class="nc bnc" id="L801" title="All 2 branches missed.">        if (simulationIsRunning()) {</span>
+<span class="nc" id="L802">            pauseSimulation();</span>
         }
-<span class="nc" id="L795">        FileChooser fileChooser = new FileChooser();</span>
-<span class="nc" id="L796">        File file = fileChooser.showOpenDialog(stage);</span>
-<span class="nc bnc" id="L797" title="All 2 branches missed.">        if (file != null) {</span>
-<span class="nc" id="L798">            simulationLock.lock();</span>
+<span class="nc" id="L804">        FileChooser fileChooser = new FileChooser();</span>
+<span class="nc" id="L805">        File file = fileChooser.showOpenDialog(stage);</span>
+<span class="nc bnc" id="L806" title="All 2 branches missed.">        if (file != null) {</span>
+<span class="nc" id="L807">            simulationLock.lock();</span>
             try {
-<span class="nc bnc" id="L800" title="All 2 branches missed.">                if (simulationIsBeingDrawn) {</span>
-<span class="nc" id="L801">                    simulationMayAdvance.await();</span>
+<span class="nc bnc" id="L809" title="All 2 branches missed.">                if (simulationIsBeingDrawn) {</span>
+<span class="nc" id="L810">                    simulationMayAdvance.await();</span>
                 }
-<span class="nc" id="L803">                simulationIsBeingUpdated = true;</span>
+<span class="nc" id="L812">                simulationIsBeingUpdated = true;</span>
                 try {
-<span class="nc" id="L805">                    solarSystem.loadSimulationState(file);</span>
-<span class="nc" id="L806">                } catch (SolarSystemException ex) {</span>
-<span class="nc" id="L807">                    showMessage(&quot;Error&quot;,ex.getMessage());</span>
-<span class="nc" id="L808">                }</span>
-<span class="nc" id="L809">                simulationIsBeingUpdated = false;</span>
-<span class="nc" id="L810">                simulationMayBeDrawn.signal();  </span>
-<span class="nc" id="L811">            } catch (InterruptedException ex) {</span>
-<span class="nc" id="L812">                    Thread.currentThread().interrupt();</span>
+<span class="nc" id="L814">                    solarSystem.loadSimulationState(file);</span>
+<span class="nc" id="L815">                } catch (SolarSystemException ex) {</span>
+<span class="nc" id="L816">                    showMessage(&quot;Error&quot;,ex.getMessage());</span>
+<span class="nc" id="L817">                }</span>
+<span class="nc" id="L818">                simulationIsBeingUpdated = false;</span>
+<span class="nc" id="L819">                simulationMayBeDrawn.signal();  </span>
+<span class="nc" id="L820">            } catch (InterruptedException ex) {</span>
+<span class="nc" id="L821">                    Thread.currentThread().interrupt();</span>
             } finally {
-<span class="nc" id="L814">                simulationLock.unlock();</span>
-<span class="nc" id="L815">            }</span>
+<span class="nc" id="L823">                simulationLock.unlock();</span>
+<span class="nc" id="L824">            }</span>
         }
 
         // Update simulation date/time shown in date/time selector
-<span class="nc" id="L819">        dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
-<span class="nc" id="L820">    }</span>
+<span class="nc" id="L828">        dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
+<span class="nc" id="L829">    }</span>
     
     private synchronized void saveSimulationState(Stage stage) {
-<span class="nc bnc" id="L823" title="All 2 branches missed.">        if (simulationIsRunning()) {</span>
-<span class="nc" id="L824">            pauseSimulation();</span>
+<span class="nc bnc" id="L832" title="All 2 branches missed.">        if (simulationIsRunning()) {</span>
+<span class="nc" id="L833">            pauseSimulation();</span>
         }
-<span class="nc" id="L826">        String dateTimeString = dateTimeSelector.getText();</span>
-<span class="nc" id="L827">        dateTimeString = dateTimeString.substring(0,19);</span>
-<span class="nc" id="L828">        dateTimeString = dateTimeString.replace(&quot;:&quot;, &quot;-&quot;);</span>
-<span class="nc" id="L829">        dateTimeString = dateTimeString.replaceAll(&quot; &quot;, &quot;_&quot;);</span>
-<span class="nc" id="L830">        FileChooser fileChooser = new FileChooser();</span>
-<span class="nc" id="L831">        fileChooser.setInitialFileName(dateTimeString + &quot;.sol&quot;);</span>
-<span class="nc" id="L832">        File file = fileChooser.showSaveDialog(stage);</span>
-<span class="nc bnc" id="L833" title="All 2 branches missed.">        if (file != null) {</span>
+<span class="nc" id="L835">        String dateTimeString = dateTimeSelector.getText();</span>
+<span class="nc" id="L836">        dateTimeString = dateTimeString.substring(0,19);</span>
+<span class="nc" id="L837">        dateTimeString = dateTimeString.replace(&quot;:&quot;, &quot;-&quot;);</span>
+<span class="nc" id="L838">        dateTimeString = dateTimeString.replaceAll(&quot; &quot;, &quot;_&quot;);</span>
+<span class="nc" id="L839">        FileChooser fileChooser = new FileChooser();</span>
+<span class="nc" id="L840">        fileChooser.setInitialFileName(dateTimeString + &quot;.sol&quot;);</span>
+<span class="nc" id="L841">        File file = fileChooser.showSaveDialog(stage);</span>
+<span class="nc bnc" id="L842" title="All 2 branches missed.">        if (file != null) {</span>
             try {
-<span class="nc" id="L835">                solarSystem.saveSimulationState(file);</span>
-<span class="nc" id="L836">            } catch (SolarSystemException ex) {</span>
-<span class="nc" id="L837">                showMessage(&quot;Error&quot;,ex.getMessage());</span>
-<span class="nc" id="L838">            }</span>
+<span class="nc" id="L844">                solarSystem.saveSimulationState(file);</span>
+<span class="nc" id="L845">            } catch (SolarSystemException ex) {</span>
+<span class="nc" id="L846">                showMessage(&quot;Error&quot;,ex.getMessage());</span>
+<span class="nc" id="L847">            }</span>
         }
-<span class="nc" id="L840">    }</span>
+<span class="nc" id="L849">    }</span>
     
     private Circle createCircle(String name, int radius, Color color) {
-<span class="nc" id="L843">        Circle circle = new Circle(0.0,0.0,radius,color);</span>
-<span class="nc" id="L844">        circle.setVisible(false);</span>
-<span class="nc" id="L845">        bodies.put(name, circle);</span>
-<span class="nc" id="L846">        return circle;</span>
+<span class="nc" id="L852">        Circle circle = new Circle(0.0,0.0,radius,color);</span>
+<span class="nc" id="L853">        circle.setVisible(false);</span>
+<span class="nc" id="L854">        bodies.put(name, circle);</span>
+<span class="nc" id="L855">        return circle;</span>
     }
     
     private CheckBox createCheckBox(final String name, String label, String toolTipText,
             boolean selected) {
-<span class="nc bnc" id="L851" title="All 2 branches missed.">        if (selected) {</span>
-<span class="nc" id="L852">            bodiesShown.add(name);</span>
+<span class="nc bnc" id="L860" title="All 2 branches missed.">        if (selected) {</span>
+<span class="nc" id="L861">            bodiesShown.add(name);</span>
         }
-<span class="nc" id="L854">        final CheckBox checkBox = new CheckBox(label);</span>
-<span class="nc" id="L855">        checkBox.setSelected(selected);</span>
-<span class="nc" id="L856">        checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
-<span class="nc" id="L857">                new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L863">        final CheckBox checkBox = new CheckBox(label);</span>
+<span class="nc" id="L864">        checkBox.setSelected(selected);</span>
+<span class="nc" id="L865">        checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED,</span>
+<span class="nc" id="L866">                new EventHandler&lt;MouseEvent&gt;() {</span>
             @Override
             public void handle(MouseEvent event) {
-<span class="nc" id="L860">                boolean isSelected = checkBox.selectedProperty().getValue();</span>
-<span class="nc bnc" id="L861" title="All 2 branches missed.">                if (isSelected) {</span>
-<span class="nc" id="L862">                    bodiesShown.add(name);</span>
+<span class="nc" id="L869">                boolean isSelected = checkBox.selectedProperty().getValue();</span>
+<span class="nc bnc" id="L870" title="All 2 branches missed.">                if (isSelected) {</span>
+<span class="nc" id="L871">                    bodiesShown.add(name);</span>
                 }
                 else {
-<span class="nc" id="L865">                    bodiesShown.remove(name);</span>
+<span class="nc" id="L874">                    bodiesShown.remove(name);</span>
                 }
-<span class="nc" id="L867">            }</span>
+<span class="nc" id="L876">            }</span>
         });
-<span class="nc" id="L869">        Tooltip toolTip = new Tooltip(toolTipText);</span>
-<span class="nc" id="L870">        checkBox.setTooltip(toolTip);</span>
-<span class="nc" id="L871">        return checkBox;</span>
+<span class="nc" id="L878">        Tooltip toolTip = new Tooltip(toolTipText);</span>
+<span class="nc" id="L879">        checkBox.setTooltip(toolTip);</span>
+<span class="nc" id="L880">        return checkBox;</span>
     }
     
     private double screenX(Vector3D position) {
-<span class="nc" id="L875">        return translateX + SCREENWIDTH * (position.getX() / SCREENSCALE);</span>
+<span class="nc" id="L884">        return translateX + SCREENWIDTH * (position.getX() / SCREENSCALE);</span>
     }
     
     private double screenY(Vector3D position) {
-<span class="nc" id="L879">        return translateY + SCREENHEIGHT * (1.0 - position.getY() / SCREENSCALE);</span>
+<span class="nc" id="L888">        return translateY + SCREENHEIGHT * (1.0 - position.getY() / SCREENSCALE);</span>
     }
     
     private Vector3D rotateForEarthToSunView(Vector3D position) {
         // Rotate along z-axis for Earth to Sun view
         // It is assumed that the Sun's position in is in the origin, i.e,
         // the (x, y, z) position of the Sun should be (0.0, 0.0, 0.0)
-<span class="nc" id="L886">        Vector3D positionEarth = null;</span>
-<span class="nc bnc" id="L887" title="All 2 branches missed.">        if (showSimulation) {</span>
-<span class="nc" id="L888">            positionEarth = solarSystem.getParticle(&quot;earth&quot;).getPosition();</span>
+<span class="nc" id="L895">        Vector3D positionEarth = null;</span>
+<span class="nc bnc" id="L896" title="All 2 branches missed.">        if (showSimulation) {</span>
+<span class="nc" id="L897">            positionEarth = solarSystem.getParticle(&quot;earth&quot;).getPosition();</span>
         } else {
-<span class="nc" id="L890">            positionEarth = solarSystem.getBody(&quot;earth&quot;).getPosition();</span>
+<span class="nc" id="L899">            positionEarth = solarSystem.getBody(&quot;earth&quot;).getPosition();</span>
         }
-<span class="nc" id="L892">        double angleRadZ = Math.atan2(positionEarth.getY(), positionEarth.getX());</span>
-<span class="nc" id="L893">        Vector3D positionRotatedZ = position.rotateZrad(-angleRadZ - Math.PI/2.0);</span>
+<span class="nc" id="L901">        double angleRadZ = Math.atan2(positionEarth.getY(), positionEarth.getX());</span>
+<span class="nc" id="L902">        Vector3D positionRotatedZ = position.rotateZrad(-angleRadZ - Math.PI/2.0);</span>
         
         // Translate in z-direction to correct for deviation of the Earth from the xy-plane
         // This deviation is near zero around 2000 and increases for earlier or later dates. 
@@ -901,61 +910,61 @@ import util.Vector3D;
         // with the slider set to approximately +70 degrees. This solar eclipse was only visible 
         // in the far north.
         // https://en.wikipedia.org/wiki/Solar_eclipse_of_March_20,_2015
-<span class="nc" id="L904">        double lattitudeDeg = sliderTopFrontView.getValue();</span>
-<span class="nc" id="L905">        double lattitudeRad = Math.toRadians(lattitudeDeg);</span>
-<span class="nc" id="L906">        double distanceFromCenter = Math.sin(lattitudeRad) * solarSystem.getBody(&quot;earth&quot;).getDiameter()/2.0;</span>
-<span class="nc" id="L907">        Vector3D positionTranslatedZ = </span>
-<span class="nc" id="L908">                positionRotatedZ.minus(new Vector3D(0.0,0.0,positionEarth.getZ() + distanceFromCenter));</span>
+<span class="nc" id="L913">        double lattitudeDeg = sliderTopFrontView.getValue();</span>
+<span class="nc" id="L914">        double lattitudeRad = Math.toRadians(lattitudeDeg);</span>
+<span class="nc" id="L915">        double distanceFromCenter = Math.sin(lattitudeRad) * solarSystem.getBody(&quot;earth&quot;).getDiameter()/2.0;</span>
+<span class="nc" id="L916">        Vector3D positionTranslatedZ = </span>
+<span class="nc" id="L917">                positionRotatedZ.minus(new Vector3D(0.0,0.0,positionEarth.getZ() + distanceFromCenter));</span>
         
         // Take perspective into account in x- and z-direction
         // Assume that we are standing on the surface of the Earth
-<span class="nc" id="L912">        double distance = position.euclideanDistance(positionEarth);</span>
-<span class="nc" id="L913">        distance = distance - solarSystem.getBody(&quot;earth&quot;).getDiameter()/2.0;</span>
-<span class="nc" id="L914">        double factor = SolarSystemParameters.ASTRONOMICALUNIT/distance;</span>
-<span class="nc" id="L915">        double x = positionTranslatedZ.getX() * factor;</span>
-<span class="nc" id="L916">        double y = positionTranslatedZ.getY();</span>
-<span class="nc" id="L917">        double z = positionTranslatedZ.getZ() * factor;</span>
-<span class="nc" id="L918">        return new Vector3D(x,y,z);</span>
+<span class="nc" id="L921">        double distance = position.euclideanDistance(positionEarth);</span>
+<span class="nc" id="L922">        distance = distance - solarSystem.getBody(&quot;earth&quot;).getDiameter()/2.0;</span>
+<span class="nc" id="L923">        double factor = SolarSystemParameters.ASTRONOMICALUNIT/distance;</span>
+<span class="nc" id="L924">        double x = positionTranslatedZ.getX() * factor;</span>
+<span class="nc" id="L925">        double y = positionTranslatedZ.getY();</span>
+<span class="nc" id="L926">        double z = positionTranslatedZ.getZ() * factor;</span>
+<span class="nc" id="L927">        return new Vector3D(x,y,z);</span>
     }
     
     private Vector3D convertToScreenView(Vector3D position) {
         // Translate position when a body is selected
-<span class="nc" id="L923">        Vector3D positionAfterTranslation = new Vector3D(position);</span>
-<span class="nc bnc" id="L924" title="All 4 branches missed.">        if (!earthToSunView &amp;&amp; selectedBody != null) {</span>
-<span class="nc bnc" id="L925" title="All 4 branches missed.">            if (showEphemeris &amp;&amp; !showSimulation) {</span>
+<span class="nc" id="L932">        Vector3D positionAfterTranslation = new Vector3D(position);</span>
+<span class="nc bnc" id="L933" title="All 4 branches missed.">        if (!earthToSunView &amp;&amp; selectedBody != null) {</span>
+<span class="nc bnc" id="L934" title="All 4 branches missed.">            if (showEphemeris &amp;&amp; !showSimulation) {</span>
                 // Place computed position of selected body in the center
-<span class="nc" id="L927">                SolarSystemBody body = solarSystem.getBody(selectedBody);</span>
-<span class="nc" id="L928">                positionAfterTranslation = position.minus(body.getPosition());</span>
-<span class="nc" id="L929">            }</span>
+<span class="nc" id="L936">                SolarSystemBody body = solarSystem.getBody(selectedBody);</span>
+<span class="nc" id="L937">                positionAfterTranslation = position.minus(body.getPosition());</span>
+<span class="nc" id="L938">            }</span>
             else {
                 // Place simulated position of selected body in the center
-<span class="nc" id="L932">                Particle particle = solarSystem.getParticle(selectedBody);</span>
-<span class="nc bnc" id="L933" title="All 2 branches missed.">                if (particle != null) {</span>
-<span class="nc" id="L934">                    positionAfterTranslation = position.minus(particle.getPosition());</span>
+<span class="nc" id="L941">                Particle particle = solarSystem.getParticle(selectedBody);</span>
+<span class="nc bnc" id="L942" title="All 2 branches missed.">                if (particle != null) {</span>
+<span class="nc" id="L943">                    positionAfterTranslation = position.minus(particle.getPosition());</span>
                 }
             }
         }
         
         // Rotate along x-axis
-<span class="nc" id="L940">        Vector3D positionAfterRotationX = null;</span>
-<span class="nc bnc" id="L941" title="All 2 branches missed.">        if (earthToSunView) {</span>
+<span class="nc" id="L949">        Vector3D positionAfterRotationX = null;</span>
+<span class="nc bnc" id="L950" title="All 2 branches missed.">        if (earthToSunView) {</span>
             // Rotate along x-axis such that the solar system is viewed from the 
             // epliptic. The slider top-front view is used to adjust the viewing position
             // for lattitude (see method rotateForEarthToSunView)
-<span class="nc" id="L945">            positionAfterRotationX = positionAfterTranslation.rotateXrad(-Math.PI/2.0);</span>
+<span class="nc" id="L954">            positionAfterRotationX = positionAfterTranslation.rotateXrad(-Math.PI/2.0);</span>
         }
         else {
             // Use slider top-front view to select between viewing the solar system
             // from the north ecliptic pole (90 degrees), the ecliptic (0 degrees) or 
             // the south ecliptic pole (-90 degrees)
             // https://en.wikipedia.org/wiki/Ecliptic
-<span class="nc" id="L952">            double rotationAngleX = sliderTopFrontView.getValue() - 90.0;</span>
-<span class="nc" id="L953">            positionAfterRotationX = positionAfterTranslation.rotateXdeg(rotationAngleX);</span>
+<span class="nc" id="L961">            double rotationAngleX = sliderTopFrontView.getValue() - 90.0;</span>
+<span class="nc" id="L962">            positionAfterRotationX = positionAfterTranslation.rotateXdeg(rotationAngleX);</span>
         }
         
         // Use slider zoom view to zoom in on the scene
-<span class="nc" id="L957">        double zoom = Math.exp(0.1*sliderZoomView.getValue());</span>
-<span class="nc" id="L958">        return positionAfterRotationX.scalarProduct(zoom);</span>
+<span class="nc" id="L966">        double zoom = Math.exp(0.1*sliderZoomView.getValue());</span>
+<span class="nc" id="L967">        return positionAfterRotationX.scalarProduct(zoom);</span>
     }
     
     /**
@@ -965,70 +974,70 @@ import util.Vector3D;
      * @param position position of the body to be shown
      */
     private void drawCircle(Circle circle, SolarSystemBody body, Vector3D position) {
-<span class="nc" id="L968">        double diameter = body.getDiameter();</span>
-<span class="nc bnc" id="L969" title="All 4 branches missed.">        if (earthToSunView &amp;&amp; !&quot;earth&quot;.equals(body.getName())) {</span>
+<span class="nc" id="L977">        double diameter = body.getDiameter();</span>
+<span class="nc bnc" id="L978" title="All 4 branches missed.">        if (earthToSunView &amp;&amp; !&quot;earth&quot;.equals(body.getName())) {</span>
             // Scale diameter with distance from surface of the Earth
             // The Sun and the Moon will have the same apparent size
             // This is necessary for a correct representation of a total solar eclipse
-<span class="nc" id="L973">            Vector3D positionEarth = null;</span>
-<span class="nc bnc" id="L974" title="All 2 branches missed.">            if (showSimulation) {</span>
-<span class="nc" id="L975">                positionEarth = solarSystem.getParticle(&quot;earth&quot;).getPosition();</span>
+<span class="nc" id="L982">            Vector3D positionEarth = null;</span>
+<span class="nc bnc" id="L983" title="All 2 branches missed.">            if (showSimulation) {</span>
+<span class="nc" id="L984">                positionEarth = solarSystem.getParticle(&quot;earth&quot;).getPosition();</span>
             }
             else {
-<span class="nc" id="L978">                positionEarth = solarSystem.getBody(&quot;earth&quot;).getPosition();</span>
+<span class="nc" id="L987">                positionEarth = solarSystem.getBody(&quot;earth&quot;).getPosition();</span>
             }
-<span class="nc" id="L980">            double distance = position.euclideanDistance(positionEarth);</span>
-<span class="nc" id="L981">            distance = distance - solarSystem.getBody(&quot;earth&quot;).getDiameter()/2.0;</span>
-<span class="nc" id="L982">            diameter = (SolarSystemParameters.ASTRONOMICALUNIT * diameter) / distance;</span>
+<span class="nc" id="L989">            double distance = position.euclideanDistance(positionEarth);</span>
+<span class="nc" id="L990">            distance = distance - solarSystem.getBody(&quot;earth&quot;).getDiameter()/2.0;</span>
+<span class="nc" id="L991">            diameter = (SolarSystemParameters.ASTRONOMICALUNIT * diameter) / distance;</span>
         }
         
         // Determine position on screen
-<span class="nc" id="L986">        Vector3D positionView = null;</span>
-<span class="nc bnc" id="L987" title="All 2 branches missed.">        if (earthToSunView) {</span>
-<span class="nc" id="L988">            positionView = convertToScreenView(rotateForEarthToSunView(position));</span>
+<span class="nc" id="L995">        Vector3D positionView = null;</span>
+<span class="nc bnc" id="L996" title="All 2 branches missed.">        if (earthToSunView) {</span>
+<span class="nc" id="L997">            positionView = convertToScreenView(rotateForEarthToSunView(position));</span>
         }
         else {
-<span class="nc" id="L991">            positionView = convertToScreenView(position);</span>
+<span class="nc" id="L1000">            positionView = convertToScreenView(position);</span>
         }
-<span class="nc" id="L993">        double posx = screenX(positionView);</span>
-<span class="nc" id="L994">        double posy = screenY(positionView);</span>
-<span class="nc" id="L995">        circle.setCenterX(posx);</span>
-<span class="nc" id="L996">        circle.setCenterY(posy);</span>
+<span class="nc" id="L1002">        double posx = screenX(positionView);</span>
+<span class="nc" id="L1003">        double posy = screenY(positionView);</span>
+<span class="nc" id="L1004">        circle.setCenterX(posx);</span>
+<span class="nc" id="L1005">        circle.setCenterY(posy);</span>
         
         // Determine radius from body diameter with a minimum equal to circle diameter
-<span class="nc" id="L999">        Vector3D diameterBegin = new Vector3D();</span>
-<span class="nc" id="L1000">        Vector3D diameterEnd = new Vector3D(diameter, 0.0, 0.0);</span>
-<span class="nc" id="L1001">        Vector3D diameterBeginView = convertToScreenView(diameterBegin);</span>
-<span class="nc" id="L1002">        Vector3D diameterEndView = convertToScreenView(diameterEnd);</span>
-<span class="nc" id="L1003">        double diameterPixels = screenX(diameterEndView) - screenX(diameterBeginView);</span>
-<span class="nc" id="L1004">        double radius = Math.max(circle.getRadius(),diameterPixels/2.0);</span>
+<span class="nc" id="L1008">        Vector3D diameterBegin = new Vector3D();</span>
+<span class="nc" id="L1009">        Vector3D diameterEnd = new Vector3D(diameter, 0.0, 0.0);</span>
+<span class="nc" id="L1010">        Vector3D diameterBeginView = convertToScreenView(diameterBegin);</span>
+<span class="nc" id="L1011">        Vector3D diameterEndView = convertToScreenView(diameterEnd);</span>
+<span class="nc" id="L1012">        double diameterPixels = screenX(diameterEndView) - screenX(diameterBeginView);</span>
+<span class="nc" id="L1013">        double radius = Math.max(circle.getRadius(),diameterPixels/2.0);</span>
  
         // Draw circle on screen using color and radius from Circle-object
-<span class="nc" id="L1007">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
-<span class="nc" id="L1008">        gc.setFill(circle.getFill());</span>
-<span class="nc" id="L1009">        gc.fillOval(posx - radius, posy - radius, 2 * radius, 2 * radius);</span>
-<span class="nc" id="L1010">    }</span>
+<span class="nc" id="L1016">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
+<span class="nc" id="L1017">        gc.setFill(circle.getFill());</span>
+<span class="nc" id="L1018">        gc.fillOval(posx - radius, posy - radius, 2 * radius, 2 * radius);</span>
+<span class="nc" id="L1019">    }</span>
     
     /**
      * Draw circles for bodies to show on screen.
      * @param bodiesToShow bodies to show on screen
      */
     private void drawCircles(List&lt;SolarSystemBody&gt; bodiesToShow) { 
-<span class="nc bnc" id="L1017" title="All 2 branches missed.">        for (SolarSystemBody body : bodiesToShow) {</span>
-<span class="nc" id="L1018">            String bodyName = body.getName();</span>
-<span class="nc" id="L1019">            Circle circle = bodies.get(bodyName);</span>
-<span class="nc bnc" id="L1020" title="All 4 branches missed.">            if (showEphemeris &amp;&amp; !showSimulation) {</span>
+<span class="nc bnc" id="L1026" title="All 2 branches missed.">        for (SolarSystemBody body : bodiesToShow) {</span>
+<span class="nc" id="L1027">            String bodyName = body.getName();</span>
+<span class="nc" id="L1028">            Circle circle = bodies.get(bodyName);</span>
+<span class="nc bnc" id="L1029" title="All 4 branches missed.">            if (showEphemeris &amp;&amp; !showSimulation) {</span>
                 // Draw circle at positon of body
-<span class="nc" id="L1022">                drawCircle(circle, body, body.getPosition());</span>
+<span class="nc" id="L1031">                drawCircle(circle, body, body.getPosition());</span>
             } else {
                 // Draw circle at particle position
-<span class="nc" id="L1025">                Particle particle = solarSystem.getParticle(bodyName);</span>
-<span class="nc bnc" id="L1026" title="All 2 branches missed.">                if (particle != null) {</span>
-<span class="nc" id="L1027">                    drawCircle(circle, body, particle.getPosition());</span>
+<span class="nc" id="L1034">                Particle particle = solarSystem.getParticle(bodyName);</span>
+<span class="nc bnc" id="L1035" title="All 2 branches missed.">                if (particle != null) {</span>
+<span class="nc" id="L1036">                    drawCircle(circle, body, particle.getPosition());</span>
                 }
             }
-<span class="nc" id="L1030">        }</span>
-<span class="nc" id="L1031">    }</span>
+<span class="nc" id="L1039">        }</span>
+<span class="nc" id="L1040">    }</span>
 
     /**
      * Set stroke and fill color depending on position with respect to the Sun.
@@ -1039,15 +1048,15 @@ import util.Vector3D;
      */
     private void setColor(GraphicsContext gc, Vector3D position, 
             Color frontColor, Color backColor) {
-<span class="nc bnc" id="L1042" title="All 2 branches missed.">        if (position.getY() &lt;= 0.0) {</span>
-<span class="nc" id="L1043">            gc.setStroke(frontColor);</span>
-<span class="nc" id="L1044">            gc.setFill(frontColor);</span>
+<span class="nc bnc" id="L1051" title="All 2 branches missed.">        if (position.getY() &lt;= 0.0) {</span>
+<span class="nc" id="L1052">            gc.setStroke(frontColor);</span>
+<span class="nc" id="L1053">            gc.setFill(frontColor);</span>
         }
         else {
-<span class="nc" id="L1047">            gc.setStroke(backColor);</span>
-<span class="nc" id="L1048">            gc.setFill(backColor);</span>
+<span class="nc" id="L1056">            gc.setStroke(backColor);</span>
+<span class="nc" id="L1057">            gc.setFill(backColor);</span>
         }
-<span class="nc" id="L1050">    }</span>
+<span class="nc" id="L1059">    }</span>
     
     /**
      * Draw orbit of body. Orbit segments in front of the Sun are drawn
@@ -1062,54 +1071,54 @@ import util.Vector3D;
     private void drawOrbit(Vector3D[] orbit, Color frontColor, Color backColor, 
             boolean drawSmallCircle) {
         
-<span class="nc" id="L1065">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
-<span class="nc" id="L1066">        Vector3D positionView = null;</span>
-<span class="nc bnc" id="L1067" title="All 2 branches missed.">        if (earthToSunView) {</span>
-<span class="nc" id="L1068">            Vector3D orbitPositionRotated = rotateForEarthToSunView(orbit[0]);</span>
-<span class="nc" id="L1069">            setColor(gc,orbitPositionRotated,frontColor,backColor);</span>
-<span class="nc" id="L1070">            positionView = convertToScreenView(orbitPositionRotated);</span>
-<span class="nc" id="L1071">        }</span>
+<span class="nc" id="L1074">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
+<span class="nc" id="L1075">        Vector3D positionView = null;</span>
+<span class="nc bnc" id="L1076" title="All 2 branches missed.">        if (earthToSunView) {</span>
+<span class="nc" id="L1077">            Vector3D orbitPositionRotated = rotateForEarthToSunView(orbit[0]);</span>
+<span class="nc" id="L1078">            setColor(gc,orbitPositionRotated,frontColor,backColor);</span>
+<span class="nc" id="L1079">            positionView = convertToScreenView(orbitPositionRotated);</span>
+<span class="nc" id="L1080">        }</span>
         else {
-<span class="nc" id="L1073">            positionView = convertToScreenView(orbit[0]);</span>
-<span class="nc" id="L1074">            setColor(gc,orbit[0],frontColor,backColor);</span>
+<span class="nc" id="L1082">            positionView = convertToScreenView(orbit[0]);</span>
+<span class="nc" id="L1083">            setColor(gc,orbit[0],frontColor,backColor);</span>
         }
-<span class="nc" id="L1076">        double x1 = screenX(positionView);</span>
-<span class="nc" id="L1077">        double y1 = screenY(positionView);</span>
-<span class="nc bnc" id="L1078" title="All 2 branches missed.">        if (drawSmallCircle) {</span>
+<span class="nc" id="L1085">        double x1 = screenX(positionView);</span>
+<span class="nc" id="L1086">        double y1 = screenY(positionView);</span>
+<span class="nc bnc" id="L1087" title="All 2 branches missed.">        if (drawSmallCircle) {</span>
             // Draw circle to indicate first position of orbit
-<span class="nc" id="L1080">            gc.fillOval(x1 - 3, y1 - 3, 6, 6);</span>
+<span class="nc" id="L1089">            gc.fillOval(x1 - 3, y1 - 3, 6, 6);</span>
         }
-<span class="nc bnc" id="L1082" title="All 2 branches missed.">        for (int i = 1; i &lt; orbit.length; i++) {</span>
-<span class="nc bnc" id="L1083" title="All 2 branches missed.">            if (earthToSunView) {</span>
-<span class="nc" id="L1084">                Vector3D orbitPositionRotated = rotateForEarthToSunView(orbit[i]);</span>
-<span class="nc" id="L1085">                setColor(gc,orbitPositionRotated,frontColor,backColor);</span>
-<span class="nc" id="L1086">                positionView = convertToScreenView(orbitPositionRotated);</span>
-<span class="nc" id="L1087">            }</span>
+<span class="nc bnc" id="L1091" title="All 2 branches missed.">        for (int i = 1; i &lt; orbit.length; i++) {</span>
+<span class="nc bnc" id="L1092" title="All 2 branches missed.">            if (earthToSunView) {</span>
+<span class="nc" id="L1093">                Vector3D orbitPositionRotated = rotateForEarthToSunView(orbit[i]);</span>
+<span class="nc" id="L1094">                setColor(gc,orbitPositionRotated,frontColor,backColor);</span>
+<span class="nc" id="L1095">                positionView = convertToScreenView(orbitPositionRotated);</span>
+<span class="nc" id="L1096">            }</span>
             else {
-<span class="nc" id="L1089">                positionView = convertToScreenView(orbit[i]);</span>
-<span class="nc" id="L1090">                setColor(gc,orbit[i],frontColor,backColor);</span>
+<span class="nc" id="L1098">                positionView = convertToScreenView(orbit[i]);</span>
+<span class="nc" id="L1099">                setColor(gc,orbit[i],frontColor,backColor);</span>
             }
-<span class="nc" id="L1092">            double x2 = screenX(positionView);</span>
-<span class="nc" id="L1093">            double y2 = screenY(positionView);</span>
-<span class="nc" id="L1094">            gc.strokeLine(x1, y1, x2, y2);</span>
-<span class="nc" id="L1095">            x1 = x2;</span>
-<span class="nc" id="L1096">            y1 = y2;</span>
+<span class="nc" id="L1101">            double x2 = screenX(positionView);</span>
+<span class="nc" id="L1102">            double y2 = screenY(positionView);</span>
+<span class="nc" id="L1103">            gc.strokeLine(x1, y1, x2, y2);</span>
+<span class="nc" id="L1104">            x1 = x2;</span>
+<span class="nc" id="L1105">            y1 = y2;</span>
             // Draw dot to indicate beginning of each line segment
             // gc.fillOval(x1-2, y1-2, 4, 4);
         }
-<span class="nc bnc" id="L1100" title="All 2 branches missed.">        if (earthToSunView) {</span>
-<span class="nc" id="L1101">            Vector3D orbitPositionRotated = rotateForEarthToSunView(orbit[0]);</span>
-<span class="nc" id="L1102">            setColor(gc,orbitPositionRotated,frontColor,backColor);</span>
-<span class="nc" id="L1103">            positionView = convertToScreenView(orbitPositionRotated);</span>
-<span class="nc" id="L1104">        }</span>
+<span class="nc bnc" id="L1109" title="All 2 branches missed.">        if (earthToSunView) {</span>
+<span class="nc" id="L1110">            Vector3D orbitPositionRotated = rotateForEarthToSunView(orbit[0]);</span>
+<span class="nc" id="L1111">            setColor(gc,orbitPositionRotated,frontColor,backColor);</span>
+<span class="nc" id="L1112">            positionView = convertToScreenView(orbitPositionRotated);</span>
+<span class="nc" id="L1113">        }</span>
         else {
-<span class="nc" id="L1106">            positionView = convertToScreenView(orbit[0]);</span>
-<span class="nc" id="L1107">            setColor(gc,orbit[0],frontColor,backColor);</span>
+<span class="nc" id="L1115">            positionView = convertToScreenView(orbit[0]);</span>
+<span class="nc" id="L1116">            setColor(gc,orbit[0],frontColor,backColor);</span>
         }
-<span class="nc" id="L1109">        double x2 = screenX(positionView);</span>
-<span class="nc" id="L1110">        double y2 = screenY(positionView);</span>
-<span class="nc" id="L1111">        gc.strokeLine(x1, y1, x2, y2);</span>
-<span class="nc" id="L1112">    }</span>
+<span class="nc" id="L1118">        double x2 = screenX(positionView);</span>
+<span class="nc" id="L1119">        double y2 = screenY(positionView);</span>
+<span class="nc" id="L1120">        gc.strokeLine(x1, y1, x2, y2);</span>
+<span class="nc" id="L1121">    }</span>
 
     /**
      * Draw computed position and orbit of bodies.
@@ -1118,16 +1127,16 @@ import util.Vector3D;
      * @param bodiesToShow bodies to show on screen
      */
     private void drawOrbits(List&lt;SolarSystemBody&gt; bodiesToShow) {
-<span class="nc bnc" id="L1121" title="All 2 branches missed.">        if (showEphemeris) {</span>
-<span class="nc bnc" id="L1122" title="All 2 branches missed.">            for (SolarSystemBody body : bodiesToShow) {</span>
-<span class="nc" id="L1123">                Vector3D[] orbit = body.getOrbit();</span>
+<span class="nc bnc" id="L1130" title="All 2 branches missed.">        if (showEphemeris) {</span>
+<span class="nc bnc" id="L1131" title="All 2 branches missed.">            for (SolarSystemBody body : bodiesToShow) {</span>
+<span class="nc" id="L1132">                Vector3D[] orbit = body.getOrbit();</span>
                 // Draw orbit as a green line
-<span class="nc bnc" id="L1125" title="All 2 branches missed.">                if (orbit != null) {</span>
-<span class="nc" id="L1126">                    drawOrbit(orbit, Color.LIGHTGREEN, Color.GREEN, showSimulation);</span>
+<span class="nc bnc" id="L1134" title="All 2 branches missed.">                if (orbit != null) {</span>
+<span class="nc" id="L1135">                    drawOrbit(orbit, Color.LIGHTGREEN, Color.GREEN, showSimulation);</span>
                 }
-<span class="nc" id="L1128">            }</span>
+<span class="nc" id="L1137">            }</span>
         }
-<span class="nc" id="L1130">    }</span>
+<span class="nc" id="L1139">    }</span>
 
     /**
      * Draw orbit corresponding to current position and velocity of particle.
@@ -1137,30 +1146,30 @@ import util.Vector3D;
      */
     private void drawOrbitCorrespondingToPositionVelocity(String centerBody, Particle particle) {
         // Position and velocity of center body
-<span class="nc" id="L1140">        Vector3D positionCenterBody = solarSystem.getParticle(centerBody).getPosition();</span>
-<span class="nc" id="L1141">        Vector3D velocityCenterBody = solarSystem.getParticle(centerBody).getVelocity();</span>
+<span class="nc" id="L1149">        Vector3D positionCenterBody = solarSystem.getParticle(centerBody).getPosition();</span>
+<span class="nc" id="L1150">        Vector3D velocityCenterBody = solarSystem.getParticle(centerBody).getVelocity();</span>
         
         // Position and velocity of particle
-<span class="nc" id="L1144">        Vector3D positionParticle = particle.getPosition();</span>
-<span class="nc" id="L1145">        Vector3D velocityParticle = particle.getVelocity();</span>
+<span class="nc" id="L1153">        Vector3D positionParticle = particle.getPosition();</span>
+<span class="nc" id="L1154">        Vector3D velocityParticle = particle.getVelocity();</span>
         
         // Compute orbit of particle relative to center body
-<span class="nc" id="L1148">        Vector3D positionRelativeToCenterBody = positionParticle.minus(positionCenterBody);</span>
-<span class="nc" id="L1149">        Vector3D velocityRelativeToCenterBody = velocityParticle.minus(velocityCenterBody);</span>
-<span class="nc" id="L1150">        Vector3D[] orbitRelativeToCenterBody = EphemerisUtil.computeOrbit(centerBody,</span>
+<span class="nc" id="L1157">        Vector3D positionRelativeToCenterBody = positionParticle.minus(positionCenterBody);</span>
+<span class="nc" id="L1158">        Vector3D velocityRelativeToCenterBody = velocityParticle.minus(velocityCenterBody);</span>
+<span class="nc" id="L1159">        Vector3D[] orbitRelativeToCenterBody = EphemerisUtil.computeOrbit(centerBody,</span>
                 positionRelativeToCenterBody,velocityRelativeToCenterBody);
         
         // Compute orbit
-<span class="nc" id="L1154">        Vector3D[] orbit = new Vector3D[orbitRelativeToCenterBody.length];</span>
-<span class="nc bnc" id="L1155" title="All 2 branches missed.">        for (int i = 0; i &lt; orbitRelativeToCenterBody.length; i++) {</span>
-<span class="nc" id="L1156">            orbit[i] = positionCenterBody.plus(orbitRelativeToCenterBody[i]);</span>
+<span class="nc" id="L1163">        Vector3D[] orbit = new Vector3D[orbitRelativeToCenterBody.length];</span>
+<span class="nc bnc" id="L1164" title="All 2 branches missed.">        for (int i = 0; i &lt; orbitRelativeToCenterBody.length; i++) {</span>
+<span class="nc" id="L1165">            orbit[i] = positionCenterBody.plus(orbitRelativeToCenterBody[i]);</span>
         }
 
         // Draw the orbit of the particle as a cyan line
-<span class="nc bnc" id="L1160" title="All 2 branches missed.">        if (orbit != null) {</span>
-<span class="nc" id="L1161">            drawOrbit(orbit,Color.CYAN,Color.DARKCYAN,false);</span>
+<span class="nc bnc" id="L1169" title="All 2 branches missed.">        if (orbit != null) {</span>
+<span class="nc" id="L1170">            drawOrbit(orbit,Color.CYAN,Color.DARKCYAN,false);</span>
         }
-<span class="nc" id="L1163">    }</span>
+<span class="nc" id="L1172">    }</span>
     
     /**
      * Draw orbits corresponding to current positions and velocities of particles.
@@ -1169,65 +1178,65 @@ import util.Vector3D;
      * @param bodiesToShow bodies to show on screen
      */
     private void drawOrbitsCorrespondingToPositionVelocity(List&lt;SolarSystemBody&gt; bodiesToShow) {
-<span class="nc bnc" id="L1172" title="All 2 branches missed.">        if (showSimulation) {</span>
-<span class="nc bnc" id="L1173" title="All 2 branches missed.">            for (SolarSystemBody body : bodiesToShow) {</span>
-<span class="nc" id="L1174">                String bodyName = body.getName();</span>
-<span class="nc" id="L1175">                Particle particle = solarSystem.getParticle(bodyName);</span>
-<span class="nc bnc" id="L1176" title="All 2 branches missed.">                if (particle != null) {</span>
-<span class="nc bnc" id="L1177" title="All 2 branches missed.">                    if (&quot;moon&quot;.equals(bodyName)) {</span>
-<span class="nc" id="L1178">                        drawOrbitCorrespondingToPositionVelocity(&quot;earth&quot;, particle);</span>
+<span class="nc bnc" id="L1181" title="All 2 branches missed.">        if (showSimulation) {</span>
+<span class="nc bnc" id="L1182" title="All 2 branches missed.">            for (SolarSystemBody body : bodiesToShow) {</span>
+<span class="nc" id="L1183">                String bodyName = body.getName();</span>
+<span class="nc" id="L1184">                Particle particle = solarSystem.getParticle(bodyName);</span>
+<span class="nc bnc" id="L1185" title="All 2 branches missed.">                if (particle != null) {</span>
+<span class="nc bnc" id="L1186" title="All 2 branches missed.">                    if (&quot;moon&quot;.equals(bodyName)) {</span>
+<span class="nc" id="L1187">                        drawOrbitCorrespondingToPositionVelocity(&quot;earth&quot;, particle);</span>
                     } else {
-<span class="nc" id="L1180">                        drawOrbitCorrespondingToPositionVelocity(&quot;sun&quot;, particle);</span>
+<span class="nc" id="L1189">                        drawOrbitCorrespondingToPositionVelocity(&quot;sun&quot;, particle);</span>
                     }
                 }
-<span class="nc" id="L1183">            }</span>
+<span class="nc" id="L1192">            }</span>
         }
-<span class="nc" id="L1185">    }</span>
+<span class="nc" id="L1194">    }</span>
     
     /**
      * Draw ruler at the bottom of the screen to get an indication of distances.
      */
     private void drawRulerDistance() {
-<span class="nc" id="L1191">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
-<span class="nc" id="L1192">        gc.setStroke(Color.CYAN);</span>
-<span class="nc" id="L1193">        gc.setFill(Color.CYAN);</span>
-<span class="nc" id="L1194">        Vector3D scaleBegin = new Vector3D();</span>
-<span class="nc" id="L1195">        Vector3D scaleEnd = new Vector3D(1E11, 0.0, 0.0); // 100 million km</span>
-<span class="nc" id="L1196">        Vector3D scaleBeginView = convertToScreenView(scaleBegin);</span>
-<span class="nc" id="L1197">        Vector3D scaleEndView = convertToScreenView(scaleEnd);</span>
-<span class="nc" id="L1198">        double scaleLength = screenX(scaleEndView) - screenX(scaleBeginView);</span>
-<span class="nc" id="L1199">        long scale = 100000000; // 100 million km</span>
+<span class="nc" id="L1200">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
+<span class="nc" id="L1201">        gc.setStroke(Color.CYAN);</span>
+<span class="nc" id="L1202">        gc.setFill(Color.CYAN);</span>
+<span class="nc" id="L1203">        Vector3D scaleBegin = new Vector3D();</span>
+<span class="nc" id="L1204">        Vector3D scaleEnd = new Vector3D(1E11, 0.0, 0.0); // 100 million km</span>
+<span class="nc" id="L1205">        Vector3D scaleBeginView = convertToScreenView(scaleBegin);</span>
+<span class="nc" id="L1206">        Vector3D scaleEndView = convertToScreenView(scaleEnd);</span>
+<span class="nc" id="L1207">        double scaleLength = screenX(scaleEndView) - screenX(scaleBeginView);</span>
+<span class="nc" id="L1208">        long scale = 100000000; // 100 million km</span>
         // Adjust scale length and scale to fit screen
-<span class="nc bnc" id="L1201" title="All 2 branches missed.">        while (scaleLength &lt; 50.0) {</span>
-<span class="nc" id="L1202">            scaleLength *= 10;</span>
-<span class="nc" id="L1203">            scale *= 10;</span>
+<span class="nc bnc" id="L1210" title="All 2 branches missed.">        while (scaleLength &lt; 50.0) {</span>
+<span class="nc" id="L1211">            scaleLength *= 10;</span>
+<span class="nc" id="L1212">            scale *= 10;</span>
         }
-<span class="nc bnc" id="L1205" title="All 2 branches missed.">        while (scaleLength &gt; 600.0) {</span>
-<span class="nc" id="L1206">            scaleLength /= 10;</span>
-<span class="nc" id="L1207">            scale /= 10;</span>
+<span class="nc bnc" id="L1214" title="All 2 branches missed.">        while (scaleLength &gt; 600.0) {</span>
+<span class="nc" id="L1215">            scaleLength /= 10;</span>
+<span class="nc" id="L1216">            scale /= 10;</span>
         }
-<span class="nc" id="L1209">        double x = 50.0;</span>
-<span class="nc" id="L1210">        double y = 860.0;</span>
+<span class="nc" id="L1218">        double x = 50.0;</span>
+<span class="nc" id="L1219">        double y = 860.0;</span>
         // Draw the scale als a cyan line
-<span class="nc" id="L1212">        gc.strokeLine(x, y, x + scaleLength, y);</span>
+<span class="nc" id="L1221">        gc.strokeLine(x, y, x + scaleLength, y);</span>
         // Place text &quot;0&quot; at the left end
-<span class="nc" id="L1214">        String textBegin = 0 + &quot;&quot;;</span>
+<span class="nc" id="L1223">        String textBegin = 0 + &quot;&quot;;</span>
         // Place scale length in km at the right end
-<span class="nc" id="L1216">        String textEnd = &quot;&quot;;</span>
-<span class="nc bnc" id="L1217" title="All 2 branches missed.">        if (scale &gt;= 1000000000) {</span>
-<span class="nc" id="L1218">            textEnd = scale / 1000000000 + &quot; billion km&quot;;</span>
-<span class="nc bnc" id="L1219" title="All 2 branches missed.">        } else if (scale &gt;= 1000000) {</span>
-<span class="nc" id="L1220">            textEnd = scale / 1000000 + &quot; million km&quot;;</span>
+<span class="nc" id="L1225">        String textEnd = &quot;&quot;;</span>
+<span class="nc bnc" id="L1226" title="All 2 branches missed.">        if (scale &gt;= 1000000000) {</span>
+<span class="nc" id="L1227">            textEnd = scale / 1000000000 + &quot; billion km&quot;;</span>
+<span class="nc bnc" id="L1228" title="All 2 branches missed.">        } else if (scale &gt;= 1000000) {</span>
+<span class="nc" id="L1229">            textEnd = scale / 1000000 + &quot; million km&quot;;</span>
         } else {
-<span class="nc" id="L1222">            textEnd = scale / 1000 + &quot; thousand km&quot;;</span>
+<span class="nc" id="L1231">            textEnd = scale / 1000 + &quot; thousand km&quot;;</span>
         }
-<span class="nc" id="L1224">        gc.fillText(textBegin, x - 5.0, y - 15.0);</span>
-<span class="nc" id="L1225">        gc.fillText(textEnd, x + scaleLength - 30.0, y - 15.0);</span>
+<span class="nc" id="L1233">        gc.fillText(textBegin, x - 5.0, y - 15.0);</span>
+<span class="nc" id="L1234">        gc.fillText(textEnd, x + scaleLength - 30.0, y - 15.0);</span>
         // Place ticks on the scale
-<span class="nc bnc" id="L1227" title="All 2 branches missed.">        for (int i = 0; i &lt;= 10; i++) {</span>
-<span class="nc" id="L1228">            gc.strokeLine(x + i * 0.1 * scaleLength, y - 4, x + i * 0.1 * scaleLength, y);</span>
+<span class="nc bnc" id="L1236" title="All 2 branches missed.">        for (int i = 0; i &lt;= 10; i++) {</span>
+<span class="nc" id="L1237">            gc.strokeLine(x + i * 0.1 * scaleLength, y - 4, x + i * 0.1 * scaleLength, y);</span>
         }
-<span class="nc" id="L1230">    }</span>
+<span class="nc" id="L1239">    }</span>
 
     /**
      * Draw ruler at the bottom of the screen to get an indication of angular diameters.
@@ -1235,50 +1244,50 @@ import util.Vector3D;
     private void drawRulerAngularDiameter() {
         // http://hudsonvalleygeologist.blogspot.nl/2012/04/size-of-sun.html
         // Viewed from the surface of the Earth, the size of the Sun is about 0.5 degrees
-<span class="nc" id="L1238">        double diameterSun = SolarSystemParameters.getInstance().getDiameter(&quot;sun&quot;);</span>
-<span class="nc" id="L1239">        double distance = SolarSystemParameters.ASTRONOMICALUNIT;</span>
-<span class="nc" id="L1240">        double angularDiameterSunRad = 2 * Math.atan((diameterSun / 2.0) / distance);</span>
-<span class="nc" id="L1241">        double angularDiameterSunDeg = Math.toDegrees(angularDiameterSunRad);</span>
-<span class="nc" id="L1242">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
-<span class="nc" id="L1243">        gc.setStroke(Color.CYAN);</span>
-<span class="nc" id="L1244">        gc.setFill(Color.CYAN);</span>
-<span class="nc" id="L1245">        Vector3D scaleBegin = new Vector3D();</span>
-<span class="nc" id="L1246">        Vector3D scaleEnd = new Vector3D(diameterSun / angularDiameterSunDeg, 0.0, 0.0); // 1 degree</span>
-<span class="nc" id="L1247">        Vector3D scaleBeginView = convertToScreenView(scaleBegin);</span>
-<span class="nc" id="L1248">        Vector3D scaleEndView = convertToScreenView(scaleEnd);</span>
-<span class="nc" id="L1249">        double scaleLength = screenX(scaleEndView) - screenX(scaleBeginView);</span>
-<span class="nc" id="L1250">        double scale = 1.0; // 1 degree</span>
+<span class="nc" id="L1247">        double diameterSun = SolarSystemParameters.getInstance().getDiameter(&quot;sun&quot;);</span>
+<span class="nc" id="L1248">        double distance = SolarSystemParameters.ASTRONOMICALUNIT;</span>
+<span class="nc" id="L1249">        double angularDiameterSunRad = 2 * Math.atan((diameterSun / 2.0) / distance);</span>
+<span class="nc" id="L1250">        double angularDiameterSunDeg = Math.toDegrees(angularDiameterSunRad);</span>
+<span class="nc" id="L1251">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
+<span class="nc" id="L1252">        gc.setStroke(Color.CYAN);</span>
+<span class="nc" id="L1253">        gc.setFill(Color.CYAN);</span>
+<span class="nc" id="L1254">        Vector3D scaleBegin = new Vector3D();</span>
+<span class="nc" id="L1255">        Vector3D scaleEnd = new Vector3D(diameterSun / angularDiameterSunDeg, 0.0, 0.0); // 1 degree</span>
+<span class="nc" id="L1256">        Vector3D scaleBeginView = convertToScreenView(scaleBegin);</span>
+<span class="nc" id="L1257">        Vector3D scaleEndView = convertToScreenView(scaleEnd);</span>
+<span class="nc" id="L1258">        double scaleLength = screenX(scaleEndView) - screenX(scaleBeginView);</span>
+<span class="nc" id="L1259">        double scale = 1.0; // 1 degree</span>
         // Adjust scale length and scale to fit screen
-<span class="nc bnc" id="L1252" title="All 2 branches missed.">        while (scaleLength &lt; 50.0) {</span>
-<span class="nc" id="L1253">            scaleLength *= 10;</span>
-<span class="nc" id="L1254">            scale *= 10;</span>
+<span class="nc bnc" id="L1261" title="All 2 branches missed.">        while (scaleLength &lt; 50.0) {</span>
+<span class="nc" id="L1262">            scaleLength *= 10;</span>
+<span class="nc" id="L1263">            scale *= 10;</span>
         }
-<span class="nc bnc" id="L1256" title="All 2 branches missed.">        while (scaleLength &gt; 600.0) {</span>
-<span class="nc" id="L1257">            scaleLength /= 10;</span>
-<span class="nc" id="L1258">            scale /= 10;</span>
+<span class="nc bnc" id="L1265" title="All 2 branches missed.">        while (scaleLength &gt; 600.0) {</span>
+<span class="nc" id="L1266">            scaleLength /= 10;</span>
+<span class="nc" id="L1267">            scale /= 10;</span>
         }
-<span class="nc" id="L1260">        double x = 50.0;</span>
-<span class="nc" id="L1261">        double y = 860.0;</span>
+<span class="nc" id="L1269">        double x = 50.0;</span>
+<span class="nc" id="L1270">        double y = 860.0;</span>
         // Draw the scale as a cyan line
-<span class="nc" id="L1263">        gc.strokeLine(x, y, x + scaleLength, y);</span>
+<span class="nc" id="L1272">        gc.strokeLine(x, y, x + scaleLength, y);</span>
         // Place text &quot;0 &quot; at the left end
-<span class="nc" id="L1265">        String textBegin = 0 + &quot;&quot;;</span>
+<span class="nc" id="L1274">        String textBegin = 0 + &quot;&quot;;</span>
         // Place scale length in degrees at the right end
-<span class="nc" id="L1267">        String textEnd = &quot;&quot;;</span>
-<span class="nc bnc" id="L1268" title="All 2 branches missed.">        if (scale &gt;= 1.0) {</span>
-<span class="nc" id="L1269">            textEnd = scale + &quot; degrees&quot;;</span>
-<span class="nc bnc" id="L1270" title="All 2 branches missed.">        } else if (scale &gt;= 1.0 / 60) {</span>
-<span class="nc" id="L1271">            textEnd = scale * 60 + &quot; arcminutes&quot;;</span>
+<span class="nc" id="L1276">        String textEnd = &quot;&quot;;</span>
+<span class="nc bnc" id="L1277" title="All 2 branches missed.">        if (scale &gt;= 1.0) {</span>
+<span class="nc" id="L1278">            textEnd = scale + &quot; degrees&quot;;</span>
+<span class="nc bnc" id="L1279" title="All 2 branches missed.">        } else if (scale &gt;= 1.0 / 60) {</span>
+<span class="nc" id="L1280">            textEnd = scale * 60 + &quot; arcminutes&quot;;</span>
         } else {
-<span class="nc" id="L1273">            textEnd = scale * 3600 + &quot; arcseconds&quot;;</span>
+<span class="nc" id="L1282">            textEnd = scale * 3600 + &quot; arcseconds&quot;;</span>
         }
-<span class="nc" id="L1275">        gc.fillText(textBegin, x - 5.0, y - 15.0);</span>
-<span class="nc" id="L1276">        gc.fillText(textEnd, x + scaleLength - 30.0, y - 15.0);</span>
+<span class="nc" id="L1284">        gc.fillText(textBegin, x - 5.0, y - 15.0);</span>
+<span class="nc" id="L1285">        gc.fillText(textEnd, x + scaleLength - 30.0, y - 15.0);</span>
         // Place ticks on the scale
-<span class="nc bnc" id="L1278" title="All 2 branches missed.">        for (int i = 0; i &lt;= 10; i++) {</span>
-<span class="nc" id="L1279">            gc.strokeLine(x + i * 0.1 * scaleLength, y - 4, x + i * 0.1 * scaleLength, y);</span>
+<span class="nc bnc" id="L1287" title="All 2 branches missed.">        for (int i = 0; i &lt;= 10; i++) {</span>
+<span class="nc" id="L1288">            gc.strokeLine(x + i * 0.1 * scaleLength, y - 4, x + i * 0.1 * scaleLength, y);</span>
         }
-<span class="nc" id="L1281">    }</span>
+<span class="nc" id="L1290">    }</span>
     
     /**
      * Compute distance of mouse-position to a circle.
@@ -1289,9 +1298,9 @@ import util.Vector3D;
      * @return distance to the circle in pixels
      */
     private double distanceCircle(MouseEvent event, Circle circle) {
-<span class="nc" id="L1292">        double dx = event.getX() - circle.getCenterX();</span>
-<span class="nc" id="L1293">        double dy = event.getY() - circle.getCenterY();</span>
-<span class="nc" id="L1294">        return Math.sqrt(dx*dx + dy*dy);</span>
+<span class="nc" id="L1301">        double dx = event.getX() - circle.getCenterX();</span>
+<span class="nc" id="L1302">        double dy = event.getY() - circle.getCenterY();</span>
+<span class="nc" id="L1303">        return Math.sqrt(dx*dx + dy*dy);</span>
     }
     
     /**
@@ -1299,62 +1308,62 @@ import util.Vector3D;
      * @param event Mouse event
      */
     private void screenMouseClicked(MouseEvent event) {
-<span class="nc" id="L1302">        selectedBody = null;</span>
-<span class="nc" id="L1303">        double minDistance = 20.0;</span>
-<span class="nc bnc" id="L1304" title="All 2 branches missed.">        for (String bodyName : bodiesShown) {</span>
-<span class="nc" id="L1305">            Circle circle = bodies.get(bodyName);</span>
-<span class="nc" id="L1306">            double distance = distanceCircle(event, circle);</span>
-<span class="nc bnc" id="L1307" title="All 2 branches missed.">            if (distance &lt; minDistance) {</span>
-<span class="nc" id="L1308">                selectedBody = bodyName;</span>
-<span class="nc" id="L1309">                minDistance = distance;</span>
+<span class="nc" id="L1311">        selectedBody = null;</span>
+<span class="nc" id="L1312">        double minDistance = 20.0;</span>
+<span class="nc bnc" id="L1313" title="All 2 branches missed.">        for (String bodyName : bodiesShown) {</span>
+<span class="nc" id="L1314">            Circle circle = bodies.get(bodyName);</span>
+<span class="nc" id="L1315">            double distance = distanceCircle(event, circle);</span>
+<span class="nc bnc" id="L1316" title="All 2 branches missed.">            if (distance &lt; minDistance) {</span>
+<span class="nc" id="L1317">                selectedBody = bodyName;</span>
+<span class="nc" id="L1318">                minDistance = distance;</span>
             }
-<span class="nc" id="L1311">        }</span>
-<span class="nc" id="L1312">    }</span>
+<span class="nc" id="L1320">        }</span>
+<span class="nc" id="L1321">    }</span>
 
     private void screenMouseDragged(MouseEvent event) {
-<span class="nc" id="L1315">        translateX = translateX + event.getX() - lastDragX;</span>
-<span class="nc" id="L1316">        translateY = translateY + event.getY() - lastDragY;</span>
-<span class="nc" id="L1317">        lastDragX = event.getX();</span>
-<span class="nc" id="L1318">        lastDragY = event.getY();</span>
-<span class="nc" id="L1319">    }</span>
+<span class="nc" id="L1324">        translateX = translateX + event.getX() - lastDragX;</span>
+<span class="nc" id="L1325">        translateY = translateY + event.getY() - lastDragY;</span>
+<span class="nc" id="L1326">        lastDragX = event.getX();</span>
+<span class="nc" id="L1327">        lastDragY = event.getY();</span>
+<span class="nc" id="L1328">    }</span>
 
     private void screenMousePressed(MouseEvent event) {
-<span class="nc" id="L1322">        lastDragX = event.getX();</span>
-<span class="nc" id="L1323">        lastDragY = event.getY();</span>
-<span class="nc" id="L1324">    }                                                                        </span>
+<span class="nc" id="L1331">        lastDragX = event.getX();</span>
+<span class="nc" id="L1332">        lastDragY = event.getY();</span>
+<span class="nc" id="L1333">    }                                                                        </span>
 
     private void initTranslate() {
-<span class="nc" id="L1327">        translateX = 0.5 * SCREENWIDTH;</span>
-<span class="nc" id="L1328">        translateY = -0.5 * SCREENHEIGHT;</span>
-<span class="nc" id="L1329">        lastDragX = 0.0;</span>
-<span class="nc" id="L1330">        lastDragY = 0.0;</span>
-<span class="nc" id="L1331">    }</span>
+<span class="nc" id="L1336">        translateX = 0.5 * SCREENWIDTH;</span>
+<span class="nc" id="L1337">        translateY = -0.5 * SCREENHEIGHT;</span>
+<span class="nc" id="L1338">        lastDragX = 0.0;</span>
+<span class="nc" id="L1339">        lastDragY = 0.0;</span>
+<span class="nc" id="L1340">    }</span>
     
     /**
      * Clear screen and make background blue for Earth-to-Sun view
      * or black for normal view.
      */
     private void clearScreen() {
-<span class="nc" id="L1338">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
-<span class="nc" id="L1339">        gc.clearRect(0.0,0.0,SCREENWIDTH,SCREENHEIGHT);</span>
-<span class="nc bnc" id="L1340" title="All 2 branches missed.">        if (earthToSunView) {</span>
-<span class="nc" id="L1341">            gc.setFill(Color.BLUE);</span>
+<span class="nc" id="L1347">        GraphicsContext gc = screen.getGraphicsContext2D();</span>
+<span class="nc" id="L1348">        gc.clearRect(0.0,0.0,SCREENWIDTH,SCREENHEIGHT);</span>
+<span class="nc bnc" id="L1349" title="All 2 branches missed.">        if (earthToSunView) {</span>
+<span class="nc" id="L1350">            gc.setFill(Color.BLUE);</span>
         }
         else {
-<span class="nc" id="L1344">            gc.setFill(Color.BLACK);</span>
+<span class="nc" id="L1353">            gc.setFill(Color.BLACK);</span>
         }
-<span class="nc" id="L1346">        gc.fillRect(0.0,0.0,SCREENWIDTH,SCREENHEIGHT);</span>
-<span class="nc" id="L1347">    }</span>
+<span class="nc" id="L1355">        gc.fillRect(0.0,0.0,SCREENWIDTH,SCREENHEIGHT);</span>
+<span class="nc" id="L1356">    }</span>
     
     @Override
     public void stop() {
-<span class="nc bnc" id="L1351" title="All 2 branches missed.">        if (threadSimulate != null) {</span>
-<span class="nc" id="L1352">            threadSimulate.interrupt();</span>
+<span class="nc bnc" id="L1360" title="All 2 branches missed.">        if (threadSimulate != null) {</span>
+<span class="nc" id="L1361">            threadSimulate.interrupt();</span>
         }
-<span class="nc bnc" id="L1354" title="All 2 branches missed.">        if (animationTimer != null) {</span>
-<span class="nc" id="L1355">            animationTimer.stop();</span>
+<span class="nc bnc" id="L1363" title="All 2 branches missed.">        if (animationTimer != null) {</span>
+<span class="nc" id="L1364">            animationTimer.stop();</span>
         }
-<span class="nc" id="L1357">    }</span>
+<span class="nc" id="L1366">    }</span>
     
     /**
      * Main method. 
@@ -1362,8 +1371,8 @@ import util.Vector3D;
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-<span class="nc" id="L1365">        launch(args);</span>
-<span class="nc" id="L1366">    }</span>
+<span class="nc" id="L1374">        launch(args);</span>
+<span class="nc" id="L1375">    }</span>
     
     /**
      * Sort bodies such that they are drawn in an order that corresponds
@@ -1374,70 +1383,70 @@ import util.Vector3D;
      * are drawn first.
      */
     private void sortBodiesShown() {
-<span class="nc bnc" id="L1377" title="All 2 branches missed.">        if (earthToSunView) {</span>
+<span class="nc bnc" id="L1386" title="All 2 branches missed.">        if (earthToSunView) {</span>
             // Sort bodies, such that bodies behind the sun as seen from the Earth are drawn first
-<span class="nc" id="L1379">            Collections.sort(bodiesShown, new Comparator&lt;String&gt;() {</span>
+<span class="nc" id="L1388">            Collections.sort(bodiesShown, new Comparator&lt;String&gt;() {</span>
                 @Override
                 public int compare(String bodyName1, String bodyName2) {
-<span class="nc" id="L1382">                    SolarSystemBody body1 = solarSystem.getBody(bodyName1);</span>
-<span class="nc" id="L1383">                    SolarSystemBody body2 = solarSystem.getBody(bodyName2);</span>
-<span class="nc" id="L1384">                    Vector3D positionRotatedBody1 = rotateForEarthToSunView(body1.getPosition());</span>
-<span class="nc" id="L1385">                    Vector3D positionRotatedBody2 = rotateForEarthToSunView(body2.getPosition());</span>
-<span class="nc bnc" id="L1386" title="All 2 branches missed.">                    if (positionRotatedBody1.getY() &lt; positionRotatedBody2.getY()) {</span>
-<span class="nc" id="L1387">                        return 1;</span>
+<span class="nc" id="L1391">                    SolarSystemBody body1 = solarSystem.getBody(bodyName1);</span>
+<span class="nc" id="L1392">                    SolarSystemBody body2 = solarSystem.getBody(bodyName2);</span>
+<span class="nc" id="L1393">                    Vector3D positionRotatedBody1 = rotateForEarthToSunView(body1.getPosition());</span>
+<span class="nc" id="L1394">                    Vector3D positionRotatedBody2 = rotateForEarthToSunView(body2.getPosition());</span>
+<span class="nc bnc" id="L1395" title="All 2 branches missed.">                    if (positionRotatedBody1.getY() &lt; positionRotatedBody2.getY()) {</span>
+<span class="nc" id="L1396">                        return 1;</span>
                     } else {
-<span class="nc" id="L1389">                        return -1;</span>
+<span class="nc" id="L1398">                        return -1;</span>
                     }
                 }
             });
         } else {
             // Sort bodies, such that bodies behind the Sun are drawn first
-<span class="nc" id="L1395">            Collections.sort(bodiesShown, new Comparator&lt;String&gt;() {</span>
+<span class="nc" id="L1404">            Collections.sort(bodiesShown, new Comparator&lt;String&gt;() {</span>
                 @Override
                 public int compare(String bodyName1, String bodyName2) {
-<span class="nc" id="L1398">                    SolarSystemBody body1 = solarSystem.getBody(bodyName1);</span>
-<span class="nc" id="L1399">                    SolarSystemBody body2 = solarSystem.getBody(bodyName2);</span>
-<span class="nc bnc" id="L1400" title="All 2 branches missed.">                    if (body1.getPosition().getY() &lt; body2.getPosition().getY()) {</span>
-<span class="nc" id="L1401">                        return 1;</span>
+<span class="nc" id="L1407">                    SolarSystemBody body1 = solarSystem.getBody(bodyName1);</span>
+<span class="nc" id="L1408">                    SolarSystemBody body2 = solarSystem.getBody(bodyName2);</span>
+<span class="nc bnc" id="L1409" title="All 2 branches missed.">                    if (body1.getPosition().getY() &lt; body2.getPosition().getY()) {</span>
+<span class="nc" id="L1410">                        return 1;</span>
                     } else {
-<span class="nc" id="L1403">                        return -1;</span>
+<span class="nc" id="L1412">                        return -1;</span>
                     }
                 }
             });
         }
-<span class="nc" id="L1408">    }</span>
+<span class="nc" id="L1417">    }</span>
     
     /**
      * Draw simulation state of Solar System on screen.
      */
     private void drawSimulationState() {
         // Update current simulation date/time
-<span class="nc bnc" id="L1415" title="All 2 branches missed.">        if (simulationIsRunning()) {</span>
-<span class="nc" id="L1416">            dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
+<span class="nc bnc" id="L1424" title="All 2 branches missed.">        if (simulationIsRunning()) {</span>
+<span class="nc" id="L1425">            dateTimeSelector.setDateTime(solarSystem.getSimulationDateTime());</span>
         }
         
         // Draw bodies of the solar system and their orbits
-<span class="nc" id="L1420">        sortBodiesShown();</span>
-<span class="nc" id="L1421">        clearScreen();</span>
-<span class="nc" id="L1422">        List&lt;SolarSystemBody&gt; bodiesToShow = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L1423" title="All 2 branches missed.">        for (String bodyName : bodiesShown) {</span>
-<span class="nc" id="L1424">            bodiesToShow.add(solarSystem.getBody(bodyName));</span>
-<span class="nc" id="L1425">        }</span>
-<span class="nc" id="L1426">        SolarSystemBody earth = solarSystem.getBody(&quot;earth&quot;);</span>
-<span class="nc bnc" id="L1427" title="All 2 branches missed.">        if (earthToSunView) {</span>
+<span class="nc" id="L1429">        sortBodiesShown();</span>
+<span class="nc" id="L1430">        clearScreen();</span>
+<span class="nc" id="L1431">        List&lt;SolarSystemBody&gt; bodiesToShow = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L1432" title="All 2 branches missed.">        for (String bodyName : bodiesShown) {</span>
+<span class="nc" id="L1433">            bodiesToShow.add(solarSystem.getBody(bodyName));</span>
+<span class="nc" id="L1434">        }</span>
+<span class="nc" id="L1435">        SolarSystemBody earth = solarSystem.getBody(&quot;earth&quot;);</span>
+<span class="nc bnc" id="L1436" title="All 2 branches missed.">        if (earthToSunView) {</span>
             // Do not show the Earth for Earth-to-Sun view
-<span class="nc" id="L1429">            bodiesToShow.remove(earth);</span>
+<span class="nc" id="L1438">            bodiesToShow.remove(earth);</span>
         }
-<span class="nc" id="L1431">        drawOrbitsCorrespondingToPositionVelocity(bodiesToShow);</span>
-<span class="nc" id="L1432">        drawOrbits(bodiesToShow);</span>
-<span class="nc" id="L1433">        drawCircles(bodiesToShow);</span>
-<span class="nc bnc" id="L1434" title="All 4 branches missed.">        if (showRuler &amp;&amp; !earthToSunView) {</span>
-<span class="nc" id="L1435">            drawRulerDistance();</span>
+<span class="nc" id="L1440">        drawOrbitsCorrespondingToPositionVelocity(bodiesToShow);</span>
+<span class="nc" id="L1441">        drawOrbits(bodiesToShow);</span>
+<span class="nc" id="L1442">        drawCircles(bodiesToShow);</span>
+<span class="nc bnc" id="L1443" title="All 4 branches missed.">        if (showRuler &amp;&amp; !earthToSunView) {</span>
+<span class="nc" id="L1444">            drawRulerDistance();</span>
         }
-<span class="nc bnc" id="L1437" title="All 4 branches missed.">        if (showRuler &amp;&amp; earthToSunView) {</span>
-<span class="nc" id="L1438">            drawRulerAngularDiameter();</span>
+<span class="nc bnc" id="L1446" title="All 4 branches missed.">        if (showRuler &amp;&amp; earthToSunView) {</span>
+<span class="nc" id="L1447">            drawRulerAngularDiameter();</span>
         }
-<span class="nc" id="L1440">    }</span>
+<span class="nc" id="L1449">    }</span>
     
     /**
      * Show an alert message. 
@@ -1448,115 +1457,115 @@ import util.Vector3D;
     private void showMessage(final String header, final String content) {
         // Use Platform.runLater() to ensure that code concerning 
         // the Alert message is executed by the JavaFX Application Thread
-<span class="nc" id="L1451">        Platform.runLater(new Runnable() {</span>
+<span class="nc" id="L1460">        Platform.runLater(new Runnable() {</span>
             @Override
             public void run() {
-<span class="nc" id="L1454">                Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
-<span class="nc" id="L1455">                alert.setTitle(&quot;Solar System Simulator&quot;);</span>
-<span class="nc" id="L1456">                alert.setHeaderText(header);</span>
-<span class="nc" id="L1457">                alert.setContentText(content);</span>
-<span class="nc" id="L1458">                alert.showAndWait();</span>
-<span class="nc" id="L1459">            }</span>
+<span class="nc" id="L1463">                Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L1464">                alert.setTitle(&quot;Solar System Simulator&quot;);</span>
+<span class="nc" id="L1465">                alert.setHeaderText(header);</span>
+<span class="nc" id="L1466">                alert.setContentText(content);</span>
+<span class="nc" id="L1467">                alert.showAndWait();</span>
+<span class="nc" id="L1468">            }</span>
         });  
-<span class="nc" id="L1461">    }</span>
+<span class="nc" id="L1470">    }</span>
     
     
     /**
      * Inner-class for drawing the Solar System.
      */
-<span class="nc" id="L1467">    private class DrawAnimationTimer extends AnimationTimer {</span>
+<span class="nc" id="L1476">    private class DrawAnimationTimer extends AnimationTimer {</span>
 
         private long prevUpdate;
 
         @Override
         public void handle(long now) {
 
-<span class="nc" id="L1474">            long lag = now - prevUpdate;</span>
-<span class="nc bnc" id="L1475" title="All 2 branches missed.">            if (lag &gt;= 20000000) {</span>
-<span class="nc" id="L1476">                simulationLock.lock();</span>
+<span class="nc" id="L1483">            long lag = now - prevUpdate;</span>
+<span class="nc bnc" id="L1484" title="All 2 branches missed.">            if (lag &gt;= 20000000) {</span>
+<span class="nc" id="L1485">                simulationLock.lock();</span>
                 try {
-<span class="nc bnc" id="L1478" title="All 2 branches missed.">                    if (simulationIsBeingUpdated) {</span>
-<span class="nc" id="L1479">                        simulationMayBeDrawn.await();</span>
+<span class="nc bnc" id="L1487" title="All 2 branches missed.">                    if (simulationIsBeingUpdated) {</span>
+<span class="nc" id="L1488">                        simulationMayBeDrawn.await();</span>
                     }
-<span class="nc" id="L1481">                    simulationIsBeingDrawn = true;</span>
-<span class="nc" id="L1482">                    drawSimulationState();</span>
-<span class="nc" id="L1483">                    simulationIsBeingDrawn = false;</span>
-<span class="nc" id="L1484">                    simulationMayAdvance.signal();</span>
-<span class="nc" id="L1485">                } catch (InterruptedException ex) {</span>
-<span class="nc" id="L1486">                    stop();</span>
+<span class="nc" id="L1490">                    simulationIsBeingDrawn = true;</span>
+<span class="nc" id="L1491">                    drawSimulationState();</span>
+<span class="nc" id="L1492">                    simulationIsBeingDrawn = false;</span>
+<span class="nc" id="L1493">                    simulationMayAdvance.signal();</span>
+<span class="nc" id="L1494">                } catch (InterruptedException ex) {</span>
+<span class="nc" id="L1495">                    stop();</span>
                 } finally {
-<span class="nc" id="L1488">                    simulationLock.unlock();</span>
-<span class="nc" id="L1489">                }</span>
-<span class="nc" id="L1490">                prevUpdate = now;</span>
+<span class="nc" id="L1497">                    simulationLock.unlock();</span>
+<span class="nc" id="L1498">                }</span>
+<span class="nc" id="L1499">                prevUpdate = now;</span>
             }
-<span class="nc" id="L1492">        }</span>
+<span class="nc" id="L1501">        }</span>
 
         @Override
         public void start() {
-<span class="nc" id="L1496">            prevUpdate = System.nanoTime();</span>
-<span class="nc" id="L1497">            super.start();</span>
-<span class="nc" id="L1498">        }</span>
+<span class="nc" id="L1505">            prevUpdate = System.nanoTime();</span>
+<span class="nc" id="L1506">            super.start();</span>
+<span class="nc" id="L1507">        }</span>
     }
 
     /**
      * Inner-class for simulating the Solar System.
      */
-<span class="nc" id="L1504">    private class SimRunnable implements Runnable {</span>
+<span class="nc" id="L1513">    private class SimRunnable implements Runnable {</span>
         @Override
         public void run() {
-<span class="nc bnc" id="L1507" title="All 2 branches missed.">            while (!Thread.currentThread().isInterrupted()) {</span>
+<span class="nc bnc" id="L1516" title="All 2 branches missed.">            while (!Thread.currentThread().isInterrupted()) {</span>
                 try {
-<span class="nc" id="L1509">                    int pause = 0;</span>
-<span class="nc" id="L1510">                    int nrTimeSteps = 0;</span>
-<span class="nc bnc" id="L1511" title="All 2 branches missed.">                    if (simulationIsRunning()) {</span>
-<span class="nc" id="L1512">                        simulationLock.lock();</span>
+<span class="nc" id="L1518">                    int pause = 0;</span>
+<span class="nc" id="L1519">                    int nrTimeSteps = 0;</span>
+<span class="nc bnc" id="L1520" title="All 2 branches missed.">                    if (simulationIsRunning()) {</span>
+<span class="nc" id="L1521">                        simulationLock.lock();</span>
                         
                         try {
-<span class="nc bnc" id="L1515" title="All 2 branches missed.">                            if (simulationIsBeingDrawn) {</span>
-<span class="nc" id="L1516">                                simulationMayAdvance.await();</span>
+<span class="nc bnc" id="L1524" title="All 2 branches missed.">                            if (simulationIsBeingDrawn) {</span>
+<span class="nc" id="L1525">                                simulationMayAdvance.await();</span>
                             }
-<span class="nc" id="L1518">                            simulationIsBeingUpdated = true;</span>
+<span class="nc" id="L1527">                            simulationIsBeingUpdated = true;</span>
                             
-<span class="nc bnc" id="L1520" title="All 2 branches missed.">                            if (simulationIsRunningFast) {</span>
-<span class="nc" id="L1521">                                nrTimeSteps = 24;</span>
-<span class="nc" id="L1522">                                pause = 1;</span>
+<span class="nc bnc" id="L1529" title="All 2 branches missed.">                            if (simulationIsRunningFast) {</span>
+<span class="nc" id="L1530">                                nrTimeSteps = 24;</span>
+<span class="nc" id="L1531">                                pause = 1;</span>
                             }
                             else {
-<span class="nc" id="L1525">                                nrTimeSteps = 1;</span>
-<span class="nc" id="L1526">                                pause = 1 + (20 - (int)(sliderSimulationSpeed.getValue()/5.0));</span>
-<span class="nc bnc" id="L1527" title="All 2 branches missed.">                                if (simulationIsRunningStepMode) {</span>
-<span class="nc" id="L1528">                                    pause = pause * 10;</span>
+<span class="nc" id="L1534">                                nrTimeSteps = 1;</span>
+<span class="nc" id="L1535">                                pause = 1 + (20 - (int)(sliderSimulationSpeed.getValue()/5.0));</span>
+<span class="nc bnc" id="L1536" title="All 2 branches missed.">                                if (simulationIsRunningStepMode) {</span>
+<span class="nc" id="L1537">                                    pause = pause * 10;</span>
                                 }
                             }
-<span class="nc bnc" id="L1531" title="All 2 branches missed.">                            if (simulationIsRunningForward) {</span>
-<span class="nc bnc" id="L1532" title="All 2 branches missed.">                                if (simulationIsRunningStepMode) {</span>
-<span class="nc" id="L1533">                                    solarSystem.advanceSimulationSingleStep(60);</span>
+<span class="nc bnc" id="L1540" title="All 2 branches missed.">                            if (simulationIsRunningForward) {</span>
+<span class="nc bnc" id="L1541" title="All 2 branches missed.">                                if (simulationIsRunningStepMode) {</span>
+<span class="nc" id="L1542">                                    solarSystem.advanceSimulationSingleStep(60);</span>
                                 }
                                 else {
-<span class="nc" id="L1536">                                    solarSystem.advanceSimulationForward(nrTimeSteps);</span>
+<span class="nc" id="L1545">                                    solarSystem.advanceSimulationForward(nrTimeSteps);</span>
                                 }
                             }
                             else {
-<span class="nc bnc" id="L1540" title="All 2 branches missed.">                                if (simulationIsRunningStepMode) {</span>
-<span class="nc" id="L1541">                                    solarSystem.advanceSimulationSingleStep(-60);</span>
+<span class="nc bnc" id="L1549" title="All 2 branches missed.">                                if (simulationIsRunningStepMode) {</span>
+<span class="nc" id="L1550">                                    solarSystem.advanceSimulationSingleStep(-60);</span>
                                 }
                                 else {
-<span class="nc" id="L1544">                                    solarSystem.advanceSimulationBackward(nrTimeSteps);</span>
+<span class="nc" id="L1553">                                    solarSystem.advanceSimulationBackward(nrTimeSteps);</span>
                                 }
                             }
-<span class="nc" id="L1547">                            simulationIsBeingUpdated = false;</span>
-<span class="nc" id="L1548">                            simulationMayBeDrawn.signal();</span>
+<span class="nc" id="L1556">                            simulationIsBeingUpdated = false;</span>
+<span class="nc" id="L1557">                            simulationMayBeDrawn.signal();</span>
                         } finally {
-<span class="nc" id="L1550">                            simulationLock.unlock();</span>
-<span class="nc" id="L1551">                        }</span>
+<span class="nc" id="L1559">                            simulationLock.unlock();</span>
+<span class="nc" id="L1560">                        }</span>
                     }
-<span class="nc" id="L1553">                    Thread.sleep(pause);</span>
+<span class="nc" id="L1562">                    Thread.sleep(pause);</span>
                 }
-<span class="nc" id="L1555">                catch (InterruptedException ex) {</span>
-<span class="nc" id="L1556">                    Thread.currentThread().interrupt();</span>
-<span class="nc" id="L1557">                }</span>
+<span class="nc" id="L1564">                catch (InterruptedException ex) {</span>
+<span class="nc" id="L1565">                    Thread.currentThread().interrupt();</span>
+<span class="nc" id="L1566">                }</span>
             }
-<span class="nc" id="L1559">        }</span>
+<span class="nc" id="L1568">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
