@@ -309,10 +309,10 @@ public class EphemerisUtilTest {
             // Compute orbital elements for given date
             double orbitElementsExpected[] = EphemerisUtil.computeOrbitalElements(orbitPars, date);
 
-            // Compute (x,y,z) position of Jupiter [m] from orbital elements
+            // Compute (x,y,z) position of Mercury [m] from orbital elements
             Vector3D position = EphemerisUtil.computePosition(orbitElementsExpected);
 
-            // Compute (x,y,z) velocity of Jupiter [m/s] from orbital elements
+            // Compute (x,y,z) velocity of Mercury [m/s] from orbital elements
             Vector3D velocity = EphemerisUtil.computeVelocity(orbitElementsExpected);
 
             // Compute orbital elements from position and velocity
