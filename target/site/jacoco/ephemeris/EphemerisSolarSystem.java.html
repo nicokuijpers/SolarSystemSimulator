@@ -65,7 +65,7 @@ public class EphemerisSolarSystem implements IEphemeris {
 <span class="nc" id="L65">    private EphemerisSolarSystem() {</span>
         
         // Accurate Ephemeris for Sun, Moon, and major planets including Pluto
-<span class="nc" id="L68">        ephemerisAccurate = EphemerisDE405.getInstance();        </span>
+<span class="nc" id="L68">        ephemerisAccurate = EphemerisAccurate.getInstance();        </span>
 
         // Approximate Ephemeris for major planets including Pluto
 <span class="nc" id="L71">        ephemerisApproximate = EphemerisApproximate.getInstance();</span>

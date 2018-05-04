@@ -19,7 +19,7 @@
  */
 package experiments;
 
-import ephemeris.EphemerisDE405;
+import ephemeris.EphemerisAccurate;
 import ephemeris.IEphemeris;
 import ephemeris.SolarSystemParameters;
 import java.util.ArrayList;
@@ -45,13 +45,13 @@ import util.Vector3D;
 public class SimulationAccuracyExperiment {
     
     // Ephemeris
-    private IEphemeris ephemeris;
+    private final IEphemeris ephemeris;
 
     // Particle system
     private ParticleSystem particleSystem;
     
     // Names of bodies to be simulated (except Sun)
-    private List&lt;String&gt; bodyNames;
+    private final List&lt;String&gt; bodyNames;
     
     // Simulation date/time
     private GregorianCalendar simulationDateTime;
@@ -68,7 +68,7 @@ public class SimulationAccuracyExperiment {
      */
 <span class="nc" id="L69">    public SimulationAccuracyExperiment() {</span>
         // Set ephemeris
-<span class="nc" id="L71">        ephemeris = EphemerisDE405.getInstance();</span>
+<span class="nc" id="L71">        ephemeris = EphemerisAccurate.getInstance();</span>
         
         // Define the bodies of the Solar System to be simulated (except Sun)
 <span class="nc" id="L74">        bodyNames = new ArrayList&lt;&gt;();</span>
@@ -89,12 +89,12 @@ public class SimulationAccuracyExperiment {
 
     /**
      * Initialize simulation.
-     * Simulation will start January 1st, 1900.
+     * Simulation will start January 1st, 1620.
      */
     private void initSimulation() {
-        // Start simulation at January 1st, 1900
+        // Start simulation at January 1st, 1620
         // Note that January is month 0
-<span class="nc" id="L97">        simulationDateTime = new GregorianCalendar(1900,0,1);</span>
+<span class="nc" id="L97">        simulationDateTime = new GregorianCalendar(1620,0,1);</span>
         
         // https://www.timeanddate.com/time/aboututc.html
         // Use Coordinated Universal Time (UTC) to avoid 
@@ -272,7 +272,7 @@ public class SimulationAccuracyExperiment {
     
     /**
      * Main method.
-     * Run two simulations for 300 years using Newton Mechanics and General Relativity, 
+     * Run two simulations for 580 years using Newton Mechanics and General Relativity, 
      * respectively. Simulation results are compared to Ephemeris DE405 data. 
      * Simulation time step is 1 hour.
      * @param args input arguments (not used)
@@ -281,11 +281,11 @@ public class SimulationAccuracyExperiment {
         // Experiment set-up
 <span class="nc" id="L282">        SimulationAccuracyExperiment experiment = new SimulationAccuracyExperiment();</span>
         
-        // Run simulation using Newton Mechanics for 300 years
-<span class="nc" id="L285">        experiment.simulateNewtonMechanics(300);</span>
+        // Run simulation using Newton Mechanics for 580 years
+<span class="nc" id="L285">        experiment.simulateNewtonMechanics(580);</span>
         
-        // Run simulation using General Relativity for 300 years
-<span class="nc" id="L288">        experiment.simulateGeneralRelativity(300);</span>
+        // Run simulation using General Relativity for 580 years
+<span class="nc" id="L288">        experiment.simulateGeneralRelativity(580);</span>
 <span class="nc" id="L289">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

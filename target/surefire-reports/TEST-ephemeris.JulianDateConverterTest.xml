@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ephemeris.JulianDateConverterTest" time="2.076" tests="22" errors="0" skipped="2" failures="0">
+<testsuite name="ephemeris.JulianDateConverterTest" time="2.204" tests="22" errors="0" skipped="2" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/jre/lib"/>
@@ -32,7 +32,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="10.12.6"/>
+    <property name="os.version" value="10.13.3"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="user.home" value="/Users/admin"/>
     <property name="user.timezone" value="Europe/Amsterdam"/>
@@ -62,12 +62,12 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="testConvertCalendarToJulianDate24May2017" classname="ephemeris.JulianDateConverterTest" time="0"/>
+  <testcase name="testConvertCalendarToJulianDate24May2017" classname="ephemeris.JulianDateConverterTest" time="0.001"/>
   <testcase name="testConvertJulianDateToCalendarJDZero" classname="ephemeris.JulianDateConverterTest" time="0"/>
-  <testcase name="testConvertJulianDateToCalendar24May2017HoursMin" classname="ephemeris.JulianDateConverterTest" time="0"/>
+  <testcase name="testConvertJulianDateToCalendar24May2017HoursMin" classname="ephemeris.JulianDateConverterTest" time="0.001"/>
   <testcase name="testConvertCalendarToJulianDateAD" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertCalendarToJulianDateBC" classname="ephemeris.JulianDateConverterTest" time="0"/>
-  <testcase name="testConvertCalendarToJulianDateException" classname="ephemeris.JulianDateConverterTest" time="0"/>
+  <testcase name="testConvertCalendarToJulianDateException" classname="ephemeris.JulianDateConverterTest" time="0.001"/>
   <testcase name="testConvertCalendarToJulianDate24May2017HoursMin" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertJulianDateToCalendar24May2017" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertCalendarToJulianDateLeapYear1600" classname="ephemeris.JulianDateConverterTest" time="0"/>
@@ -75,9 +75,9 @@
   <testcase name="testConvertCalendarToJulianDateLeapYear2000" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertCalendarToJulianDateJDZero" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertCalendarToJulianDateGregorianChange" classname="ephemeris.JulianDateConverterTest" time="0.001"/>
-  <testcase name="testConvertCalendarToJulianDateRangeStepDay" classname="ephemeris.JulianDateConverterTest" time="1.469"/>
-  <testcase name="testConvertJulianDateToCalendarRangeStepDay" classname="ephemeris.JulianDateConverterTest" time="0.603"/>
-  <testcase name="testConvertCalendarToJulianDateNoLeapYear1900" classname="ephemeris.JulianDateConverterTest" time="0.001"/>
+  <testcase name="testConvertCalendarToJulianDateRangeStepDay" classname="ephemeris.JulianDateConverterTest" time="1.6"/>
+  <testcase name="testConvertJulianDateToCalendarRangeStepDay" classname="ephemeris.JulianDateConverterTest" time="0.599"/>
+  <testcase name="testConvertCalendarToJulianDateNoLeapYear1900" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertJulianDateToCalendar14October1582" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertJulianDateToCalendar15October1582" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertCalendarToJulianDateRangeStepHour" classname="ephemeris.JulianDateConverterTest" time="0">
@@ -86,6 +86,6 @@
   <testcase name="testConvertJulianDateToCalendarRangeStep45Minutes" classname="ephemeris.JulianDateConverterTest" time="0">
     <skipped message="This test is ignored because it takes a long time"/>
   </testcase>
-  <testcase name="testConvertCalendarToJulianDate1Jan1970" classname="ephemeris.JulianDateConverterTest" time="0.001"/>
+  <testcase name="testConvertCalendarToJulianDate1Jan1970" classname="ephemeris.JulianDateConverterTest" time="0"/>
   <testcase name="testConvertCalendarToJulianDate1Jan2000" classname="ephemeris.JulianDateConverterTest" time="0"/>
 </testsuite>
