@@ -19,12 +19,13 @@
  */
 package experiments;
 
-import java.io.File;
+import java.io.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+
+import application.SolarSystemException;
 import solarsystem.SolarSystem;
-import solarsystem.SolarSystemException;
 
 /**
  * Program to create Solar System state files with extension .sol.
@@ -133,10 +134,18 @@ public class CreateSolarSystemStateFiles {
     public void saveStateFile(GregorianCalendar dateTime) {
         String fileName = calendarToString(dateTime) + EXTENSION;
         File file = new File(filePath,fileName);
+        System.out.println("Save simulation state to file " + file);
+        FileOutputStream fileOut = null;
         try {
-            System.out.println("Save simulation state to file " + file);
-            solarSystem.saveSimulationState(file);
-        } catch (SolarSystemException ex) {
+            fileOut = new FileOutputStream(file);
+        }
+        catch (FileNotFoundException ex) {
+            System.err.println("Error: file not found");
+        }
+        try (ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+            objectOut.writeObject(solarSystem);
+        }
+        catch (IOException ex) {
             System.err.println("Cannot save simulation state to file " + fileName);
         }
     }    

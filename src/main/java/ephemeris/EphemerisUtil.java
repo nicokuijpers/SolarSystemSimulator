@@ -1,29 +1,30 @@
 /*
- * Copyright (c) 2017 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy 
- * of this software and associated documentation files (the "Software"), to deal 
- * in the Software without restriction, including without limitation the rights 
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
- * copies of the Software, and to permit persons to whom the Software is furnished 
+ * Copyright (c) 2019 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
  * to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
  * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package ephemeris;
 
-import java.util.GregorianCalendar;
 import util.Vector3D;
 
+import java.util.GregorianCalendar;
+
 /**
- *
+ * Utilities for Ephemeris computation and orbital mechanics.
  * @author Nico Kuijpers
  */
 public class EphemerisUtil {
@@ -51,7 +52,6 @@ public class EphemerisUtil {
         // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
         // T = (Teph - 2451545.0) / 36525
         // Teph is Julian Ephemeris Date.
-        // REMARK: Julian Ephemeris Date is NOT equal to Julian Date
         
         // Compute number of centuries past J2000.0
         return (Teph - J2000) / NRDAYSPERCENTURY;
@@ -68,11 +68,26 @@ public class EphemerisUtil {
         // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
         // T = (Teph - 2451545.0) / 36525
         // Teph is Julian Ephemeris Date.
-        // REMARK: Julian Ephemeris Date is NOT equal to Julian Date
         double Teph = JulianDateConverter.convertCalendarToJulianDate(date);
 
         // Compute number of centuries past J2000.0
         return computeNrCenturiesPastJ2000(Teph);
+    }
+
+    /**
+     * Inverse transformation for 23.4 degrees J2000 frame.
+     * This transformation is performed such that the J2000 ecliptic plane
+     * becomes the x-y plane.
+     * @param coordinates input coordinates
+     * @return coordinates after transformation
+     */
+    public static Vector3D inverseTransformJ2000(Vector3D coordinates) {
+        double sinEP = -0.397776995;
+        double cosEP = Math.sqrt(1.0 - sinEP*sinEP);
+        double x = coordinates.getX();
+        double y = coordinates.getY();
+        double z = coordinates.getZ();
+        return new Vector3D(x, cosEP*y - sinEP*z, sinEP*y + cosEP*z);
     }
 
     /**
@@ -121,7 +136,7 @@ public class EphemerisUtil {
         if (eccentricity > 0.8) {
             Erad = Math.PI;
         }
-        double deltaE = 0.0;
+        double deltaE;
         do {
             Erad = Erad - (Erad - eccentricity * Math.sin(Erad) - Mrad)
                     / (1.0 - eccentricity * Math.cos(Erad));
@@ -147,7 +162,7 @@ public class EphemerisUtil {
         double Erad = Mrad;
         double sinErad = Math.sin(Erad);
         double cosErad = Math.cos(Erad);
-        double deltaE = 0.0;
+        double deltaE;
         int nrIterations = 0;
         do {
             double Hn = (Erad - eccentricity*sinErad - Mrad)/(1.0 - eccentricity*cosErad); 
@@ -160,6 +175,41 @@ public class EphemerisUtil {
         } while ((Math.abs(deltaE) > maxError) && (nrIterations < 100));
         return Erad;
     }
+    
+    /**
+     * Solve the hyperbolic version of Kepler's equation M = e*sinh(H) - H, 
+     * where M is mean anomaly, H is hyperbolic anomaly, and e is eccentricity.
+     * Uses Halley's method to solve Kepler's equation.
+     *
+     * @param Mrad mean anomaly [radians]
+     * @param eccentricity eccentricity [-]
+     * @param maxError maximum error allowed [radians]
+     * @return hyperbolic anomaly [radians]
+     */
+    public static double solveHyperbolicKeplerEquationHalley(double Mrad, double eccentricity, double maxError) {
+
+        // Halley's method
+        // https://en.wikipedia.org/wiki/Halley's_method
+        // f(H) = e sinh(H) - H - M
+        // f'(H) = e cosh(H) - 1
+        // f''(H) = e sinh(H)
+        double Hrad = Mrad;
+        double sinhHrad = Math.sinh(Hrad);
+        double coshHrad = Math.cosh(Hrad);
+        double deltaH;
+        int nrIterations = 0;
+        do {
+            double Hn = (eccentricity*sinhHrad - Hrad - Mrad)/(eccentricity*coshHrad - 1.0); 
+            double In = (eccentricity*sinhHrad) / (2.0*(eccentricity*coshHrad - 1.0));
+            Hrad = Hrad - (Hn / (1.0 - Hn*In));
+            sinhHrad = Math.sinh(Hrad);
+            coshHrad = Math.cosh(Hrad);
+            deltaH = eccentricity*sinhHrad - Hrad - Mrad;
+            nrIterations++;
+        } while ((Math.abs(deltaH) > maxError) && (nrIterations < 100));
+        return Hrad;
+    }
+    
     
     /**
      * Compute true anomaly from eccentric anomaly.
@@ -175,6 +225,22 @@ public class EphemerisUtil {
         double y = Math.sqrt(1.0 + eccentricity) * Math.sin(Erad / 2.0);
         double Frad = 2.0 * Math.atan2(y, x);
         return Frad;
+    }
+    
+    /**
+     * Compute true anomaly from hyperbolic anomaly.
+     *
+     * @param Hrad hyperbolic anomaly [radians]
+     * @param eccentricity eccentricity [-]
+     * @return true anomaly [radians]
+     */
+    public static double computeTrueAnomalyHyperbolic(double Hrad, double eccentricity) {
+
+        // https://space.stackexchange.com/questions/24646/finding-x-y-z-vx-vy-vz-from-hyperbolic-orbital-elements
+        // https://physics.stackexchange.com/questions/247470/calculating-true-anomaly-of-a-hyperbolic-trajectory-from-time
+        // tan(theta/2) = sqrt((e+1)/(e-1)) tanh(H/2)
+        // nu = 2*atan(sqrt((e+1)/(e-1)) tanh(H/2)
+        return 2.0 * Math.atan(Math.sqrt((eccentricity + 1.0)/(eccentricity - 1.0)) * Math.tanh(Hrad/2.0));
     }
     
     /**
@@ -217,9 +283,8 @@ public class EphemerisUtil {
     public static double[] computeOrbitalElementsForMajorPlanets(
             double[] orbitPars, double Teph) {
 
-        // Computation of six Keplerian elements is based on
+        // Computation of six orbital elements (or Keplerian elements) is based on
         // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
-        // Keplerian elements
         double axisZero         = orbitPars[0]; // Semi-major axis [au]
         double eccentricityZero = orbitPars[1]; // Eccentricity [-]
         double inclinationZero  = orbitPars[2]; // Inclination [degrees]
@@ -242,7 +307,7 @@ public class EphemerisUtil {
         // Compute number of centuries past J2000.0
         double T = computeNrCenturiesPastJ2000(Teph);
 
-        // Compute the value of Keplerian elements
+        // Compute the value of orbital elements
         double axis = axisZero + T * axisDot;
         double eccentricity = eccentricityZero + T * eccentricityDot;
         double inclination = inclinationZero + T * inclinationDot;
@@ -253,6 +318,14 @@ public class EphemerisUtil {
         // Argument of perihelion [degrees]
         double argPerihelion = longPeri - longNode;
 
+        // Ensure that argument of perihelion is between -180.0 and 180 degrees
+        if (argPerihelion < -180.0) {
+            argPerihelion += 360.0;
+        }
+        if (argPerihelion > 180.0) {
+            argPerihelion -= 360.0;
+        }
+
         // Compute mean anomaly [degrees]
         // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
         // Last three terms must be added for Jupiter through Pluto
@@ -261,13 +334,16 @@ public class EphemerisUtil {
         double meanAnomaly = meanLong - longPeri
                 + b*T*T + c*Math.cos(fTrad) + s*Math.sin(fTrad);
 
-        // Modulus the mean anomaly; ensure that -180 <= M <= +180
+        // Ensure that mean anomaly is between -180.0 and 180.0 degrees
         meanAnomaly = meanAnomaly % 360.0;
+        if (meanAnomaly < -180.0) {
+            meanAnomaly += 360.0;
+        }
         if (meanAnomaly > 180.0) {
-            meanAnomaly = meanAnomaly - 360.0;
+            meanAnomaly -= 360.0;
         }
         
-        // Six Keplerian elements for given date
+        // Six orbital elements (or Keplerian elements) for given date
         double[] orbitElements = new double[6];
         orbitElements[0] = axis;          // semi-major axis [au]
         orbitElements[1] = eccentricity;  // eccentricity [-]
@@ -276,7 +352,7 @@ public class EphemerisUtil {
         orbitElements[4] = argPerihelion; // argument of perihelion [degrees]
         orbitElements[5] = longNode;      // longitude of ascending node [degrees]
         
-        // Return Keplerian elements for given date
+        // Return orbital elements for given date
         return orbitElements;
     }
     
@@ -316,11 +392,31 @@ public class EphemerisUtil {
         double longNode      = orbitPars[4]; // longitude of ascending node [degrees]
         double Tperi         = orbitPars[5]; // time of perihelion passage [JED]
         double meanMotion    = orbitPars[6]; // mean motion [degrees/day]
-        
+
+        // Ensure that argument of perihelion is between -180.0 and 180 degrees
+        if (argPerihelion < -180.0) {
+            argPerihelion += 360.0;
+        }
+        if (argPerihelion > 180.0) {
+            argPerihelion -= 360.0;
+        }
+
         // Compute mean anomaly
         double meanAnomaly = (Teph - Tperi) * meanMotion;
-        
-        // Six Keplerian elements for given date
+
+        // Ensure that mean anomaly is between -180.0 and 180.0 degrees (ellipitcal orbit only)
+        if (axis > 0.0) {
+            // Orbit is elliptical
+            meanAnomaly = meanAnomaly % 360.0;
+            if (meanAnomaly < -180.0) {
+                meanAnomaly += 360.0;
+            }
+            if (meanAnomaly > 180.0) {
+                meanAnomaly -= 360.0;
+            }
+        }
+
+        // Six orbital elements for given date
         double[] orbitElements = new double[6];
         orbitElements[0] = axis;          // semi-major axis [au]
         orbitElements[1] = eccentricity;  // eccentricity [-]
@@ -329,7 +425,7 @@ public class EphemerisUtil {
         orbitElements[4] = argPerihelion; // argument of perihelion [degrees]
         orbitElements[5] = longNode;      // longitude of ascending node [degrees]
         
-        // Return Keplerian elements for given date
+        // Return orbital elements for given date
         return orbitElements;
     }
     
@@ -350,22 +446,21 @@ public class EphemerisUtil {
             throw new IllegalArgumentException("Wrong number of orbital parameters");
         }
         
-        // Compute Julian EphemerisUtil Date
-        // REMARK: Julian EphemerisUtil Date is NOT equal to Julian Date
+        // Compute Julian Ephemeris Date
         double Teph = JulianDateConverter.convertCalendarToJulianDate(date);
         
         // Compute orbital elements
         if (orbitPars.length == 16) {
             
-            // Orbital parameters contain Keplerian elements and their rates.
-            // Additional parameters are included for Jupiter, Saturn, Uranus, 
-            // Neptune, and Pluto.
+            // Orbital parameters contain orbital elements (or Keplerian elements)
+            // and their rate. Additional parameters are included for Jupiter,
+            // Saturn, Uranus, Neptune, and Pluto.
             // Orbital elements are computed for Julian Ephemeris Date.
             // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
             return computeOrbitalElementsForMajorPlanets(orbitPars, Teph);
         } else {
             
-            // Orbital parameters contain Keplerian elements and include 
+            // Orbital parameters contain orbital elements including
             // date of perihelion passage and mean motion.
             // Orbital elements are computed for Julian Ephemeris Date.
             return computeOrbitalElementsFromPerihelionPassage(orbitPars, Teph);
@@ -375,15 +470,15 @@ public class EphemerisUtil {
     
     /**
      * Compute heliocentric position in orbital plane where x-axis is aligned
-     * from the focus to the perihelion.
+     * from the focus to the perihelion. Elliptic orbit.
      *
-     * @param axis semi-major axis [au]
-     * @param eccentricity eccentricity [-]
+     * @param axis semi-major axis [au] (must be positive)
+     * @param eccentricity eccentricity [-] (must be between zero and one)
      * @param Erad eccentric anamaly [radians]
      * @return heliocentric coordinates [au]
      */
     public static Vector3D computeHeliocentricPosition(double axis,
-            double eccentricity, double Erad) {
+                                                       double eccentricity, double Erad) {
 
         // Compute the planet's heliocentric coordinates in its orbital plane
         // where the x-axis is aligned from the focus to the perihelion
@@ -395,27 +490,75 @@ public class EphemerisUtil {
     }
 
     /**
-     * Compute heliocentric velocity in orbital plane where x-axis is aligned
-     * from the focus to the perihelion.
+     * Compute heliocentric position in orbital plane where x-axis is aligned
+     * from the focus to the perihelion. Hyperbolic orbit.
      *
+     * @param axis semi-major axis [au] (must be negative)
+     * @param eccentricity eccentricity [-] (must be larger than one)
+     * @param Hrad hyperbolic anomaly [radians]
+     * @return heliocentric coordinates [au]
+     */
+    public static Vector3D computeHeliocentricPositionHyperbolic(double axis,
+                                                                 double eccentricity, double Hrad) {
+
+        // https://studentportalen.uu.se/portal/portal/uusp/student/
+        // filearea?uusp.portalpage=true&mode=filearea36238&toolMode=studentUse&entityId=59763&toolAttachmentId=36238
+        // See celmek2.pptx (slide 29)
+        // x = |a| * (e - cosh(H))
+        // y = |a| * sqrt(e^2 - 1) * sinh(H)
+        double xPos = Math.abs(axis) * (eccentricity - Math.cosh(Hrad));
+        double yPos = Math.abs(axis) * Math.sqrt(eccentricity * eccentricity - 1.0) * Math.sinh(Hrad);
+        double zPos = 0.0;
+        return new Vector3D(xPos, yPos, zPos);
+    }
+    
+    /**
+     * Compute velocity relative to center body in orbital plane where x-axis is aligned
+     * from the focus to the periapsis. Elliptic orbit.
+     *
+     * @param mu standard gravitational parameter of center body [m3/s2]
      * @param a semi-major axis [m]
-     * @param eccentricity eccentricity [-]
+     * @param e eccentricity [-]
      * @param Frad true anomaly [radians]
      * @return velocity in heliocentric coordinates [m/s]
      */
-    public static Vector3D computeHeliocentricVelocity(double a,
-            double eccentricity, double Frad) {
+    public static Vector3D computeVelocityRelativeToCenterbody(double mu, double a,
+                                                               double e, double Frad) {
 
         // http://exoplanets.astro.yale.edu/workshop/EPRV/Bibliography_files/Radial_Velocity.pdf
         // See formula (9)
-        // Use standard gravitational parameter mu = G*M in m3/s2
-        double mu = SolarSystemParameters.getInstance().getMu("sun");
-        double v = Math.sqrt(mu * (1.0 / (a * (1 - eccentricity * eccentricity))));
+        double v = Math.sqrt(mu * (1.0 / (a * (1.0 - e*e))));
         double xVelo = -v * Math.sin(Frad);
-        double yVelo = v * (Math.cos(Frad) + eccentricity);
+        double yVelo = v * (Math.cos(Frad) + e);
         return new Vector3D(xVelo, yVelo, 0.0);
     }
 
+    /**
+     * Compute velocity relative to center body in orbital plane where x-axis is aligned
+     * from the focus to the periapsis. Hyperbolic orbit.
+     *
+     * @param mu standard gravitational parameter of center body [m3/s2]
+     * @param a semi-major axis [m]
+     * @param e eccentricity [-]
+     * @param Hrad hyperbolic anomaly [radians]
+     * @return velocity in heliocentric coordinates [m/s]
+     */
+    public static Vector3D computeVelocityRelativeToCenterBodyHyperbolic(double mu, double a,
+                                                                         double e, double Hrad) {
+
+        // https://studentportalen.uu.se/portal/portal/uusp/student/
+        // filearea?uusp.portalpage=true&mode=filearea36238&toolMode=studentUse&entityId=59763&toolAttachmentId=36238
+        // See celmek2.pptx (slide 29)
+        // sqrt(|a| * (e^2 - 1) * mu) = |a|^2 * sqrt(e^2 - 1) * (e * cosh(H) - 1) * Hdot
+        // xVelo = -|a| * Hdot * sinh(H)
+        // yVelo = |a| * sqrt(e^2 - 1) * Hdot * cosh(H)
+        double Hdot = Math.sqrt(Math.abs(a) * (e*e - 1.0) * mu) /
+                      (a*a * Math.sqrt(e*e - 1.0) * (e*Math.cosh(Hrad) - 1.0));
+        double xVelo = -Math.abs(a) * Hdot * Math.sinh(Hrad);
+        double yVelo = Math.abs(a) * Math.sqrt(e*e - 1.0) * Hdot * Math.cosh(Hrad);
+        return new Vector3D(xVelo, yVelo, 0.0);
+    }
+    
     /**
      * Convert heliocentric coordinates to coordinates in the J2000 ecliptic
      * plane, with the x-axis aligned toward the equinox.
@@ -469,7 +612,7 @@ public class EphemerisUtil {
      * Author: Marco
      */
     public static Vector3D computeOrbitPositionFromEclipticPosition(Vector3D position,
-            double longNode, double inclination, double argPerihelion) {
+                                                                    double longNode, double inclination, double argPerihelion) {
         double x, y, z;
         // set up transform matrix. See aprx_pos_planets.pdf, formula 8-33
         // inverse matrix is Rz(argPerihelion)*Rx(inclination)*Rz(longNode)
@@ -511,7 +654,7 @@ public class EphemerisUtil {
      * Author: Marco
      */
     public static Vector3D computeEclipticPositionFromOrbitPosition(Vector3D position,
-            double longNode, double inclination, double argPerihelion) {
+                                                                    double longNode, double inclination, double argPerihelion) {
         double x, y, z;
         // set up transform matrix. See aprx_pos_planets.pdf, formula 8-33
         // matrix is Rz(-longNode)*Rx(-inclination)*Rz(-argPerihelion)
@@ -546,14 +689,14 @@ public class EphemerisUtil {
     /**
      * Compute position from orbital elements.
      *
-     * @param orbitElements orbit elements (Keplerian elements)
+     * @param orbitElements orbital elements (Keplerian elements)
      * @return position (x,y,z) of planet in m
      */
     public static Vector3D computePosition(double[] orbitElements) {
 
         // Computation of position of planet is based on
         // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
-        // Keplerian elements
+        // Orbital elements (Keplerian elements)
         double axis          = orbitElements[0]; // semi-major axis [au]
         double eccentricity  = orbitElements[1]; // eccentricity [-]
         double inclination   = orbitElements[2]; // inclination [degrees]
@@ -564,14 +707,30 @@ public class EphemerisUtil {
         // Mean anomaly in radians
         double Mrad = Math.toRadians(meanAnomaly);
 
-        // Obtain the eccentric anomaly E from the solution of
-        // Kepler's equation M = E - eccentricity * sin(E)
-        double Erad = solveKeplerEquationHalley(Mrad, eccentricity, 1E-14);
+        // Distinguish between elliptic and hyperbolic orbit
+        Vector3D helioCentricPosition;
+        if (axis >= 0.0) {
+            // Elliptic orbit
+            // Obtain eccentric anomaly E by solving
+            // Kepler's equation M = E - eccentricity * sin(E)
+            // Use Halley's method
+            double Erad = solveKeplerEquationHalley(Mrad, eccentricity, 1E-14);
 
-        // Compute the planet's heliocentric coordinates in its orbital plane
-        // where the x-axis is aligned from the focus to the perihelion
-        Vector3D helioCentricPosition
-                = computeHeliocentricPosition(axis, eccentricity, Erad);
+            // Compute the planet's heliocentric coordinates in its orbital plane
+            // where the x-axis is aligned from the focus to the perihelion
+            helioCentricPosition = computeHeliocentricPosition(axis, eccentricity, Erad);
+        }
+        else {
+            // Hyperbolic orbit
+            // Obtain hyperbolic eccentric anomaly H by solving the hyperbolic
+            // Kepler equation M = eccentricity * sinh(H) - H
+            // Use Halley's method
+            double Hrad = solveHyperbolicKeplerEquationHalley(Mrad, eccentricity, 1E-14);
+
+            // Compute the planet's heliocentric coordinates in its orbital plane
+            // where the x-axis is aligned from the focus to the perihelion
+            helioCentricPosition = computeHeliocentricPositionHyperbolic(axis, eccentricity, Hrad);
+        }
 
         // Compute the coordinates in the J2000 ecliptic plane, with the x-axis
         // aligned toward the equinox
@@ -588,15 +747,18 @@ public class EphemerisUtil {
     }
 
     /**
-     * Compute velocity from orbital elements by differentiation over position.
-     * @param orbitElements orbit elements (Keplerian elements)
-     * @return velocity (x,y,z) of planet in m/s
+     * Compute velocity relative to center body from orbital elements.
+     * Velocity is computed by differentiation over position.
+     * 
+     * @param mu standard gravitational parameter of center body [m3/m2]
+     * @param orbitElements orbital elements (Keplerian elements)
+     * @return velocity (x,y,z) of body [m/s]
      */
-    public static Vector3D computeVelocityByDifferentiation(double[] orbitElements) {
+    public static Vector3D computeVelocityByDifferentiation(double mu, double[] orbitElements) {
         
         // Computation of position of planet is based on
         // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
-        // Keplerian elements
+        // Orbital elements (Keplerian elements)
         double axis          = orbitElements[0]; // semi-major axis [au]
         double eccentricity  = orbitElements[1]; // eccentricity [-]
         double inclination   = orbitElements[2]; // inclination [degrees]
@@ -639,28 +801,28 @@ public class EphemerisUtil {
         // Use current position to obtain the actual distance
         double a  = orbitElements[0] * SolarSystemParameters.ASTRONOMICALUNIT;
         double r  = currentPosition.magnitude();
-        double mu = SolarSystemParameters.getInstance().getMu("sun");
         double v  = Math.sqrt(mu*(2.0/r - 1.0/a));
         
         // Compute velocity as a vector in m/s
         Vector3D velocity = direction.scalarProduct(v);
         
-        // Return (x,y,z) velocity of planet in m/s
+        // Return (x,y,z) velocity of body in m/s
         return velocity;
     }
     
     
     /**
-     * Compute velocity from orbital orbital elements.
+     * Compute velocity relative to center body from orbital elements.
      *
+     * @param mu standard gravitational parameter of center body [m3/m2]
      * @param orbitElements orbit elements (Keplerian elements)
      * @return velocity (x,y,z) of planet in m/s
      */
-    public static Vector3D computeVelocity(double[] orbitElements) {
+    public static Vector3D computeVelocity(double mu, double[] orbitElements) {
 
         // Computation of velocity of planet is based on
         // http://exoplanets.astro.yale.edu/workshop/EPRV/Bibliography_files/Radial_Velocity.pdf
-        // Keplerian elements
+        // Orbital elements (Keplerian elements)
         double axis          = orbitElements[0]; // semi-major axis [au]
         double eccentricity  = orbitElements[1]; // eccentricity [-]
         double inclination   = orbitElements[2]; // inclination [degrees]
@@ -671,17 +833,35 @@ public class EphemerisUtil {
         // Mean anomaly in radians
         double Mrad = Math.toRadians(meanAnomaly);
 
-        // Obtain the eccentric anomaly E from the solution of
-        // Kepler's equation M = E - eccentricity * sin(E)
-        double Erad = solveKeplerEquationHalley(Mrad, eccentricity, 1E-14);
-
-        // True anomaly in radians
-        double Frad = computeTrueAnomaly(Erad, eccentricity);
-
-        // Heliocentric velocity in m/s
+        // Semi-major axis in m
         double a = axis * SolarSystemParameters.ASTRONOMICALUNIT;
-        Vector3D heliocentricVelocity
-                = computeHeliocentricVelocity(a, eccentricity, Frad);
+
+        // Distinguish between elliptic and hyperbolic orbit
+        Vector3D heliocentricVelocity;
+        if (axis >= 0.0) {
+            // Elliptic orbit
+            // Obtain the eccentric anomaly E by solving
+            // Kepler's equation M = E - eccentricity * sin(E)
+            double Erad = solveKeplerEquationHalley(Mrad, eccentricity, 1E-14);
+
+            // True anomaly in radians
+            double Frad = computeTrueAnomaly(Erad, eccentricity);
+
+            // Heliocentric velocity in m/s
+            heliocentricVelocity = computeVelocityRelativeToCenterbody(mu, a, eccentricity, Frad);
+        }
+        else {
+            // Hyperbolic orbit
+            // Obtain hyperbolic eccentric anomaly H by solving the hyperbolic
+            // Kepler equation M = eccentricity * sinh(H) - H
+            // Use Halley's method
+            double Hrad = solveHyperbolicKeplerEquationHalley(Mrad, eccentricity, 1E-14);
+
+            // Heliocentric velocity in m/s
+            heliocentricVelocity
+                    = computeVelocityRelativeToCenterBodyHyperbolic(mu, a, eccentricity, Hrad);
+        }
+
 
         // Compute velocity [m/s] in the J2000 ecliptic plane, with the x-axis
         // aligned toward the equinox
@@ -694,7 +874,7 @@ public class EphemerisUtil {
     }
 
     /**
-     * Compute orbit from orbit elements.
+     * Compute orbit from orbital elements.
      *
      * @param orbitElements orbit elements (Keplerian elements)
      * @return position (x,y,z) of planet in m
@@ -714,19 +894,47 @@ public class EphemerisUtil {
         // Mean anomaly in radians
         double Mrad = Math.toRadians(meanAnomaly);
 
-        // Obtain the eccentric anomaly E from the solution of
-        // Kepler's equation M = E - eccentricity * sin(E)
-        double Erad = solveKeplerEquationHalley(Mrad, eccentricity, 1E-14);
+        // Obtain (hyperbolic) eccentric anomaly E by solving Kepler's equation
+        double Erad;
+        if (axis >= 0.0) {
+            // Elliptic orbit
+            // Obtain eccentric anomaly E by solving
+            // Kepler's equation M = E - eccentricity * sin(E)
+            // Use Halley's method
+            Erad = solveKeplerEquationHalley(Mrad, eccentricity, 1E-14);
+        }
+        else {
+            // Hyperbolic orbit
+            // Obtain hyperbolic eccentric anomaly H by solving the hyperbolic
+            // Kepler equation M = eccentricity * sinh(H) - H
+            // Use Halley's method
+            Erad = solveHyperbolicKeplerEquationHalley(Mrad, eccentricity, 1E-14);
+        }
         
         // Compute orbit (360 segments)
-        Vector3D[] orbit = new Vector3D[360];
-        double EradStep = 2*Math.PI/orbit.length;
+        Vector3D[] orbit = new Vector3D[361];
+        double EradStep = 2.0*Math.PI/(orbit.length-1);
+        double EradInit = Erad;
+
+        if (axis < 0.0) {
+            int nrSteps = (int) Math.floor((Erad + Math.PI) / EradStep);
+            EradInit = -Erad + nrSteps*EradStep;
+        }
         for (int i = 0; i < orbit.length; i++) {
             
             // Compute the planet's heliocentric coordinates in its orbital plane
             // where the x-axis is aligned from the focus to the perihelion
-            Vector3D helioCentricPosition
-                    = computeHeliocentricPosition(axis, eccentricity, Erad + i*EradStep);
+            Vector3D helioCentricPosition;
+            if (axis >= 0.0) {
+                // Elliptical orbit
+                helioCentricPosition
+                    = computeHeliocentricPosition(axis, eccentricity, EradInit + i*EradStep);
+            }
+            else {
+                // Hyperbolic orbit
+                helioCentricPosition
+                        = computeHeliocentricPositionHyperbolic(axis, eccentricity, EradInit - i*EradStep);
+            }
 
             // Compute the coordinates in the J2000 ecliptic plane, with the x-axis
             // aligned toward the equinox
@@ -741,14 +949,15 @@ public class EphemerisUtil {
     }
 
     /**
-     * Compute orbital elements from position and velocity of body
-     * @param centerBody Name of center body
-     * @param position Position of body in m relative to center body
-     * @param velocity Velocity of planet in m/s relative to center body
+     * Compute orbital elements from position and velocity of body.
+     * 
+     * @param mu Standard gravitational parameter of center body [m3/s2]
+     * @param position Position of body relative to center body [m]
+     * @param velocity Velocity of body relative to center body [m/s]
      * @return orbitElements orbit elements relative to center body
      */
-    public static double[] computeOrbitalElementsFromPositionVelocity(String centerBody,
-            Vector3D position, Vector3D velocity) {
+    public static double[] computeOrbitalElementsFromPositionVelocity(double mu,
+                                                                      Vector3D position, Vector3D velocity) {
         
         // http://ccar.colorado.edu/asen5070/handouts/cart2kep2002.pdf
         
@@ -763,13 +972,12 @@ public class EphemerisUtil {
         double r = position.magnitude();
         double v = velocity.magnitude();
         
-        // Compute the specific energy, E, and verify elliptical motion
-        double mu = SolarSystemParameters.getInstance().getMu(centerBody);
-        double E = ((v*v)/2) - (mu/r);
+        // Compute the specific energy E
+        double E = ((v*v)/2.0) - (mu/r);
         
         // Compute semi-major axis, a [m] and axis [AU]
-        double a = -mu/(2*E);
-        double axis = a/SolarSystemParameters.ASTRONOMICALUNIT;
+        double a = -mu/(2.0*E);
+        double axis = a/ SolarSystemParameters.ASTRONOMICALUNIT;
         
         // Compute eccentricity [-]
         double e = Math.sqrt(1.0 - (h*h)/(a*mu));
@@ -783,53 +991,78 @@ public class EphemerisUtil {
         
         // Compute right ascension of the the ascending node, Omega [rad]
         // Note that the result of atan2 is in the range -pi through pi
-        double Omega = Math.atan2(hx,-hy);
+        double Omega = Math.atan2(hx, -hy);
         double longNode = Math.toDegrees(Omega);
         
-        // Compute argument of latitude, omega + nu [degrees]
-        // argLatitude should be in the range 0.0 through 360 degrees
+        // Compute argument of latitude, Omega + nu [degrees]
         double px = position.getX();
         double py = position.getY();
         double pz = position.getZ();
-        double argy = pz/Math.sin(i);
-        double argx = px*Math.cos(Omega) + py*Math.sin(Omega);
-        double argLatitude = Math.toDegrees(Math.atan2(argy,argx));
-        
+        double argy = pz / Math.sin(i);
+        double argx = px * Math.cos(Omega) + py * Math.sin(Omega);
+        double argLatitude = Math.toDegrees(Math.atan2(argy, argx));
+
         // Compute true anomaly, nuRad [radians] and nuDegrees [degrees]
-        double arg = (a*(1.0 - e*e) - r)/(e*r);
-        double nuRad = Math.acos(arg);
+        double p = a*(1.0 - e*e);
+        argy = (Math.sqrt(p/mu))*(velocity.dotProduct(position));
+        argx = p - r;
+        double nuRad = Math.atan2(argy, argx);
         double nuDegrees = Math.toDegrees(nuRad);
-        
-        // https://en.wikipedia.org/wiki/True_anomaly
-        // If dot product of position and velocity < 0 then
-        // replace nu by 2*pi - nu 
-        if (position.dotProduct(velocity) < 0.0) {
-            nuRad = 2*Math.PI - nuRad;
-            nuDegrees = 360.0 - nuDegrees;
-        }
         
         // Compute argument of perihelion [degrees]
         double argPerihelion = argLatitude - nuDegrees;
         
-        // Argument of perihelion should be between -180.0 and 180 degrees
+        // Ensure that argument of perihelion is between -180.0 and 180 degrees
         if (argPerihelion < -180.0) {
             argPerihelion += 360.0;
-        } 
+        }
+        if (argPerihelion > 180.0) {
+            argPerihelion -= 360.0;
+        }
+
+        // Compute mean anomaly M from eccentric anomaly EA
+        // Distinguish between elliptic and hyperbolic orbit
+        double meanAnomaly;
+        if (E <= 0.0) {
+            // Elliptic orbit
+            // tan(EA/2) = sqrt((1-e)/(1+e)) * tan(nu/2)
+            // EA is in the same half plane as nu.
+            double arg = Math.sqrt((1.0 - e)/(1.0 + e)) * Math.tan(nuRad/2.0);
+            double EA = 2.0*Math.atan(arg);
+
+            // Kepler's equation M = EA - e*sin(EA)
+            // http://www.bogan.ca/orbits/kepler/orbteqtn.html
+            meanAnomaly = Math.toDegrees(EA - e*Math.sin(EA));
+
+            // Ensure that -180 <= mean anomaly <= +180
+            meanAnomaly = meanAnomaly % 360.0;
+            if (meanAnomaly < -180.0) {
+                meanAnomaly += 360.0;
+            }
+            if (meanAnomaly > 180.0) {
+                meanAnomaly -= 360.0;
+            }
+        }
+        else {
+            // Hyperbolic orbit
+            // http://www.bogan.ca/orbits/kepler/orbteqtn.html
+            // cosh(EA) = (e + cos(nu))/(1 + e cos(nu))
+            double arg = (e + Math.cos(nuRad)) / (1.0 + e*Math.cos(nuRad));
+            // https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions
+            // arcosh(x) = ln(x + sqrt(x^2 - 1))
+            double EA = Math.log(arg + Math.sqrt(arg*arg - 1.0));
+
+            // Eccentric Anomaly EA must be in the same half plane as true anomaly nu
+            if (nuRad < 0.0) {
+                EA = -EA;
+            }
+
+            // Hyperbolic Kepler's equation M = e*sinh(EA) - EA
+            // http://www.bogan.ca/orbits/kepler/orbteqtn.html
+            meanAnomaly = Math.toDegrees(e*Math.sinh(EA) - EA);
+        }
         
-        // Compute eccentric anomaly, EA [rad], from
-        // tan(EA/2) = sqrt((1-e)/(1+e)) * tan(nu/2)
-        // EA is in the same half plane as nu. 
-        // This equation will yield the correct quadrant for EA.
-        double temp = Math.sqrt((1.0 - e)/(1.0 + e)) * Math.tan(nuRad/2.0);
-        double EA = 2.0*Math.atan(temp);
-        
-        // Compute mean anomaly [degrees] from Kepler's equation
-        // M = EA - e*sin(EA),
-        // where M = mean anomaly, e = eccentricity, and EA = eccentric anomaly.
-        // Note that EA must be in radians.
-        double meanAnomaly = Math.toDegrees(EA - e*Math.sin(EA));
-        
-         // Six Keplerian elements for given date
+        // Six Keplerian elements for given date
         double[] orbitElements = new double[6];
         orbitElements[0] = axis;          // semi-major axis [au]
         orbitElements[1] = eccentricity;  // eccentricity [-]
@@ -845,13 +1078,13 @@ public class EphemerisUtil {
     /**
      * Compute orbit relative to center body from position and velocity.
      *
-     * @param centerBody name of center body
-     * @param position position (x,y,z) in m relative to center body
-     * @param velocity velocity (x,y,z) in m/s relative to center body
-     * @return position (x,y,z) of body in m relative to center body
+     * @param mu standard gravitational parameter of center body [m3/s2]
+     * @param position position (x,y,z) relative to center body [m]
+     * @param velocity velocity (x,y,z) relative to center body [m/s]
+     * @return orbit positions (x,y,z) of body relative to center body [m]
      */
-    public static Vector3D[] computeOrbit(String centerBody, Vector3D position, Vector3D velocity) {
-        double[] orbitElements = computeOrbitalElementsFromPositionVelocity(centerBody,position,velocity);
+    public static Vector3D[] computeOrbit(double mu, Vector3D position, Vector3D velocity) {
+        double[] orbitElements = computeOrbitalElementsFromPositionVelocity(mu,position,velocity);
         return computeOrbit(orbitElements);
     }
 }

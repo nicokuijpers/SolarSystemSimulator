@@ -1,30 +1,27 @@
 /*
- * Copyright (c) 2017 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy 
- * of this software and associated documentation files (the "Software"), to deal 
- * in the Software without restriction, including without limitation the rights 
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
- * copies of the Software, and to permit persons to whom the Software is furnished 
+ * Copyright (c) 2019 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
  * to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
  * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package ephemeris;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import particlesystem.Particle;
+
+import java.util.*;
 
 /**
  *
@@ -42,7 +39,15 @@ public class SolarSystemParameters {
     
     // Number of days per century
     // https://www.grc.nasa.gov/www/k-12/Numbers/Math/Mathematical_Thinking/calendar_calculations.htm
-    private static final double nrDaysPerCentury = 36524.25; 
+    private static final double nrDaysPerCentury = 36524.25;
+
+    // Speed of light in m/s
+    // https://en.wikipedia.org/wiki/Speed_of_light
+    public static final double SPEEDOFLIGHT = 299792458.0;
+
+    // Axial tilt of the Earth in degrees
+    // https://en.wikipedia.org/wiki/Axial_tilt
+    public static final double AXIALTILT = 23.43678;
     
     /**
      * Masses of sun, planets, asteroids, comets, and moons of solar system in kg.
@@ -73,6 +78,11 @@ public class SolarSystemParameters {
      * Mass of comet C/1995 O1 (Hale-Bopp) is unknown. Estimated mass 1.0E13 kg
      * Mass of comet D/1993 F2-A (Shoemaker-Levy 9) is unknown. Estimated mass 1.0E13 kg
      * Mass of asteroid 3122 Florence is unknown. Estimated mass 1.0E13 kg
+     * Mass of Ultima Thule is computed frorm standard gravitational parameter mu = G*M
+     * https://en.wikipedia.org/wiki/Io_(moon)
+     * https://en.wikipedia.org/wiki/Europa_(moon)
+     * https://en.wikipedia.org/wiki/Ganymede_(moon)
+     * https://en.wikipedia.org/wiki/Callisto_(moon)
      */
     private static final double SUNMASS       =  1988500E24;
     private static final double MERCURYMASS   =        0.33011E24;
@@ -98,6 +108,20 @@ public class SolarSystemParameters {
     private static final double HBMASS        =        1.0E13; // estimated
     private static final double SL9MASS       =        1.0E13; // estimated
     private static final double FLORENCEMASS  =        1.0E13; // estimated
+    private static final double UTMASS        =
+            (Math.pow(2.9591220828559093E-04,1.0/3.0)*ASTRONOMICALUNIT/
+                    Math.pow(86400,2.0))/ Particle.GRAVITATIONALCONSTANT;
+    /*
+    private static final double IOMASS        =        8.931938E22;
+    private static final double EUROPAMASS    =        4.799844E22;
+    private static final double GANYMEDEMASS  =        1.4819E23;
+    private static final double CALLISTOMASS  =        1.075938E23;
+    */
+    // https://ssd.jpl.nasa.gov/horizons.cgi#results
+    private static final double IOMASS        =        8.933E22;
+    private static final double EUROPAMASS    =        4.797E22;
+    private static final double GANYMEDEMASS  =        1.482E23;
+    private static final double CALLISTOMASS  =        1.076E23;
     
     /** 
      * Standard gravitational parameter mu = G*M in m3/s2.
@@ -141,6 +165,9 @@ public class SolarSystemParameters {
      * C/1995 O1 (Hale-Bopp): G * mass with estimated mass 1.0E13 kg.
      * D/1993 F2-A (Shoemaker-Levy 9): G * mass with estimated mass 1.0E13 kg.
      * 3122 Florence: G * mass with estimated mass 1.0E13 kg.
+     * Ultima Thule (HORIZONS) Keplerian GM =2.9591220828559093E-04 au^3/d^2
+     * Io, Europa, Ganymade, and Callisto (Table 5, km^3 / s^2)
+     * http://www.esa.int/gsp/ACT/doc/MAD/ACT-RPT-MAD-GTOC6-problem_stmt.pdf
      */
     private static final double SUNMU      = 1.3271244001798698E20;
     private static final double MERCURYMU  = 2.2032080486417923E13;
@@ -158,7 +185,18 @@ public class SolarSystemParameters {
     private static final double PALLASMU   = 1.43E10; // 14.3 km3/s2
     private static final double VESTAMU    = 1.78E10; // 17.8 km3/s2
     private static final double EROSMU     = 4.463E05; // 4.463e-04 km3/s2
-    
+    private static final double UTMU       = Math.pow(2.9591220828559093E-04,1.0/3.0)*ASTRONOMICALUNIT/
+                                              Math.pow(86400,2.0); // Converted to m3/s2;
+    /* WRONG
+    private static final double UTMU       = 2.9591220828559093E-04 *
+            Math.pow(ASTRONOMICALUNIT,3.0) /
+            Math.pow(86400,2.0); // Converted to m3/s2;
+    */
+    private static final double IOMU       = 5.959916E12;
+    private static final double EUROPAMU   = 3.202739E12;
+    private static final double GANYMEDEMU = 9.887834E12;
+    private static final double CALLISTOMU = 7.179289E12;
+
     /**
      * Diameter of sun, planets, asteroids, comets, and moons of solar system in m.
      * https://en.wikipedia.org/wiki/Sun: diameter of the Sun 1.3914 million km
@@ -178,6 +216,11 @@ public class SolarSystemParameters {
      * https://en.wikipedia.org/wiki/Comet_Hale–Bopp: dimensions 40 - 80 km 
      * https://en.wikipedia.org/wiki/Comet_Shoemaker–Levy_9: diameter unknown
      * https://en.wikipedia.org/wiki/3122_Florence: maximum reported dimension 4.9 km
+     * https://www.dw.com/en/nasa-faraway-mini-world-ultima-thule-is-snowman-shaped/a-46938428
+     * Radius Io obtained from HORIZONS 1821.3 +- 0.2 km, diameter = 3642.6 km
+     * Radius Europa obtained from HORIZONS 1565 +- 8 km, diameter = 3130 km
+     * Radius Ganymede obtained from HORIZONS 2634 +- 10 km, diameter = 5268 km
+     * Radius Callisto obtained from HORIZONS 2403 +- 5 km, diameter = 4806 km
      */
     private static final double SUNDIAMETER       =  1.3914E09;  // 1.3914 million km
     private static final double MERCURYDIAMETER   =  4.879E06;   //   4879 km
@@ -203,6 +246,11 @@ public class SolarSystemParameters {
     private static final double HBDIAMETER        =  8.0E04;     //     80 km
     private static final double SL9DIAMETER       =  1.0E04;     //   estimated
     private static final double FLORENCEDIAMETER  =  4.9E03;     //      4.9 km
+    private static final double UTDIAMETER        =  3.3E04;     //     33 km
+    private static final double IODIAMETER        =  3.6426E06;  //   3642.6 km
+    private static final double EUROPADIAMETER    =  3.130E06;   //   3130 km
+    private static final double GANYMEDEDIAMETER  =  5.268E06;   //   5268 km
+    private static final double CALLISTODIAMETER  =  4.806E06;   //   4806 km
     
     
 /*    
@@ -343,6 +391,17 @@ Neptune   -0.00041348    0.68346318   -0.10162547    7.67025000
 Pluto     -0.01262724
 ---------------------------------------------------------------
 */
+
+    /**
+     * Keplerian elements and their rates for imaginary planet Vulcanus
+     * FIXME: LEAVE OUT
+     */
+    /*
+    private static final double[] VULCANUSORBITPARS = new double[]
+    {0.08709843, 0.20563661,  7.00559432,    252.25166724,   77.45771895, 48.33961819,
+     0.00000000, 0.00002123, -0.00590158, 149472.67486623,    0.15940013, -0.12214182,
+     0.00000000, 0.00000000,  0.00000000,      0.00000000};
+    */
     
     /**
      * Keplerian elements and their rates for Mercury
@@ -720,11 +779,73 @@ Pluto     -0.01262724
     private static final double[] FLORENCEORBITPARS = new double[]
     {axisFlorence, eccentricityFlorence, inclinationFlorence, argPerihelionFlorence, 
      longNodeFlorence, perihelionPassageFlorence, meanMotionFlorence};
-    
+
     /**
-     * Define some of the orbit parameters for moon using data from HORIZONS
-     * web interface https://ssd.jpl.nasa.gov/horizons.cgi#results.
-     * Settings:
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Ultima Thule (3713011) [2486958]
+     * Observer Location [change] : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2019-01-01, Stop=2019-01-02, Step=30 m
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * This pre-computed trajectory is consistent with the New Horizons spacecraft
+     * Kuiper-Belt extended mission, with the planned 3500 km flyby of Ultima Thule
+     * on 2019-Jan-1 @ 05:33 UTC.
+     *
+     *  2458484.729166667 = A.D. 2019-Jan-01 05:30:00.0000 TDB
+     *  EC= 4.098363091038795E-02 QR= 4.272551661427943E+01 IN= 2.451767154639498E+00
+     *  OM= 1.589787485075718E+02 W = 1.746745157307338E+02 Tp=  2471795.170112812892
+     *  N = 3.314454945917162E-03 MA= 3.158831431737062E+02 TA= 3.124912422291994E+02
+     *  A = 4.455139452399387E+01 AD= 4.637727243370831E+01 PR= 1.086151436282029E+05
+     *
+     private static final double axisUTAU           = 4.455139452399387E+01; // Semi-major axis [au]
+     private static final double eccentricityUT     = 4.098363091038795E-02; // Eccentricity [-]
+     private static final double inclinationUT      = 2.451767154639498E+00; // Inclination [degrees]
+     private static final double argPeriapsisUT     = 1.746745157307338E+02; // Arg perifocus [degrees]
+     private static final double longNodeUT         = 1.589787485075718E+02; // Long asc node [degrees]
+     private static final double periapsisPassageUT = 2471795.170112812892;  // Time of periapsis [JD]
+     private static final double meanMotionUT       = 3.314454945917162E-03; // Mean motion [degrees/day]
+     private static final double[] UTORBITPARS = new double[]
+     {axisUTAU, eccentricityUT, inclinationUT, argPeriapsisUT, longNodeUT,
+     periapsisPassageUT, meanMotionUT};
+     */
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Ultima Thule (3713011) [2486958]
+     * Observer Location [change] : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2006-01-19, Stop=2006-01-20, Step=30 m
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * This pre-computed trajectory is consistent with the New Horizons spacecraft
+     * Kuiper-Belt extended mission, with the planned 3500 km flyby of Ultima Thule
+     * on 2019-Jan-1 @ 05:33 UTC.
+     *
+     *  2453755.291666667 = A.D. 2006-Jan-19 19:00:00.0000 TDB
+     *  EC= 3.697176831510071E-02 QR= 4.274830978442073E+01 IN= 2.451474757830545E+00
+     *  OM= 1.589482983942412E+02 W = 1.775741605683169E+02 Tp=  2472638.909251091536
+     *  N = 3.332607599482501E-03 MA= 2.970683125324245E+02 TA= 2.932176608369780E+02
+     *  A = 4.438946686913731E+01 AD= 4.603062395385389E+01 PR= 1.080235188973050E+05
+     */
+     private static final double axisUTAU           = 4.438946686913731E+01; // Semi-major axis [au]
+     private static final double eccentricityUT     = 3.697176831510071E-02; // Eccentricity [-]
+     private static final double inclinationUT      = 2.451474757830545E+00; // Inclination [degrees]
+     private static final double argPeriapsisUT     = 1.775741605683169E+02; // Arg perifocus [degrees]
+     private static final double longNodeUT         = 1.589482983942412E+02; // Long asc node [degrees]
+     private static final double periapsisPassageUT = 2472638.909251091536;  // Time of periapsis [JD]
+     private static final double meanMotionUT       = 3.332607599482501E-03; // Mean motion [degrees/day]
+     private static final double[] UTORBITPARS = new double[]
+     {axisUTAU, eccentricityUT, inclinationUT, argPeriapsisUT, longNodeUT,
+     periapsisPassageUT, meanMotionUT};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
      * Ephemeris type    : OBSERVER
      * Target Body       : Moon [Luna] [301]
      * Observer Location : Geocentric [500]
@@ -733,14 +854,237 @@ Pluto     -0.01262724
      * Display/Output    : default (formatted HTML)
      * NOTE: ORBIT PARAMETERS ARE NOT CORRECTED FOR DATE
      */
-    private static double axisMoonMeter    = 3.844E08;  // Semi-major axis [m]
-    private static double eccentricityMoon = 0.05490;   // Eccentricity [-]
-    private static double inclinationMoon  = 5.145;     // Inclination [degrees]
-    private static double orbitPeriodMoon  = 27.321582; // Orbit period [days]
-    private static double meanMotionMoon   = 360.0/orbitPeriodMoon; // Mean motion [degrees/day]
-    private static double axisMoonAU = axisMoonMeter / ASTRONOMICALUNIT;
+    private static final double axisMoonAU           = 2.548289534512777E-03; // Semi-major axis [au]
+    private static final double eccentricityMoon     = 6.476694137484437E-02; // Eccentricity [-]
+    private static final double inclinationMoon      = 5.240010960708354E+00; // Inclination [degrees]
+    private static final double argPeriapsisMoon     = 3.081359025079810E+02; // Arg perifocus [degrees]
+    private static final double longNodeMoon         = 1.239837037681769E+02; // Long asc node [degrees]
+    private static final double periapsisPassageMoon = 2451533.965359302238;  // Time of periapsis [JD]
+    private static final double meanMotionMoon       = 1.335975862260855E+01; // Mean motion [degrees/day]
     private static final double[] MOONORBITPARS = new double[]
-    {axisMoonAU, eccentricityMoon, inclinationMoon, 0.0, 0.0, 0.0, meanMotionMoon};
+    {axisMoonAU, eccentricityMoon, inclinationMoon, argPeriapsisMoon, longNodeMoon, 
+     periapsisPassageMoon, meanMotionMoon};
+    
+    
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Io (JI) [501]
+     * Observer Location [change] : Jupiter System Barycenter [500@5]
+     * Time Span [change]         : Start=2000-01-01, Stop=2000-01-02, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     */
+    private static final double axisIoAU           = 2.821786546733507E-03; // Semi-major axis [au]
+    private static final double eccentricityIo     = 3.654784965339888E-03; // Eccentricity [-]
+    private static final double inclinationIo      = 2.212609179741271E+00; // Inclination [degrees]
+    private static final double argPeriapsisIo     = 6.218469675691234E+01; // Arg perifocus [degrees]
+    private static final double longNodeIo         = 3.368501231726219E+02; // Long asc node [degrees]
+    private static final double periapsisPassageIo = 2451545.103514090180;  // Time of periapsis [JD]
+    private static final double meanMotionIo       = 2.031615704411821E+02; // Mean motion [degrees/day]
+    private static final double[] IOORBITPARS = new double[]
+    {axisIoAU, eccentricityIo, inclinationIo, argPeriapsisIo, longNodeIo, 
+     periapsisPassageIo, meanMotionIo};
+    
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Europa (JII) [502]
+     * Observer Location [change] : Jupiter System Barycenter [500@5]
+     * Time Span [change]         : Start=2000-01-01, Stop=2000-01-02, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     */
+    private static final double axisEuropaAU           = 4.484929379399280E-03; // Semi-major axis [au]
+    private static final double eccentricityEuropa     = 9.470425146083724E-03; // Eccentricity [-]
+    private static final double inclinationEuropa      = 1.790857714257787E+00; // Inclination [degrees]
+    private static final double argPeriapsisEuropa     = 2.557899602714836E+02; // Arg perifocus [degrees]
+    private static final double longNodeEuropa         = 3.326257958798038E+02; // Long asc node [degrees]
+    private static final double periapsisPassageEuropa = 2451545.154986763373;  // Time of periapsis [JD]
+    private static final double meanMotionEuropa       = 1.013931372961153E+02; // Mean motion [degrees/day]
+    private static final double[] EUROPAORBITPARS = new double[]
+    {axisEuropaAU, eccentricityEuropa, inclinationEuropa, argPeriapsisEuropa, 
+     longNodeEuropa, periapsisPassageEuropa, meanMotionEuropa}; 
+    
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Ganymede (JIII) [503]
+     * Observer Location [change] : Jupiter System Barycenter [500@5]
+     * Time Span [change]         : Start=2000-01-01, Stop=2000-01-02, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     */
+    private static final double axisGanymedeAU           = 7.156339844320714E-03; // Semi-major axis [au]
+    private static final double eccentricityGanymede     = 1.318103012416448E-03; // Eccentricity [-]
+    private static final double inclinationGanymede      = 2.214135822185767E+00; // Inclination [degrees]
+    private static final double argPeriapsisGanymede     = 3.167413036642092E+02; // Arg perifocus [degrees]
+    private static final double longNodeGanymede         = 3.431712649776430E+02; // Long asc node [degrees]
+    private static final double periapsisPassageGanymede = 2451546.588401503861;  // Time of periapsis [JD]
+    private static final double meanMotionGanymede       = 5.030036883436198E+01; // Mean motion [degrees/day]
+    private static final double[] GANYMEDEORBITPARS = new double[]
+    {axisGanymedeAU, eccentricityGanymede, inclinationGanymede, argPeriapsisGanymede, 
+     longNodeGanymede, periapsisPassageGanymede, meanMotionGanymede}; 
+    
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Callisto (JIV) [504]
+     * Observer Location [change] : Jupiter System Barycenter [500@5]
+     * Time Span [change]         : Start=2000-01-01, Stop=2000-01-02, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     */
+    private static final double axisCallistoAU           = 1.258560648085115E-02; // Semi-major axis [au]
+    private static final double eccentricityCallisto     = 7.432943295907821E-03; // Eccentricity [-]
+    private static final double inclinationCallisto      = 2.016903900389733E+00; // Inclination [degrees]
+    private static final double argPeriapsisCallisto     = 1.632112921781330E+01; // Arg perifocus [degrees]
+    private static final double longNodeCallisto         = 3.379421848030697E+02; // Long asc node [degrees]
+    private static final double periapsisPassageCallisto = 2451541.062475862447;  // Time of periapsis [JD]
+    private static final double meanMotionCallisto       = 2.156802147671815E+01; // Mean motion [degrees/day]
+    private static final double[] CALLISTOORBITPARS = new double[]
+    {axisCallistoAU, eccentricityCallisto, inclinationCallisto, argPeriapsisCallisto, 
+     longNodeCallisto, periapsisPassageCallisto, meanMotionCallisto};
+
+     /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Io (JI) [501]
+     * Observer Location [change] : Jupiter (body center) [500@599]
+     * Time Span [change]         : Start=1979-07-09, Stop=1977-07-10, Step=30 m
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+      * *
+      * 2444064.437500000 = A.D. 1979-Jul-09 22:30:00.0000 TDB
+      *  EC= 4.464069846305494E-03 QR= 2.808511485227889E-03 IN= 2.179905298844204E+00
+      *  OM= 3.378976714091401E+02 W = 2.090801050866877E+02 Tp=  2444064.145622990560
+      *  N = 2.032332690733699E+02 MA= 5.931911877792535E+01 TA= 5.976031049336378E+01
+      *  A = 2.821105095417602E-03 AD= 2.833698705607314E-03 PR= 1.771363525476900E+00
+     *
+     private static final double axisIoAU           = 2.821105095417602E-03; // Semi-major axis [au]
+     private static final double eccentricityIo     = 4.464069846305494E-03; // Eccentricity [-]
+     private static final double inclinationIo      = 2.179905298844204E+00; // Inclination [degrees]
+     private static final double argPeriapsisIo     = 2.090801050866877E+02; // Arg perifocus [degrees]
+     private static final double longNodeIo         = 3.378976714091401E+02; // Long asc node [degrees]
+     private static final double periapsisPassageIo = 2444064.145622990560;  // Time of periapsis [JD]
+     private static final double meanMotionIo       = 2.032332690733699E+02; // Mean motion [degrees/day]
+     private static final double[] IOORBITPARS = new double[]
+     {axisIoAU, eccentricityIo, inclinationIo, argPeriapsisIo, longNodeIo,
+     periapsisPassageIo, meanMotionIo};
+      */
+
+     /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Europa (JII) [502]
+     * Observer Location [change] : Jupiter (body center) [500@599]
+     * Time Span [change]         : Start=1979-07-09, Stop=1977-07-10, Step=30 m
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+      * 2444064.437500000 = A.D. 1979-Jul-09 22:30:00.0000 TDB
+      *  EC= 9.387957322704407E-03 QR= 4.444762203181402E-03 IN= 2.253032329893990E+00
+      *  OM= 3.503598726198932E+02 W = 7.745870708442311E+00 Tp=  2444064.095360492356
+      *  N = 1.013214937274340E+02 MA= 3.466608598681508E+01 TA= 3.528393136496152E+01
+      *  A = 4.486884887012564E-03 AD= 4.529007570843726E-03 PR= 3.553046710586796E+00
+     *
+     private static final double axisEuropaAU           = 4.486884887012564E-03; // Semi-major axis [au]
+     private static final double eccentricityEuropa     = 9.387957322704407E-03; // Eccentricity [-]
+     private static final double inclinationEuropa      = 2.253032329893990E+00; // Inclination [degrees]
+     private static final double argPeriapsisEuropa     = 7.745870708442311E+00; // Arg perifocus [degrees]
+     private static final double longNodeEuropa         = 3.503598726198932E+02; // Long asc node [degrees]
+     private static final double periapsisPassageEuropa = 2444064.095360492356;  // Time of periapsis [JD]
+     private static final double meanMotionEuropa       = 1.013214937274340E+02; // Mean motion [degrees/day]
+     private static final double[] EUROPAORBITPARS = new double[]
+     {axisEuropaAU, eccentricityEuropa, inclinationEuropa, argPeriapsisEuropa,
+     longNodeEuropa, periapsisPassageEuropa, meanMotionEuropa};
+      */
+
+     /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Ganymede (JIII) [503]
+     * Observer Location [change] : Jupiter (body center) [500@599]
+     * Time Span [change]         : Start=1979-07-09, Stop=1979-07-10, Step=30 m
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+      * 2444064.437500000 = A.D. 1979-Jul-09 22:30:00.0000 TDB
+      *  EC= 1.247036336893339E-03 QR= 7.147635725762605E-03 IN= 2.040028856429598E+00
+      *  OM= 3.417668823947965E+02 W = 2.384131483164773E+02 Tp=  2444061.339921466075
+      *  N = 5.030068952448489E+01 MA= 1.558103361030715E+02 TA= 1.558688073671426E+02
+      *  A = 7.156560216399621E-03 AD= 7.165484707036636E-03 PR= 7.156959544754600E+00
+     *
+     private static final double axisGanymedeAU           = 7.156560216399621E-03; // Semi-major axis [au]
+     private static final double eccentricityGanymede     = 1.247036336893339E-03; // Eccentricity [-]
+     private static final double inclinationGanymede      = 2.040028856429598E+00; // Inclination [degrees]
+     private static final double argPeriapsisGanymede     = 2.384131483164773E+02; // Arg perifocus [degrees]
+     private static final double longNodeGanymede         = 3.417668823947965E+02; // Long asc node [degrees]
+     private static final double periapsisPassageGanymede = 2444061.339921466075;  // Time of periapsis [JD]
+     private static final double meanMotionGanymede       = 5.030068952448489E+01; // Mean motion [degrees/day]
+     private static final double[] GANYMEDEORBITPARS = new double[]
+     {axisGanymedeAU, eccentricityGanymede, inclinationGanymede, argPeriapsisGanymede,
+     longNodeGanymede, periapsisPassageGanymede, meanMotionGanymede};
+      */
+
+     /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Callisto (JIV) [504]
+     * Observer Location [change] : Jupiter (body center) [500@599]
+     * Time Span [change]         : Start=1979-07-09, Stop=1979-07-10, Step=30 m
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+      * 2444064.437500000 = A.D. 1979-Jul-09 22:30:00.0000 TDB
+      *  EC= 7.835734158106549E-03 QR= 1.249249486072064E-02 IN= 2.072797100534001E+00
+      *  OM= 3.394822939858797E+02 W = 3.598648006728227E+02 Tp=  2444063.691855364013
+      *  N = 2.155397593895479E+01 MA= 1.607160654440537E+01 TA= 1.632254239586581E+01
+      *  A = 1.259115581039419E-02 AD= 1.268981676006773E-02 PR= 1.670225488882388E+01
+     *
+     private static final double axisCallistoAU           = 1.259115581039419E-02; // Semi-major axis [au]
+     private static final double eccentricityCallisto     = 7.835734158106549E-03; // Eccentricity [-]
+     private static final double inclinationCallisto      = 2.072797100534001E+00; // Inclination [degrees]
+     private static final double argPeriapsisCallisto     = 3.598648006728227E+02; // Arg perifocus [degrees]
+     private static final double longNodeCallisto         = 3.394822939858797E+02; // Long asc node [degrees]
+     private static final double periapsisPassageCallisto = 2444063.691855364013;  // Time of periapsis [JD]
+     private static final double meanMotionCallisto       = 2.155397593895479E+01; // Mean motion [degrees/day]
+     private static final double[] CALLISTOORBITPARS = new double[]
+     {axisCallistoAU, eccentricityCallisto, inclinationCallisto, argPeriapsisCallisto,
+     longNodeCallisto, periapsisPassageCallisto, meanMotionCallisto};
+      */
+
+    /** FOR TEST PURPOSES
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Callisto (JIV) [504]
+     * Observer Location [change] : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2000-01-01, Stop=2000-01-02, Step=30 m
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     * 2451544.500000000 = A.D. 2000-Jan-01 00:00:00.0000 TDB
+     *  EC= 1.463402256336346E+00 QR= 4.810961611782971E+00 IN= 1.173099259407824E+00
+     *  OM= 1.207096686230750E+02 W = 2.948438791339357E+02 Tp=  2451678.653757016174
+     *  N = 2.946411930880803E-02 MA=-3.952722302454301E+00 TA= 3.407729998288843E+02
+     *  A =-1.038182603990403E+01 AD= 6.684586453809735E+91 PR= 1.157407291666667E+95
+     *
+    private static final double axisCallistoAUT           = -1.038182603990403E+01; // Semi-major axis [au]
+    private static final double eccentricityCallistoT     = 1.463402256336346E+00; // Eccentricity [-]
+    private static final double inclinationCallistoT      = 1.173099259407824E+00; // Inclination [degrees]
+    private static final double argPeriapsisCallistoT     = 2.948438791339357E+02; // Arg perifocus [degrees]
+    private static final double longNodeCallistoT         = 1.207096686230750E+02; // Long asc node [degrees]
+    private static final double periapsisPassageCallistoT = 2451678.653757016174;  // Time of periapsis [JD]
+    private static final double meanMotionCallistoT       = 2.946411930880803E-02; // Mean motion [degrees/day]
+    private static final double[] CALLISTOORBITPARSTEST = new double[]
+            {axisCallistoAUT, eccentricityCallistoT, inclinationCallistoT, argPeriapsisCallistoT,
+                    longNodeCallistoT, periapsisPassageCallistoT, meanMotionCallistoT};
+     */
     
     // Singleton instance
     private static SolarSystemParameters instance = null;
@@ -770,112 +1114,139 @@ Pluto     -0.01262724
         
         // Masses in kg
         massMap = new HashMap<>();
-        massMap.put("sun",SUNMASS);
-        massMap.put("mercury",MERCURYMASS);
-        massMap.put("venus",VENUSMASS);
-        massMap.put("earth",EARTHMASS);
-        massMap.put("moon",MOONMASS);
-        massMap.put("mars",MARSMASS);
-        massMap.put("jupiter",JUPITERMASS);
-        massMap.put("saturn",SATURNMASS);
-        massMap.put("uranus",URANUSMASS);
-        massMap.put("neptune",NEPTUNEMASS);
-        massMap.put("pluto",PLUTOMASS);
-        massMap.put("eris",ERISMASS);
-        massMap.put("chiron",CHIRONMASS);
-        massMap.put("ceres",CERESMASS);
-        massMap.put("pallas",PALLASMASS);
-        massMap.put("juno",JUNOMASS);
-        massMap.put("vesta",VESTAMASS);
-        massMap.put("eros",EROSMASS);
-        massMap.put("halley",HALLEYMASS);
-        massMap.put("encke",ENCKEMASS);
-        massMap.put("p67cg",CGMASS);
-        massMap.put("shoelevy9",SL9MASS);
-        massMap.put("halebopp",HBMASS);
-        massMap.put("florence",FLORENCEMASS);
+        massMap.put("Sun",SUNMASS);
+        massMap.put("Mercury",MERCURYMASS);
+        massMap.put("Venus",VENUSMASS);
+        massMap.put("Earth",EARTHMASS);
+        massMap.put("Moon",MOONMASS);
+        massMap.put("Mars",MARSMASS);
+        massMap.put("Jupiter",JUPITERMASS);
+        massMap.put("Saturn",SATURNMASS);
+        massMap.put("Uranus",URANUSMASS);
+        massMap.put("Neptune",NEPTUNEMASS);
+        massMap.put("Pluto",PLUTOMASS);
+        massMap.put("Eris",ERISMASS);
+        massMap.put("Chiron",CHIRONMASS);
+        massMap.put("Ceres",CERESMASS);
+        massMap.put("Pallas",PALLASMASS);
+        massMap.put("Juno",JUNOMASS);
+        massMap.put("Vesta",VESTAMASS);
+        massMap.put("Eros",EROSMASS);
+        massMap.put("Halley",HALLEYMASS);
+        massMap.put("Encke",ENCKEMASS);
+        massMap.put("67P/Churyumov-Gerasimenko",CGMASS);
+        massMap.put("Shoemaker-Levy 9",SL9MASS);
+        massMap.put("Hale-Bopp",HBMASS);
+        massMap.put("Florence",FLORENCEMASS);
+        massMap.put("Ultima Thule",UTMASS);
+        massMap.put("Io",IOMASS);
+        massMap.put("Europa",EUROPAMASS);
+        massMap.put("Ganymede",GANYMEDEMASS);
+        massMap.put("Callisto",CALLISTOMASS);
         
         // Standard gravitational parameter in m3/s2
         muMap = new HashMap<>();
-        muMap.put("sun",SUNMU);
-        muMap.put("mercury",MERCURYMU);
-        muMap.put("venus",VENUSMU);
-        muMap.put("earth",EARTHMU);
-        muMap.put("moon",MOONMU);
-        muMap.put("mars",MARSMU);
-        muMap.put("ceres",CERESMU);
-        muMap.put("jupiter",JUPITERMU);
-        muMap.put("saturn",SATURNMU);
-        muMap.put("uranus",URANUSMU);
-        muMap.put("neptune",NEPTUNEMU);
-        muMap.put("pluto",PLUTOMU);
-        muMap.put("eris",ERISMU);
-        muMap.put("ceres",CERESMU);
-        muMap.put("pallas",PALLASMU);
-        muMap.put("vesta",VESTAMU);
-        muMap.put("eros",EROSMU);
+        muMap.put("Sun",SUNMU);
+        muMap.put("Mercury",MERCURYMU);
+        muMap.put("Venus",VENUSMU);
+        muMap.put("Earth",EARTHMU);
+        muMap.put("Moon",MOONMU);
+        muMap.put("Mars",MARSMU);
+        muMap.put("Jupiter",JUPITERMU);
+        muMap.put("Saturn",SATURNMU);
+        muMap.put("Uranus",URANUSMU);
+        muMap.put("Neptune",NEPTUNEMU);
+        muMap.put("Pluto",PLUTOMU);
+        muMap.put("Eris",ERISMU);
+        muMap.put("Ceres",CERESMU);
+        muMap.put("Pallas",PALLASMU);
+        muMap.put("Vesta",VESTAMU);
+        muMap.put("Eros",EROSMU);
+        muMap.put("Ultima Thule",UTMU);
+        muMap.put("Io",IOMU);
+        muMap.put("Europa",EUROPAMU);
+        muMap.put("Ganymede",GANYMEDEMU);
+        muMap.put("Callisto",CALLISTOMU);
         
         // Diameters in m
         diameterMap = new HashMap<>();
-        diameterMap.put("sun",SUNDIAMETER);
-        diameterMap.put("mercury",MERCURYDIAMETER);
-        diameterMap.put("venus",VENUSDIAMETER);
-        diameterMap.put("earth",EARTHDIAMETER);
-        diameterMap.put("moon",MOONDIAMETER);
-        diameterMap.put("mars",MARSDIAMETER);
-        diameterMap.put("jupiter",JUPITERDIAMETER);
-        diameterMap.put("saturn",SATURNDIAMETER);
-        diameterMap.put("uranus",URANUSDIAMETER);
-        diameterMap.put("neptune",NEPTUNEDIAMETER);
-        diameterMap.put("pluto",PLUTODIAMETER);
-        diameterMap.put("eris",ERISDIAMETER);
-        diameterMap.put("chiron",CHIRONDIAMETER);
-        diameterMap.put("ceres",CERESDIAMETER);
-        diameterMap.put("pallas",PALLASDIAMETER);
-        diameterMap.put("juno",JUNODIAMETER);
-        diameterMap.put("vesta",VESTADIAMETER);
-        diameterMap.put("eros",EROSDIAMETER);
-        diameterMap.put("halley",HALLEYDIAMETER);
-        diameterMap.put("encke",ENCKEDIAMETER);
-        diameterMap.put("p67cg",CGDIAMETER);
-        diameterMap.put("shoelevy9",SL9DIAMETER);
-        diameterMap.put("halebopp",HBDIAMETER);
-        diameterMap.put("florence",FLORENCEDIAMETER);
+        diameterMap.put("Sun",SUNDIAMETER);
+        diameterMap.put("Mercury",MERCURYDIAMETER);
+        diameterMap.put("Venus",VENUSDIAMETER);
+        diameterMap.put("Earth",EARTHDIAMETER);
+        diameterMap.put("Moon",MOONDIAMETER);
+        diameterMap.put("Mars",MARSDIAMETER);
+        diameterMap.put("Jupiter",JUPITERDIAMETER);
+        diameterMap.put("Saturn",SATURNDIAMETER);
+        diameterMap.put("Uranus",URANUSDIAMETER);
+        diameterMap.put("Neptune",NEPTUNEDIAMETER);
+        diameterMap.put("Pluto",PLUTODIAMETER);
+        diameterMap.put("Eris",ERISDIAMETER);
+        diameterMap.put("Chiron",CHIRONDIAMETER);
+        diameterMap.put("Ceres",CERESDIAMETER);
+        diameterMap.put("Pallas",PALLASDIAMETER);
+        diameterMap.put("Juno",JUNODIAMETER);
+        diameterMap.put("Vesta",VESTADIAMETER);
+        diameterMap.put("Eros",EROSDIAMETER);
+        diameterMap.put("Halley",HALLEYDIAMETER);
+        diameterMap.put("Encke",ENCKEDIAMETER);
+        diameterMap.put("67P/Churyumov-Gerasimenko",CGDIAMETER);
+        diameterMap.put("Shoemaker-Levy 9",SL9DIAMETER);
+        diameterMap.put("Hale-Bopp",HBDIAMETER);
+        diameterMap.put("Florence",FLORENCEDIAMETER);
+        diameterMap.put("Ultima Thule",UTDIAMETER);
+        diameterMap.put("Io",IODIAMETER);
+        diameterMap.put("Europa",EUROPADIAMETER);
+        diameterMap.put("Ganymede",GANYMEDEDIAMETER);
+        diameterMap.put("Callisto",CALLISTODIAMETER);
         
         // Orbital parameters: Keplerian elements and their rates (Mercury - Pluto)
         orbitParametersMap = new HashMap<>();
-        orbitParametersMap.put("mercury",MERCURYORBITPARS);
-        orbitParametersMap.put("venus",VENUSORBITPARS);
-        orbitParametersMap.put("earth",EARTHORBITPARS);
-        orbitParametersMap.put("moon",MOONORBITPARS);
-        orbitParametersMap.put("mars",MARSORBITPARS);
-        orbitParametersMap.put("jupiter",JUPITERORBITPARS);
-        orbitParametersMap.put("saturn",SATURNORBITPARS);
-        orbitParametersMap.put("uranus",URANUSORBITPARS);
-        orbitParametersMap.put("neptune",NEPTUNEORBITPARS);
-        orbitParametersMap.put("pluto",PLUTOORBITPARS); // Dwarf planet Pluto
-        orbitParametersMap.put("eris",ERISORBITPARS); // Dwarf planet Eris
-        orbitParametersMap.put("chiron",CHIRONORBITPARS); // Centaur astroid Chiron
-        orbitParametersMap.put("ceres",CERESORBITPARS); // Dwarf planet Ceris
-        orbitParametersMap.put("pallas",PALLASORBITPARS); // Asteroid 2 Pallas
-        orbitParametersMap.put("juno",JUNOORBITPARS); // Asteroid 3 Juno
-        orbitParametersMap.put("vesta",VESTAORBITPARS); // Asteroid 4 Vesta
-        orbitParametersMap.put("eros",EROSORBITPARS); // Asteroid 433 Eros
-        orbitParametersMap.put("halley",HALLEYORBITPARS);// Comet P1/Halley
-        orbitParametersMap.put("encke",ENCKEORBITPARS);// Comet P2/Encke
-        orbitParametersMap.put("p67cg",CGORBITPARS);// Comet P67/Churyumov-Gerasimenko
-        orbitParametersMap.put("shoelevy9",SL9ORBITPARS);// Comet D/1993 F2-A Shoemaker-Levy 9
-        orbitParametersMap.put("halebopp",HBORBITPARS);// Comet C/1995 O1 Hale-Bopp
-        orbitParametersMap.put("florence",FLORENCEORBITPARS);// Asteroid 3122 Florence
+        orbitParametersMap.put("Mercury",MERCURYORBITPARS);
+        orbitParametersMap.put("Venus",VENUSORBITPARS);
+        orbitParametersMap.put("Earth",EARTHORBITPARS);
+        orbitParametersMap.put("Moon",MOONORBITPARS);
+        orbitParametersMap.put("Mars",MARSORBITPARS);
+        orbitParametersMap.put("Jupiter",JUPITERORBITPARS);
+        orbitParametersMap.put("Saturn",SATURNORBITPARS);
+        orbitParametersMap.put("Uranus",URANUSORBITPARS);
+        orbitParametersMap.put("Neptune",NEPTUNEORBITPARS);
+        orbitParametersMap.put("Pluto",PLUTOORBITPARS); // Dwarf planet Pluto
+        orbitParametersMap.put("Eris",ERISORBITPARS); // Dwarf planet Eris
+        orbitParametersMap.put("Chiron",CHIRONORBITPARS); // Centaur astroid Chiron
+        orbitParametersMap.put("Ceres",CERESORBITPARS); // Dwarf planet Ceris
+        orbitParametersMap.put("Pallas",PALLASORBITPARS); // Asteroid 2 Pallas
+        orbitParametersMap.put("Juno",JUNOORBITPARS); // Asteroid 3 Juno
+        orbitParametersMap.put("Vesta",VESTAORBITPARS); // Asteroid 4 Vesta
+        orbitParametersMap.put("Eros",EROSORBITPARS); // Asteroid 433 Eros
+        orbitParametersMap.put("Halley",HALLEYORBITPARS);// Comet P1/Halley
+        orbitParametersMap.put("Encke",ENCKEORBITPARS);// Comet P2/Encke
+        orbitParametersMap.put("67P/Churyumov-Gerasimenko",CGORBITPARS);// Comet P67/Churyumov-Gerasimenko
+        orbitParametersMap.put("Shoemaker-Levy 9",SL9ORBITPARS);// Comet D/1993 F2-A Shoemaker-Levy 9
+        orbitParametersMap.put("Hale-Bopp",HBORBITPARS);// Comet C/1995 O1 Hale-Bopp
+        orbitParametersMap.put("Florence",FLORENCEORBITPARS);// Asteroid 3122 Florence
+        orbitParametersMap.put("Ultima Thule",UTORBITPARS);// Kuiper belt object Ultima Thule
+        orbitParametersMap.put("Io",IOORBITPARS);// Io, moon of Jupiter
+        orbitParametersMap.put("Europa",EUROPAORBITPARS);// Europa, moon of Jupiter
+        orbitParametersMap.put("Ganymede",GANYMEDEORBITPARS);// Ganymede, moon of Jupiter
+        orbitParametersMap.put("Callisto",CALLISTOORBITPARS);// Callisto, moon of Jupiter
         
         // Planet names (treat dwarf planets, astroids, and comets as planet)
         planets = new ArrayList<>();
         planets.addAll(orbitParametersMap.keySet());
-        planets.remove("moon");
+        planets.remove("Moon");
+        planets.remove("Io");
+        planets.remove("Europa");
+        planets.remove("Ganymede");
+        planets.remove("Callisto");
         
         // Moon names
         moons = new HashMap<>();
-        moons.put("moon","earth");
+        moons.put("Moon","Earth");
+        moons.put("Io","Jupiter");
+        moons.put("Europa","Jupiter");
+        moons.put("Ganymede","Jupiter");
+        moons.put("Callisto","Jupiter");
     }
     
     /**

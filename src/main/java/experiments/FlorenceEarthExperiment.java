@@ -95,10 +95,10 @@ public class FlorenceEarthExperiment {
      */
     public void simulateFlorenceEarthPassage() {
         // Planet Earth (simulation particle)
-        Particle earth = solarSystem.getParticle("earth");
+        Particle earth = solarSystem.getParticle("Earth");
         
         // Asteroid 3122 Florence (simulation particle)
-        Particle florence = solarSystem.getParticle("florence");
+        Particle florence = solarSystem.getParticle("Florence");
         
         // Initialize minimum distance between Earth and Florence
         double minimumDistance = SolarSystemParameters.ASTRONOMICALUNIT;
@@ -180,10 +180,10 @@ public class FlorenceEarthExperiment {
             currentDateTime.add(Calendar.SECOND, (int)deltaT);
             
             // Position of planet Earth
-            Vector3D positionEarth = ephemeris.getBodyPosition("earth", currentDateTime);
+            Vector3D positionEarth = ephemeris.getBodyPosition("Earth", currentDateTime);
             
             // Position of asteroid 3122 Florence
-            Vector3D positionFlorence = ephemeris.getBodyPosition("florence", currentDateTime);
+            Vector3D positionFlorence = ephemeris.getBodyPosition("Florence", currentDateTime);
             
             // Current distance between Earth and Florence
             double currentDistance = positionFlorence.euclideanDistance(positionEarth);

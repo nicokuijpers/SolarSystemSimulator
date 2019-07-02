@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ephemeris.JulianDateConverterTest
 -------------------------------------------------------------------------------
-Tests run: 22, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 2.438 sec - in ephemeris.JulianDateConverterTest
+Tests run: 22, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 2.289 sec - in ephemeris.JulianDateConverterTest

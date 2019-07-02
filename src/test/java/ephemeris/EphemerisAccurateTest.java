@@ -1,25 +1,30 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package ephemeris;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Ignore;
+import org.junit.*;
 import util.Vector3D;
+
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test consistency of AccurateEphemeris by predicting the position of each
@@ -41,17 +46,17 @@ public class EphemerisAccurateTest {
     @BeforeClass
     public static void setUpClass() {
         majorBodies = new ArrayList<>();
-        majorBodies.add("sun");
-        majorBodies.add("mercury");
-        majorBodies.add("venus");
-        majorBodies.add("earth");
-        majorBodies.add("moon");
-        majorBodies.add("mars");
-        majorBodies.add("jupiter");
-        majorBodies.add("saturn");
-        majorBodies.add("uranus");
-        majorBodies.add("neptune");
-        majorBodies.add("pluto");
+        majorBodies.add("Sun");
+        majorBodies.add("Mercury");
+        majorBodies.add("Venus");
+        majorBodies.add("Earth");
+        majorBodies.add("Moon");
+        majorBodies.add("Mars");
+        majorBodies.add("Jupiter");
+        majorBodies.add("Saturn");
+        majorBodies.add("Uranus");
+        majorBodies.add("Neptune");
+        majorBodies.add("Pluto");
     }
     
     @AfterClass
@@ -68,7 +73,6 @@ public class EphemerisAccurateTest {
     }
     
     @Test
-    @Ignore("This test is ignored as it takes a relatively long time")
     public void testPositionVelocityMajorPlanets() {
         // Start test at January 1, 1620
         // Note that January is month 0
@@ -84,8 +88,8 @@ public class EphemerisAccurateTest {
         GregorianCalendar endDate = new GregorianCalendar(2200,0,31);
         
         // Previous position and velocity
-        Map<String,Vector3D> positionPrevious = new HashMap<>();
-        Map<String,Vector3D> velocityPrevious = new HashMap<>();
+        Map<String, Vector3D> positionPrevious = new HashMap<>();
+        Map<String, Vector3D> velocityPrevious = new HashMap<>();
         
         // Start test
         while (date.before(endDate)) {
@@ -110,7 +114,7 @@ public class EphemerisAccurateTest {
                      *     0.5 * deltaTime * current velocity
                      * with deltaTime = 3600 s
                      */
-                    Vector3D positionPredicted = 
+                    Vector3D positionPredicted =
                         positionPrevious.get(bodyName).
                         plus(velocityPrevious.get(bodyName).scalarProduct(1800.0).
                         plus(velocity.scalarProduct(1800.0)));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Nico Kuijpers
+ * Copyright (c) 2019 Nico Kuijpers
  * Permission is hereby granted, free of charge, to any person obtaining a copy 
  * of this software and associated documentation files (the "Software"), to deal 
  * in the Software without restriction, including without limitation the rights 
@@ -19,18 +19,13 @@
  */
 package ephemeris;
 
+import util.Vector3D;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-import util.Vector3D;
+import java.util.*;
 
 /**
  * Accurate Ephemeris for Sun, Moon, and major planets including Pluto. 
@@ -158,17 +153,17 @@ public class EphemerisAccurate implements IEphemeris {
     private EphemerisAccurate() {
         // Indices for planets, moon, and sun for DE405 ephemeris
         indexMap = new HashMap<>();
-        indexMap.put("mercury", 0);
-        indexMap.put("venus", 1);
-        indexMap.put("earth", 2);
-        indexMap.put("mars", 3);
-        indexMap.put("jupiter", 4);
-        indexMap.put("saturn", 5);
-        indexMap.put("uranus", 6);
-        indexMap.put("neptune", 7);
-        indexMap.put("pluto", 8);
-        indexMap.put("moon", 9);
-        indexMap.put("sun", 10);
+        indexMap.put("Mercury", 0);
+        indexMap.put("Venus", 1);
+        indexMap.put("Earth", 2);
+        indexMap.put("Mars", 3);
+        indexMap.put("Jupiter", 4);
+        indexMap.put("Saturn", 5);
+        indexMap.put("Uranus", 6);
+        indexMap.put("Neptune", 7);
+        indexMap.put("Pluto", 8);
+        indexMap.put("Moon", 9);
+        indexMap.put("Sun", 10);
 
         // Names of planets, moon, and sun for which ephemeris can be computed
         bodies = new ArrayList<>();
@@ -237,14 +232,14 @@ public class EphemerisAccurate implements IEphemeris {
         Vector3D positionBody = currentPositions[indexBody];
 
         // Position of Sun [m]
-        int indexSun = indexMap.get("sun");
+        int indexSun = indexMap.get("Sun");
         Vector3D positionSun = currentPositions[indexSun];
 
         // Position of body relative to sun
         Vector3D position = positionBody.minus(positionSun);
 
         // Inverse transformation for 23.4 degrees J2000 frame
-        return inverseTransformJ2000(position);
+        return EphemerisUtil.inverseTransformJ2000(position);
     }
 
     @Override
@@ -267,14 +262,14 @@ public class EphemerisAccurate implements IEphemeris {
         Vector3D velocityBody = currentVelocities[indexBody];
 
         // Velocity of Sun [m/s]
-        int indexSun = indexMap.get("sun");
+        int indexSun = indexMap.get("Sun");
         Vector3D velocitySun = currentVelocities[indexSun];
 
         // Velocity of body relative to sun
         Vector3D velocity = velocityBody.minus(velocitySun);
 
         // Inverse transformation for 23.4 degrees J2000 frame
-        return inverseTransformJ2000(velocity);
+        return EphemerisUtil.inverseTransformJ2000(velocity);
     }
 
     @Override
@@ -304,7 +299,7 @@ public class EphemerisAccurate implements IEphemeris {
         Vector3D position = currentPositions[indexBody];
 
         // Inverse transformation for 23.4 degrees J2000 frame
-        return inverseTransformJ2000(position);
+        return EphemerisUtil.inverseTransformJ2000(position);
     }
 
     @Override
@@ -327,7 +322,7 @@ public class EphemerisAccurate implements IEphemeris {
         Vector3D velocity = currentVelocities[indexBody];
 
         // Inverse transformation for 23.4 degrees J2000 frame
-        return inverseTransformJ2000(velocity);
+        return EphemerisUtil.inverseTransformJ2000(velocity);
     }
 
     @Override
@@ -335,22 +330,6 @@ public class EphemerisAccurate implements IEphemeris {
         Vector3D position = getBodyPositionBarycenter(name, date);
         Vector3D velocity = getBodyVelocityBarycenter(name, date);
         return new Vector3D[]{position, velocity};
-    }
-
-    /**
-     * Inverse transformation for 23.4 degrees J2000 frame. This transformation
-     * is performed such that the J2000 ecliptic plane becomes the x-y plane.
-     *
-     * @param coordinates input coordinates
-     * @return coordinates after transformation
-     */
-    private Vector3D inverseTransformJ2000(Vector3D coordinates) {
-        double sinEP = -0.397776995;
-        double cosEP = Math.sqrt(1.0 - sinEP * sinEP);
-        double x = coordinates.getX();
-        double y = coordinates.getY();
-        double z = coordinates.getZ();
-        return new Vector3D(x, cosEP * y - sinEP * z, sinEP * y + cosEP * z);
     }
 
     /**
@@ -581,8 +560,8 @@ public class EphemerisAccurate implements IEphemeris {
          * Using the ratio of masses, we get vectors from the Earth-Moon 
          * barycenter to the Moon and to the Earth.
          */
-        int indexEarth = indexMap.get("earth");
-        int indexMoon = indexMap.get("moon");
+        int indexEarth = indexMap.get("Earth");
+        int indexMoon = indexMap.get("Moon");
         Vector3D earthPosition = currentPositions[indexEarth].
                         minus(currentPositions[indexMoon].
                               scalarProduct(1.0 / (1.0 + earthMoonMassRatio)));
