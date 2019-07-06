@@ -2,93 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SolarSystemSimulator.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/application/DateTimeEraPicker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/application/DateTimePicker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/application/InformationPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/application/Monitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/application/PausableTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisGalileanMoons.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/solarsystem/GalileanMoons.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Spacecraft.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftTrajectory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerOne.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisApproximate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisApproximate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/IEphemeris.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/IEphemeris.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/JulianDateConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/JulianDateConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/CreateSolarSystemStateFiles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/CreateSolarSystemStateFiles.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/DateTimeSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/DateTimeSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemBody.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemBody.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/Vector3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/Vector3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisUtilTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisApproximate.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisApproximate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/CreateSolarSystemStateFiles.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/experiments/CreateSolarSystemStateFiles.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/DateTimeSelector.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$10.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$11.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$12.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$13.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$14.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$15.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$16.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$17.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$18.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$19.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$20.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$21.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$22.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$23.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$24.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$DrawAnimationTimer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$SimRunnable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemBody.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemBody.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/Vector3D.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/Vector3D.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/jacoco.exec" beforeDir="false" afterPath="$PROJECT_DIR$/target/jacoco.exec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ephemeris.EphemerisUtilTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ephemeris.EphemerisUtilTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ephemeris.JulianDateConverterTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ephemeris.JulianDateConverterTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ephemeris.EphemerisUtilTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ephemeris.EphemerisUtilTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ephemeris.JulianDateConverterTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ephemeris.JulianDateConverterTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ephemeris/EphemerisUtilTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/ephemeris/EphemerisUtilTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/DateTimeEraPicker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/DateTimePicker.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -107,13 +22,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="39" />
+          <entry key="java" value="41" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="39" />
+          <entry key="JAVA" value="41" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
@@ -131,20 +46,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Spacecraft.java">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/VoyagerOne.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="52" column="46" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/util/Vector3D.java">
           <provider selected="true" editor-type-id="text-editor" />
@@ -204,11 +105,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="98" column="78" selection-start-line="98" selection-start-column="78" selection-end-line="98" selection-end-column="78" />
+            <state relative-caret-position="340">
+              <caret line="95" column="46" lean-forward="true" selection-start-line="95" selection-start-column="46" selection-end-line="95" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -216,10 +117,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13347">
-              <caret line="982" column="37" selection-start-line="982" selection-start-column="30" selection-end-line="982" selection-end-column="37" />
+            <state relative-caret-position="205">
+              <caret line="203" column="81" selection-start-line="203" selection-start-column="73" selection-end-line="203" selection-end-column="81" />
               <folding>
                 <element signature="e#0#75456#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/application/DateTimeSelector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-178">
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
+              <folding>
+                <element signature="e#0#5097#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -230,6 +144,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>saveSim</find>
+      <find>DateTime</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -411,7 +326,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562092412295" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562424296239" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -537,7 +452,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1562090243097</updated>
-      <workItem from="1562090246988" duration="2140000" />
+      <workItem from="1562090246988" duration="2924000" />
     </task>
     <servers />
   </component>
@@ -553,11 +468,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2140000" />
+    <option name="totallyTimeSpent" value="2924000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="721" y="36" width="1510" height="1124" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
       <window_info id="Designer" />
@@ -654,16 +568,10 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/application/PausableTask.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/application/DateTimeEraPicker.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemException.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/DateTimePicker.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/application/DateTimeSelector.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/InformationPanel.java">
@@ -746,16 +654,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13347">
-          <caret line="982" column="37" selection-start-line="982" selection-start-column="30" selection-end-line="982" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#75456#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-432">
@@ -775,8 +673,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="98" column="78" selection-start-line="98" selection-start-column="78" selection-end-line="98" selection-end-column="78" />
+        <state relative-caret-position="340">
+          <caret line="95" column="46" lean-forward="true" selection-start-line="95" selection-start-column="46" selection-end-line="95" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="203" column="81" selection-start-line="203" selection-start-column="73" selection-end-line="203" selection-end-column="81" />
+          <folding>
+            <element signature="e#0#75456#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/DateTimeEraPicker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1141">
+          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/DateTimeSelector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-178">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#0#5097#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
