@@ -740,7 +740,7 @@ public class SolarSystemApplication extends Application {
         });
         
         // Define title and assign the scene for main window
-        primaryStage.setTitle("Solar System");
+        primaryStage.setTitle("Solar System Simulator");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -1261,7 +1261,7 @@ public class SolarSystemApplication extends Application {
      * Draw circles for bodies to show on screen.
      * @param bodiesToShow bodies to show on screen
      */
-    private void drawCircles(List<SolarSystemBody> bodiesToShow) { 
+    private void drawCircles(List<SolarSystemBody> bodiesToShow) {
         for (SolarSystemBody body : bodiesToShow) {
             String bodyName = body.getName();
             Circle circle = bodies.get(bodyName);
