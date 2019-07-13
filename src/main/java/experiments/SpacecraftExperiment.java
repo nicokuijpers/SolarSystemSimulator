@@ -111,8 +111,8 @@ public class SpacecraftExperiment {
 
         // Create solar system
         solarSystem = new SolarSystem();
-        // solarSystem.setGeneralRelativityFlag(false);
-        solarSystem.setGeneralRelativityFlag(true);
+        solarSystem.setGeneralRelativityFlag(false); // Newton Mechanics
+        // solarSystem.setGeneralRelativityFlag(true); // General Relativity
         try {
             solarSystem.initializeSimulation(simulationStartDate);
         } catch (SolarSystemException e) {
