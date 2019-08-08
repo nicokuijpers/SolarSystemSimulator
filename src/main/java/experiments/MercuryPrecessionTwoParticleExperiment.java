@@ -34,7 +34,7 @@ import java.util.GregorianCalendar;
 public class MercuryPrecessionTwoParticleExperiment {
 
     // Number of seconds per day
-    private final long nrSecondsPerDay = 24 * 60 * 60;
+    private final long nrSecondsPerDay = (long) 24 * 60 * 60;
 
     // Average number of days per century
     private final double nrDaysPerCentury = 36524.25;
@@ -82,7 +82,7 @@ public class MercuryPrecessionTwoParticleExperiment {
         long nrSeconds = nrDays * nrSecondsPerDay;
 
         // Set simulation time step to 1 hour
-        long deltaT = 60 * 60;
+        long deltaT = (long) 60 * 60;
 
         // Initial position of perihelion of Mercury
         Vector3D initialPositionPerihelionMercury = positionPerihelionMercury();
@@ -144,7 +144,7 @@ public class MercuryPrecessionTwoParticleExperiment {
         int nrCenturies = 100;
 
         // Factor to convert precession in degrees to arc seconds per century
-        double factor = 3600/nrCenturies;
+        double factor = (double) 3600/nrCenturies;
 
         // Run experiment with Newton Mechanics
         double precessionNewtonMechanics = experiment.computePrecession(false, nrCenturies);

@@ -16,37 +16,37 @@ import java.util.*;
 public class SpacecraftExperiment {
 
     // Launch Voyager 1: September 5, 1977, 12:56:00 UTC
-    private static final GregorianCalendar startDateVoyagerOne =
+    private final GregorianCalendar startDateVoyagerOne =
             new GregorianCalendar(1977, 8, 5, 12, 56, 0);
 
     // End of simulation for Voyager 1: January 1, 1981
-    private static final GregorianCalendar endDateVoyagerOne =
+    private final GregorianCalendar endDateVoyagerOne =
             new GregorianCalendar(1981, 0, 1, 0, 0, 0);
 
     // Launch Voyager 2: August 20, 1977, 14:29:00 UTC
-    private static final GregorianCalendar startDateVoyagerTwo =
+    private final GregorianCalendar startDateVoyagerTwo =
             new GregorianCalendar(1977, 7, 20, 14, 29, 0);
 
     // End of simulation for Voyager 2: January 1, 1990
-    private static final GregorianCalendar endDateVoyagerTwo =
+    private final GregorianCalendar endDateVoyagerTwo =
             new GregorianCalendar(1990, 0, 1, 0, 0, 0);
 
     // Launch New Horizons: January 19, 2006, 19:00 UTC
-    private static final GregorianCalendar startDateNewHorizons =
+    private final GregorianCalendar startDateNewHorizons =
             new GregorianCalendar(2006, 0, 19, 19, 0, 0);
 
     // End of simulation for New Horizons: January 1, 2020
-    private static final GregorianCalendar endDateNewHorizons =
+    private final GregorianCalendar endDateNewHorizons =
             new GregorianCalendar(2020, 0, 1, 0, 0, 0);
 
     // Simulation start dates
-    private static final Map<String,GregorianCalendar> startDates = new HashMap<>();
+    private final Map<String,GregorianCalendar> startDates = new HashMap<>();
 
     // Simulation end dates
-    private static final Map<String,GregorianCalendar> endDates = new HashMap<>();
+    private final Map<String,GregorianCalendar> endDates = new HashMap<>();
 
     // Names of solar system particles passed by spacecraft
-    private static final Map<String,List<String>> particleNames = new HashMap<>();
+    private final Map<String,List<String>> particleNames = new HashMap<>();
 
     // Solar system
     private SolarSystem solarSystem;
@@ -116,7 +116,7 @@ public class SpacecraftExperiment {
         try {
             solarSystem.initializeSimulation(simulationStartDate);
         } catch (SolarSystemException e) {
-            e.printStackTrace();
+            System.err.println("ERROR: " + e.getMessage());
         }
 
         // Minimum distance between spacecraft and particle

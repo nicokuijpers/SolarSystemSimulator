@@ -2,5 +2,5 @@ projectKey=my:projectSolarSystemSimulator
 serverUrl=http://localhost:9000
 serverVersion=7.9.1.27448
 dashboardUrl=http://localhost:9000/dashboard?id=my%3AprojectSolarSystemSimulator
-ceTaskId=AWxxV1GGxrWEk1B_x7n_
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWxxV1GGxrWEk1B_x7n_
+ceTaskId=AWxxwFeSxrWEk1B_x7oI
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWxxwFeSxrWEk1B_x7oI

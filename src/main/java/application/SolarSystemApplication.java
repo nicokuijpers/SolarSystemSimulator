@@ -55,13 +55,15 @@ import java.util.*;
  * @author Nico Kuijpers
  */
 public class SolarSystemApplication extends Application {
-    
+
+    // Screen size
+    private static final int BORDERSIZE = 10;
+    private static final int SCREENWIDTH = 900;
+    private static final int SCREENHEIGHT = 900;
+    private static final double SCREENSCALE = 180.0 * SolarSystemParameters.ASTRONOMICALUNIT;
+
     // Screen to display the bodies of the Solar System
     private Canvas screen;
-    private final int BORDERSIZE = 10;
-    private final int SCREENWIDTH = 900;
-    private final int SCREENHEIGHT = 900;
-    private final double SCREENSCALE = 180.0 * SolarSystemParameters.ASTRONOMICALUNIT;
 
     // Monitor for thread synchronization
     private Monitor monitor = null;
@@ -88,22 +90,22 @@ public class SolarSystemApplication extends Application {
     private DateTimeSelector dateTimeSelector;
     
     // Slider to set top-front view
-    Slider sliderTopFrontView;
+    private Slider sliderTopFrontView;
     
     // Slider to set zoom of view
-    Slider sliderZoomView;
+    private Slider sliderZoomView;
     
     // Slider to set speed of simulation
-    Slider sliderSimulationSpeed;
+    private Slider sliderSimulationSpeed;
     
     // Check box to select observation from Earth
-    CheckBox checkBoxObservationFromEarth;
+    private CheckBox checkBoxObservationFromEarth;
     
     // Check box to indicate whether ruler should be shown
-    CheckBox checkBoxShowRuler;
+    private CheckBox checkBoxShowRuler;
     
     // Check box to select step mode
-    CheckBox checkBoxStepMode;
+    private CheckBox checkBoxStepMode;
     
     // Translate
     private double translateX = 0.0;

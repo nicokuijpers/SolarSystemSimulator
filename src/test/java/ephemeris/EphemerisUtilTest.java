@@ -254,67 +254,6 @@ public class EphemerisUtilTest {
             e += 0.1;
         }
     }
-
-
-    /**
-     * Compute position from orbital parameters and number of centuries
-     * past J2000.
-     * @param orbitPars orbital parameters (Keplerian elements)
-     * @param T         number of centuries past J2000.0
-     * @return position (x,y,z) of planet in m
-     */
-    @Test
-    @Ignore
-    public void testComputePosition() {
-        System.out.println("computePosition");
-        double[] orbitPars = null;
-        double T = 0.0;
-        Vector3D expResult = null;
-        //Vector3D result = EphemerisUtil.computePosition(orbitPars, T);
-        //assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Compute velocity from orbital parameters and number of centuries
-     * past J2000.
-     * @param orbitPars orbital parameters (Keplerian elements)
-     * @param T         number of centuries past J2000.0
-     * @return velocity (x,y,z) of planet in m/s
-     */
-    @Test
-    @Ignore
-    public void testComputeVelocity() {
-        System.out.println("computeVelocity");
-        double[] orbitPars = null;
-        double T = 0.0;
-        Vector3D expResult = null;
-        //Vector3D result = EphemerisUtil.computeVelocity(orbitPars, T);
-        //assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Compute orbit from orbital parameters and number of centuries
-     * past J2000.
-     * @param orbitPars orbital parameters (Keplerian elements)
-     * @param T         number of centuries past J2000.0
-     * @return position (x,y,z) of planet in m
-     */
-    @Test
-    @Ignore
-    public void testComputeOrbit() {
-        System.out.println("computeOrbit");
-        double[] orbitPars = null;
-        double T = 0.0;
-        Vector3D[] expResult = null;
-        //Vector3D[] result = EphemerisUtil.computeOrbit(orbitPars, T);
-        //assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
     
     /**
      * Compute position in orbit plane from position in ecliptic plane.
@@ -371,7 +310,7 @@ public class EphemerisUtilTest {
         System.out.println("computeOrbitalElementsFromPositionVelocity (Jupiter)");
 
         // Date is Jan 1, 2017
-        GregorianCalendar date = new GregorianCalendar(1, 0, 2017);
+        GregorianCalendar date = new GregorianCalendar(2017, 0, 1);
 
         // Orbital parameters for Jupiter
         double[] orbitPars = SolarSystemParameters.getInstance().getOrbitParameters("Jupiter");
@@ -430,7 +369,7 @@ public class EphemerisUtilTest {
         System.out.println("computeOrbitalElementsFromPositionVelocity (Mercury)");
         
         // Start date is Jan 1, 2017
-        GregorianCalendar date = new GregorianCalendar(1,0,2017);
+        GregorianCalendar date = new GregorianCalendar(2017,0,1);
         
         // Orbital parameters for Mercury
         double[] orbitPars = SolarSystemParameters.getInstance().getOrbitParameters("Mercury");

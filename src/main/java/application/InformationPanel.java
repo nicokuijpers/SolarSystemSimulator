@@ -250,7 +250,6 @@ public class InformationPanel extends Stage {
         });
         grid.add(buttonCancelMass, 2, rowIndex, colSpanButton, 1);
 
-
         // Button to reset mass
         buttonResetMass = new Button("Reset Mass");
         buttonResetMass.setMinWidth(BUTTONWIDTH);
@@ -647,8 +646,8 @@ public class InformationPanel extends Stage {
     public void updatePanel() throws SolarSystemException {
 
         // Current position and velocity of particle
-        Vector3D position = solarSystem.getPosition(bodyName);
-        Vector3D velocity = solarSystem.getVelocity(bodyName);
+        Vector3D currentPosition = solarSystem.getPosition(bodyName);
+        Vector3D currentVelocity = solarSystem.getVelocity(bodyName);
 
         // Update mass
         currentMass = solarSystem.getMass(bodyName);
@@ -658,15 +657,15 @@ public class InformationPanel extends Stage {
         // Update remaining labels when this body is not the Sun
         if (!"Sun".equals(bodyName)) {
             // Compute orbital elements from current position and velocity
-            position = position.minus(solarSystem.getPosition(centerBodyName));
-            velocity = velocity.minus(solarSystem.getVelocity(centerBodyName));
+            currentPosition = currentPosition.minus(solarSystem.getPosition(centerBodyName));
+            currentVelocity = currentVelocity.minus(solarSystem.getVelocity(centerBodyName));
             double muCenterBody = solarSystem.getMu(centerBodyName);
             double[] orbitElements =
-                    EphemerisUtil.computeOrbitalElementsFromPositionVelocity(muCenterBody, position, velocity);
+                    EphemerisUtil.computeOrbitalElementsFromPositionVelocity(muCenterBody, currentPosition, currentVelocity);
 
             // Update text fields
-            updateDistance(position.magnitude());    // Distance to center body [m]
-            updateVelocity(velocity.magnitude());    // Velocity relative to center body [m/s]
+            updateDistance(currentPosition.magnitude());    // Distance to center body [m]
+            updateVelocity(currentVelocity.magnitude());    // Velocity relative to center body [m/s]
             if (moon) {
                 // semi-major axis [km], convert from A.U. to km
                 currentAxis = convertAUtoKM(orbitElements[0]);
@@ -850,7 +849,7 @@ public class InformationPanel extends Stage {
         try {
             positionCenterParticle = solarSystem.getPosition(centerBodyName);
         }
-        catch(SolarSystemException ex) {
+        catch (SolarSystemException ex) {
             positionCenterParticle = new Vector3D();
         }
         double[] orbitElements = getOrbitElementsFromTextFields();
@@ -866,7 +865,7 @@ public class InformationPanel extends Stage {
         try {
             positionCenterParticle = solarSystem.getPosition(centerBodyName);
         }
-        catch(SolarSystemException ex) {
+        catch (SolarSystemException ex) {
             positionCenterParticle = new Vector3D();
         }
         double[] orbitElements = getOrbitElementsFromTextFields();

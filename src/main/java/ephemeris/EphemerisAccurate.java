@@ -23,8 +23,8 @@ import util.Vector3D;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -601,12 +601,12 @@ public class EphemerisAccurate implements IEphemeris {
 
         int interval = (int) (Math.floor((julianDateTime - ephemerisDateBegin) / intervalDuration) + 1);
         double intervalStartTime = (interval - 1) * intervalDuration + ephemerisDateBegin;
-        double subintervalDuration = intervalDuration / numberCoefSets[index];
+        double subintervalDuration = (double) intervalDuration / numberCoefSets[index];
         int subinterval = (int) (Math.floor((julianDateTime - intervalStartTime) / subintervalDuration) + 1);
         int numbersToSkip = (interval - 1) * numbersPerInterval;
 
         /*  
-	 * Starting at the beginning of the coefficient array, skip the first 
+	     * Starting at the beginning of the coefficient array, skip the first
          * "numbersToSkip" coefficients. This puts the pointer on the 
          * first piece of data in the correct interval.  
          */
@@ -714,10 +714,7 @@ public class EphemerisAccurate implements IEphemeris {
 
         String filename = selectFileForJulianDate(julianDateTime);
         File file = new File(locationDE405EphemerisFiles,filename);
-
-        try {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader buff = new BufferedReader(fileReader);
+        try (BufferedReader buff = Files.newBufferedReader(file.toPath())) {
 
             // Read each record in the file
             for (int j = 1; j <= records; j++) {
@@ -792,7 +789,6 @@ public class EphemerisAccurate implements IEphemeris {
                     line = buff.readLine();
                 }
             }
-            buff.close();
 
         } catch (IOException e) {
             System.out.println("Error = " + e.toString());

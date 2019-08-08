@@ -239,7 +239,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param deltaT simulation time step [s]
      */
     private void advanceGalileanMoons(long deltaT) {
-        long timeStep = Math.min(Math.abs(deltaT),10*60);
+        long timeStep = Math.min(Math.abs(deltaT),10*60L);
         long totalTime = 0L;
         if (deltaT < 0) {
             while (totalTime > deltaT) {

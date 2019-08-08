@@ -111,7 +111,7 @@ public class EphemerisApproximate implements IEphemeris {
         double[] orbitPars = SolarSystemParameters.getInstance().getOrbitParameters(name);
         
         // Compute orbital elements for given date
-        double orbitElements[] = EphemerisUtil.computeOrbitalElements(orbitPars,date);
+        double[] orbitElements = EphemerisUtil.computeOrbitalElements(orbitPars,date);
          
         // Compute (x,y,z) position [m] from orbital elements
         Vector3D position = EphemerisUtil.computePosition(orbitElements);

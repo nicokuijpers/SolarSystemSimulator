@@ -219,8 +219,10 @@ public class ParticleSystem implements Serializable {
             velocityCenterMass.addVector(p.getVelocity().scalarProduct(p.getMass()));
             totalMass += p.getMass();
         }
-        positionCenterMass = positionCenterMass.scalarProduct(1.0 / totalMass);
-        velocityCenterMass = velocityCenterMass.scalarProduct(1.0 / totalMass);
+        if (totalMass != 0.0) {
+            positionCenterMass = positionCenterMass.scalarProduct(1.0 / totalMass);
+            velocityCenterMass = velocityCenterMass.scalarProduct(1.0 / totalMass);
+        }
             
         // Adjust position and velocity of all particles
         correctDrift(positionCenterMass,velocityCenterMass);
