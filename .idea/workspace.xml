@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/HalleyPerihelionPassageExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/HalleyPerihelionPassageExperiment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/Vector3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/Vector3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/util/Vector3D.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/Vector3D.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,24 +26,24 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="64" />
-          <entry key="xml" value="1" />
+          <entry key="java" value="66" />
+          <entry key="xml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="64" />
-          <entry key="XML" value="1" />
+          <entry key="JAVA" value="66" />
+          <entry key="XML" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="3326" />
+          <entry key="java" value="3502" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="3326" />
+          <entry key="JAVA" value="3502" />
         </counts>
       </usages-collector>
     </session>
@@ -49,44 +51,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisGalileanMoons.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#86440#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3270">
-              <caret line="244" column="33" selection-start-line="244" selection-start-column="33" selection-end-line="244" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="495">
               <caret line="79" column="52" selection-start-line="79" selection-start-column="52" selection-end-line="79" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3045">
-              <caret line="209" column="16" selection-start-line="198" selection-start-column="4" selection-end-line="212" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -100,14 +68,51 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/HalleyPerihelionPassageExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="870">
-              <caret line="58" column="46" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
+            <state relative-caret-position="416">
+              <caret line="231" selection-start-line="231" selection-end-line="231" />
               <folding>
                 <element signature="e#0#8079#0" expanded="true" />
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="244">
+              <caret line="149" column="40" selection-start-line="149" selection-start-column="40" selection-end-line="149" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#9068#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="203">
+              <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/util/Vector3D.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="329">
+              <caret line="206" column="25" selection-start-line="206" selection-start-column="25" selection-end-line="206" selection-end-column="25" />
+              <folding>
+                <element signature="e#5550#5551#0" expanded="true" />
+                <element signature="e#5639#5640#0" expanded="true" />
+                <element signature="e#5857#5858#0" expanded="true" />
+                <element signature="e#5907#5908#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -138,8 +143,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3900">
-              <caret line="293" column="16" selection-start-line="293" selection-start-column="16" selection-end-line="293" selection-end-column="16" />
+            <state relative-caret-position="-517">
+              <caret line="120" column="63" selection-start-line="120" selection-start-column="63" selection-end-line="120" selection-end-column="63" />
             </state>
           </provider>
         </entry>
@@ -183,7 +188,6 @@
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemBody.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/GalileanMoons.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerOne.java" />
-        <option value="$PROJECT_DIR$/src/main/java/util/Vector3D.java" />
         <option value="$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisUtilTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java" />
@@ -194,6 +198,8 @@
         <option value="$PROJECT_DIR$/src/main/java/experiments/CreateSolarSystemStateFiles.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/HalleyPerihelionPassageExperiment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/util/Vector3D.java" />
+        <option value="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java" />
       </list>
     </option>
   </component>
@@ -203,9 +209,17 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/.scannerwork/css-bundle/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/.scannerwork/css-bundle/package.json" />
+    </packageJsonPaths>
+  </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="855" />
-    <option name="y" value="287" />
+    <option name="x" value="1060" />
+    <option name="y" value="53" />
     <option name="width" value="1510" />
     <option name="height" value="1124" />
   </component>
@@ -347,7 +361,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564827139824" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1565268935444" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -473,7 +487,7 @@
       <option name="presentableId" value="Default" />
       <updated>1562090243097</updated>
       <workItem from="1562090246988" duration="32744000" />
-      <workItem from="1564575869196" duration="11475000" />
+      <workItem from="1564575869196" duration="19365000" />
     </task>
     <servers />
   </component>
@@ -489,13 +503,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44219000" />
+    <option name="totallyTimeSpent" value="52109000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="855" y="287" width="1510" height="1124" extended-state="0" />
+    <frame x="1060" y="53" width="1510" height="1124" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.253406" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.253406" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -504,7 +518,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32945737" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32945737" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -533,13 +547,6 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/DateTimeSelector.java" />
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/IEphemeris.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -587,9 +594,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Spacecraft.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/util/Vector3D.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
@@ -733,13 +737,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3900">
-          <caret line="293" column="16" selection-start-line="293" selection-start-column="16" selection-end-line="293" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/CreateSolarSystemStateFiles.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -775,14 +772,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-517">
+          <caret line="120" column="63" selection-start-line="120" selection-start-column="63" selection-end-line="120" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/HalleyPerihelionPassageExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="58" column="46" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
+        <state relative-caret-position="416">
+          <caret line="231" selection-start-line="231" selection-end-line="231" />
           <folding>
             <element signature="e#0#8079#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/util/Vector3D.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="206" column="25" selection-start-line="206" selection-start-column="25" selection-end-line="206" selection-end-column="25" />
+          <folding>
+            <element signature="e#5550#5551#0" expanded="true" />
+            <element signature="e#5639#5640#0" expanded="true" />
+            <element signature="e#5857#5858#0" expanded="true" />
+            <element signature="e#5907#5908#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="149" column="40" selection-start-line="149" selection-start-column="40" selection-end-line="149" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#9068#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
         </state>
       </provider>
     </entry>

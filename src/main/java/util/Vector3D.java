@@ -195,6 +195,24 @@ public class Vector3D implements Serializable {
     }
 
     /**
+     * Angle in radians between this vector and other vector.
+     * @param v other vector
+     * @return angle in radians between this vector and other vector
+     */
+    public double angleRad(Vector3D v) {
+        return Math.acos(this.dotProduct(v) / (this.magnitude() * v.magnitude()));
+    }
+
+    /**
+     * Angle in degrees between this vector and other vector.
+     * @param v other vector
+     * @return angle in radians between this vector and other vector
+     */
+    public double angleDeg(Vector3D v) {
+        return Math.toDegrees(angleRad(v));
+    }
+
+    /**
      * Rotate vector along three axes defined by three vectors.
      * @param vx
      * @param vy
