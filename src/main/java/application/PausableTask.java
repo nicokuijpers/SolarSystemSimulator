@@ -100,7 +100,7 @@ public abstract class PausableTask implements Runnable {
             if (!paused) {
                 pause();
             }
-            throw new InterruptedException();
+            Thread.currentThread().interrupt();
         }
     }
 

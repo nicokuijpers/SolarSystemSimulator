@@ -1705,6 +1705,7 @@ public class SolarSystemApplication extends Application {
         }
         catch (InterruptedException e) {
             stop();
+            Thread.currentThread().interrupt();
         }
         finally {
             monitor.stopDrawing();
@@ -1874,6 +1875,7 @@ public class SolarSystemApplication extends Application {
                     drawSimulationState();
                 }
                 catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     stop();
                 }
                 finally {
