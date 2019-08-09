@@ -218,6 +218,24 @@ public class Vector3DTest {
         double actual = v.dotProduct(u);
         assertEquals(expected,actual,1.0E-14);
     }
+
+    @Test
+    public void testAngleRad() {
+        Vector3D v = new Vector3D(3.0,0.0,0.0);
+        Vector3D u = new Vector3D(0.0,5.0,0.0);
+        double expected = 0.5*Math.PI;
+        double actual = v.angleRad(u);
+        assertEquals(expected,actual,1.0E-14);
+    }
+
+    @Test
+    public void testAngleDeg() {
+        Vector3D v = new Vector3D(3.0,0.0,0.0);
+        Vector3D u = new Vector3D(0.0,5.0,0.0);
+        double expected = 90.0;
+        double actual = v.angleDeg(u);
+        assertEquals(expected,actual,1.0E-14);
+    }
     
     @Test
     public void testCrossProductA() {
