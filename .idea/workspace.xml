@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.scannerwork/css-bundle/node_modules/resolve/test/resolver/mug.coffee" beforeDir="false" afterPath="$PROJECT_DIR$/.scannerwork/css-bundle/node_modules/resolve/test/resolver/mug.coffee" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.scannerwork/css-bundle/node_modules/resolve/test/resolver/mug.js" beforeDir="false" afterPath="$PROJECT_DIR$/.scannerwork/css-bundle/node_modules/resolve/test/resolver/mug.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.scannerwork/report-task.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.scannerwork/report-task.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/util/Vector3DTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/Vector3DTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,42 +29,30 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="91" />
+          <entry key="java" value="92" />
           <entry key="xml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="91" />
+          <entry key="JAVA" value="92" />
           <entry key="XML" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="4068" />
+          <entry key="java" value="4225" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4068" />
+          <entry key="JAVA" value="4225" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="44" column="4" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="4" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisApproximate.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -102,11 +87,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="51" selection-start-line="12" selection-start-column="51" selection-end-line="12" selection-end-column="51" />
+            <state relative-caret-position="2059">
+              <caret line="426" column="70" selection-start-line="426" selection-start-column="70" selection-end-line="426" selection-end-column="70" />
               <folding>
+                <element signature="e#0#11112#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="217">
+              <caret line="233" column="44" selection-start-line="233" selection-start-column="44" selection-end-line="233" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -181,6 +176,7 @@
       <find>InterruptedException</find>
       <find>updateDateTimeAndPanels</find>
       <find>getPlanetPositionVelocity</find>
+      <find>correctdri</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -205,7 +201,6 @@
         <option value="$PROJECT_DIR$/src/main/java/experiments/HalleyPerihelionPassageExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/java/util/Vector3D.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/PausableTask.java" />
-        <option value="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerOne.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
@@ -219,6 +214,7 @@
         <option value="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionSolarSystemExperiment.java" />
         <option value="$PROJECT_DIR$/src/test/java/util/Vector3DTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" />
       </list>
     </option>
@@ -238,8 +234,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="984" />
-    <option name="y" value="125" />
+    <option name="x" value="696" />
+    <option name="y" value="183" />
     <option name="width" value="1510" />
     <option name="height" value="1124" />
   </component>
@@ -381,7 +377,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1565356009131" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1565359429279" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -413,7 +409,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.Vector3DTest">
+  <component name="RunManager" selected="Application.SimulationAccuracyExperiment">
     <configuration name="SimulationAccuracyExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.SimulationAccuracyExperiment" />
       <module name="SolarSystemSimulator" />
@@ -490,9 +486,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.SimulationAccuracyExperiment" />
         <item itemvalue="JUnit.Vector3DTest" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
-        <item itemvalue="Application.SimulationAccuracyExperiment" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
         <item itemvalue="Application.SpacecraftExperiment" />
       </list>
@@ -509,7 +505,7 @@
       <option name="presentableId" value="Default" />
       <updated>1562090243097</updated>
       <workItem from="1562090246988" duration="32744000" />
-      <workItem from="1564575869196" duration="34753000" />
+      <workItem from="1564575869196" duration="36938000" />
     </task>
     <servers />
   </component>
@@ -543,13 +539,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67497000" />
+    <option name="totallyTimeSpent" value="69682000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="984" y="125" width="1510" height="1124" extended-state="0" />
+    <frame x="696" y="183" width="1510" height="1124" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.253406" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.253406" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -558,7 +554,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32945737" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32945737" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -722,13 +718,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="166" column="16" selection-start-line="166" selection-start-column="16" selection-end-line="166" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -898,11 +887,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="233" column="44" selection-start-line="233" selection-start-column="44" selection-end-line="233" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="51" selection-start-line="12" selection-start-column="51" selection-end-line="12" selection-end-column="51" />
+        <state relative-caret-position="2059">
+          <caret line="426" column="70" selection-start-line="426" selection-start-column="70" selection-end-line="426" selection-end-column="70" />
           <folding>
+            <element signature="e#0#11112#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>

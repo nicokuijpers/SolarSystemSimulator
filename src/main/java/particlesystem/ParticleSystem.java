@@ -234,7 +234,7 @@ public class ParticleSystem implements Serializable {
      * @param driftPosition  drift in position to correct for
      * @param driftVelocity  drift in velocity to correct for
      */
-    protected void correctDrift(Vector3D driftPosition, Vector3D driftVelocity) {
+    public void correctDrift(Vector3D driftPosition, Vector3D driftVelocity) {
         for (Particle p : particles.values()) {
             p.correctDrift(driftPosition,driftVelocity);
         }
