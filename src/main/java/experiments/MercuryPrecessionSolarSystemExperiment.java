@@ -22,25 +22,19 @@ package experiments;
 import ephemeris.EphemerisUtil;
 import ephemeris.SolarSystemParameters;
 import particlesystem.Particle;
-import particlesystem.ParticleSystem;
+import solarsystem.SolarSystem;
 import util.Vector3D;
 
 import java.util.GregorianCalendar;
 
 /**
- * Mercury precession. Two particle system.
+ * Mercury precession. Solar system.
  * @author Nico Kuijpers
  */
-public class MercuryPrecessionTwoParticleExperiment {
+public class MercuryPrecessionSolarSystemExperiment {
 
-    // Number of seconds per day
-    private final long nrSecondsPerDay = (long) 24 * 60 * 60;
-
-    // Average number of days per century
-    private final double nrDaysPerCentury = 36524.25;
-
-    // The particle system
-    private ParticleSystem particleSystem;
+    // The Solar System
+    private SolarSystem solarSystem;
 
     /**
      * Compute precession by simulating one century.
@@ -51,48 +45,25 @@ public class MercuryPrecessionTwoParticleExperiment {
     private double computePrecession(boolean grFlag, int nrCenturies) {
 
         // Start date is January 1, 2000
-        GregorianCalendar startDate = new GregorianCalendar(2000,0,1);
+        int startYear = 2000;
+        GregorianCalendar startDate = new GregorianCalendar(startYear,0,1);
 
-        // Create the particle system
-        particleSystem = new ParticleSystem();
+        // End date
+        int endYear = startYear + nrCenturies*100;
+        GregorianCalendar endDate = new GregorianCalendar(endYear,0, 1);
+
+        // Create the Solar System
+        solarSystem = new SolarSystem(startDate);
 
         // Set flag to simulate with Newton Mechanics or General Relativity
-        particleSystem.setGeneralRelativityFlag(grFlag);
-
-        // Create the Sun
-        Vector3D positionSun = new Vector3D(); // Origin
-        Vector3D velocitySun = new Vector3D(); // Zero velocity
-        double massSun = SolarSystemParameters.getInstance().getMass("Sun");
-        double muSun   = SolarSystemParameters.getInstance().getMu("Sun");
-        particleSystem.addParticle("Sun",massSun,muSun,positionSun,velocitySun);
-
-        // Create Mercury
-        double[] orbitParsMercury = SolarSystemParameters.getInstance().getOrbitParameters("Mercury");
-        double orbitElementsMercury[] = EphemerisUtil.computeOrbitalElements(orbitParsMercury,startDate);
-        Vector3D positionMercury = EphemerisUtil.computePosition(orbitElementsMercury);
-        Vector3D velocityMercury = EphemerisUtil.computeVelocity(muSun,orbitElementsMercury);
-        double massMercury = SolarSystemParameters.getInstance().getMass("Mercury");
-        double muMercury = SolarSystemParameters.getInstance().getMu("Mercury");
-        particleSystem.addParticle("Mercury",massMercury,muMercury,positionMercury,velocityMercury);
-
-        // Number of days to simulate
-        long nrDays = (long) (nrCenturies * nrDaysPerCentury);
-
-        // Number of seconds to simulate
-        long nrSeconds = nrDays * nrSecondsPerDay;
-
-        // Set simulation time step to 1 hour
-        long deltaT = (long) 60 * 60;
+        solarSystem.setGeneralRelativityFlag(grFlag);
 
         // Initial position of perihelion of Mercury
         Vector3D initialPositionPerihelionMercury = positionPerihelionMercury();
 
         // Simulate
-        long currentTime = 0L;
-        while (currentTime < nrSeconds) {
-            particleSystem.advanceRungeKutta(deltaT);
-            particleSystem.correctDrift();
-            currentTime += deltaT;
+        while (solarSystem.getSimulationDateTime().before(endDate)) {
+            solarSystem.advanceSimulationForward(24);
         }
 
         // Final position of perihelion of Mercury
@@ -106,16 +77,10 @@ public class MercuryPrecessionTwoParticleExperiment {
     // Determine argument of perihelion for Mercury [degrees]
     private Vector3D positionPerihelionMercury() {
 
-
-        // Position [m] and velocity [m/s] of the Sun
-        Particle sun = particleSystem.getParticle("Sun");
-        Vector3D positionSun = sun.getPosition();
-        Vector3D velocitySun = sun.getVelocity();
-
-        // Position [m] and velocity [m/s] of Mercury relative to the Sun
-        Particle mercury = particleSystem.getParticle("Mercury");
-        Vector3D positionMercury = mercury.getPosition().minus(positionSun);
-        Vector3D velocityMercury = mercury.getVelocity().minus(velocitySun);
+        // Position [m] and velocity [m/s] of Mercury
+        Particle mercury = solarSystem.getParticle("Mercury");
+        Vector3D positionMercury = mercury.getPosition();
+        Vector3D velocityMercury = mercury.getVelocity();
 
         // Compute orbital elements from position and velocity
         double muSun = SolarSystemParameters.getInstance().getMu("Sun");
@@ -138,10 +103,10 @@ public class MercuryPrecessionTwoParticleExperiment {
      */
     public static void main(String[] args) {
         // Experiment set-up
-        MercuryPrecessionTwoParticleExperiment experiment = new MercuryPrecessionTwoParticleExperiment();
+        MercuryPrecessionSolarSystemExperiment experiment = new MercuryPrecessionSolarSystemExperiment();
 
         // Number of centuries to simulate
-        int nrCenturies = 100;
+        int nrCenturies = 10;
 
         // Factor to convert precession in degrees to arc seconds per century
         double factor = (double) 3600/nrCenturies;
@@ -152,7 +117,7 @@ public class MercuryPrecessionTwoParticleExperiment {
         // Print results
         // https://en.wikipedia.org/wiki/Tests_of_general_relativity#Perihelion_precession_of_Mercury
         System.out.println("Newton Mechanics:");
-        System.out.println("Expected precession: zero");
+        System.out.println("Expected precession: " + (574.10 - 42.98) + " arc seconds / century");
         System.out.println("Simulated precession: " + (precessionNewtonMechanics * factor) + " arc seconds / century");
 
         // Run experiment with General Relativity
@@ -161,7 +126,7 @@ public class MercuryPrecessionTwoParticleExperiment {
         // Print results
         // https://en.wikipedia.org/wiki/Tests_of_general_relativity#Perihelion_precession_of_Mercury
         System.out.println("General Relativity:");
-        System.out.println("Expected precession: " + 42.98 + " arc seconds / century");
+        System.out.println("Observed precession: 574.10 +/- 0.65 arc seconds / century");
         System.out.println("Simulated precession: " + (precessionGeneralRelativity * factor) + " arc seconds / century");
 
         // Difference
@@ -174,35 +139,24 @@ public class MercuryPrecessionTwoParticleExperiment {
     /*
         Results after one hundred years of simulation (nrCenturies = 1)
         Newton Mechanics:
-        Expected precession: zero
-        Simulated precession: 0.12443275671409582 arc seconds / century
+        Expected precession: 531.12 arc seconds / century
+        Simulated precession: 527.4653580745868 arc seconds / century
         General Relativity:
-        Expected precession: 42.98 arc seconds / century
-        Simulated precession: 42.89421807460171 arc seconds / century
+        Observed precession: 574.10 +/- 0.65 arc seconds / century
+        Simulated precession: 570.3827682686507 arc seconds / century
         Difference in precession between Newton Mechanics and General Relativity:
         Expected  : 42.98 arc seconds / century
-        Simulated : 42.76978531788761 arc seconds / century
+        Simulated : 42.9174101940639 arc seconds / century
 
         Results after one thousand years of simulation (nrCenturies = 10)
         Newton Mechanics:
-        Expected precession: zero
-        Simulated precession: 0.008812135260854349 arc seconds / century
+        Expected precession: 531.12 arc seconds / century
+        Simulated precession: 533.6512237625948 arc seconds / century
         General Relativity:
-        Expected precession: 42.98 arc seconds / century
-        Simulated precession: 42.98733971558463 arc seconds / century
+        Observed precession: 574.10 +/- 0.65 arc seconds / century
+        Simulated precession: 576.4943254858408 arc seconds / century
         Difference in precession between Newton Mechanics and General Relativity:
         Expected  : 42.98 arc seconds / century
-        Simulated : 42.97852758032378 arc seconds / century
-
-        Results after ten thousand years of simulation (nrCenturies = 100)
-        Newton Mechanics:
-        Expected precession: zero
-        Simulated precession: 0.002405657203261405 arc seconds / century
-        General Relativity:
-        Expected precession: 42.98 arc seconds / century
-        Simulated precession: 42.98304654524318 arc seconds / century
-        Difference in precession between Newton Mechanics and General Relativity:
-        Expected  : 42.98 arc seconds / century
-        Simulated : 42.98064088803992 arc seconds / century
+        Simulated : 42.843101723246086 arc seconds / century
      */
 }
