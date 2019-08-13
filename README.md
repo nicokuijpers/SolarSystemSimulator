@@ -1,5 +1,5 @@
 # SolarSystemSimulator
-Solar System Simulator written in Java. Positions and velocities of 24 solar system bodies are continuously updated using
+Solar System Simulator written in Java. Positions and velocities of 29 solar system bodies and 3 spacecraft are continuously updated using
 either Newton mechanics or General Relativity. Initial positions and velocities are obtained from Nasa JPL's ephemerides. 
 While simulating, both simulated positions and ephemeris data are visualised for comparison. Source code is made publicly
 availaible under the MIT licence.
@@ -7,6 +7,8 @@ availaible under the MIT licence.
 User's manual: SolarSystemManual.pdf
 
 Technical notes: SolarSystemTechnicalNotes.pdf
+
+Video The Grand Tour of Voyager: https://youtu.be/9GPLGc5D6jM
 
 Required ephemeris files: DE405EphemerisFiles (directory containing ephemeris data as text files)
 
