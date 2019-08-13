@@ -22,6 +22,8 @@ package solarsystem;
 import util.Vector3D;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a body of the Solar System.
@@ -39,6 +41,7 @@ public class SolarSystemBody implements Serializable {
     private Vector3D position;
     private Vector3D velocity;
     private Vector3D[] orbit;
+    private List<Vector3D> trajectory;
     private double diameter;
     private SolarSystemBody centerBody;
 
@@ -46,6 +49,7 @@ public class SolarSystemBody implements Serializable {
      * Default constructor.
      */
     public SolarSystemBody() {
+        this.trajectory = new ArrayList<>();
         this.diameter = MINIMUMDIAMETER;
     }
 
@@ -64,6 +68,7 @@ public class SolarSystemBody implements Serializable {
         this.position = position;
         this.velocity = velocity;
         this.orbit = orbit;
+        this.trajectory = new ArrayList<>();
         this.diameter = diameter;
         this.centerBody = centerBody;
     }
@@ -144,7 +149,37 @@ public class SolarSystemBody implements Serializable {
     public void setOrbit(Vector3D[] orbit) {
         this.orbit = orbit;
     }
-    
+
+    /**
+     * Initialize trajectory.
+     */
+    public void initTrajectory() {
+        trajectory.clear();
+    }
+
+    /**
+     * Update trajectory.
+     */
+    public void updateTrajectory(Vector3D currentPosition, Vector3D currentVelocity) {
+        if (trajectory.isEmpty()) {
+            trajectory.add(currentPosition);
+        }
+        else {
+            Vector3D formerPosition = trajectory.get(trajectory.size() - 1);
+            if (formerPosition.euclideanDistance(currentPosition) > 1E06 ||
+                    formerPosition.direction(currentPosition).angleDeg(currentVelocity) > 1.0) {
+                trajectory.add(currentPosition);
+            }
+        }
+    }
+
+    /**
+     * Get trajectory.
+     */
+    public List<Vector3D> getTrajectory() {
+        return trajectory;
+    }
+
     /**
      * Get diameter of body in m.
      * @return diameter

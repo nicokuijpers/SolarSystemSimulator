@@ -57,7 +57,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     private Map<String, Particle> gmParticles;
     
      // Spacecraft in the Solar System
-    private Map<String,Spacecraft> spacecraft;
+    private Map<String, Spacecraft> spacecraft;
     
     // Center bodies of moons and spacecraft
     private Map<String,String> centerBodies;
@@ -150,14 +150,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Spacecraft events
         spacecraftEvents = new LinkedList<>();
         nextEvent = null;
+        
+        // Create spacecraft Voyager 2 (Voyager 2 was launched before Voyager 1)
+        Spacecraft voyagerTwo = new VoyagerTwo("Voyager 2",simulationDateTime,this);
+        createSpacecraft(voyagerTwo);
 
         // Create spacecraft Voyager 1
         Spacecraft voyagerOne = new VoyagerOne("Voyager 1",simulationDateTime,this);
         createSpacecraft(voyagerOne);
-        
-        // Create spacecraft Voyager 2
-        Spacecraft voyagerTwo = new VoyagerTwo("Voyager 2",simulationDateTime,this);
-        createSpacecraft(voyagerTwo);
 
         // Create spacecraft New Horizons
         Spacecraft newHorizons = new NewHorizons("New Horizons",simulationDateTime,this);

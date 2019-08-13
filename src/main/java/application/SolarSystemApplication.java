@@ -126,7 +126,13 @@ public class SolarSystemApplication extends Application {
     
     // Selected body
     private String selectedBody;
-    
+
+    // Names of spacecraft
+    private List<String> spacecraftNames;
+
+    // Start dates for trajectories of spacecraft
+    private Map<String, Calendar> trajectoryStartDate;
+
     // Information panels
     private Map<String, InformationPanel> informationPanels;
     
@@ -586,6 +592,18 @@ public class SolarSystemApplication extends Application {
         createCircle("Voyager 2", 3, Color.LIGHTYELLOW);
         createCircle("New Horizons", 3, Color.LIGHTYELLOW);
 
+        // Spacecraft names
+        spacecraftNames = new ArrayList<>();
+        spacecraftNames.add("Voyager 1");
+        spacecraftNames.add("Voyager 2");
+        spacecraftNames.add("New Horizons");
+
+        // Start dates for trajectories of spacecraft
+        trajectoryStartDate = new HashMap<>();
+        trajectoryStartDate.put("Voyager 1", new GregorianCalendar(1977, 8, 6));
+        trajectoryStartDate.put("Voyager 2", new GregorianCalendar(1977, 7, 21));
+        trajectoryStartDate.put("New Horizons", new GregorianCalendar(2006, 1, 1));
+
         // Define check box for each body of the solar system
         rowIndex++;
         int hor = 1;
@@ -809,6 +827,11 @@ public class SolarSystemApplication extends Application {
         }
         catch (SolarSystemException ex) {
             showMessage("Error",ex.getMessage());
+        }
+
+        // Initialize trajectories of spacecraft
+        for (String spacecraftName : spacecraftNames) {
+            solarSystem.getBody(spacecraftName).initTrajectory();
         }
     }
 
@@ -1038,7 +1061,7 @@ public class SolarSystemApplication extends Application {
      * Create a check box to indicate whether a certain body of the Solar System
      * should be drawn on the screen.
      * Left mouse button click: select / deselect Solar System body to be drawn
-     * Right mouse button clikc: show information panel of the Solar System body
+     * Right mouse button click: show information panel of the Solar System body
      * @param name         Name of Solar System body
      * @param label        Text to be placed on the label of the check box
      * @param toolTipText  Text to be placed in the tool tip of the check box
@@ -1275,7 +1298,16 @@ public class SolarSystemApplication extends Application {
                 // Draw circle at particle position
                 Particle particle = solarSystem.getParticle(bodyName);
                 if (particle != null) {
-                    drawCircle(circle, body, particle.getPosition());
+                    if (!spacecraftNames.contains(bodyName)) {
+                        // Not a spacecraft
+                        drawCircle(circle, body, particle.getPosition());
+                    }
+                    else {
+                        if (solarSystem.getSimulationDateTime().after(trajectoryStartDate.get(bodyName))) {
+                            // Spacecraft - do not draw before trajectory start date
+                            drawCircle(circle, body, particle.getPosition());
+                        }
+                    }
                 }
             }
         }
@@ -1412,10 +1444,51 @@ public class SolarSystemApplication extends Application {
             drawOrbit(orbit, positionParticle, Color.CYAN, Color.DARKCYAN,false);
         }
     }
-    
+
     /**
-     * Draw orbits corresponding to current positions and velocities of particles.
-     * Orbits are drawn as cyan lines.
+     * Draw trajectory of spacecraft. Trajectory segments in front of the Sun
+     * are drawn using frontColor and segments behind the Sun are drawn using
+     * backColor.
+     * @param trajectory       trajectory to be drawn
+     * @param frontColor       color for segments in front of the Sun
+     * @param backColor        color for segments behind the Sun
+     */
+    private void drawTrajectorySpacecraft(List<Vector3D> trajectory, Color frontColor, Color backColor) {
+        // Draw trajectory
+        GraphicsContext gc = screen.getGraphicsContext2D();
+        Vector3D positionView;
+        if (observationFromEarth) {
+            positionView = convertToScreenView(observationFromEarthView(trajectory.get(0)));
+            setColor(gc,positionView,frontColor,backColor);
+        }
+        else {
+            positionView = convertToScreenView(trajectory.get(0));
+            setColor(gc,trajectory.get(0),frontColor,backColor);
+        }
+        double x1 = screenX(positionView);
+        double y1 = screenY(positionView);
+        for (int i = 1; i < trajectory.size(); i++) {
+            if (observationFromEarth) {
+                positionView = convertToScreenView(observationFromEarthView(trajectory.get(i)));
+                setColor(gc,positionView,frontColor,backColor);
+            }
+            else {
+                positionView = convertToScreenView(trajectory.get(i));
+                setColor(gc,trajectory.get(i),frontColor,backColor);
+            }
+            double x2 = screenX(positionView);
+            double y2 = screenY(positionView);
+            gc.strokeLine(x1, y1, x2, y2);
+            x1 = x2;
+            y1 = y2;
+            // Draw dot to indicate beginning of each line segment
+            // gc.fillOval(x1-2, y1-2, 4, 4);
+        }
+    }
+
+    /**
+     * Draw orbits or trajectories corresponding to current positions and velocities
+     * of particles. Orbits are drawn as cyan lines. Spacecraft trajectories as red lines.
      * @param bodiesToShow bodies to show on screen
      */
     private void drawOrbitsCorrespondingToPositionVelocity(List<SolarSystemBody> bodiesToShow) {
@@ -1424,19 +1497,29 @@ public class SolarSystemApplication extends Application {
                 String bodyName = body.getName();
                 Particle particle = solarSystem.getParticle(bodyName);
                 if (particle != null) {
-                    SolarSystemBody centerBody = body.getCenterBody();
-                    if (centerBody != null) {
-                        String centerBodyName = body.getCenterBody().getName();
-                        drawOrbitCorrespondingToPositionVelocity(centerBodyName, particle);
-                    }
-                    else {
-                        drawOrbitCorrespondingToPositionVelocity("Sun", particle);
+                    if (!spacecraftNames.contains(bodyName)) {
+                        // Draw orbit
+                        SolarSystemBody centerBody = body.getCenterBody();
+                        if (centerBody != null) {
+                            String centerBodyName = body.getCenterBody().getName();
+                            drawOrbitCorrespondingToPositionVelocity(centerBodyName, particle);
+                        } else {
+                            drawOrbitCorrespondingToPositionVelocity("Sun", particle);
+                        }
+                    } else {
+                        // Draw trajectory
+                        if (solarSystem.getSimulationDateTime().after(trajectoryStartDate.get(bodyName))) {
+                            body.updateTrajectory(particle.getPosition(), particle.getVelocity());
+                            if (!body.getTrajectory().isEmpty()) {
+                                drawTrajectorySpacecraft(body.getTrajectory(), Color.RED, Color.RED);
+                            }
+                        }
                     }
                 }
             }
         }
     }
-    
+
     /**
      * Draw ruler at the bottom of the screen to get an indication of distances.
      */
@@ -1744,7 +1827,7 @@ public class SolarSystemApplication extends Application {
             bodiesToShow.remove(earth);
         }
 
-        // Do not draw orbits for observation from Earth
+        // Do not draw orbits/trajectories for observation from Earth
         if (!observationFromEarth) {
             drawOrbitsCorrespondingToPositionVelocity(bodiesToShow);
             drawOrbits(bodiesToShow);
