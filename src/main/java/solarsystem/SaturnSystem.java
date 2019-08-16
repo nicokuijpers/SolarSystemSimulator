@@ -19,7 +19,6 @@
  */
 package solarsystem;
 
-import ephemeris.SolarSystemParameters;
 import particlesystem.Particle;
 import particlesystem.ParticleSystem;
 import util.Vector3D;
@@ -27,34 +26,49 @@ import util.Vector3D;
 import java.io.Serializable;
 
 /**
- * Represents the Galilean Moons of Jupiter.
+ * Represents the Saturn system.
  * @author Nico Kuijpers
  */
-public class GalileanMoons extends ParticleSystem implements Serializable {
+public class SaturnSystem extends ParticleSystem implements Serializable {
 
     // Default serialVersion id
     private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor.
-     * Create planet Jupiter at origin of the particle system.
+     * Create planet Saturn at origin of the particle system.
      */
-    public GalileanMoons() {
-        double mass = SolarSystemParameters.getInstance().getMass("Jupiter");
-        double mu = SolarSystemParameters.getInstance().getMu("Jupiter");
-        this.addParticle("Jupiter", mass, mu, new Vector3D(), new Vector3D());
+    public SaturnSystem() {
+        // double mass = SolarSystemParameters.getInstance().getMass("Saturn");
+        // double mu = SolarSystemParameters.getInstance().getMu("Saturn");
+        /*
+            Adapt standard gravitational parameter mu of Saturn to obtain accurate results
+            for Titan. An optimal value for mu was found by running SpacecraftExperiment
+            for different values of mu and optimizing for minimum distance between Voyager 1
+            and Titan.
+
+            SATURNMU = 3.7940626061137281E16 m3/s2 (defined in SolarSystemParameters)
+
+            Adapt mass of Saturn to correspond with standard gravitational parameter mu
+
+            SATURNMASS = 568.34E24 kg (defined in SolarSystemParameters)
+            GRAVITATIONALCONSTANT = 6.6740831E-11 m3 kg-1 s-2 (defined in Particle)
+         */
+        double mu = 3.7924955E16;
+        double mass = mu/ Particle.GRAVITATIONALCONSTANT;
+        this.addParticle("Saturn", mass, mu, new Vector3D(), new Vector3D());
     }
 
     @Override
     public void correctDrift() {
-        Particle jupiter = getParticle("Jupiter");
-        if (jupiter != null) {
-            // Current position and velocity of the Sun
-            Vector3D positionJupiter = jupiter.getPosition();
-            Vector3D velocityJupiter = jupiter.getVelocity();
+        Particle saturn = getParticle("Saturn");
+        if (saturn != null) {
+            // Current position and velocity of Saturn
+            Vector3D positionSaturn = saturn.getPosition();
+            Vector3D velocitySaturn = saturn.getVelocity();
 
             // Adjust position and velocity of all particles
-            correctDrift(positionJupiter, velocityJupiter);
+            correctDrift(positionSaturn, velocitySaturn);
         }
     }
 }

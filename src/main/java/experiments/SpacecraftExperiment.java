@@ -1,3 +1,22 @@
+/*
+ * Copyright (c) 2019 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+ * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package experiments;
 
 import application.SolarSystemException;
@@ -76,6 +95,7 @@ public class SpacecraftExperiment {
         particleNamesVoyagerOne.add("Europa");
         particleNamesVoyagerOne.add("Ganymede");
         particleNamesVoyagerOne.add("Callisto");
+        particleNamesVoyagerOne.add("Titan");
         particleNamesVoyagerOne.add("Saturn");
         particleNames.put("Voyager 1",particleNamesVoyagerOne);
 
@@ -86,6 +106,7 @@ public class SpacecraftExperiment {
         particleNamesVoyagerTwo.add("Europa");
         particleNamesVoyagerTwo.add("Jupiter");
         particleNamesVoyagerTwo.add("Io");
+        particleNamesVoyagerTwo.add("Titan");
         particleNamesVoyagerTwo.add("Saturn");
         particleNamesVoyagerTwo.add("Uranus");
         particleNamesVoyagerTwo.add("Neptune");
@@ -242,6 +263,11 @@ public class SpacecraftExperiment {
         Distance from center   : 123872.41174471944 km
         Distance from surface  : 121469.41174471944 km
         Velocity during fly by : 28159.30439135868 m/s
+        Fly by Titan
+        Date and time          : 1980-11-12 05:41
+        Distance from center   : 6492.878999740192 km
+        Distance from surface  : 3917.378999740192 km
+        Velocity during fly by : 21815.116924275928 m/s
         Fly by Saturn
         Date and time          : 1980-11-12 23:44
         Distance from center   : 190510.55433988734 km
@@ -275,6 +301,11 @@ public class SpacecraftExperiment {
         Distance from center   : 1129427.439040242 km
         Distance from surface  : 1127606.139040242 km
         Velocity during fly by : 25510.53641671859 m/s
+        Fly by Titan
+        Date and time          : 1981-08-25 09:49
+        Distance from center   : 679868.239968481 km
+        Distance from surface  : 677292.739968481 km
+        Velocity during fly by : 18192.230400848148 m/s
         Fly by Saturn
         Date and time          : 1981-08-26 03:23
         Distance from center   : 159076.1736364184 km

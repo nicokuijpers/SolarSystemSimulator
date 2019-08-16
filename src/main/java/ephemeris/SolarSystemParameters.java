@@ -122,6 +122,7 @@ public class SolarSystemParameters {
     private static final double EUROPAMASS    =        4.797E22;
     private static final double GANYMEDEMASS  =        1.482E23;
     private static final double CALLISTOMASS  =        1.076E23;
+    private static final double TITANMASS     =        1.34553E23; // 13455.3 10^19 kg
     
     /** 
      * Standard gravitational parameter mu = G*M in m3/s2.
@@ -168,6 +169,7 @@ public class SolarSystemParameters {
      * Ultima Thule (HORIZONS) Keplerian GM =2.9591220828559093E-04 au^3/d^2
      * Io, Europa, Ganymade, and Callisto (Table 5, km^3 / s^2)
      * http://www.esa.int/gsp/ACT/doc/MAD/ACT-RPT-MAD-GTOC6-problem_stmt.pdf
+     * Titan: https://ssd.jpl.nasa.gov/horizons.cgi#results
      */
     private static final double SUNMU      = 1.3271244001798698E20;
     private static final double MERCURYMU  = 2.2032080486417923E13;
@@ -196,6 +198,7 @@ public class SolarSystemParameters {
     private static final double EUROPAMU   = 3.202739E12;
     private static final double GANYMEDEMU = 9.887834E12;
     private static final double CALLISTOMU = 7.179289E12;
+    private static final double TITANMU    = 8.97814E12; // 8978.14 +- 0.06 km^3/s^2
 
     /**
      * Diameter of sun, planets, asteroids, comets, and moons of solar system in m.
@@ -221,6 +224,7 @@ public class SolarSystemParameters {
      * Radius Europa obtained from HORIZONS 1565 +- 8 km, diameter = 3130 km
      * Radius Ganymede obtained from HORIZONS 2634 +- 10 km, diameter = 5268 km
      * Radius Callisto obtained from HORIZONS 2403 +- 5 km, diameter = 4806 km
+     * Radius Titan from HORIZONS 2575.5 +- 2.0 km, diameter = 5151 km
      */
     private static final double SUNDIAMETER       =  1.3914E09;  // 1.3914 million km
     private static final double MERCURYDIAMETER   =  4.879E06;   //   4879 km
@@ -251,6 +255,7 @@ public class SolarSystemParameters {
     private static final double EUROPADIAMETER    =  3.130E06;   //   3130 km
     private static final double GANYMEDEDIAMETER  =  5.268E06;   //   5268 km
     private static final double CALLISTODIAMETER  =  4.806E06;   //   4806 km
+    private static final double TITANDIAMETER     =  5.151E06;   //   5151 km
     
     
 /*    
@@ -1085,6 +1090,35 @@ Pluto     -0.01262724
             {axisCallistoAUT, eccentricityCallistoT, inclinationCallistoT, argPeriapsisCallistoT,
                     longNodeCallistoT, periapsisPassageCallistoT, meanMotionCallistoT};
      */
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Titan (SVI) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 2.883100757260863E-02 QR= 7.930970353173764E-03 IN= 2.774693775242916E+01
+     *  OM= 1.693222701040926E+02 W = 1.546395634824284E+02 Tp=  2444553.225263091270
+     *  N = 2.257349567824485E+01 MA= 5.134876377910118E+01 TA= 5.398732093364459E+01
+     *  A = 8.166416365241102E-03 AD= 8.401862377308443E-03 PR= 1.594790656845183E+01
+     */
+    private static final double axisTitanAU           = 8.166416365241102E-03; // Semi-major axis [au]
+    private static final double eccentricityTitan     = 2.883100757260863E-02; // Eccentricity [-]
+    private static final double inclinationTitan      = 2.774693775242916E+01; // Inclination [degrees]
+    private static final double argPeriapsisTitan     = 1.546395634824284E+02; // Arg perifocus [degrees]
+    private static final double longNodeTitan         = 1.693222701040926E+02; // Long asc node [degrees]
+    private static final double periapsisPassageTitan = 2444553.225263091270;  // Time of periapsis [JD]
+    private static final double meanMotionTitan       = 2.257349567824485E+01; // Mean motion [degrees/day]
+    private static final double[] TITANORBITPARS = new double[]
+            {axisTitanAU, eccentricityTitan, inclinationTitan, argPeriapsisTitan,
+                    longNodeTitan, periapsisPassageTitan, meanMotionTitan};
     
     // Singleton instance
     private static SolarSystemParameters instance = null;
@@ -1143,6 +1177,7 @@ Pluto     -0.01262724
         massMap.put("Europa",EUROPAMASS);
         massMap.put("Ganymede",GANYMEDEMASS);
         massMap.put("Callisto",CALLISTOMASS);
+        massMap.put("Titan",TITANMASS);
         
         // Standard gravitational parameter in m3/s2
         muMap = new HashMap<>();
@@ -1167,6 +1202,7 @@ Pluto     -0.01262724
         muMap.put("Europa",EUROPAMU);
         muMap.put("Ganymede",GANYMEDEMU);
         muMap.put("Callisto",CALLISTOMU);
+        muMap.put("Titan",TITANMU);
         
         // Diameters in m
         diameterMap = new HashMap<>();
@@ -1199,6 +1235,7 @@ Pluto     -0.01262724
         diameterMap.put("Europa",EUROPADIAMETER);
         diameterMap.put("Ganymede",GANYMEDEDIAMETER);
         diameterMap.put("Callisto",CALLISTODIAMETER);
+        diameterMap.put("Titan",TITANDIAMETER);
         
         // Orbital parameters: Keplerian elements and their rates (Mercury - Pluto)
         orbitParametersMap = new HashMap<>();
@@ -1230,6 +1267,7 @@ Pluto     -0.01262724
         orbitParametersMap.put("Europa",EUROPAORBITPARS);// Europa, moon of Jupiter
         orbitParametersMap.put("Ganymede",GANYMEDEORBITPARS);// Ganymede, moon of Jupiter
         orbitParametersMap.put("Callisto",CALLISTOORBITPARS);// Callisto, moon of Jupiter
+        orbitParametersMap.put("Titan",TITANORBITPARS);// Titan, moon of Saturn
         
         // Planet names (treat dwarf planets, astroids, and comets as planet)
         planets = new ArrayList<>();
@@ -1239,6 +1277,7 @@ Pluto     -0.01262724
         planets.remove("Europa");
         planets.remove("Ganymede");
         planets.remove("Callisto");
+        planets.remove("Titan");
         
         // Moon names
         moons = new HashMap<>();
@@ -1247,6 +1286,7 @@ Pluto     -0.01262724
         moons.put("Europa","Jupiter");
         moons.put("Ganymede","Jupiter");
         moons.put("Callisto","Jupiter");
+        moons.put("Titan","Saturn");
     }
     
     /**

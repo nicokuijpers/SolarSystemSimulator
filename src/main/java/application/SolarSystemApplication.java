@@ -19,6 +19,7 @@
  */
 package application;
 
+import ephemeris.EphemerisRingsOfSaturn;
 import ephemeris.EphemerisUtil;
 import ephemeris.SolarSystemParameters;
 import javafx.animation.AnimationTimer;
@@ -588,6 +589,7 @@ public class SolarSystemApplication extends Application {
         createCircle("Europa", 3, Color.LIGHTBLUE);
         createCircle("Ganymede", 3, Color.LIGHTGRAY);
         createCircle("Callisto", 3, Color.ORANGE);
+        createCircle("Titan", 3, Color.PEACHPUFF);
         createCircle("Voyager 1", 3, Color.LIGHTYELLOW);
         createCircle("Voyager 2", 3, Color.LIGHTYELLOW);
         createCircle("New Horizons", 3, Color.LIGHTYELLOW);
@@ -713,12 +715,16 @@ public class SolarSystemApplication extends Application {
                 + "Galilean moons of the planet Jupiter.",
                 false), hor, ver++, horsize, versize);
         grid.add(createCheckBox("Ganymede", "Ganymede",
-                "Io is the third and largest of the four "
+                "Ganymede is the third and largest of the four "
                 + "Galilean moons of the planet Jupiter.",
                 false), hor, ver++, horsize, versize);
         grid.add(createCheckBox("Callisto", "Callisto",
                 "Callisto is the outermost and second-largest of the four "
                 + "Galilean moons of the planet Jupiter.",
+                false), hor, ver++, horsize, versize);
+        grid.add(createCheckBox("Titan", "Titan",
+                "Titan is the largest moon of Saturn and the second-largest "
+                        + "moon of the Solar System.",
                 false), hor, ver++, horsize, versize);
         hor = 1;
         ver++;
@@ -1235,7 +1241,64 @@ public class SolarSystemApplication extends Application {
             return positionAfterRotationX.scalarProduct(zoom);
         }
     }
-    
+
+    /**
+     * Draw rings of Saturn. When boolean parameter front is set, ring elements in front of the planet
+     * will be drawn, otherwise the ring elements behind the planet will be drawn.
+     * @param positionSaturn position of Saturn
+     * @param front          indicates whether circle elements in front of planet or behind planet will be drawn.
+     */
+    private void drawRingsOfSaturn(Vector3D positionSaturn, boolean front) {
+        GraphicsContext gc = screen.getGraphicsContext2D();
+        gc.setFill(Color.BEIGE);
+        Vector3D[] innerRingPositions = EphemerisRingsOfSaturn.innerRingPositions(solarSystem.getSimulationDateTime());
+        Vector3D[] outerRingPositions = EphemerisRingsOfSaturn.outerRingPositions(solarSystem.getSimulationDateTime());
+        for (int i = 0; i < innerRingPositions.length; i++) {
+            innerRingPositions[i].addVector(positionSaturn);
+            outerRingPositions[i].addVector(positionSaturn);
+        }
+        int step = 1;
+        if (observationFromEarth) {
+            double distanceToBody = positionEarth().euclideanDistance(positionSaturn);
+            for (int i = 0; i < innerRingPositions.length; i+=step) {
+                int nPoints = 4;
+                double[] xPoints = new double[nPoints];
+                double[] yPoints = new double[nPoints];
+                if (front == positionEarth().euclideanDistance(outerRingPositions[i]) < distanceToBody) {
+                    xPoints[0] = screenX(convertToScreenView(observationFromEarthView(innerRingPositions[i])));
+                    yPoints[0] = screenY(convertToScreenView(observationFromEarthView(innerRingPositions[i])));
+                    xPoints[1] = screenX(convertToScreenView(observationFromEarthView(outerRingPositions[i])));
+                    yPoints[1] = screenY(convertToScreenView(observationFromEarthView(outerRingPositions[i])));
+                    int index = (i + step) % innerRingPositions.length;
+                    xPoints[2] = screenX(convertToScreenView(observationFromEarthView(outerRingPositions[index])));
+                    yPoints[2] = screenY(convertToScreenView(observationFromEarthView(outerRingPositions[index])));
+                    xPoints[3] = screenX(convertToScreenView(observationFromEarthView(innerRingPositions[index])));
+                    yPoints[3] = screenY(convertToScreenView(observationFromEarthView(innerRingPositions[index])));
+                    gc.fillPolygon(xPoints, yPoints, nPoints);
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < innerRingPositions.length; i+=step) {
+                int nPoints = 4;
+                double[] xPoints = new double[nPoints];
+                double[] yPoints = new double[nPoints];
+                if (front == outerRingPositions[i].getY() < positionSaturn.getY()) {
+                    xPoints[0] = screenX(convertToScreenView(innerRingPositions[i]));
+                    yPoints[0] = screenY(convertToScreenView(innerRingPositions[i]));
+                    xPoints[1] = screenX(convertToScreenView(outerRingPositions[i]));
+                    yPoints[1] = screenY(convertToScreenView(outerRingPositions[i]));
+                    int index = (i + step) % innerRingPositions.length;
+                    xPoints[2] = screenX(convertToScreenView(outerRingPositions[index]));
+                    yPoints[2] = screenY(convertToScreenView(outerRingPositions[index]));
+                    xPoints[3] = screenX(convertToScreenView(innerRingPositions[index]));
+                    yPoints[3] = screenY(convertToScreenView(innerRingPositions[index]));
+                    gc.fillPolygon(xPoints, yPoints, nPoints);
+                }
+            }
+        }
+    }
+
     /**
      * Draw circle for body to be shown on screen.
      * @param circle   circle properties corresponding to body   
@@ -1244,6 +1307,7 @@ public class SolarSystemApplication extends Application {
      */
     private void drawCircle(Circle circle, SolarSystemBody body, Vector3D position) {
 
+        // Diameter as observed
         double diameter = body.getDiameter();
         if (observationFromEarth && !"Earth".equals(body.getName())) {
             // Scale diameter with distance from surface of the Earth
@@ -1274,11 +1338,24 @@ public class SolarSystemApplication extends Application {
         Vector3D diameterEndView = convertToScreenView(diameterEnd);
         double diameterPixels = screenX(diameterEndView) - screenX(diameterBeginView);
         double radius = Math.max(circle.getRadius(),diameterPixels/2.0);
- 
-        // Draw circle and name on screen using color and radius from Circle-object
+
+        // Draw ring elements of Saturn behind the planet
+        if ("Saturn".equals(body.getName()) && radius > circle.getRadius()) {
+            drawRingsOfSaturn(position, false);
+        }
+
+        // Draw circle on screen using color and radius from Circle-object
         GraphicsContext gc = screen.getGraphicsContext2D();
         gc.setFill(circle.getFill());
         gc.fillOval(posx - radius, posy - radius, 2*radius, 2*radius);
+
+        // Draw ring elements of Saturn in front of the planet
+        if ("Saturn".equals(body.getName()) && radius > circle.getRadius()) {
+            drawRingsOfSaturn(position, true);
+        }
+
+        // Draw name on screen using color from Circle-object
+        gc.setFill(circle.getFill());
         gc.fillText(body.getName(),posx + 0.5*radius,posy - radius);
     }
     
