@@ -8,7 +8,7 @@ User's manual: SolarSystemManual.pdf
 
 Technical notes: SolarSystemTechnicalNotes.pdf
 
-Video The Grand Tour of Voyager: https://youtu.be/9GPLGc5D6jM
+Video The Grand Tour of Voyager: https://youtu.be/Yq0LxCjSxdI
 
 Required ephemeris files: DE405EphemerisFiles (directory containing ephemeris data as text files)
 
