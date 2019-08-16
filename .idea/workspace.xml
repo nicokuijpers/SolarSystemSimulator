@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,8 +64,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="1312" column="29" lean-forward="true" selection-start-line="1312" selection-start-column="29" selection-end-line="1312" selection-end-column="29" />
+            <state relative-caret-position="112">
+              <caret line="1094" column="42" selection-start-line="1094" selection-start-column="7" selection-end-line="1094" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -71,10 +73,9 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisRingsOfSaturn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" column="37" lean-forward="true" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
+            <state relative-caret-position="45">
+              <caret line="3" column="80" lean-forward="true" selection-start-line="3" selection-start-column="80" selection-end-line="3" selection-end-column="80" />
               <folding>
-                <element signature="e#0#3955#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
@@ -227,8 +228,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="682" />
-    <option name="y" value="121" />
+    <option name="x" value="788" />
+    <option name="y" value="118" />
     <option name="width" value="1510" />
     <option name="height" value="1124" />
   </component>
@@ -370,7 +371,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1565952366597" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1565961534997" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -497,7 +498,7 @@
       <option name="presentableId" value="Default" />
       <updated>1562090243097</updated>
       <workItem from="1562090246988" duration="32744000" />
-      <workItem from="1564575869196" duration="65006000" />
+      <workItem from="1564575869196" duration="66843000" />
     </task>
     <servers />
   </component>
@@ -531,10 +532,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="97750000" />
+    <option name="totallyTimeSpent" value="99587000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="682" y="121" width="1510" height="1124" extended-state="0" />
+    <frame x="788" y="118" width="1510" height="1124" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.253406" />
@@ -898,13 +899,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="1312" column="29" lean-forward="true" selection-start-line="1312" selection-start-column="29" selection-end-line="1312" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftVelocityDistanceExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
@@ -927,12 +921,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="1094" column="42" selection-start-line="1094" selection-start-column="7" selection-end-line="1094" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisRingsOfSaturn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="37" lean-forward="true" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
+        <state relative-caret-position="45">
+          <caret line="3" column="80" lean-forward="true" selection-start-line="3" selection-start-column="80" selection-end-line="3" selection-end-column="80" />
           <folding>
-            <element signature="e#0#3955#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
