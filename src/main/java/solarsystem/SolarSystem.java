@@ -171,6 +171,18 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     }
 
     /**
+     * Set/reset flag to apply general relativity when computing
+     * acceleration.
+     * @param flag flag
+     */
+    @Override
+    public void setGeneralRelativityFlag(boolean flag) {
+        super.setGeneralRelativityFlag(flag);
+        jupiterSystem.setGeneralRelativityFlag(flag);
+        saturnSystem.setGeneralRelativityFlag(flag);
+    }
+
+    /**
      * Get reference to particle with given name.
      * @param name    Name of particle
      * @return particle with given name
