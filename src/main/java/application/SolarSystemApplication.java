@@ -47,6 +47,7 @@ import particlesystem.Particle;
 import solarsystem.SolarSystem;
 import solarsystem.SolarSystemBody;
 import util.Vector3D;
+import util.VectorUtil;
 
 import java.io.*;
 import java.util.*;
@@ -1354,6 +1355,33 @@ public class SolarSystemApplication extends Application {
             drawRingsOfSaturn(position, true);
         }
 
+        // Draw shadow of Galilean Moon on the surface of Jupiter
+        if (observationFromEarth && "Jupiter".equals(selectedBody) && body.getCenterBody() != null &&
+                "Jupiter".equals(body.getCenterBody().getName())) {
+            double radiusJupiter = 0.5*SolarSystemParameters.getInstance().getDiameter("Jupiter");
+            Vector3D positionSun, positionJupiter;
+            if (showSimulation) {
+                positionSun = solarSystem.getParticle("Sun").getPosition();
+                positionJupiter = solarSystem.getParticle("Jupiter").getPosition();
+            }
+            else {
+                positionSun = solarSystem.getBody("Sun").getPosition();
+                positionJupiter = solarSystem.getBody("Jupiter").getPosition();
+            }
+            Vector3D direction = positionSun.direction(position);
+            Vector3D positionShadow = VectorUtil.computeIntersectionLineSphere(direction,positionSun,positionJupiter,radiusJupiter);
+            if (positionShadow != null) {
+                if (positionSun.euclideanDistance(position) < positionSun.euclideanDistance(positionShadow)) {
+                    Vector3D positionShadowView = convertToScreenView(observationFromEarthView(positionShadow));
+                    double shadowPosx = screenX(positionShadowView);
+                    double shadowPosy = screenY(positionShadowView);
+                    gc.setFill(Color.BLACK);
+                    gc.fillOval(shadowPosx - radius, shadowPosy - radius, 2 * radius, 2 * radius);
+                    gc.fillText(body.getName(),shadowPosx + 0.5*radius,shadowPosy - radius);
+                }
+            }
+        }
+
         // Draw name on screen using color from Circle-object
         gc.setFill(circle.getFill());
         gc.fillText(body.getName(),posx + 0.5*radius,posy - radius);
@@ -1808,22 +1836,25 @@ public class SolarSystemApplication extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     /**
-     * Sort bodies such that they are drawn in an order that corresponds
+     * Create sorted list of bodies such that they are drawn in an order that corresponds
      * to the currently selected view (observation from earth or normal view).
+     * @return sorted list of solar system bodies
      */
-    private void sortBodiesShown() {
+    private List<SolarSystemBody> sortBodiesShown() {
+        List<SolarSystemBody> bodies = new ArrayList<>();
+        for (String bodyName : bodiesShown) {
+            bodies.add(solarSystem.getBody(bodyName));
+        }
         if (observationFromEarth) {
             // Sort bodies, such that bodies further away from the Earth are drawn first
-            Collections.sort(bodiesShown, new Comparator<String>() {
+            Collections.sort(bodies, new Comparator<SolarSystemBody>() {
                 @Override
-                public int compare(String bodyName1, String bodyName2) {
-                    SolarSystemBody body1 = solarSystem.getBody(bodyName1);
-                    SolarSystemBody body2 = solarSystem.getBody(bodyName2);
-                    Vector3D positionRotatedBody1 = observationFromEarthView(body1.getPosition());
-                    Vector3D positionRotatedBody2 = observationFromEarthView(body2.getPosition());
-                    if (positionRotatedBody1.getZ() < positionRotatedBody2.getZ()) {
+                public int compare(SolarSystemBody body1, SolarSystemBody body2) {
+                    double distanceBody1 = positionEarth().euclideanDistance(body1.getPosition());
+                    double distanceBody2 = positionEarth().euclideanDistance(body2.getPosition());
+                    if (distanceBody1 < distanceBody2) {
                         return 1;
                     }
                     else {
@@ -1834,19 +1865,19 @@ public class SolarSystemApplication extends Application {
         }
         else {
             // Sort bodies, such that bodies behind the Sun are drawn first
-            Collections.sort(bodiesShown, new Comparator<String>() {
+            Collections.sort(bodies, new Comparator<SolarSystemBody>() {
                 @Override
-                public int compare(String bodyName1, String bodyName2) {
-                    SolarSystemBody body1 = solarSystem.getBody(bodyName1);
-                    SolarSystemBody body2 = solarSystem.getBody(bodyName2);
+                public int compare(SolarSystemBody body1, SolarSystemBody body2) {
                     if (body1.getPosition().getY() < body2.getPosition().getY()) {
                         return 1;
-                    } else {
+                    }
+                    else {
                         return -1;
                     }
                 }
             });
         }
+        return bodies;
     }
 
     /**
@@ -1892,12 +1923,8 @@ public class SolarSystemApplication extends Application {
         }
 
         // Draw bodies of the solar system and their orbits
-        sortBodiesShown();
         clearScreen();
-        List<SolarSystemBody> bodiesToShow = new ArrayList<>();
-        for (String bodyName : bodiesShown) {
-            bodiesToShow.add(solarSystem.getBody(bodyName));
-        }
+        List<SolarSystemBody> bodiesToShow = sortBodiesShown();
         SolarSystemBody earth = solarSystem.getBody("Earth");
         if (observationFromEarth) {
             // Do not show the Earth for observation from Earth
