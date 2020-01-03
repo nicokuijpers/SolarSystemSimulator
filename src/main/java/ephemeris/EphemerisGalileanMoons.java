@@ -937,9 +937,6 @@ public class EphemerisGalileanMoons implements IEphemeris {
     // Bodies for which ephemeris can be computed or approximated
     private static List<String> bodies;
 
-    // Standard gravitional parameters
-    private final double mu_ganymede;
-
     // Singleton instance
     private static IEphemeris instance = null;
 
@@ -970,14 +967,6 @@ public class EphemerisGalileanMoons implements IEphemeris {
         // Last valid date for accurate computation 2750 AD
         lastValidDateAccurate = new GregorianCalendar(2750,0,1);
         lastValidDateAccurate .setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        // Standard gravitional parameters
-        double au = SolarSystemParameters.ASTRONOMICALUNIT;
-        double nrSecsDay = 86400.0;
-        double mu = SolarSystemParameters.getInstance().getMu("Jupiter");
-        mu = mu * nrSecsDay / au;
-        mu = mu * nrSecsDay / au;
-        mu_ganymede = mu / au;
     }
 
     /**
@@ -1305,23 +1294,10 @@ public class EphemerisGalileanMoons implements IEphemeris {
         double ome=6.24950183065715;
         double ainc=0.445094736497665;
 
-        /*
-        MU[1]= mu_ganymede * (2.82489428433814 / 2.82498184184723);
-        MU[2]= mu_ganymede * (2.82483274392893 / 2.82498184184723);
-        MU[3]= mu_ganymede;
-        MU[4]= mu_ganymede * (2.82492144889909 / 2.82498184184723);
-        */
-        /*
         MU[1]=2.82489428433814E-07;
         MU[2]=2.82483274392893E-07;
         MU[3]=2.82498184184723E-07;
         MU[4]=2.82492144889909E-07;
-        */
-
-        MU[1]= mu_ganymede - 2.05E-10;
-        MU[2]= mu_ganymede - 6.9E-11;
-        MU[3]= mu_ganymede;
-        MU[4]= mu_ganymede + 2.0E-11;
 
         ET = ET - 2433282.5;
         bnlp(ET,nsat,is,ELEM);
