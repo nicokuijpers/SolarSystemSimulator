@@ -188,7 +188,7 @@ public class ParticleSystem implements Serializable {
     /**
      * Compute acceleration for all particles.
      */
-    private void computeAcceleration() {
+    protected void computeAcceleration() {
         // Compute acceleration using Newton mechanics
         for (Particle p : particles.values()) {
             p.computeAccelerationNewtonMechanics(particlesWithMass.values());
@@ -202,7 +202,7 @@ public class ParticleSystem implements Serializable {
             }
         }
     }
-    
+
     /**
      * Correct for drift of entire particle system by adjusting
      * position and velocity of all particles.

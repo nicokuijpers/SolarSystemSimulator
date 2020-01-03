@@ -122,7 +122,20 @@ public class SolarSystemParameters {
     private static final double EUROPAMASS    =        4.797E22;
     private static final double GANYMEDEMASS  =        1.482E23;
     private static final double CALLISTOMASS  =        1.076E23;
-    private static final double TITANMASS     =        1.34553E23; // 13455.3 10^19 kg
+    private static final double MIMASMASS     =        3.75E19;    //     3.75  10^19 kg
+    private static final double ENCELADUSMASS =        1.0805E20;  //    10.805 10^19 kg
+    private static final double TETHYSMASS    =        6.176E20;   //    61.76 +- 0.11  10^19 kg
+    private static final double DIONEMASS     =        1.09572E21; //   109.572 10^19 kg
+    private static final double RHEAMASS      =        2.309E21;   //   230.9   10^19 kg
+    private static final double TITANMASS     =        1.34553E23; // 13455.3   10^19 kg
+    private static final double HYPERIONMASS  =        1.08E19;    //     1.08 +- 0.52 10^19 kg
+    private static final double IAPETUSMASS   =        1.8059E21;  //   180.59  10^19 kg
+    private static final double MIRANDAMASS   =        6.59E19;    //     0.659 +- 0.075 10^20 kg
+    private static final double ARIELMASS     =        1.353E21;   //    13.53 +- 1.20 10^20 kg
+    private static final double UMBRIELMASS   =        1.172E21;   //    11.72 +- 1.35 10^20 kg
+    private static final double TITANIAMASS   =        3.527E21;   //    35.27 +- 0.90 10^20 kg
+    private static final double OBERONMASS    =        3.014E21;   //    30.14 +- 0.75 10^20 kg
+    private static final double TRITONMASS    =        2.147E22;   //   214.7  +- 0.7  10^20 kg
     
     /** 
      * Standard gravitational parameter mu = G*M in m3/s2.
@@ -170,6 +183,12 @@ public class SolarSystemParameters {
      * Io, Europa, Ganymade, and Callisto (Table 5, km^3 / s^2)
      * http://www.esa.int/gsp/ACT/doc/MAD/ACT-RPT-MAD-GTOC6-problem_stmt.pdf
      * Titan: https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Miranda, Arial, Umbriel, Titania, and Oberon: Table 2b from
+     * J. Laskar and R.A. Jacobson, GUST86. An analytical ephemeris of the Uranian satellites,
+     * Astron. Atrophys. 188, 212-224 (1987)
+     * Triton: Table 5 from
+     * R.A. Jacobson, The orbits of the Neptunian satellites and the orientation of the pole
+     * of Neptune, The Astronomical Journal, 137:4322-4329, 2009 May
      */
     private static final double SUNMU      = 1.3271244001798698E20;
     private static final double MERCURYMU  = 2.2032080486417923E13;
@@ -189,16 +208,55 @@ public class SolarSystemParameters {
     private static final double EROSMU     = 4.463E05; // 4.463e-04 km3/s2
     private static final double UTMU       = Math.pow(2.9591220828559093E-04,1.0/3.0)*ASTRONOMICALUNIT/
                                               Math.pow(86400,2.0); // Converted to m3/s2;
-    /* WRONG
-    private static final double UTMU       = 2.9591220828559093E-04 *
-            Math.pow(ASTRONOMICALUNIT,3.0) /
-            Math.pow(86400,2.0); // Converted to m3/s2;
+
+    /*
+    private static final double IOMU        = 5.959916E12;
+    private static final double EUROPAMU    = 3.202739E12;
+    private static final double GANYMEDEMU  = 9.887834E12;
+    private static final double CALLISTOMU  = 7.179289E12;
     */
-    private static final double IOMU       = 5.959916E12;
-    private static final double EUROPAMU   = 3.202739E12;
-    private static final double GANYMEDEMU = 9.887834E12;
-    private static final double CALLISTOMU = 7.179289E12;
-    private static final double TITANMU    = 8.97814E12; // 8978.14 +- 0.06 km^3/s^2
+    // https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup310.cmt
+    private static final double IOMU        = 5.959924010272514E12; // 5.959924010272514E+03
+    private static final double EUROPAMU    = 3.202739815114734E12; // 3.202739815114734E+03
+    private static final double GANYMEDEMU  = 9.887819980080976E12; // 9.887819980080976E+03
+    private static final double CALLISTOMU  = 7.179304867611079E12; // 7.179304867611079E+03
+
+    /*
+    private static final double MIMASMU     = 2.504E09;   //    2.504 km^3/s^2
+    private static final double ENCELADUSMU = 7.211E09;   //    7.211 +- 0.011 km^3/s^2
+    private static final double TETHYSMU    = 4.121E10;   //   41.21 +- 0.007 km^3/s^2
+    private static final double DIONEMU     = 7.3113E10;  //   73.113 +- 0.02 km^3/s^2
+    private static final double RHEAMU      = 1.5394E11;  //  153.94 +- 0.16 km^3/s^2
+    private static final double TITANMU     = 8.97814E12; // 8978.14 +- 0.06 km^3/s^2
+    private static final double HYPERIONMU  = 3.708E08;   //    0.3708 +- 0.02 km^3/s^2
+    private static final double IAPETUSMU   = 1.2053E11;  //  120.53 +- 0.03 km^3/s^2
+    */
+    // https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat425.cmt
+    private static final double MIMASMU     = 2.503571968933995E09; // 2.503571968933995E+00
+    private static final double ENCELADUSMU = 7.210561107781245E09; // 7.210561107781245E+00
+    private static final double TETHYSMU    = 4.121342803076796E10; // 4.121342803076796E+01
+    private static final double DIONEMU     = 7.311606189909810E10; // 7.311606189909810E+01
+    private static final double RHEAMU      = 1.539416369781934E11; // 1.539416369781934E+02
+    private static final double TITANMU     = 8.978137026107361E12; // 8.978137026107361E+03
+    private static final double HYPERIONMU  = 3.708107681569874E08; // 3.708107681569874E-01
+    private static final double IAPETUSMU   = 1.205273089601815E11; // 1.205273089601815E+02
+
+    /*
+    private static final double MIRANDAMU   = 4.4E09;     //    4.4 km^3/s^2
+    private static final double ARIELMU     = 8.61E10;    //   86.1 km^3/s^2
+    private static final double UMBRIELMU   = 8.4E10;     //   84.0 km^3/s^2
+    private static final double TITANIAMU   = 2.3E11;     //  230.0 km^3/s^2
+    private static final double OBERONMU    = 2.0E11;     //  200.0 km^3/s^2
+    */
+    // https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/ura111.cmt
+    private static final double MIRANDAMU   = 4.319516899232100E09; // 4.319516899232100E+00
+    private static final double ARIELMU     = 8.346344431770477E10; // 8.346344431770477E+01
+    private static final double UMBRIELMU   = 8.509338094489388E10; // 8.509338094489388E+01
+    private static final double TITANIAMU   = 2.269437003741248E11; // 2.269437003741248E+02
+    private static final double OBERONMU    = 2.053234302535623E11; // 2.053234302535623E+02
+
+    // https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
+    private static final double TRITONMU    = 1.427598140725034E12; //  1427.6 km^3/s^2
 
     /**
      * Diameter of sun, planets, asteroids, comets, and moons of solar system in m.
@@ -224,7 +282,20 @@ public class SolarSystemParameters {
      * Radius Europa obtained from HORIZONS 1565 +- 8 km, diameter = 3130 km
      * Radius Ganymede obtained from HORIZONS 2634 +- 10 km, diameter = 5268 km
      * Radius Callisto obtained from HORIZONS 2403 +- 5 km, diameter = 4806 km
+     * Radius Mimas from HORIZONS 198.8 +- 1.5 km, diameter = 397.6 km
+     * Radius Enceladus from HORIZONS 252.3 +- 0.6, diameter = 504.6 km
+     * Radius Tethys from HORIZONS 536.3 +- 1.5, diameter = 1072.6 km
+     * Radius Dione from HORIZONS 562.5 +- 5 , diameter = 1125 km
+     * Radius Rhea from HORIZONS 764.5 +- 2 , diameter = 1529 km
      * Radius Titan from HORIZONS 2575.5 +- 2.0 km, diameter = 5151 km
+     * Radius Hyperion from HORIZONS 133 +- 8, diameter = 266 km
+     * Radius Iapetus from HORIZONS 734.5 +- 4.0 km, diameter = 1469 km
+     * Radius Miranda from HORIZONS 240 x 234.2 x 232.9 km, diameter = 480 km
+     * Radius Ariel from HORIZONS 581.1 x 577.9 x 577.7 km, diameter = 1162 km
+     * Radius Umbriel from HORIZONS 584.7 +- 2.8 km, diameter = 1170 km
+     * Radius Titania from HORIZONS 788.9 +- 1.8 km, diameter = 1578 km
+     * Radius Oberon from HORIZONS 761.4 +- 2.6 km, diameter = 1523 km
+     * Radius Triton from HORIZONS 1352.6 +- 2.4 km, diameter = 2705 km
      */
     private static final double SUNDIAMETER       =  1.3914E09;  // 1.3914 million km
     private static final double MERCURYDIAMETER   =  4.879E06;   //   4879 km
@@ -255,9 +326,193 @@ public class SolarSystemParameters {
     private static final double EUROPADIAMETER    =  3.130E06;   //   3130 km
     private static final double GANYMEDEDIAMETER  =  5.268E06;   //   5268 km
     private static final double CALLISTODIAMETER  =  4.806E06;   //   4806 km
+    private static final double MIMASDIAMETER     =  3.976E05;   //    397.6 km
+    private static final double ENCELADUSDIAMETER =  5.046E05;   //    504.6 km
+    private static final double TETHYSDIAMETER    =  1.0726E06;  //   1072.6 km
+    private static final double DIONEDIAMETER     =  1.125E06;   //   1125 km
+    private static final double RHEADIAMETER      =  1.529E06;   //   1529 km
     private static final double TITANDIAMETER     =  5.151E06;   //   5151 km
-    
-    
+    private static final double HYPERIONDIAMETER  =  2.66E05;    //    266 km
+    private static final double IAPETUSDIAMETER   =  1.469E06;   //   1469 km
+    private static final double MIRANDADIAMETER   =  4.80E05;    //    480 km
+    private static final double ARIELDIAMETER     =  1.162E06;   //   1162 km
+    private static final double UMBRIELDIAMETER   =  1.170E06;   //   1170 km
+    private static final double TITANIADIAMETER   =  1.578E06;   //   1578 km
+    private static final double OBERONDIAMETER    =  1.523E06;   //   1523 km
+    private static final double TRITONDIAMETER    =  2.705E06;   //   2705 km
+
+    /**
+     * Ellipticity of oblate planets Jupiter, Saturn, Uranus, and Neptune
+     * Values of ellipticity are obtained from Table 1 in
+     * A.M. Hofmeister, R.E. Criss, and E.M. Criss,
+     * Verified solutions for the gravitational attraction to an oblate spheroid:
+     * Implications for planet mass and satellite orbits,
+     * Planetary and Space Science 152 (2018) 68-81
+     * https://doi.org/10.1016/j.pss.2018.01.005
+     * https://www.sciencedirect.com/science/article/pii/S003206331730257X
+     */
+    private static final double JUPITERELLIPTICITY = 0.354;
+    private static final double SATURNELLIPTICITY = 0.432;
+    private static final double URANUSELLIPTICITY = 0.213;
+    private static final double NEPTUNEELLIPTICITY = 0.184;
+
+    /**
+     * Equatorial radius in km of oblate planets Jupiter, Saturn, Uranus, and Neptune
+     * Jupiter: https://en.wikipedia.org/wiki/Jupiter
+     * Saturn: https://en.wikipedia.org/wiki/Saturn
+     * Uranus: https://en.wikipedia.org/wiki/Uranus
+     * Neptune: Table 4 in R.A. Jacobsen, J.E. Riedel, and A.H. Taylor,
+     * The orbits of Triton and Nereid from spacecraft and Earthbased observations
+     * Astronomy and Astrophysics 247, 565-575 (1991)
+     * http://adsabs.harvard.edu/full/1991A%26A...247..565J
+     *
+    private static final double JUPITEREQUATORIALRADIUS = 71492; // 71,492 km
+    private static final double SATURNEQUATORIALRADIUS  = 60268; // 60,268 km
+    private static final double URANUSEQUATORIALRADIUS  = 25559; // 25,559 +/- 4 km
+    private static final double NEPTUNEEQUATORIALRADIUS = 25225; // 25,225 km
+    */
+
+    /**
+     * Gravitational parameter [m3/s2] of oblate planets Jupiter, Saturn, Uranus, and Neptune
+     * https://ssd.jpl.nasa.gov/?gravity_fields_op
+     *
+     * Jupiter:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup310.cmt
+     *  Jupiter      599    1.266865341960128E+08
+     *
+     * Saturn:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat425.cmt
+     *  Saturn       699    3.793120627544314E+07
+     *
+     * Uranus:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/ura111.cmt
+     *  Uranus       799    5.793951322279009E+06
+     *
+     * Neptune:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
+     *  Neptune      899    6.835099502439672E+06
+     */
+    private static final double JUPITEROBLATEMU = 1.266865341960128E17; // 1.266865341960128E+08
+    private static final double SATURNOBLATEMU  = 3.793120627544314E16; // 3.793120627544314E+07
+    private static final double URANUSOBLATEMU  = 5.793951322279009E15; // 5.793951322279009E+06
+    private static final double NEPTUNEOBLATEMU = 6.835099502439672E15; // 6.835099502439672E+06
+
+    /**
+     * Equatorial radius [m] of oblate planets Jupiter, Saturn, Uranus, and Neptune
+     * https://ssd.jpl.nasa.gov/?gravity_fields_op
+     *
+     * Jupiter:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup310.cmt
+     *  RADIUS    7.149200000000000E+04
+     *
+     * Saturn:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat425.cmt
+     *  RADIUS    6.033000000000000E+04
+     *
+     * Uranus:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/ura111.cmt
+     *  RADIUS   2.555900000000000E+04
+     *
+     * Neptune:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
+     *  RADIUS   2.522500000000000E+04
+     */
+    private static final double JUPITEREQUATORIALRADIUS = 71492000; // 71492 km
+    private static final double SATURNEQUATORIALRADIUS  = 60330000; // 60330 km
+    private static final double URANUSEQUATORIALRADIUS  = 25559000; // 25559 km
+    private static final double NEPTUNEEQUATORIALRADIUS = 25225000; // 25225 km
+
+    /**
+     * Zonal coefficients [-] of oblate planets Jupiter, Saturn, Uranus, and Neptune
+     * https://ssd.jpl.nasa.gov/?gravity_fields_op
+     *                   Jupiter          Saturn          Uranus          Neptune
+     *  J2 x 10^6  14695.62 ± 0.29  16290.71 ± 0.27  3510.68 ± 0.70  3408.43 ± 4.50
+     *  J4 x 10^6   -591.31 ± 2.06   -935.83 ± 2.77   -34.17 ± 1.30   -33.40 ± 2.90
+     *  J6 x 10^6     20.78 ± 4.87     86.14 ± 9.64
+     *  J8 x 10^6                     -10.
+     *
+     *  Jupiter:
+     *   https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup310.cmt
+     *   J502     1.469562477069651E-02   J503     0.000000000000000E+00
+     *   J504    -5.913138887463315E-04   J506     2.077510523748891E-05
+     *
+     *  Saturn:
+     *   https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat425.cmt
+     *   J602        1.629056318614283E-02   J603        8.021547362926897E-08
+     *   J604       -9.352748124585591E-04   J605       -1.294023676822416E-07
+     *   J606        8.640173180043068E-05   J607        3.627869335910333E-07
+     *   J608       -1.449699463354960E-05
+     *
+     *  Uranus:
+     *   https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/ura111.cmt
+     *   J702     3.510685384697763E-03   J704    -3.416639735448987E-05
+     *
+     *  Neptune:
+     *   https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
+     *   J802     3.408428530717952E-03   J804    -3.339891759006578E-05
+     */
+    private static final double[] JUPITERZONALCOEFFICIENTS =
+            new double[]{0.0, 0.0, 1.469562477069651E-02, 0.0,  -5.913138887463315E-04,
+                    0.0, 2.077510523748891E-05};
+    private static final double[] SATURNZONALCOEFFICIENTS =
+            new double[]{0.0, 0.0, 1.629056318614283E-02, 8.021547362926897E-08,
+                    -9.352748124585591E-04, -1.294023676822416E-07, 8.640173180043068E-05,
+                     3.627869335910333E-07, -1.449699463354960E-05};
+    private static final double[] URANUSZONALCOEFFICIENTS =
+            new double[]{0.0, 0.0, 3.510685384697763E-03,  0.0, -3.416639735448987E-05};
+    private static final double[] NEPTUNEZONALCOEFFICIENTS =
+            new double[]{0.0, 0.0, 3.408428530717952E-03,  0.0, -3.339891759006578E-05};
+
+    /**
+     * Right ascension and declination of z-axis of oblate planets Jupiter, Saturn,
+     * Uranus, and Neptune
+     * https://ssd.jpl.nasa.gov/?gravity_fields_op
+     *
+     * Jupiter:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup310.cmt
+     *  POLTIM   2.451545000000000E+06 JED
+     *  ZACPL5   2.680570781451589E+02 degrees
+     *  ZDEPL5   6.449582320291580E+01 degrees
+     *  DACPL5  -6.554328185586419E-03 degrees/century
+     *  DDEPL5   2.476496988122852E-03 degrees/century
+     *
+     * Saturn:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat425.cmt
+     *  POLTIM   2.451545000000000E+06 JED
+     *  ZACPL6   4.059381052563325E+01 degrees
+     *  ZDEPL6   8.353456912851105E+01 degrees
+     *  DACPL6  -5.022619663580526E-02 degrees/century
+     *  DDEPL6  -5.776335861947523E-03 degrees/century
+     *
+     * Uranus:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/ura111.cmt
+     *  POLTIM   2.451545000000000E+06 JED
+     *  ZACPL7   7.730990252631723E+01 degrees
+     *  ZDEPL7   1.517245819840212E+01 degrees
+     *  DACPL7   1.734056155021870E-04 degrees/century
+     *  DDEPL7   1.903682577001328E-05 degrees/century
+     *
+     * Neptune:
+     *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
+     *  POLTIM   2.447763500000000E+06 JED
+     *  ZACPL8   2.994608612607558E+02 degrees
+     *  ZDEPL8   4.340481079071409E+01 degrees
+     *  DACPL8   0.000000000000000E+00 degrees/century
+     *  DDEPL8   0.000000000000000E+00 degrees/century
+     */
+    private static final double[] JUPITERZAXISPARAMETERS =
+            new double[]{2.451545000000000E+06, 2.680570781451589E+02, 6.449582320291580E+01,
+                        -6.554328185586419E-03, 2.476496988122852E-03};
+    private static final double[] SATURNZAXISPARAMETERS =
+            new double[]{2.451545000000000E+06, 4.059381052563325E+01, 8.353456912851105E+01,
+                        -5.022619663580526E-02, -5.776335861947523E-03};
+    private static final double[] URANUSZAXISPARAMETERS =
+            new double[]{2.451545000000000E+06, 7.730990252631723E+01, 1.517245819840212E+01,
+                         1.734056155021870E-04, 1.903682577001328E-05};
+    private static final double[] NEPTUNEZAXISPARAMETERS =
+            new double[]{2.447763500000000E+06, 2.994608612607558E+02, 4.340481079071409E+01,
+                         0.0, 0.0};
+
 /*    
 =====================================================================
   These data are to be used as described in the related document
@@ -396,17 +651,6 @@ Neptune   -0.00041348    0.68346318   -0.10162547    7.67025000
 Pluto     -0.01262724
 ---------------------------------------------------------------
 */
-
-    /**
-     * Keplerian elements and their rates for imaginary planet Vulcanus
-     * FIXME: LEAVE OUT
-     */
-    /*
-    private static final double[] VULCANUSORBITPARS = new double[]
-    {0.08709843, 0.20563661,  7.00559432,    252.25166724,   77.45771895, 48.33961819,
-     0.00000000, 0.00002123, -0.00590158, 149472.67486623,    0.15940013, -0.12214182,
-     0.00000000, 0.00000000,  0.00000000,      0.00000000};
-    */
     
     /**
      * Keplerian elements and their rates for Mercury
@@ -1095,6 +1339,151 @@ Pluto     -0.01262724
      * https://ssd.jpl.nasa.gov/horizons.cgi#results
      * Results from HORIZONS
      * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Mimas (SI) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 2.294076748949336E-02 QR= 1.216152212442891E-03 IN= 2.833548787776371E+01
+     *  OM= 1.662380994388547E+02 W = 3.110660983844796E+02 Tp=  2444555.468582638539
+     *  N = 3.794894129614744E+02 MA= 1.192255598685642E+01 TA= 1.248129166805152E+01
+     *  A = 1.244706740366238E-03 AD= 1.273261268289585E-03 PR= 9.486430654036375E-01
+     */
+    private static final double axisMimasAU           = 1.244706740366238E-03; // Semi-major axis [au]
+    private static final double eccentricityMimas     = 2.294076748949336E-02; // Eccentricity [-]
+    private static final double inclinationMimas      = 2.833548787776371E+01; // Inclination [degrees]
+    private static final double argPeriapsisMimas     = 3.110660983844796E+02; // Arg perifocus [degrees]
+    private static final double longNodeMimas         = 1.662380994388547E+02; // Long asc node [degrees]
+    private static final double periapsisPassageMimas = 2444555.468582638539;  // Time of periapsis [JD]
+    private static final double meanMotionMimas       = 3.794894129614744E+02; // Mean motion [degrees/day]
+    private static final double[] MIMASORBITPARS = new double[]
+            {axisMimasAU, eccentricityMimas, inclinationMimas, argPeriapsisMimas,
+                    longNodeMimas, periapsisPassageMimas, meanMotionMimas};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Enceladus (SII) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 4.483389662009040E-03 QR= 1.584906509048897E-03 IN= 2.805397904088017E+01
+     *  OM= 1.695244324305456E+02 W = 2.726068154542818E+02 Tp=  2444556.014053585008
+     *  N = 2.623417662340597E+02 MA= 2.251422746212319E+02 TA= 2.247795280296231E+02
+     *  A = 1.592044263842871E-03 AD= 1.599182018636845E-03 PR= 1.372255760749931E+00
+     */
+    private static final double axisEnceladusAU           = 1.592044263842871E-03; // Semi-major axis [au]
+    private static final double eccentricityEnceladus     = 4.483389662009040E-03; // Eccentricity [-]
+    private static final double inclinationEnceladus      = 2.805397904088017E+01; // Inclination [degrees]
+    private static final double argPeriapsisEnceladus     = 2.726068154542818E+02; // Arg perifocus [degrees]
+    private static final double longNodeEnceladus         = 1.695244324305456E+02; // Long asc node [degrees]
+    private static final double periapsisPassageEnceladus = 2444556.014053585008;  // Time of periapsis [JD]
+    private static final double meanMotionEnceladus       = 2.623417662340597E+02; // Mean motion [degrees/day]
+    private static final double[] ENCELADUSORBITPARS = new double[]
+            {axisEnceladusAU, eccentricityEnceladus, inclinationEnceladus, argPeriapsisEnceladus,
+                    longNodeEnceladus, periapsisPassageEnceladus, meanMotionEnceladus};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Tethys (SIII) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 1.765221092417035E-03 QR= 1.970712342111551E-03 IN= 2.700778748710897E+01
+     *  OM= 1.702432284406243E+02 W = 3.229877171493513E+02 Tp=  2444555.393274717033
+     *  N = 1.899825673459838E+02 MA= 2.027594327456301E+01 TA= 2.034618692144220E+01
+     *  A = 1.974197236714391E-03 AD= 1.977682131317230E-03 PR= 1.894910701698181E+00
+     */
+    private static final double axisTethysAU           = 1.974197236714391E-03; // Semi-major axis [au]
+    private static final double eccentricityTethys     = 1.765221092417035E-03; // Eccentricity [-]
+    private static final double inclinationTethys      = 2.700778748710897E+01; // Inclination [degrees]
+    private static final double argPeriapsisTethys     = 3.229877171493513E+02; // Arg perifocus [degrees]
+    private static final double longNodeTethys         = 1.702432284406243E+02; // Long asc node [degrees]
+    private static final double periapsisPassageTethys = 2444555.393274717033;  // Time of periapsis [JD]
+    private static final double meanMotionTethys       = 1.899825673459838E+02; // Mean motion [degrees/day]
+    private static final double[] TETHYSORBITPARS = new double[]
+            {axisTethysAU, eccentricityTethys, inclinationTethys, argPeriapsisTethys,
+                    longNodeTethys, periapsisPassageTethys, meanMotionTethys};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Dione (SIV) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 2.175557127959605E-03 QR= 2.514064366570496E-03 IN= 2.803416128061381E+01
+     *  OM= 1.695809000369315E+02 W = 3.193174176587208E+02 Tp=  2444556.303023209330
+     *  N = 1.317697228848951E+02 MA= 2.541858542513983E+02 TA= 2.539461679426581E+02
+     *  A = 2.519545782356523E-03 AD= 2.525027198142550E-03 PR= 2.732038833491903E+00
+     */
+    private static final double axisDioneAU           = 2.519545782356523E-03; // Semi-major axis [au]
+    private static final double eccentricityDione     = 2.175557127959605E-03; // Eccentricity [-]
+    private static final double inclinationDione      = 2.803416128061381E+01; // Inclination [degrees]
+    private static final double argPeriapsisDione     = 3.193174176587208E+02; // Arg perifocus [degrees]
+    private static final double longNodeDione         = 1.695809000369315E+02; // Long asc node [degrees]
+    private static final double periapsisPassageDione = 2444556.303023209330;  // Time of periapsis [JD]
+    private static final double meanMotionDione       = 1.317697228848951E+02; // Mean motion [degrees/day]
+    private static final double[] DIONEORBITPARS = new double[]
+            {axisDioneAU, eccentricityDione, inclinationDione, argPeriapsisDione,
+                    longNodeDione, periapsisPassageDione, meanMotionDione};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Rhea (SV) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 1.077873250919286E-03 QR= 3.519529004414233E-03 IN= 2.776323154892035E+01
+     *  OM= 1.699392472553282E+02 W = 1.616205502165373E+02 Tp=  2444553.785297347233
+     *  N = 7.968347273234254E+01 MA= 1.366334620792505E+02 TA= 1.367181923615887E+02
+     *  A = 3.523326704022749E-03 AD= 3.527124403631264E-03 PR= 4.517875384387965E+00
+     */
+    private static final double axisRheaAU           = 3.523326704022749E-03; // Semi-major axis [au]
+    private static final double eccentricityRhea     = 1.077873250919286E-03; // Eccentricity [-]
+    private static final double inclinationRhea      = 2.776323154892035E+01; // Inclination [degrees]
+    private static final double argPeriapsisRhea     = 1.616205502165373E+02; // Arg perifocus [degrees]
+    private static final double longNodeRhea         = 1.699392472553282E+02; // Long asc node [degrees]
+    private static final double periapsisPassageRhea = 2444553.785297347233;  // Time of periapsis [JD]
+    private static final double meanMotionRhea       = 7.968347273234254E+01; // Mean motion [degrees/day]
+    private static final double[] RHEAORBITPARS = new double[]
+            {axisRheaAU, eccentricityRhea, inclinationRhea, argPeriapsisRhea,
+                    longNodeRhea, periapsisPassageRhea, meanMotionRhea};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
      * Target Body [change]       : Titan (SVI) [606]
      * Observer Location [change] : Saturn System Barycenter [500@6]
      * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
@@ -1119,6 +1508,238 @@ Pluto     -0.01262724
     private static final double[] TITANORBITPARS = new double[]
             {axisTitanAU, eccentricityTitan, inclinationTitan, argPeriapsisTitan,
                     longNodeTitan, periapsisPassageTitan, meanMotionTitan};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Hyperion (SVII) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 1.272431943004429E-01 QR= 8.666112626930228E-03 IN= 2.766098902279464E+01
+     *  OM= 1.679386964197648E+02 W = 1.854300936975505E+02 Tp=  2444562.071466295980
+     *  N = 1.684238675061948E+01 MA= 2.493208231217351E+02 TA= 2.365127508721484E+02
+     *  A = 9.929584702560890E-03 AD= 1.119305677819155E-02 PR= 2.137464275879776E+01
+     */
+    private static final double axisHyperionAU           = 9.929584702560890E-03; // Semi-major axis [au]
+    private static final double eccentricityHyperion     = 1.272431943004429E-01; // Eccentricity [-]
+    private static final double inclinationHyperion      = 2.766098902279464E+01; // Inclination [degrees]
+    private static final double argPeriapsisHyperion     = 1.854300936975505E+02; // Arg perifocus [degrees]
+    private static final double longNodeHyperion         = 1.679386964197648E+02; // Long asc node [degrees]
+    private static final double periapsisPassageHyperion = 2444562.071466295980;  // Time of periapsis [JD]
+    private static final double meanMotionHyperion       = 1.684238675061948E+01; // Mean motion [degrees/day]
+    private static final double[] HYPERIONORBITPARS = new double[]
+            {axisHyperionAU, eccentricityHyperion, inclinationHyperion, argPeriapsisHyperion,
+                    longNodeHyperion, periapsisPassageHyperion, meanMotionHyperion};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Iapetus (SVIII) [606]
+     * Observer Location [change] : Saturn System Barycenter [500@6]
+     * Time Span [change]         : Start=1980-11-12, Stop=1980-11-12, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Nov 12, 1980 is date of flyby of Voyager 1.
+     *
+     * 2444555.500000000 = A.D. 1980-Nov-12 00:00:00.0000 TDB
+     *  EC= 2.856225061595786E-02 QR= 2.312483296093841E-02 IN= 1.749827907600319E+01
+     *  OM= 1.403973722109327E+02 W = 2.261903994839276E+02 Tp=  2444517.435074096080
+     *  N = 4.537354975447288E+00 MA= 1.727140809408426E+02 TA= 1.731149457095495E+02
+     *  A = 2.380475020205992E-02 AD= 2.448466744318143E-02 PR= 7.934137883151000E+01
+     */
+    private static final double axisIapetusAU           = 2.380475020205992E-02; // Semi-major axis [au]
+    private static final double eccentricityIapetus     = 2.856225061595786E-02; // Eccentricity [-]
+    private static final double inclinationIapetus      = 1.749827907600319E+01; // Inclination [degrees]
+    private static final double argPeriapsisIapetus     = 2.261903994839276E+02; // Arg perifocus [degrees]
+    private static final double longNodeIapetus         = 1.403973722109327E+02; // Long asc node [degrees]
+    private static final double periapsisPassageIapetus = 2444517.435074096080;  // Time of periapsis [JD]
+    private static final double meanMotionIapetus       = 4.537354975447288E+00; // Mean motion [degrees/day]
+    private static final double[] IAPETUSORBITPARS = new double[]
+            {axisIapetusAU, eccentricityIapetus, inclinationIapetus, argPeriapsisIapetus,
+                    longNodeIapetus, periapsisPassageIapetus, meanMotionIapetus};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Miranda (UV) [705]
+     * Center                     : Uranus System Barycenter [500@7]
+     * Time Span [change]         : Start=1986-01-24, Stop=1986-01-24, Step=6 h
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Jan 24, 1986 is date of flyby of Voyager 2.
+     *
+     * 2446455.250000000 = A.D. 1986-Jan-24 18:00:00.0000 TDB
+     *  EC= 1.334113739191030E-03 QR= 8.664871813807257E-04 IN= 1.019201605356678E+02
+     *  OM= 1.690199433071529E+02 W = 3.223465505057740E+02 Tp=  2446455.060737770516
+     *  N = 2.548265562097606E+02 MA= 4.822904210236982E+01 TA= 4.834318747087165E+01
+     *  A = 8.676447181199060E-04 AD= 8.688022548590863E-04 PR= 1.412725601893964E+00
+     */
+    private static final double axisMirandaAU           = 8.676447181199060E-04; // Semi-major axis [au]
+    private static final double eccentricityMiranda     = 1.334113739191030E-03; // Eccentricity [-]
+    private static final double inclinationMiranda      = 1.019201605356678E+02; // Inclination [degrees]
+    private static final double argPeriapsisMiranda     = 3.223465505057740E+02; // Arg perifocus [degrees]
+    private static final double longNodeMiranda         = 1.690199433071529E+02; // Long asc node [degrees]
+    private static final double periapsisPassageMiranda = 2446455.060737770516;  // Time of periapsis [JD]
+    private static final double meanMotionMiranda       = 2.548265562097606E+02; // Mean motion [degrees/day]
+    private static final double[] MIRANDAORBITPARS = new double[]
+            {axisMirandaAU, eccentricityMiranda, inclinationMiranda, argPeriapsisMiranda,
+                    longNodeMiranda, periapsisPassageMiranda, meanMotionMiranda};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Ariel (UI) [701]
+     * Center                     : Uranus System Barycenter [500@7]
+     * Time Span [change]         : Start=1986-01-24, Stop=1986-01-24, Step=6 h
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Jan 24, 1986 is date of flyby of Voyager 2.
+     *
+     * 2446455.250000000 = A.D. 1986-Jan-24 18:00:00.0000 TDB
+     *  EC= 1.828146549847673E-03 QR= 1.273608250361064E-03 IN= 9.771964547613906E+01
+     *  OM= 1.676311983381491E+02 W = 3.268039389316039E+02 Tp=  2446454.735053625889
+     *  N = 1.428903374678187E+02 MA= 7.358086117257147E+01 TA= 7.378193771139888E+01
+     *  A = 1.275940857237032E-03 AD= 1.278273464113000E-03 PR= 2.519414583096482E+00
+     */
+    private static final double axisArielAU           = 1.275940857237032E-03; // Semi-major axis [au]
+    private static final double eccentricityAriel     = 1.828146549847673E-03; // Eccentricity [-]
+    private static final double inclinationAriel      = 9.771964547613906E+01; // Inclination [degrees]
+    private static final double argPeriapsisAriel     = 3.268039389316039E+02; // Arg perifocus [degrees]
+    private static final double longNodeAriel         = 1.676311983381491E+02; // Long asc node [degrees]
+    private static final double periapsisPassageAriel = 2446454.735053625889;  // Time of periapsis [JD]
+    private static final double meanMotionAriel       = 1.428903374678187E+02; // Mean motion [degrees/day]
+    private static final double[] ARIELORBITPARS = new double[]
+            {axisArielAU, eccentricityAriel, inclinationAriel, argPeriapsisAriel,
+                    longNodeAriel, periapsisPassageAriel, meanMotionAriel};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Umbriel (UII) [702]
+     * Center                     : Uranus System Barycenter [500@7]
+     * Time Span [change]         : Start=1986-01-24, Stop=1986-01-24, Step=6 h
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Jan 24, 1986 is date of flyby of Voyager 2.
+     *
+     * 2446455.250000000 = A.D. 1986-Jan-24 18:00:00.0000 TDB
+     *  EC= 4.264444554427566E-03 QR= 1.770865367553330E-03 IN= 9.769328000824999E+01
+     *  OM= 1.675902215804727E+02 W = 2.949950690755990E+02 Tp=  2446456.513212617952
+     *  N = 8.683327893081464E+01 MA= 2.503111063928964E+02 TA= 2.498518364737965E+02
+     *  A = 1.778449466696910E-03 AD= 1.786033565840491E-03 PR= 4.145875917997222E+00
+     */
+    private static final double axisUmbrielAU           = 1.778449466696910E-03; // Semi-major axis [au]
+    private static final double eccentricityUmbriel     = 4.264444554427566E-03; // Eccentricity [-]
+    private static final double inclinationUmbriel      = 9.769328000824999E+01; // Inclination [degrees]
+    private static final double argPeriapsisUmbriel     = 2.949950690755990E+02; // Arg perifocus [degrees]
+    private static final double longNodeUmbriel         = 1.675902215804727E+02; // Long asc node [degrees]
+    private static final double periapsisPassageUmbriel = 2446456.513212617952;  // Time of periapsis [JD]
+    private static final double meanMotionUmbriel       = 8.683327893081464E+01; // Mean motion [degrees/day]
+    private static final double[] UMBRIELORBITPARS = new double[]
+            {axisUmbrielAU, eccentricityUmbriel, inclinationUmbriel, argPeriapsisUmbriel,
+                    longNodeUmbriel, periapsisPassageUmbriel, meanMotionUmbriel};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Titania (UIII) [703]
+     * Center                     : Uranus System Barycenter [500@7]
+     * Time Span [change]         : Start=1986-01-24, Stop=1986-01-24, Step=6 h
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Jan 24, 1986 is date of flyby of Voyager 2.
+     *
+     * 2446455.250000000 = A.D. 1986-Jan-24 18:00:00.0000 TDB
+     *  EC= 2.699684405758504E-03 QR= 2.907991492514086E-03 IN= 9.784186655153967E+01
+     *  OM= 1.676200525421978E+02 W = 1.913287392441945E+02 Tp=  2446458.712360218167
+     *  N = 4.136011948310419E+01 MA= 2.167963676760602E+02 TA= 2.166115685681959E+02
+     *  A = 2.915863403473766E-03 AD= 2.923735314433446E-03 PR= 8.704036750838251E+00
+     */
+    private static final double axisTitaniaAU           = 2.915863403473766E-03; // Semi-major axis [au]
+    private static final double eccentricityTitania     = 2.699684405758504E-03; // Eccentricity [-]
+    private static final double inclinationTitania      = 9.784186655153967E+01; // Inclination [degrees]
+    private static final double argPeriapsisTitania     = 1.913287392441945E+02; // Arg perifocus [degrees]
+    private static final double longNodeTitania         = 1.676200525421978E+02; // Long asc node [degrees]
+    private static final double periapsisPassageTitania = 2446458.712360218167;  // Time of periapsis [JD]
+    private static final double meanMotionTitania       = 4.136011948310419E+01; // Mean motion [degrees/day]
+    private static final double[] TITANIAORBITPARS = new double[]
+            {axisTitaniaAU, eccentricityTitania, inclinationTitania, argPeriapsisTitania,
+                    longNodeTitania, periapsisPassageTitania, meanMotionTitania};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Oberon (UIV) [704]
+     * Center                     : Uranus System Barycenter [500@7]
+     * Time Span [change]         : Start=1986-01-24, Stop=1986-01-24, Step=6 h
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Jan 24, 1986 is date of flyby of Voyager 2.
+     *
+     * 2446455.250000000 = A.D. 1986-Jan-24 18:00:00.0000 TDB
+     *  EC= 3.479588686913168E-04 QR= 3.899090046075020E-03 IN= 9.783394065511513E+01
+     *  OM= 1.677619229560692E+02 W = 3.089743224447537E+02 Tp=  2446454.454100156669
+     *  N = 2.673396445911760E+01 MA= 2.127755813031945E+01 TA= 2.129203341544224E+01
+     *  A = 3.900447241284487E-03 AD= 3.901804436493955E-03 PR= 1.346601625623177E+01
+     */
+    private static final double axisOberonAU           = 3.900447241284487E-03; // Semi-major axis [au]
+    private static final double eccentricityOberon     = 3.479588686913168E-04; // Eccentricity [-]
+    private static final double inclinationOberon      = 9.783394065511513E+01; // Inclination [degrees]
+    private static final double argPeriapsisOberon     = 3.089743224447537E+02; // Arg perifocus [degrees]
+    private static final double longNodeOberon         = 1.677619229560692E+02; // Long asc node [degrees]
+    private static final double periapsisPassageOberon = 2446454.454100156669;  // Time of periapsis [JD]
+    private static final double meanMotionOberon       = 2.673396445911760E+01; // Mean motion [degrees/day]
+    private static final double[] OBERONORBITPARS = new double[]
+            {axisOberonAU, eccentricityOberon, inclinationOberon, argPeriapsisOberon,
+                    longNodeOberon, periapsisPassageOberon, meanMotionOberon};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Triton (NI) [801]
+     * Center                     : Neptune System Barycenter [500@8]
+     * Time Span [change]         : Start=1989-08-25, Stop=1989-08-26, Step=6 h
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Aug 25, 1989 is date of flyby of Voyager 2.
+     *
+     * 2447763.500000000 = A.D. 1989-Aug-25 00:00:00.0000 TDB
+     *  EC= 1.217220754327991E-05 QR= 2.370934201605266E-03 IN= 1.309092040930801E+02
+     *  OM= 2.131742023027621E+02 W = 2.781135619426180E+02 Tp=  2447763.663316546939
+     *  N = 6.125517670911833E+01 MA= 3.499960160500586E+02 TA= 3.499957737408385E+02
+     *  A = 2.370963061459727E-03 AD= 2.370991921314189E-03 PR= 5.877054305296145E+00
+     */
+    private static final double axisTritonAU           = 2.370963061459727E-03; // Semi-major axis [au]
+    private static final double eccentricityTriton     = 1.217220754327991E-05; // Eccentricity [-]
+    private static final double inclinationTriton      = 1.309092040930801E+02; // Inclination [degrees]
+    private static final double argPeriapsisTriton     = 2.781135619426180E+02; // Arg perifocus [degrees]
+    private static final double longNodeTriton         = 2.131742023027621E+02; // Long asc node [degrees]
+    private static final double periapsisPassageTriton = 2447763.663316546939;  // Time of periapsis [JD]
+    private static final double meanMotionTriton       = 6.125517670911833E+01; // Mean motion [degrees/day]
+    private static final double[] TRITONORBITPARS = new double[]
+            {axisTritonAU, eccentricityTriton, inclinationTriton, argPeriapsisTriton,
+                    longNodeTriton, periapsisPassageTriton, meanMotionTriton};
     
     // Singleton instance
     private static SolarSystemParameters instance = null;
@@ -1131,6 +1752,21 @@ Pluto     -0.01262724
     
     // Diameter in m for solar system bodies
     private final Map<String,Double> diameterMap;
+
+    // Ellipticity of oblate planet
+    private final Map<String,Double> ellipticityMap;
+
+    // Gravatitational parameter in m3/s2 of oblate planet
+    private final Map<String,Double> oblateMuMap;
+
+    // Equatorial radius in m of oblate planet
+    private final Map<String,Double> equatorialRadiusMap;
+
+    // Zonal coefficients of oblate planet
+    private final Map<String,double[]> zonalCoefficientsMap;
+
+    // Parameters of z-axis of oblate planet
+    private final Map<String,double[]> zAxisParametersMap;
 
     // Orbital parameters (Keplerian elements and their rates) for solar system bodies
     private final Map<String,double[]> orbitParametersMap;
@@ -1177,7 +1813,20 @@ Pluto     -0.01262724
         massMap.put("Europa",EUROPAMASS);
         massMap.put("Ganymede",GANYMEDEMASS);
         massMap.put("Callisto",CALLISTOMASS);
+        massMap.put("Mimas",MIMASMASS);
+        massMap.put("Enceladus",ENCELADUSMASS);
+        massMap.put("Tethys",TETHYSMASS);
+        massMap.put("Dione",DIONEMASS);
+        massMap.put("Rhea",RHEAMASS);
         massMap.put("Titan",TITANMASS);
+        massMap.put("Hyperion",HYPERIONMASS);
+        massMap.put("Iapetus",IAPETUSMASS);
+        massMap.put("Miranda",MIRANDAMASS);
+        massMap.put("Ariel",ARIELMASS);
+        massMap.put("Umbriel",UMBRIELMASS);
+        massMap.put("Titania",TITANIAMASS);
+        massMap.put("Oberon",OBERONMASS);
+        massMap.put("Triton",TRITONMASS);
         
         // Standard gravitational parameter in m3/s2
         muMap = new HashMap<>();
@@ -1202,7 +1851,20 @@ Pluto     -0.01262724
         muMap.put("Europa",EUROPAMU);
         muMap.put("Ganymede",GANYMEDEMU);
         muMap.put("Callisto",CALLISTOMU);
+        muMap.put("Mimas",MIMASMU);
+        muMap.put("Enceladus",ENCELADUSMU);
+        muMap.put("Tethys",TETHYSMU);
+        muMap.put("Dione",DIONEMU);
+        muMap.put("Rhea",RHEAMU);
         muMap.put("Titan",TITANMU);
+        muMap.put("Hyperion",HYPERIONMU);
+        muMap.put("Iapetus",IAPETUSMU);
+        muMap.put("Miranda",MIRANDAMU);
+        muMap.put("Ariel",ARIELMU);
+        muMap.put("Umbriel",UMBRIELMU);
+        muMap.put("Titania",TITANIAMU);
+        muMap.put("Oberon",OBERONMU);
+        muMap.put("Triton",TRITONMU);
         
         // Diameters in m
         diameterMap = new HashMap<>();
@@ -1235,7 +1897,55 @@ Pluto     -0.01262724
         diameterMap.put("Europa",EUROPADIAMETER);
         diameterMap.put("Ganymede",GANYMEDEDIAMETER);
         diameterMap.put("Callisto",CALLISTODIAMETER);
+        diameterMap.put("Mimas",MIMASDIAMETER);
+        diameterMap.put("Enceladus",ENCELADUSDIAMETER);
+        diameterMap.put("Tethys",TETHYSDIAMETER);
+        diameterMap.put("Dione",DIONEDIAMETER);
+        diameterMap.put("Rhea",RHEADIAMETER);
         diameterMap.put("Titan",TITANDIAMETER);
+        diameterMap.put("Hyperion",HYPERIONDIAMETER);
+        diameterMap.put("Iapetus",IAPETUSDIAMETER);
+        diameterMap.put("Miranda",MIRANDADIAMETER);
+        diameterMap.put("Ariel",ARIELDIAMETER);
+        diameterMap.put("Umbriel",UMBRIELDIAMETER);
+        diameterMap.put("Titania",TITANIADIAMETER);
+        diameterMap.put("Oberon",OBERONDIAMETER);
+        diameterMap.put("Triton",TRITONDIAMETER);
+
+        // Ellipticity of oblate planet
+        ellipticityMap = new HashMap<>();
+        ellipticityMap.put("Jupiter",JUPITERELLIPTICITY);
+        ellipticityMap.put("Saturn",SATURNELLIPTICITY);
+        ellipticityMap.put("Uranus",URANUSELLIPTICITY);
+        ellipticityMap.put("Neptune",NEPTUNEELLIPTICITY);
+
+        // Gravatitational parameter [km3/s2] of oblate planet
+        oblateMuMap = new HashMap<>();
+        oblateMuMap.put("Jupiter",JUPITEROBLATEMU);
+        oblateMuMap.put("Saturn",SATURNOBLATEMU);
+        oblateMuMap.put("Uranus",URANUSOBLATEMU);
+        oblateMuMap.put("Neptune",NEPTUNEOBLATEMU);
+
+        // Equatorial radius [m] of oblate planet
+        equatorialRadiusMap = new HashMap<>();
+        equatorialRadiusMap.put("Jupiter",JUPITEREQUATORIALRADIUS);
+        equatorialRadiusMap.put("Saturn",SATURNEQUATORIALRADIUS);
+        equatorialRadiusMap.put("Uranus",URANUSEQUATORIALRADIUS);
+        equatorialRadiusMap.put("Neptune",NEPTUNEEQUATORIALRADIUS);
+
+        // Zonal coefficients [-] of oblate planet
+        zonalCoefficientsMap = new HashMap<>();
+        zonalCoefficientsMap.put("Jupiter",JUPITERZONALCOEFFICIENTS);
+        zonalCoefficientsMap.put("Saturn",SATURNZONALCOEFFICIENTS);
+        zonalCoefficientsMap.put("Uranus",URANUSZONALCOEFFICIENTS);
+        zonalCoefficientsMap.put("Neptune",NEPTUNEZONALCOEFFICIENTS);
+
+        // Parameters of z-axis of oblate planet
+        zAxisParametersMap = new HashMap<>();
+        zAxisParametersMap.put("Jupiter",JUPITERZAXISPARAMETERS);
+        zAxisParametersMap.put("Saturn",SATURNZAXISPARAMETERS);
+        zAxisParametersMap.put("Uranus",URANUSZAXISPARAMETERS);
+        zAxisParametersMap.put("Neptune",NEPTUNEZAXISPARAMETERS);
         
         // Orbital parameters: Keplerian elements and their rates (Mercury - Pluto)
         orbitParametersMap = new HashMap<>();
@@ -1267,7 +1977,20 @@ Pluto     -0.01262724
         orbitParametersMap.put("Europa",EUROPAORBITPARS);// Europa, moon of Jupiter
         orbitParametersMap.put("Ganymede",GANYMEDEORBITPARS);// Ganymede, moon of Jupiter
         orbitParametersMap.put("Callisto",CALLISTOORBITPARS);// Callisto, moon of Jupiter
+        orbitParametersMap.put("Mimas",MIMASORBITPARS);// Mimas, moon of Saturn
+        orbitParametersMap.put("Enceladus",ENCELADUSORBITPARS);// Enceladus, moon of Saturn
+        orbitParametersMap.put("Tethys",TETHYSORBITPARS);// Tethys, moon of Saturn
+        orbitParametersMap.put("Dione",DIONEORBITPARS);// Dione, moon of Saturn
+        orbitParametersMap.put("Rhea",RHEAORBITPARS);// Rhea, moon of Saturn
         orbitParametersMap.put("Titan",TITANORBITPARS);// Titan, moon of Saturn
+        orbitParametersMap.put("Hyperion",HYPERIONORBITPARS);// Hyperion, moon of Saturn
+        orbitParametersMap.put("Iapetus",IAPETUSORBITPARS);// Iapetus, moon of Saturn
+        orbitParametersMap.put("Miranda",MIRANDAORBITPARS);// Miranda, moon of Uranus
+        orbitParametersMap.put("Ariel",ARIELORBITPARS);// Ariel, moon of Uranus
+        orbitParametersMap.put("Umbriel",UMBRIELORBITPARS);// Umbriel, moon of Uranus
+        orbitParametersMap.put("Titania",TITANIAORBITPARS);// Titania, moon of Uranus
+        orbitParametersMap.put("Oberon",OBERONORBITPARS);// Oberon, moon of Uranus
+        orbitParametersMap.put("Triton",TRITONORBITPARS);// Triton, moon of Neptune
         
         // Planet names (treat dwarf planets, astroids, and comets as planet)
         planets = new ArrayList<>();
@@ -1277,7 +2000,20 @@ Pluto     -0.01262724
         planets.remove("Europa");
         planets.remove("Ganymede");
         planets.remove("Callisto");
+        planets.remove("Mimas");
+        planets.remove("Enceladus");
+        planets.remove("Tethys");
+        planets.remove("Dione");
+        planets.remove("Rhea");
         planets.remove("Titan");
+        planets.remove("Hyperion");
+        planets.remove("Iapetus");
+        planets.remove("Miranda");
+        planets.remove("Ariel");
+        planets.remove("Umbriel");
+        planets.remove("Titania");
+        planets.remove("Oberon");
+        planets.remove("Triton");
         
         // Moon names
         moons = new HashMap<>();
@@ -1286,7 +2022,20 @@ Pluto     -0.01262724
         moons.put("Europa","Jupiter");
         moons.put("Ganymede","Jupiter");
         moons.put("Callisto","Jupiter");
+        moons.put("Mimas","Saturn");
+        moons.put("Enceladus","Saturn");
+        moons.put("Tethys","Saturn");
+        moons.put("Dione","Saturn");
+        moons.put("Rhea","Saturn");
         moons.put("Titan","Saturn");
+        moons.put("Hyperion","Saturn");
+        moons.put("Iapetus","Saturn");
+        moons.put("Miranda","Uranus");
+        moons.put("Ariel","Uranus");
+        moons.put("Umbriel","Uranus");
+        moons.put("Titania","Uranus");
+        moons.put("Oberon","Uranus");
+        moons.put("Triton","Neptune");
     }
     
     /**
@@ -1324,6 +2073,21 @@ Pluto     -0.01262724
     public String getPlanetOfMoon(String moonName) {
         String planetName = moons.get(moonName);
         return planetName;
+    }
+
+    /**
+     * Get names of moons of planet
+     * @param planetName name of planet
+     * @return names of moons
+     */
+    public List<String> getMoonsOfPlanet(String planetName) {
+        List<String> moonsOfPlanet = new ArrayList<>();
+        for (String moonName : moons.keySet()) {
+            if (planetName.equals(getPlanetOfMoon(moonName))) {
+                moonsOfPlanet.add(moonName);
+            }
+        }
+        return moonsOfPlanet;
     }
     
     /**
@@ -1371,5 +2135,50 @@ Pluto     -0.01262724
      */
     public double getDiameter(String name) {
         return diameterMap.get(name);
+    }
+
+    /**
+     * Get ellipticity of oblate planet with given name
+     * @param name name of oblate planet
+     * @return ellipticity
+     */
+    public double getEllipticity(String name) {
+        return ellipticityMap.get(name);
+    }
+
+    /**
+     * Get gravitational parameter of oblate planet with given name
+     * @param name name of oblate planet
+     * @return gravitational parameter in m3/s2
+     */
+    public double getOblateMu(String name) {
+        return oblateMuMap.get(name);
+    }
+
+    /**
+     * Get equatorial radius of oblate planet with given name
+     * @param name name of oblate planet
+     * @return equatorial radius in km
+     */
+    public double getEquatorialRadius(String name) {
+        return equatorialRadiusMap.get(name);
+    }
+
+    /**
+     * Get zonal coefficients of oblate planet with given name
+     * @param name name of oblate planet
+     * @return zonal coefficients
+     */
+    public double[] getZonalCoefficients(String name) {
+        return zonalCoefficientsMap.get(name);
+    }
+
+    /**
+     * Get parameters of z-axis of oblate planet with given name
+     * @param name name of oblate planet
+     * @return parameters of z-axis
+     */
+    public double[] getZaxisParameters(String name) {
+        return zAxisParametersMap.get(name);
     }
 }

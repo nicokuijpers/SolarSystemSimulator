@@ -20,6 +20,7 @@
 package application;
 
 import ephemeris.EphemerisRingsOfSaturn;
+import ephemeris.EphemerisRingsOfUranus;
 import ephemeris.EphemerisUtil;
 import ephemeris.SolarSystemParameters;
 import javafx.animation.AnimationTimer;
@@ -124,10 +125,13 @@ public class SolarSystemApplication extends Application {
     private Map<String,Circle> bodies;
     
     // Bodies to be shown on screen
-    private List<String> bodiesShown;
+    private Set<String> bodiesShown;
     
     // Selected body
     private String selectedBody;
+
+    // Names of moons per planet
+    private Map<String,List<String>> moons;
 
     // Names of spacecraft
     private List<String> spacecraftNames;
@@ -152,6 +156,9 @@ public class SolarSystemApplication extends Application {
     
     // Flag to indicate whether step mode for simulation is selected
     private boolean stepMode = false;
+
+    // Flag to indicate whether moons of planet are shown
+    private Map<String,Boolean> showMoons;
    
     @Override
     public void start(Stage primaryStage) {
@@ -560,7 +567,7 @@ public class SolarSystemApplication extends Application {
         // Functions as storage for position, radius, and color of circles
         // representing the bodies of the Solar System.
         bodies = new HashMap<>();
-        bodiesShown = new ArrayList<>();
+        bodiesShown = new HashSet<>();
         createCircle("Sun", 10, Color.YELLOW);
         createCircle("Mercury", 3, Color.ORANGE);
         createCircle("Venus", 5, Color.BROWN);
@@ -590,10 +597,66 @@ public class SolarSystemApplication extends Application {
         createCircle("Europa", 3, Color.LIGHTBLUE);
         createCircle("Ganymede", 3, Color.LIGHTGRAY);
         createCircle("Callisto", 3, Color.ORANGE);
+        createCircle("Mimas", 3, Color.LIGHTGRAY);
+        createCircle("Enceladus", 3, Color.ALICEBLUE);
+        createCircle("Tethys", 3, Color.DARKGOLDENROD);
+        createCircle("Dione", 3, Color.BISQUE);
+        createCircle("Rhea", 3, Color.ORANGE);
         createCircle("Titan", 3, Color.PEACHPUFF);
+        createCircle("Hyperion", 3, Color.LIGHTCORAL);
+        createCircle("Iapetus", 3, Color.ALICEBLUE);
+        createCircle("Miranda", 3, Color.LIGHTGRAY);
+        createCircle("Ariel", 3, Color.ALICEBLUE);
+        createCircle("Umbriel", 3, Color.PEACHPUFF);
+        createCircle("Titania", 3, Color.LIGHTSALMON);
+        createCircle("Oberon", 3, Color.BISQUE);
+        createCircle("Triton", 3, Color.LIGHTGRAY);
         createCircle("Voyager 1", 3, Color.LIGHTYELLOW);
         createCircle("Voyager 2", 3, Color.LIGHTYELLOW);
         createCircle("New Horizons", 3, Color.LIGHTYELLOW);
+
+        // Initialize flags to indicate whether moons are shown
+        showMoons = new HashMap<>();
+        showMoons.put("Jupiter",false);
+        showMoons.put("Saturn",false);
+        showMoons.put("Uranus",false);
+        showMoons.put("Neptune",false);
+
+        // Names of moons per planet
+        moons = new HashMap<>();
+
+        // Names of moons of Jupiter
+        List<String> jupiterMoons = new ArrayList<>();
+        jupiterMoons.add("Io");
+        jupiterMoons.add("Europa");
+        jupiterMoons.add("Ganymede");
+        jupiterMoons.add("Callisto");
+        moons.put("Jupiter",jupiterMoons);
+
+        // Names of moons of Saturn
+        List<String> saturnMoons = new ArrayList<>();
+        saturnMoons.add("Mimas");
+        saturnMoons.add("Enceladus");
+        saturnMoons.add("Tethys");
+        saturnMoons.add("Dione");
+        saturnMoons.add("Rhea");
+        saturnMoons.add("Titan");
+        saturnMoons.add("Iapetus");
+        moons.put("Saturn",saturnMoons);
+
+        // Names of moons of Uranus
+        List<String> uranusMoons = new ArrayList<>();
+        uranusMoons.add("Miranda");
+        uranusMoons.add("Ariel");
+        uranusMoons.add("Umbriel");
+        uranusMoons.add("Titania");
+        uranusMoons.add("Oberon");
+        moons.put("Uranus",uranusMoons);
+
+        // Names of moons of Neptune
+        List<String> neptuneMoons = new ArrayList<>();
+        neptuneMoons.add("Triton");
+        moons.put("Neptune",neptuneMoons);
 
         // Spacecraft names
         spacecraftNames = new ArrayList<>();
@@ -707,25 +770,18 @@ public class SolarSystemApplication extends Application {
                 "Hale-Bopp passed perihelion on 1 April 1997 and "
                 + "was visible to the naked eye for 18 months.",
                 false), hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Io", "Io",
-                "Io is the innermost and fourth-largest of the four "
-                + "Galilean moons of the planet Jupiter.",
+        grid.add(createCheckBox("JupiterMoons", "Jupiter Sys",
+                "The four largest moons of Jupiter are the Galilean moons " +
+                        "Io, Europa, Ganymede, and Callisto.",
                 false), hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Europa", "Europa",
-                "Europa is the second and smallest of the four "
-                + "Galilean moons of the planet Jupiter.",
+        grid.add(createCheckBox("SaturnMoons", "Saturn Sys",
+                "Saturn moons Mimas, Enceladus, Tethys, Dione, Rhea, Titan, and Iapetus.",
                 false), hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Ganymede", "Ganymede",
-                "Ganymede is the third and largest of the four "
-                + "Galilean moons of the planet Jupiter.",
+        grid.add(createCheckBox("UranusMoons", "Uranus Sys",
+                "Uranus moons Miranda, Ariel, Umbriel, Titania, and Oberon",
                 false), hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Callisto", "Callisto",
-                "Callisto is the outermost and second-largest of the four "
-                + "Galilean moons of the planet Jupiter.",
-                false), hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Titan", "Titan",
-                "Titan is the largest moon of Saturn and the second-largest "
-                        + "moon of the Solar System.",
+        grid.add(createCheckBox("NeptuneMoons", "Neptune Sys",
+                "Neptune moon Triton",
                 false), hor, ver++, horsize, versize);
         hor = 1;
         ver++;
@@ -1085,21 +1141,62 @@ public class SolarSystemApplication extends Application {
             @Override
             public void handle(MouseEvent event) {
                 boolean isSelected = checkBox.selectedProperty().getValue();
-                if (event.getButton() == MouseButton.PRIMARY) {
+                if (name.endsWith("Moons")) {
+                    String planetName = name.substring(0,name.length()-5);
                     if (isSelected) {
-                        bodiesShown.add(name);
+                        solarSystem.createPlanetSystem(planetName);
                     }
                     else {
-                        bodiesShown.remove(name);
+                        solarSystem.removePlanetSystem(planetName);
+                    }
+                    showMoons.put(planetName, isSelected);
+                    updateBodiesShown();
+                }
+                else {
+                    if (event.getButton() == MouseButton.PRIMARY) {
+                        if (isSelected) {
+                            bodiesShown.add(name);
+                        }
+                        else {
+                            bodiesShown.remove(name);
+                        }
+                    }
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        if (!isSelected) {
+                            checkBox.setSelected(true);
+                            bodiesShown.add(name);
+                        }
+                        showInformationPanel(name);
                     }
                 }
-                if (event.getButton() == MouseButton.SECONDARY) {
-                    if (!isSelected) {
-                        checkBox.setSelected(true);
-                        bodiesShown.add(name);
+                /*
+                if ("SaturnMoons".equals(name) || "UranusMoons".equals(name)) {
+                    if ("SaturnMoons".equals(name)) {
+                        showSaturnMoons = isSelected;
                     }
-                    showInformationPanel(name);
+                    else {
+                        showUranusMoons = isSelected;
+                        showNeptuneMoons = isSelected; // TODO ZOOM
+                    }
+                    updateBodiesShown();
                 }
+                else {
+                    if (event.getButton() == MouseButton.PRIMARY) {
+                        if (isSelected) {
+                            bodiesShown.add(name);
+                        } else {
+                            bodiesShown.remove(name);
+                        }
+                    }
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        if (!isSelected) {
+                            checkBox.setSelected(true);
+                            bodiesShown.add(name);
+                        }
+                        showInformationPanel(name);
+                    }
+                }
+                */
             }
         });
         Tooltip toolTip = new Tooltip(toolTipText);
@@ -1244,23 +1341,32 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Draw rings of Saturn. When boolean parameter front is set, ring elements in front of the planet
-     * will be drawn, otherwise the ring elements behind the planet will be drawn.
-     * @param positionSaturn position of Saturn
+     * Draw rings of Saturn or Uranus. When boolean parameter front is set, ring elements in front of
+     * the planet will be drawn, otherwise the ring elements behind the planet will be drawn.
+     * @param positionPlanet position of Saturn or Uranus
      * @param front          indicates whether circle elements in front of planet or behind planet will be drawn.
      */
-    private void drawRingsOfSaturn(Vector3D positionSaturn, boolean front) {
+    private void drawRings(String planetName, Vector3D positionPlanet, boolean front) {
+
+        Vector3D[] innerRingPositions;
+        Vector3D[] outerRingPositions;
+        if ("Saturn".equals(planetName)) {
+            innerRingPositions = EphemerisRingsOfSaturn.innerRingPositions(solarSystem.getSimulationDateTime());
+            outerRingPositions = EphemerisRingsOfSaturn.outerRingPositions(solarSystem.getSimulationDateTime());
+        }
+        else {
+            innerRingPositions = EphemerisRingsOfUranus.innerRingPositions(solarSystem.getSimulationDateTime());
+            outerRingPositions = EphemerisRingsOfUranus.outerRingPositions(solarSystem.getSimulationDateTime());
+        }
         GraphicsContext gc = screen.getGraphicsContext2D();
         gc.setFill(Color.BEIGE);
-        Vector3D[] innerRingPositions = EphemerisRingsOfSaturn.innerRingPositions(solarSystem.getSimulationDateTime());
-        Vector3D[] outerRingPositions = EphemerisRingsOfSaturn.outerRingPositions(solarSystem.getSimulationDateTime());
         for (int i = 0; i < innerRingPositions.length; i++) {
-            innerRingPositions[i].addVector(positionSaturn);
-            outerRingPositions[i].addVector(positionSaturn);
+            innerRingPositions[i].addVector(positionPlanet);
+            outerRingPositions[i].addVector(positionPlanet);
         }
         int step = 1;
         if (observationFromEarth) {
-            double distanceToBody = positionEarth().euclideanDistance(positionSaturn);
+            double distanceToBody = positionEarth().euclideanDistance(positionPlanet);
             for (int i = 0; i < innerRingPositions.length; i+=step) {
                 int nPoints = 4;
                 double[] xPoints = new double[nPoints];
@@ -1284,7 +1390,7 @@ public class SolarSystemApplication extends Application {
                 int nPoints = 4;
                 double[] xPoints = new double[nPoints];
                 double[] yPoints = new double[nPoints];
-                if (front == outerRingPositions[i].getY() < positionSaturn.getY()) {
+                if (front == outerRingPositions[i].getY() < positionPlanet.getY()) {
                     xPoints[0] = screenX(convertToScreenView(innerRingPositions[i]));
                     yPoints[0] = screenY(convertToScreenView(innerRingPositions[i]));
                     xPoints[1] = screenX(convertToScreenView(outerRingPositions[i]));
@@ -1340,9 +1446,10 @@ public class SolarSystemApplication extends Application {
         double diameterPixels = screenX(diameterEndView) - screenX(diameterBeginView);
         double radius = Math.max(circle.getRadius(),diameterPixels/2.0);
 
-        // Draw ring elements of Saturn behind the planet
-        if ("Saturn".equals(body.getName()) && radius > circle.getRadius()) {
-            drawRingsOfSaturn(position, false);
+        // Draw ring elements of Saturn or Uranus behind the planet
+        if (("Saturn".equals(body.getName()) || "Uranus".equals(body.getName()))
+                && radius > circle.getRadius()) {
+            drawRings(body.getName(), position, false);
         }
 
         // Draw circle on screen using color and radius from Circle-object
@@ -1350,15 +1457,16 @@ public class SolarSystemApplication extends Application {
         gc.setFill(circle.getFill());
         gc.fillOval(posx - radius, posy - radius, 2*radius, 2*radius);
 
-        // Draw ring elements of Saturn in front of the planet
-        if ("Saturn".equals(body.getName()) && radius > circle.getRadius()) {
-            drawRingsOfSaturn(position, true);
+        // Draw ring elements of Saturn or Uranus in front of the planet
+        if (("Saturn".equals(body.getName()) || "Uranus".equals(body.getName()))
+                && radius > circle.getRadius()) {
+            drawRings(body.getName(), position, true);
         }
 
         // Draw shadow of Galilean Moon on the surface of Jupiter
         if (observationFromEarth && "Jupiter".equals(selectedBody) && body.getCenterBody() != null &&
                 "Jupiter".equals(body.getCenterBody().getName())) {
-            double radiusJupiter = 0.5*SolarSystemParameters.getInstance().getDiameter("Jupiter");
+            double radiusJupiter = 0.5* SolarSystemParameters.getInstance().getDiameter("Jupiter");
             Vector3D positionSun, positionJupiter;
             if (showSimulation) {
                 positionSun = solarSystem.getParticle("Sun").getPosition();
@@ -1754,7 +1862,21 @@ public class SolarSystemApplication extends Application {
         double dy = event.getY() - circle.getCenterY();
         return Math.sqrt(dx*dx + dy*dy);
     }
-    
+
+    /**
+     * Update set of bodies to be shown.
+     */
+    private void updateBodiesShown() {
+        for (String planetName : showMoons.keySet()) {
+            if (showMoons.get(planetName)) {
+                bodiesShown.addAll(moons.get(planetName));
+            }
+            else {
+                bodiesShown.removeAll(moons.get(planetName));
+            }
+        }
+    }
+
     /**
      * Set selected body when the left mouse button is clicked.
      * @param event Mouse event
@@ -1770,7 +1892,12 @@ public class SolarSystemApplication extends Application {
                 initTranslate();
             }
         }
+        updateBodiesShown();
         updateDateTimeSelector();
+        // ADDED NOV 23, 2019
+        if (event.getButton() == MouseButton.SECONDARY) {
+            showInformationPanel(selectedBody);
+        }
     }
 
     /**
@@ -1836,7 +1963,7 @@ public class SolarSystemApplication extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    
     /**
      * Create sorted list of bodies such that they are drawn in an order that corresponds
      * to the currently selected view (observation from earth or normal view).
@@ -1949,6 +2076,7 @@ public class SolarSystemApplication extends Application {
         // Draw circles indicating either the simulated or ephemeris positions of bodies
         drawCircles(bodiesToShow);
 
+        // Draw rulers
         if (showRuler && !observationFromEarth) {
             drawRulerDistance();
         }

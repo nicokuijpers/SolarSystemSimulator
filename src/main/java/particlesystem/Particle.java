@@ -89,7 +89,7 @@ public class Particle implements Serializable {
 
     /**
      * Get mass of particle in kg.
-     * @return mass in kg
+     * @return mass [kg]
      */
     public double getMass() {
         return mass;
@@ -97,8 +97,8 @@ public class Particle implements Serializable {
     
     /**
      * Set mass of particle in kg.
-     * Standard gravitational parameter will be adjusted.
-     * @param mass in kg
+     * Standard gravitational parameter will be adjusted accordingly
+     * @param mass new mass [kg]
      */
     public void setMass(double mass) {
         this.mass = mass;
@@ -111,6 +111,16 @@ public class Particle implements Serializable {
      */
     public double getMu() {
         return mu;
+    }
+
+    /**
+     * Set standard gravitational parameter in m3/s2.
+     * Mass will adjusted accordingly
+     * @param mu new standard gravitational parameter [m3/s2]
+     */
+    public void setMu(double mu) {
+        this.mu = mu;
+        this.mass = mu / GRAVITATIONALCONSTANT;
     }
 
     /**
@@ -143,6 +153,15 @@ public class Particle implements Serializable {
      */
     public void setVelocity(Vector3D velocity) {
         this.velocity = velocity;
+    }
+
+    /**
+     * Add acceleration to acceleration of particle.
+     * Used by OblatePlanetSystem.
+     * @param acc in m/s2
+     */
+    public void addAcceleration(Vector3D acc) {
+        this.acceleration.addVector(acc);
     }
     
     /**
@@ -217,7 +236,7 @@ public class Particle implements Serializable {
         // Set acceleration computed by Newton Mechanics
         // such that it can be used to compute acceleration by
         // General Relativity
-        accelerationNewtonMechanics = new Vector3D(acceleration);   
+        accelerationNewtonMechanics = new Vector3D(acceleration);
     }
     
     /**

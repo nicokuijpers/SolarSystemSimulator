@@ -19,6 +19,7 @@
  */
 package ephemeris;
 
+import application.SolarSystemException;
 import util.Vector3D;
 
 import java.util.GregorianCalendar;
@@ -33,7 +34,7 @@ public class EphemerisUtil {
      * Number of days per century.
      */
     // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
-    private static final double NRDAYSPERCENTURY = 36525;
+    public static final double NRDAYSPERCENTURY = 36525;
     
     /** 
      * Julian Ephemeris Date J2000.0.
@@ -75,6 +76,22 @@ public class EphemerisUtil {
     }
 
     /**
+     * Transformation for 23.4 degrees J2000 frame.
+     * This transformation is performed such that x-y plane becomes
+     * the J2000 ecliptic plane.
+     * @param coordinates input coordinates
+     * @return coordinates after transformation
+     */
+    public static Vector3D transformJ2000(Vector3D coordinates) {
+        double sinEP = 0.397776995;
+        double cosEP = Math.sqrt(1.0 - sinEP*sinEP);
+        double x = coordinates.getX();
+        double y = coordinates.getY();
+        double z = coordinates.getZ();
+        return new Vector3D(x, cosEP*y - sinEP*z, sinEP*y + cosEP*z);
+    }
+
+    /**
      * Inverse transformation for 23.4 degrees J2000 frame.
      * This transformation is performed such that the J2000 ecliptic plane
      * becomes the x-y plane.
@@ -88,6 +105,39 @@ public class EphemerisUtil {
         double y = coordinates.getY();
         double z = coordinates.getZ();
         return new Vector3D(x, cosEP*y - sinEP*z, sinEP*y + cosEP*z);
+    }
+
+    /**
+     * Transform coordinates from B1950 to J2000.
+     * @param coordinates input coordinates
+     * @return coordinates after transformation
+     */
+    public static Vector3D transformFromB1950ToJ2000(Vector3D coordinates) {
+        // See http://www2.arnes.si/~gljsentvid10/b1950.html
+        double x = coordinates.getX();
+        double y = coordinates.getY();
+        double z = coordinates.getZ();
+        double xt = 0.9999257080 * x - 0.0111789372 * y - 0.0048590035 * z;
+        double yt = 0.0111789372 * x + 0.9999375134 * y - 0.0000271626 * z;
+        double zt = 0.0048590036 * x - 0.0000271579 * y + 0.9999881946 * z;
+        return new Vector3D(xt,yt,zt);
+    }
+
+    /**
+     * Transform coordinates from J2000 to B1950.
+     * @param coordinates input coordinates
+     * @return coordinates after transformation
+     */
+    public static Vector3D transformFromJ2000ToB1950(Vector3D coordinates) {
+        // See http://www2.arnes.si/~gljsentvid10/b1950.html
+        // Use transpose of matrix
+        double x = coordinates.getX();
+        double y = coordinates.getY();
+        double z = coordinates.getZ();
+        double xt =  0.9999257080 * x + 0.0111789372 * y + 0.0048590036 * z;
+        double yt = -0.0111789372 * x + 0.9999375134 * y - 0.0000271579 * z;
+        double zt = -0.0048590035 * x - 0.0000271626 * y + 0.9999881946 * z;
+        return new Vector3D(xt,yt,zt);
     }
 
     /**
@@ -209,7 +259,44 @@ public class EphemerisUtil {
         } while ((Math.abs(deltaH) > maxError) && (nrIterations < 100));
         return Hrad;
     }
-    
+
+    /**
+     * Compute standard gravitational parameter mu from orbital parameters that
+     * include date/time of perihelion passage and mean motion.
+     *
+     * The following orbital parameters are input:
+     *   semi-major axis [au]
+     *   eccentricity [-]
+     *   inclination [degrees]
+     *   argument of perifocus [degrees]
+     *   longitude of ascending node [degrees]
+     *   time of perifocus passage [Julian Ephemeris Date]
+     *   mean motion [degrees/day]
+     *
+     * @param orbitPars  orbital parameters including perifocus passage and mean motion
+     * @return standard gravitational parameter [m3/s2]
+     * @throws SolarSystemException when number parameters != 7 or sem-major axis <= 0
+     */
+    public static double standardGraviationalParameterFromPerihelionPassage(double[] orbitPars) throws SolarSystemException {
+
+        if (orbitPars.length != 7) {
+            throw new SolarSystemException("Compute standard gravitational parameter: number of orbit parameters should be 7");
+        }
+        if (orbitPars[0] <= 0.0) {
+            throw new SolarSystemException("Compute standard gravitational parameter: semi-major axis must be positive (elliptical orbit)");
+        }
+
+        /*
+         *  For elliptical orbits, starndard gravitational parameter mu can be obtained
+         *  from Kepler's third law by
+         *  mu = (4 * pi^2 * a^3) / T^2
+         *  where a is semi-major axis [m]
+         *  and T is period [s]
+         */
+        double a = orbitPars[0] * SolarSystemParameters.ASTRONOMICALUNIT; // Convert A.U. to m
+        double T = (360.0 * 24 * 60 * 60) / orbitPars[6]; // Convert days to s
+        return (4 * Math.PI * Math.PI * a*a*a) / (T*T);
+    }
     
     /**
      * Compute true anomaly from eccentric anomaly.
