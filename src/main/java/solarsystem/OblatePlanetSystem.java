@@ -289,16 +289,41 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
     /**
      * Calculate the gravitational potential from Legendre polynomials
      * @param position equatorial position
-     * @return graviational potential
+     * @return gravitational potential
      */
     private double gravitationalPotentialFromPerturbationsPlanet(Vector3D position) {
+
+        /*
+         * The gravitational potential is calculated using zonal coefficients and Legendre polynomials
+         *
+         * V(r,theta) = -((G*M)/r) [1 - Sum_1^nmax Jn (a/r)^n Pn(cos theta)],
+         *
+         * where V             is gravitational potential
+         *       r             is distance from center of the planet
+         *       theta         is angle between z-axis and line from center to position
+         *       G*M           is gravitational parameter of oblate planet
+         *       nmax          is maximum order for which zonal coefficients are defined
+         *       Jn            are zonal coefficients
+         *       a             is equatorial radius
+         *       Pn(cos theta) are Legendre polynomials
+         *
+         * https://en.wikipedia.org/wiki/Geopotential_model
+         * https://en.wikipedia.org/wiki/Legendre_polynomials
+         *
+         * To calculate the Legendre polynomials, a recursive scheme can be used.
+         * The code below is adapted from the c-code published at
+         * https://www.orbiter-forum.com/showthread.php?t=39469
+         */
+
         // Maximum order to which the perturbation potential components are to be calculated
         int nmax = zonalCoefficients.length - 1;
 
         // Legendre polynomial values
         double[] P = new double[nmax + 1];
 
-        // Calculate 'r' and xi = 'sin(theta)'
+        // Calculate distance r and xi = cos(theta), where theta is the angle between
+        // the z-axis and the line from the center of the planet towards position
+        // Note that xi = cos(theta) = sin(pi/2 - theta) = z/r
         double r = position.magnitude();
         double xi = position.getZ() / r;
 
@@ -311,7 +336,7 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
         // Gravitational parameter [m3/s2]
         double GMplanet = oblateMu;
 
-        // Calculate the P[n] up to and including order 'nmax'
+        // Calculate the P[n] up to and including order nmax
         // using a recursive scheme
         P[1] = xi;
         P[0] = 1.0;
@@ -321,7 +346,7 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
         }
 
         // Calculate the gravitational potential terms from
-        // order 2 up to and including order 'nmax'
+        // order 2 up to and including order nmax
         // V = -((G*M)/r) [1 - Sum_1^nmax Jn (a/r)^n Pn(cos theta)]
         double sum = 0.0;
         double arn = (a/r)*(a/r);
