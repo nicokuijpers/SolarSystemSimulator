@@ -1144,12 +1144,19 @@ public class SolarSystemApplication extends Application {
                 if (name.endsWith("Moons")) {
                     String planetName = name.substring(0,name.length()-5);
                     if (isSelected) {
-                        solarSystem.createPlanetSystem(planetName);
+                        try {
+                            solarSystem.createPlanetSystem(planetName);
+                            showMoons.put(planetName, true);
+                        }
+                        catch (SolarSystemException ex) {
+                            checkBox.setSelected(false);
+                            showMessage("Error",ex.getMessage());
+                        }
                     }
                     else {
                         solarSystem.removePlanetSystem(planetName);
+                        showMoons.put(planetName, false);
                     }
-                    showMoons.put(planetName, isSelected);
                     updateBodiesShown();
                 }
                 else {
@@ -1169,34 +1176,6 @@ public class SolarSystemApplication extends Application {
                         showInformationPanel(name);
                     }
                 }
-                /*
-                if ("SaturnMoons".equals(name) || "UranusMoons".equals(name)) {
-                    if ("SaturnMoons".equals(name)) {
-                        showSaturnMoons = isSelected;
-                    }
-                    else {
-                        showUranusMoons = isSelected;
-                        showNeptuneMoons = isSelected; // TODO ZOOM
-                    }
-                    updateBodiesShown();
-                }
-                else {
-                    if (event.getButton() == MouseButton.PRIMARY) {
-                        if (isSelected) {
-                            bodiesShown.add(name);
-                        } else {
-                            bodiesShown.remove(name);
-                        }
-                    }
-                    if (event.getButton() == MouseButton.SECONDARY) {
-                        if (!isSelected) {
-                            checkBox.setSelected(true);
-                            bodiesShown.add(name);
-                        }
-                        showInformationPanel(name);
-                    }
-                }
-                */
             }
         });
         Tooltip toolTip = new Tooltip(toolTipText);
@@ -1894,7 +1873,6 @@ public class SolarSystemApplication extends Application {
         }
         updateBodiesShown();
         updateDateTimeSelector();
-        // ADDED NOV 23, 2019
         if (event.getButton() == MouseButton.SECONDARY) {
             showInformationPanel(selectedBody);
         }

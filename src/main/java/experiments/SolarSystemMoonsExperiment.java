@@ -19,6 +19,7 @@
  */
 package experiments;
 
+import application.SolarSystemException;
 import ephemeris.CalendarUtil;
 import ephemeris.EphemerisSolarSystem;
 import ephemeris.IEphemeris;
@@ -110,7 +111,12 @@ public class SolarSystemMoonsExperiment {
         // Create the Solar System
         solarSystem = new SolarSystem(simulationStartDateTime);
         for (String planetName : planets) {
-            solarSystem.createPlanetSystem(planetName);
+            try {
+                solarSystem.createPlanetSystem(planetName);
+            }
+            catch (SolarSystemException ex) {
+                System.err.println(ex.getMessage());
+            }
         }
 
         // Set General Relativity flag

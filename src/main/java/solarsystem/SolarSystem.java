@@ -211,10 +211,19 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     /**
      * Create planet system for planet with given name.
      * @param planetName name of the planet
+     * @throws SolarSystemException
      */
-    public void createPlanetSystem(String planetName) {
+    public void createPlanetSystem(String planetName) throws SolarSystemException {
 
-        // Create planet system
+        // Check whether simulation date/time is valid
+        if (simulationDateTime.before(ephemeris.getFirstValidDate())) {
+            throw new SolarSystemException("Date not valid before 3000 BC for " + planetName + " System");
+        }
+        if (simulationDateTime.after(ephemeris.getLastValidDate())) {
+            throw new SolarSystemException("Date not valid after AD 3000 for " + planetName + " System");
+        }
+
+        // Create the planet system
         OblatePlanetSystem planetSystem = new OblatePlanetSystem(planetName,this);
 
         // Set flag to indicate whether general relativity
