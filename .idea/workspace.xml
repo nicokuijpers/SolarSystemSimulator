@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
-    </list>
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -129,8 +124,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="1160" column="17" lean-forward="true" selection-start-line="1160" selection-start-column="17" selection-end-line="1160" selection-end-column="17" />
+            <state relative-caret-position="428">
+              <caret line="1158" column="21" lean-forward="true" selection-start-line="1158" selection-start-column="21" selection-end-line="1158" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -243,8 +238,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1032" />
-    <option name="y" value="167" />
+    <option name="x" value="905" />
+    <option name="y" value="160" />
     <option name="width" value="1510" />
     <option name="height" value="1124" />
   </component>
@@ -487,7 +482,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578221229456" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578236587743" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -616,7 +611,7 @@
       <workItem from="1562090246988" duration="32744000" />
       <workItem from="1564575869196" duration="80052000" />
       <workItem from="1569059084769" duration="8639000" />
-      <workItem from="1575736935749" duration="12920000" />
+      <workItem from="1575736935749" duration="14548000" />
     </task>
     <servers />
   </component>
@@ -650,10 +645,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134355000" />
+    <option name="totallyTimeSpent" value="135983000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1032" y="167" width="1510" height="1124" extended-state="0" />
+    <frame x="905" y="160" width="1510" height="1124" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.260218" />
@@ -1077,8 +1072,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="1160" column="17" lean-forward="true" selection-start-line="1160" selection-start-column="17" selection-end-line="1160" selection-end-column="17" />
+        <state relative-caret-position="428">
+          <caret line="1158" column="21" lean-forward="true" selection-start-line="1158" selection-start-column="21" selection-end-line="1158" selection-end-column="21" />
         </state>
       </provider>
     </entry>
