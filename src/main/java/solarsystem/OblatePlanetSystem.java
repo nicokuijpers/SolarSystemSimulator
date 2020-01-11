@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Nico Kuijpers
+ * Copyright (c) 2019 Nico Kuijpers and Marco Brassé
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * Represents a planet system with an oblate planet.
- * @author Nico Kuijpers
+ * @author Nico Kuijpers and Marco Brassé
  */
 public class OblatePlanetSystem extends ParticleSystem implements Serializable {
 
@@ -150,7 +150,7 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
             }
             else {
                 Particle moon = getParticle(name);
-                Vector3D accelerationFromPlanet = accelerationMoonFromPlanetApproximate(name);
+                Vector3D accelerationFromPlanet = accelerationMoonFromPlanetAnalytic(name);
                 List<Particle> otherParticles = new ArrayList<>();
                 for (String n : particles.keySet()) {
                     if (!n.equals(name) && !n.equals(planetName)) {
@@ -285,16 +285,17 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
         return new Vector3D(xg,yg,zg);
     }
 
-
     /**
-     * Calculate the gravitational potential from Legendre polynomials
+     * Calculate the gravitational potential derivative (acceleration)
+     * from Legendre polynomials
      * @param position equatorial position
-     * @return gravitational potential
+     * @return gravitational potential derivative (acceleration)
      */
-    private double gravitationalPotentialFromPerturbationsPlanet(Vector3D position) {
+    private Vector3D gravitationalPotentialDerivativeFromPerturbationsPlanet(Vector3D position) {
 
         /*
-         * The gravitational potential is calculated using zonal coefficients and Legendre polynomials
+         * The gravitational potential derivative is calculated using zonal coefficients
+         * and Legendre polynomials
          *
          * V(r,theta) = -((G*M)/r) [1 - Sum_1^nmax Jn (a/r)^n Pn(cos theta)],
          *
@@ -311,20 +312,35 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
          * https://en.wikipedia.org/wiki/Legendre_polynomials
          *
          * To calculate the Legendre polynomials, a recursive scheme can be used.
-         * The code below is adapted from the c-code published at
+         * The code below is adapted from the C-code published at
          * https://www.orbiter-forum.com/showthread.php?t=39469
+         *
+         * The derivatives and approach are based on C-code by S. Moshier obtained from
+         * http://www.moshier.net/ssystem.html
+         *
+         * Moshier, S. L. (1992),
+         * "Comparison of a 7000-year lunar ephemeris with analytical theory",
+         * Astronomy and Astrophysics 262, 613-616
+         * http://adsabs.harvard.edu/abs/1992A%26A...262..613M
+         *
+         * See also related question and answers on StackExchange:
+         * https://space.stackexchange.com/questions/23408/
+         * how-to-calculate-the-planets-and-moons-beyond-newtonss-gravitational-force
          */
 
         // Maximum order to which the perturbation potential components are to be calculated
         int nmax = zonalCoefficients.length - 1;
 
-        // Legendre polynomial values
+        // Values of Legendre polynomials
         double[] P = new double[nmax + 1];
+
+        // Values of derivatives of Legendre polynomials
+        double[] DP = new double[nmax + 1];
 
         // Calculate distance r and xi = cos(theta), where theta is the angle between
         // the z-axis and the line from the center of the planet towards position
         // Note that xi = cos(theta) = sin(pi/2 - theta) = z/r
-        double r = position.magnitude();
+        double r  = position.magnitude();
         double xi = position.getZ() / r;
 
         // Zonal coefficients [-]
@@ -336,58 +352,85 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
         // Gravitational parameter [m3/s2]
         double GMplanet = oblateMu;
 
-        // Calculate the P[n] up to and including order nmax
-        // using a recursive scheme
-        P[1] = xi;
-        P[0] = 1.0;
+        // Calculate the P[n] and their derivatives DP[n] up to and
+        // including order nmax using a recursive scheme
+        /*
+         * Legendre polynomials:
+         * P0(x) = 1
+         * P1(x) = x
+         * (n+1) Pn+1(x) = (2n+1) x Pn(x) - n Pn-1(x)
+         *
+         * Derivatives of Legendre polynomials (S. Moshier):
+         * P'0(x) = 0
+         * P'1(x) = 1
+         * (x^2 - 1) P'n(x) = n[ x Pn(x) - Pn-1(x) ]
+         */
+        P[0]  = 1.0;
+        P[1]  = xi;
+        DP[0] = 0.0;
+        DP[1] = 1.0;
         for (int n = 2; n <= nmax; n++) {
-            P[n] = (2 * n - 1) * xi * P[n - 1] + (1 - n) * P[n - 2];
-            P[n] /= n;
+            P[n]  = ((2 * n - 1) * xi * P[n - 1] + (1 - n) * P[n - 2])/n;
+            DP[n] = (n * (xi*P[n] - P[n-1])) / (xi*xi - 1.0);
         }
+
+        // To compute acceleration in body frame
+        double sinLat = xi;
+        double cosLat = Math.sqrt(1.0 - xi*xi);
+        double a1     = cosLat*r;
+        double cosLon = position.getX()/a1;
+        double sinLon = position.getY()/a1;
 
         // Calculate the gravitational potential terms from
         // order 2 up to and including order nmax
         // V = -((G*M)/r) [1 - Sum_1^nmax Jn (a/r)^n Pn(cos theta)]
-        double sum = 0.0;
+        double[] acc = new double[3];
+        acc[0] = 0.0;
+        acc[1] = 0.0;
+        acc[2] = 0.0;
         double arn = (a/r)*(a/r);
         for (int n = 2; n <= nmax; n++) {
-            sum += J[n] * arn * P[n];
+            double t0 = J[n] * (n + 1) * P[n];
+            double t1 = 0.0;
+            double t2 = -cosLat * J[n] * DP[n];
+            acc[0] += arn * t0;
+            acc[1] += arn * t1;
+            acc[2] += arn * t2;
             arn *= (a/r);
         }
-        double V = -(GMplanet/r) * (1 - sum);
-        return V;
+        acc[0] = acc[0] / (r*r);
+        acc[1] = acc[1] / (r*r);
+        acc[2] = acc[2] / (r*r);
+
+        // Rotate back to equatorial frame
+        double ax = cosLat*acc[0] - sinLat*acc[2];
+        double ay = acc[1];
+        double az = sinLat*acc[0] + cosLat*acc[2];
+        acc[0] = (cosLon*ax - sinLon*ay)*GMplanet;
+        acc[1] = (sinLon*ax + cosLon*ay)*GMplanet;
+        acc[2] = az*GMplanet;
+
+        // Add "J0" term (central force component)
+        Vector3D accJ0 = position.normalize().scalarProduct(GMplanet/(r*r));
+        acc[0] -= accJ0.getX();
+        acc[1] -= accJ0.getY();
+        acc[2] -= accJ0.getZ();
+        return new Vector3D(acc[0],acc[1],acc[2]);
     }
 
     /**
      * Compute acceleration of moon from planet using perturbation forces from
-     * zonal coefficients.
+     * zonal coefficients with derivatives of Legendre polynomials
      * @param moonName name of moon
      * @return acceleration in m/s2
      */
-    private Vector3D accelerationMoonFromPlanetApproximate(String moonName) {
+    private Vector3D accelerationMoonFromPlanetAnalytic(String moonName) {
         Vector3D positionPlanet = getParticle(planetName).getPosition();
         Vector3D positionMoon = getParticle(moonName).getPosition();
         Vector3D position = positionMoon.minus(positionPlanet);
         Vector3D positionEquatorialPlane = transformFromEclipticPlaneToEquatorialPlane(position);
-        // double deltaXYZ = 1000.0; // 1000 m = 1 km
-        double deltaXYZ = 100.0; // 100 m
-        Vector3D positionXmin  = positionEquatorialPlane.minus(new Vector3D(0.5*deltaXYZ,0.0,0.0));
-        Vector3D positionXplus = positionEquatorialPlane.plus(new Vector3D(0.5*deltaXYZ,0.0,0.0));
-        Vector3D positionYmin  = positionEquatorialPlane.minus(new Vector3D(0.0,0.5*deltaXYZ,0.0));
-        Vector3D positionYplus = positionEquatorialPlane.plus(new Vector3D(0.0,0.5*deltaXYZ,0.0));
-        Vector3D positionZmin  = positionEquatorialPlane.minus(new Vector3D(0.0,0.0,0.5*deltaXYZ));
-        Vector3D positionZplus = positionEquatorialPlane.plus(new Vector3D(0.0,0.0,0.5*deltaXYZ));
-        double VXmin  = gravitationalPotentialFromPerturbationsPlanet(positionXmin);
-        double VXplus = gravitationalPotentialFromPerturbationsPlanet(positionXplus);
-        double VYmin  = gravitationalPotentialFromPerturbationsPlanet(positionYmin);
-        double VYplus = gravitationalPotentialFromPerturbationsPlanet(positionYplus);
-        double VZmin  = gravitationalPotentialFromPerturbationsPlanet(positionZmin);
-        double VZplus = gravitationalPotentialFromPerturbationsPlanet(positionZplus);
-        double accX = (VXplus - VXmin)/deltaXYZ;
-        double accY = (VYplus - VYmin)/deltaXYZ;
-        double accZ = (VZplus - VZmin)/deltaXYZ;
-        Vector3D accelerationEquatorialPlane = new Vector3D(-accX,-accY,-accZ);
-        return transformFromEquatorialPlaneToEclipticPlane(accelerationEquatorialPlane);
+        Vector3D acceleration = gravitationalPotentialDerivativeFromPerturbationsPlanet(positionEquatorialPlane);
+        return transformFromEquatorialPlaneToEclipticPlane(acceleration);
     }
 
     @Override
