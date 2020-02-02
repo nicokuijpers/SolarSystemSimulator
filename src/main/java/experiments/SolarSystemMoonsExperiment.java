@@ -71,6 +71,7 @@ public class SolarSystemMoonsExperiment {
 
         // Start simulation at January 1, 1990
         // Note that January is month 0
+        // simulationStartDateTime = new GregorianCalendar(1990,0,1,0,0);
         simulationStartDateTime = new GregorianCalendar(1990,0,1,0,0);
 
         // https://www.timeanddate.com/time/aboututc.html

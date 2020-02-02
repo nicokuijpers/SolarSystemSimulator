@@ -25,7 +25,7 @@ import java.util.*;
 
 /**
  * Ephemeris of Neptune moon Triton.
- * @author Marco Brassé
+ * @author Marco Brassé and Nico Kuijpers
  */
 
 public class EphemerisNeptuneMoons implements IEphemeris {
@@ -61,7 +61,7 @@ public class EphemerisNeptuneMoons implements IEphemeris {
     // Values from the mean elements
     private double a_accent     = 4504449760.0;   // [km]
     private double i_accent     = 27.923658;      // [degrees]
-    private double omega_accent = 200.788305;     // [degrees]
+    private double Omega_accent = 200.788305;     // [degrees]
     private double u0_accent    = 258.329018;     // [degrees]
     private double u_dot_accent = 0.00598182615;  // [degrees/day]
 
@@ -80,8 +80,8 @@ public class EphemerisNeptuneMoons implements IEphemeris {
     private double I0        = 156.86561883;  // [degrees]
     private double u0        = 32.66861530;   // [degrees]
     private double u_dot     = 61.2586972029; // [degrees/day]
-    private double omega0    = 72.89882654;   // [degrees]
-    private double omega_dot = 0.00143381955; // [degrees/day]
+    private double Omega0 = 72.89882654;   // [degrees]
+    private double Omega_dot = 0.00143381955; // [degrees/day]
     private double alpha     = Math.toRadians(299.46088779); // Converted from [degrees] to [radians]
     private double delta     = Math.toRadians(43.40655561);  // Converted from [degrees] to [radians]
 
@@ -190,11 +190,12 @@ public class EphemerisNeptuneMoons implements IEphemeris {
     }
 
     /**
-     * Compute position of Triton in J2000 mean ecliptic coordinates for given ephemeris time
-     * @param ET ephemeris time.
-     * @return position [m]
+     * Compute position and velocity of Triton in J2000 mean ecliptic coordinates
+     * for given ephemeris time.
+     * @param ET ephemeris time
+     * @return velocity [m/s]
      */
-    private Vector3D getPositionTriton(double ET)
+    private Vector3D[] getPositionVelocityTriton(double ET)
     {
         /*
          *  Position of Triton for given Ephemeris Time is calculated according to
@@ -205,86 +206,92 @@ public class EphemerisNeptuneMoons implements IEphemeris {
          */
 
         // Formula 5
-        double u_accent = u0_accent + u_dot_accent*(ET-ts);
-        double omega_line = omega0 + omega_dot*(ET-t0);
+        double u_accent = u0_accent + u_dot_accent*(ET - ts);
+        double Omega_line = Omega0 + Omega_dot*(ET - t0);
 
         // Formula 4
         double delta_It = 0.0;
         for (int i=0;i<7;i++)
         {
-            double v = k1[i]*u_accent + k2[i]*(omega_accent - omega_line);
+            double v = k1[i]*u_accent + k2[i]*(Omega_accent - Omega_line);
             delta_It = delta_It + KI[i]*Math.cos(Math.toRadians(v));
         }
         double delta_Ut = 0.0;
         for (int i=0;i<7;i++)
         {
-            double v = k1[i]*u_accent + k2[i]*(omega_accent - omega_line);
+            double v = k1[i]*u_accent + k2[i]*(Omega_accent - Omega_line);
             delta_Ut = delta_Ut + KU[i]*Math.sin(Math.toRadians(v));
         }
         double delta_Ot = 0.0;
         for (int i=0;i<7;i++)
         {
-            double v = k1[i]*u_accent + k2[i]*(omega_accent-omega_line);
+            double v = k1[i]*u_accent + k2[i]*(Omega_accent -Omega_line);
             delta_Ot = delta_Ot + KO[i]*Math.sin(Math.toRadians(v));
         }
 
         // Formula 2+6, k^=0.0
         double u = Math.toRadians(u0 + u_dot*(ET-t0) + delta_Ut);
         double I = Math.toRadians(I0 + delta_It);
-        double omega = Math.toRadians(omega0 + omega_dot*(ET-t0) + delta_Ot);
+        double omega = Math.toRadians(Omega0 + Omega_dot *(ET-t0) + delta_Ot);
 
-        // Formula 3
-        double x=a*(Math.cos(u)*Math.cos(omega)-Math.sin(u)*Math.sin(omega)*Math.cos(I));
-        double y=a*(Math.cos(u)*Math.sin(omega)+Math.sin(u)*Math.cos(omega)*Math.cos(I));
-        double z=a*Math.sin(u)*Math.sin(I);
+        double sin_u = Math.sin(u);
+        double cos_u = Math.cos(u);
+        double sin_Omega = Math.sin(omega);
+        double cos_Omega = Math.cos(omega);
+        double sin_I = Math.sin(I);
+        double cos_I = Math.cos(I);
+
+        // Formula 3 for position
+        double x = a * (cos_u * cos_Omega - sin_u * sin_Omega * cos_I);
+        double y = a * (cos_u * sin_Omega + sin_u * cos_Omega * cos_I);
+        double z = a * sin_u * sin_I;
+
+        // Derivative of Formula 3 for velocity
+        double u_dot_rad = Math.toRadians(u_dot);
+        double Omega_dot_rad = Math.toRadians(Omega_dot);
+        double vx = -a * (sin_u * u_dot_rad * cos_Omega +
+                          cos_u * sin_Omega * Omega_dot_rad +
+                          cos_u * u_dot_rad * sin_Omega * cos_I +
+                          sin_u * cos_Omega * Omega_dot_rad * cos_I);
+        double vy = -a * (sin_u * u_dot_rad * sin_Omega -
+                          cos_u * cos_Omega * Omega_dot_rad -
+                          cos_u * u_dot_rad * cos_Omega * cos_I +
+                          sin_u * sin_Omega * Omega_dot_rad * cos_I);
+        double vz = a * cos_u * u_dot_rad * sin_I;
 
         // Formula 1
-        double alfa0=alpha;
-        double delta0=delta;
-        double xg=-Math.sin(alfa0)*x-Math.cos(alfa0)*Math.sin(delta0)*y+Math.cos(alfa0)*Math.cos(delta0)*z;
-        double yg= Math.cos(alfa0)*x-Math.sin(alfa0)*Math.sin(delta0)*y+Math.sin(alfa0)*Math.cos(delta0)*z;
-        double zg= Math.cos(delta0)*y + Math.sin(delta0)*z;
+        double sin_alpha = Math.sin(alpha);
+        double cos_alpha = Math.cos(alpha);
+        double sin_delta = Math.sin(delta);
+        double cos_delta = Math.cos(delta);
+
+        double xg = -sin_alpha*x - cos_alpha*sin_delta*y + cos_alpha*cos_delta*z;
+        double yg =  cos_alpha*x - sin_alpha*sin_delta*y + sin_alpha*cos_delta*z;
+        double zg =  cos_delta*y + sin_delta*z;
+
+        double vxg = -sin_alpha*vx - cos_alpha*sin_delta*vy + cos_alpha*cos_delta*vz;
+        double vyg =  cos_alpha*vx - sin_alpha*sin_delta*vy + sin_alpha*cos_delta*vz;
+        double vzg =  cos_delta*vy + sin_delta*vz;
 
         // Convert from 'earth'to 'ecliptic'
-        double cos_h=Math.cos(eclipticAngle);
-        double sin_h=Math.sin(eclipticAngle);
+        double cos_h = Math.cos(eclipticAngle);
+        double sin_h = Math.sin(eclipticAngle);
         double yg1 = cos_h * yg + sin_h * zg;
         double zg1 =-sin_h * yg + cos_h * zg;
         yg = yg1;
         zg = zg1;
 
-        // Position in m, already in J2000 mean ecliptic coordinates (meters)
+        double vyg1 = cos_h * vyg + sin_h * vzg;
+        double vzg1 =-sin_h * vyg + cos_h * vzg;
+        vyg = vyg1;
+        vzg = vzg1;
+
+        // Position in m, already in J2000 mean ecliptic coordinates
         Vector3D position = new Vector3D(xg*1000.0, yg*1000.0, zg*1000.0);
-        return position;
-    }
 
-    /**
-     * Compute velocity of Triton in J2000 mean ecliptic coordinates for given ephemeris time.
-     * @param ET ephemeris time.
-     * @return velocity [m/s]
-     */
-    private Vector3D getVelocityTriton(double ET)
-    {
-        // Compute velocity by solving Gauss problem using two positions and time difference
-        double mu = SolarSystemParameters.getInstance().getMu("Neptune");
-        double deltaT = 4 * 60 * 60; // Time difference [s]
-        double deltaET = deltaT/(24 * 60 * 60); // Time difference [days]
-        Vector3D position1 = getPositionTriton(ET);
-        Vector3D position2 = getPositionTriton(ET + deltaET);
-        Vector3D velocity = EphemerisUtil.solveGaussProblem(position1, position2, deltaT, mu);
-        return velocity;
-    }
-
-    /**
-     * Compute position and velocity of Triton in J2000 mean ecliptic coordinates
-     * for given ephemeris time.
-     * @param ET ephemeris time
-     * @return velocity [m/s]
-     */
-    private Vector3D[] getPositionVelocityTriton(double ET)
-    {
-        Vector3D position = getPositionTriton(ET);
-        Vector3D velocity = getVelocityTriton(ET);
+        // Velocity in m/s, already in J2000 mean ecliptic coordinates
+        double factor = 1000.0/(24*60*60);
+        Vector3D velocity = new Vector3D(vxg*factor,vyg*factor,vzg*factor);
         return new Vector3D[]{position,velocity};
     }
 
