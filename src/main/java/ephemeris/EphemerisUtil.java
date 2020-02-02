@@ -261,6 +261,77 @@ public class EphemerisUtil {
     }
 
     /**
+     * Find velocity vector by solving Gauss problem using two positions and time difference.
+     * @param position1  First position relative to focus [m]
+     * @param position2  Second position relative to focus [m]
+     * @param deltaT     Time difference between positions [s]
+     * @param mu         Gravitational parameter [m3/s2]
+     * @return velocity [m/s]
+     */
+    public static Vector3D solveGaussProblem(Vector3D position1, Vector3D position2, double deltaT, double mu) {
+
+        /*
+         * The algorithm to solve the Gauss problem is based on Chapter 5 from
+         * Roger R. Bate, Donald D. Mueller, and Jerry E. White
+         * Fundamentals of Astrodynamics
+         * Dover Publications, Inc
+         * New York, USA
+         * ISBN 0-486-60061-0
+         */
+
+        // Define powers of deltaT
+        double t2 = deltaT * deltaT;
+        double t3 = t2 * deltaT;
+        double t4 = t3 * deltaT;
+        double t5 = t4 * deltaT;
+        double t6 = t5 * deltaT;
+
+        // Initial guess for velocity v1 at first position r1 [m/s]
+        Vector3D velocity = (position2.minus(position1)).scalarProduct(1.0/deltaT);
+
+        // Distance r at first position r1
+        double r = position1.magnitude();
+
+        // Refine estimate of velocity by means of iteration
+        // Fundamentals of Astrodynamics, formulas 5-5.28 and 5-5.29
+        int nrIter = 0;
+        double diff;
+        do {
+            // Store former velocity
+            Vector3D formerVelocity = new Vector3D(velocity);
+
+            // Update estimate
+            double u0 = mu / (r*r*r);
+            double p0 = position1.dotProduct(velocity) / (r*r);
+            double q0 = velocity.magnitudeSquare()/(r*r) - u0;
+
+            // Fundamentals of Astrodynamics, Table 5.5-1
+            double fx = 1.0 - 0.5*u0*t2 + 0.5*u0*p0*t3 +
+                    (1.0/24.0)*u0*(u0 - 15*p0*p0 + 3*q0)*t4 +
+                    (1.0/8.0)*u0*p0*(7*p0*p0 - u0 - 3*q0)*t5 +
+                    (105*u0*p0*p0*(-9*p0*p0 + 6*q0 + 2*u0) -
+                            u0*(45*q0*q0 + 24*u0*p0 + u0*u0 ))*t6/720.0;
+
+            // Fundamentals of Astrodynamics, Table 5.5-1
+            double gx = deltaT - (1.0/6.0)*u0*t3 + 0.25*u0*p0*t4 +
+                    (1.0/120.0)*u0*(u0 - 45*p0*p0 + 9*q0)*t5 +
+                    (30/720.0)*u0*p0*(14*p0*p0 - 6*q0 - u0)*t6;
+
+            // v1 = r2 - fx*r1
+            velocity = position2.minus(position1.scalarProduct(fx));
+
+            // v1 = v1 / gx
+            velocity = velocity.scalarProduct(1.0/gx);
+
+            // Calculate difference [m/s]
+            diff = (velocity.minus(formerVelocity)).magnitude();
+            nrIter++;
+        }
+        while ((diff > 1.0E-14) && (nrIter < 100));
+        return velocity;
+    }
+
+    /**
      * Compute standard gravitational parameter mu from orbital parameters that
      * include date/time of perihelion passage and mean motion.
      *

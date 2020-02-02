@@ -117,10 +117,6 @@ public class EphemerisNeptuneMoons implements IEphemeris {
         // Last valid date for accurate computation 2200 AD
         lastValidDateAccurate = new GregorianCalendar(2200,0,1);
         lastValidDateAccurate .setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        // Standard gravitional parameters
-        //double au = SolarSystemParameters.ASTRONOMICALUNIT;
-        //double nrSecsDay = 86400.0;
     }
 
     /**
@@ -174,18 +170,8 @@ public class EphemerisNeptuneMoons implements IEphemeris {
         // Compute Ephemeris Time
         double ET = JulianDateConverter.convertCalendarToJulianDate(date);
 
-        // Determine satellite number
-        int nsat;
-        if ("Triton".equals(name)) nsat = 1;
-        else /* choose Triton as default */ nsat = 1;
-
-        // Check whether Accurate Ephemeris can be used
-        if (!date.before(firstValidDateAccurate) && !date.after(lastValidDateAccurate)) {
-            return getPositionVelocity(ET, nsat, 0);
-        }
-        else {
-            return getPositionVelocity(ET, nsat, 0);
-        }
+        // Compute position and velocity
+        return getPositionVelocityTriton(ET);
     }
 
     @Override
@@ -203,14 +189,12 @@ public class EphemerisNeptuneMoons implements IEphemeris {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private Vector3D[] getPositionVelocity(double ET, int nsat, int not_used)
-    {
-        Vector3D posVec = getPosition(ET,nsat,0);
-        Vector3D velVec = getVelocity(ET,nsat,0);
-        return new Vector3D[]{posVec,velVec};
-    }
-
-    private Vector3D getPosition(double ET, int nsat, int not_used)
+    /**
+     * Compute position of Triton in J2000 mean ecliptic coordinates for given ephemeris time
+     * @param ET ephemeris time.
+     * @return position [m]
+     */
+    private Vector3D getPositionTriton(double ET)
     {
         /*
          *  Position of Triton for given Ephemeris Time is calculated according to
@@ -274,23 +258,39 @@ public class EphemerisNeptuneMoons implements IEphemeris {
         return position;
     }
 
-    private Vector3D getVelocity(double ET, int nsat, int not_used)
+    /**
+     * Compute velocity of Triton in J2000 mean ecliptic coordinates for given ephemeris time.
+     * @param ET ephemeris time.
+     * @return velocity [m/s]
+     */
+    private Vector3D getVelocityTriton(double ET)
     {
-        // Using differentiation
-        double deltaT=0.01;
-        Vector3D position0 = getPosition(ET-deltaT/2.0,nsat,0);
-        Vector3D position1 = getPosition(ET+deltaT/2.0,nsat,0);
-        double vx = (position1.getX()-position0.getX())/deltaT;
-        double vy = (position1.getY()-position0.getY())/deltaT;
-        double vz = (position1.getZ()-position0.getZ())/deltaT;
-        // Velocity in m/s, already in J2000 mean ecliptic coordinates (meters/sec)
-        Vector3D velocity = new Vector3D(vx/86400.0,vy/86400.0,vz/86400.0);
+        // Compute velocity by solving Gauss problem using two positions and time difference
+        double mu = SolarSystemParameters.getInstance().getMu("Neptune");
+        double deltaT = 4 * 60 * 60; // Time difference [s]
+        double deltaET = deltaT/(24 * 60 * 60); // Time difference [days]
+        Vector3D position1 = getPositionTriton(ET);
+        Vector3D position2 = getPositionTriton(ET + deltaET);
+        Vector3D velocity = EphemerisUtil.solveGaussProblem(position1, position2, deltaT, mu);
         return velocity;
+    }
+
+    /**
+     * Compute position and velocity of Triton in J2000 mean ecliptic coordinates
+     * for given ephemeris time.
+     * @param ET ephemeris time
+     * @return velocity [m/s]
+     */
+    private Vector3D[] getPositionVelocityTriton(double ET)
+    {
+        Vector3D position = getPositionTriton(ET);
+        Vector3D velocity = getVelocityTriton(ET);
+        return new Vector3D[]{position,velocity};
     }
 
     public static void main (String[] args) {
         EphemerisNeptuneMoons obj = new EphemerisNeptuneMoons();
-        Vector3D[] posVel = obj.getPositionVelocity(2451497.500000, 1, 0); // Triton
+        Vector3D[] posVel = obj.getPositionVelocityTriton(2451497.500000); // Triton
         System.out.println("Resulting positionVelocity [Triton]");
         System.out.println(posVel[0]);
         System.out.println(posVel[1]);
