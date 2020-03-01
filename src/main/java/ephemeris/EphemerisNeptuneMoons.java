@@ -225,19 +225,19 @@ public class EphemerisNeptuneMoons implements IEphemeris {
         double delta_Ot = 0.0;
         for (int i=0;i<7;i++)
         {
-            double v = k1[i]*u_accent + k2[i]*(Omega_accent -Omega_line);
+            double v = k1[i]*u_accent + k2[i]*(Omega_accent - Omega_line);
             delta_Ot = delta_Ot + KO[i]*Math.sin(Math.toRadians(v));
         }
 
         // Formula 2+6, k^=0.0
         double u = Math.toRadians(u0 + u_dot*(ET-t0) + delta_Ut);
         double I = Math.toRadians(I0 + delta_It);
-        double omega = Math.toRadians(Omega0 + Omega_dot *(ET-t0) + delta_Ot);
+        double Omega = Math.toRadians(Omega0 + Omega_dot *(ET-t0) + delta_Ot);
 
         double sin_u = Math.sin(u);
         double cos_u = Math.cos(u);
-        double sin_Omega = Math.sin(omega);
-        double cos_Omega = Math.cos(omega);
+        double sin_Omega = Math.sin(Omega);
+        double cos_Omega = Math.cos(Omega);
         double sin_I = Math.sin(I);
         double cos_I = Math.cos(I);
 

@@ -543,9 +543,17 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         
         // Add the new body to the solar system for computation
         this.planets.put(name, new SolarSystemBody(name, position, velocity, orbit, diameter, sun));
-        
+
         // Add the new planet as particle for simulation
-        this.addParticle(name, mass, mu, position, velocity);
+        if (mass >= solarSystemParameters.getMass("Pluto")) {
+            // Planet with mass at least mass of Pluto may apply force to other objects
+            // Note that Pluto and Eris both may apply forces to other objects
+            this.addParticle(name, mass, mu, position, velocity);
+        }
+        else {
+            // Planet with mass smaller than the mass of Pluto cannot apply force to other objects
+            this.addParticleWithoutMass(name, position, velocity);
+        }
     }
     
     /**
