@@ -68,8 +68,11 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     // Simulation date/time
     private GregorianCalendar simulationDateTime;
     
-    // Simulation time step (1 hour)
+    // Simulation time step 60 min
+    // General Relativity: Runge-Kutta scheme with time step 60 min
+    // Newton Mechanics: Adams-Bashforth-Moulton scheme with time step 30 min
     private final long deltaT = (long) (60 * 60);
+    private final long deltaTABM4 = deltaT/2;
 
     // Spacecraft events
     private List<SpacecraftEvent> spacecraftEvents;
@@ -160,6 +163,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Create spacecraft New Horizons
         Spacecraft newHorizons = new NewHorizons("New Horizons",simulationDateTime,this);
         createSpacecraft(newHorizons);
+
+        // Four-step Adams-Bashforth-Moulton method.
+        // Reset flag to indicate that values stored in cyclic arrays are not valid.
+        setValidABM4(false);
     }
 
     /**
@@ -173,6 +180,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         for (OblatePlanetSystem planetSystem : planetSystems.values()) {
             planetSystem.setGeneralRelativityFlag(flag);
         }
+        setValidABM4(false);
     }
 
     /**
@@ -205,7 +213,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @return current simulation date/time
      */
     public GregorianCalendar getSimulationDateTime() {
-        return (GregorianCalendar) simulationDateTime.clone();
+        GregorianCalendar gc = (GregorianCalendar) simulationDateTime.clone();
+        gc.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return gc;
     }
 
     /**
@@ -291,6 +301,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Schedule next spacecraft event
         scheduleNextSpacecraftEvent();
+
+        // Four-step Adams-Bashforth-Moulton method.
+        // Reset flag to indicate that values stored in cyclic arrays are not valid.
+        setValidABM4(false);
     }
 
     /**
@@ -328,8 +342,15 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      */
     public void advanceSimulationForward(int nrTimeSteps) {
         for (int i = 0; i < nrTimeSteps; i++) {
-            // Advance using Runge-Kutta scheme
-            advanceRungeKutta(deltaT);
+            if (getGeneralRelativityFlag()) {
+                // Runge-Kutta for General Relativity
+                advanceRungeKutta(deltaT);
+            }
+            else {
+                // Two times Adams-Bashforth-Moulton for Newton Mechanics
+                advanceABM4(deltaTABM4);
+                advanceABM4(deltaTABM4);
+            }
             correctDrift();
             advancePlanetSystems(deltaT);
             simulationDateTime.add(Calendar.SECOND, (int) deltaT);
@@ -343,8 +364,15 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      */
     public void advanceSimulationBackward(int nrTimeSteps) {
         for (int i = 0; i < nrTimeSteps; i++) {
-            // Advance using Runge-Kutta scheme
-            advanceRungeKutta(-deltaT);
+            if (getGeneralRelativityFlag()) {
+                // Runge-Kutta for General Relativity
+                advanceRungeKutta(-deltaT);
+            }
+            else {
+                // Two times Adams-Bashforth-Moulton for Newton Mechanics
+                advanceABM4(-deltaTABM4);
+                advanceABM4(-deltaTABM4);
+            }
             correctDrift();
             advancePlanetSystems(-deltaT);
             simulationDateTime.add(Calendar.SECOND, (int) -deltaT);
@@ -358,6 +386,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      */
     public void advanceSimulationSingleStep(int timeStep) {
         // Advance using Runge-Kutta scheme
+        setValidABM4(false);
         timeStep = Math.min(timeStep,3600);
         timeStep = Math.max(timeStep,-3600);
         advanceRungeKutta((long) timeStep);
@@ -531,16 +560,16 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param date      Date to determine position of the moon.
      */
     private void createPlanet(String name, double mass, double mu, double diameter, GregorianCalendar date) {
-        
+
         // Obtain position and velocity from Ephemeris
         Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(name, date);
         Vector3D position = positionAndVelocity[0];
         Vector3D velocity = positionAndVelocity[1];
-        
+
         // Compute orbit relative to the sun
         double muSun = solarSystemParameters.getMu("Sun");
         Vector3D[] orbit = EphemerisUtil.computeOrbit(muSun, position, velocity);
-        
+
         // Add the new body to the solar system for computation
         this.planets.put(name, new SolarSystemBody(name, position, velocity, orbit, diameter, sun));
 

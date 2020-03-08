@@ -22,16 +22,11 @@ package experiments;
 import ephemeris.EphemerisAccurate;
 import ephemeris.IEphemeris;
 import ephemeris.SolarSystemParameters;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
 import particlesystem.Particle;
 import particlesystem.ParticleSystem;
 import util.Vector3D;
+
+import java.util.*;
 
 /**
  * Experiment to determine accuracy of simulation results for the following bodies of
@@ -145,7 +140,13 @@ public class SimulationAccuracyExperiment {
         // Run simulation
         while (simulationDateTime.before(simulationEndDateTime)) {
             // Advance 1 hour
-            particleSystem.advanceRungeKutta(deltaT);
+            if (particleSystem.getGeneralRelativityFlag()) {
+                particleSystem.advanceRungeKutta(deltaT);
+            }
+            else {
+                particleSystem.advanceABM4(deltaT/2);
+                particleSystem.advanceABM4(deltaT/2);
+            }
             
             // Correction for position of Sun
             Particle sun = particleSystem.getParticle("Sun");
@@ -153,14 +154,14 @@ public class SimulationAccuracyExperiment {
             
             // Update simulation date/time
             simulationDateTime.add(Calendar.SECOND, (int) deltaT);
-            
+
             // Check position of Solar System bodies each day
             hour++;
             if (hour == 24) {
                 hour = 0;
                 day++;
                 checkPosition(simulationDateTime,day);
-            }   
+            }
         }
     }
 
@@ -283,80 +284,87 @@ public class SimulationAccuracyExperiment {
         SimulationAccuracyExperiment experiment = new SimulationAccuracyExperiment();
         
         // Run simulation using Newton Mechanics for 580 years
+        Long startNM = System.currentTimeMillis();
         experiment.simulateNewtonMechanics(580);
-        
+        Long stopNM = System.currentTimeMillis();
+        System.out.println("Computation time Newton Mechanics : " + (stopNM - startNM)/1000 + " s");
+
         // Run simulation using General Relativity for 580 years
+        Long startGR = System.currentTimeMillis();
         experiment.simulateGeneralRelativity(580);
+        Long stopGR = System.currentTimeMillis();
+        System.out.println("Computation time General Relativity : " + (stopGR - startGR)/1000 + " s");
     }
 
     /*
-        Results
+        Results Newton Mechanics
         Running simulation using Newton Mechanics for 580 years
-        Year: 100 body: Mercury average deviation: 18651.33266516227 km
-        Year: 100 body: Venus average deviation: 8765.861319718528 km
-        Year: 100 body: Earth average deviation: 5876.194184110724 km
-        Year: 100 body: Moon average deviation: 5954.964737423869 km
-        Year: 100 body: Mars average deviation: 4310.3778523784285 km
-        Year: 100 body: Jupiter average deviation: 322.86561863498906 km
-        Year: 100 body: Saturn average deviation: 211.27603175520917 km
-        Year: 100 body: Uranus average deviation: 130.38127790103223 km
-        Year: 100 body: Neptune average deviation: 130.37451857219347 km
-        Year: 100 body: Pluto average deviation: 76.56052959502074 km
+        Year: 100 body: Mercury average deviation: 18625.936728656434 km
+        Year: 100 body: Venus average deviation: 8765.851308087324 km
+        Year: 100 body: Earth average deviation: 5876.1912539957875 km
+        Year: 100 body: Moon average deviation: 5972.765273151949 km
+        Year: 100 body: Mars average deviation: 4310.367505320179 km
+        Year: 100 body: Jupiter average deviation: 322.84929218663086 km
+        Year: 100 body: Saturn average deviation: 211.2542958555819 km
+        Year: 100 body: Uranus average deviation: 130.36491298737292 km
+        Year: 100 body: Neptune average deviation: 130.37395994716857 km
+        Year: 100 body: Pluto average deviation: 76.56526969838896 km
 
-        Year: 200 body: Mercury average deviation: 37334.994528035764 km
-        Year: 200 body: Venus average deviation: 17659.125134044905 km
-        Year: 200 body: Earth average deviation: 11782.6703749294 km
-        Year: 200 body: Moon average deviation: 11930.2845950075 km
-        Year: 200 body: Mars average deviation: 8763.842498742983 km
-        Year: 200 body: Jupiter average deviation: 765.6649533061166 km
-        Year: 200 body: Saturn average deviation: 490.2357013808898 km
-        Year: 200 body: Uranus average deviation: 268.82379553188906 km
-        Year: 200 body: Neptune average deviation: 155.20752612085852 km
-        Year: 200 body: Pluto average deviation: 80.90969553453951 km
+        Year: 200 body: Mercury average deviation: 37234.74837592675 km
+        Year: 200 body: Venus average deviation: 17659.025046822648 km
+        Year: 200 body: Earth average deviation: 11782.695500193166 km
+        Year: 200 body: Moon average deviation: 12002.469119190078 km
+        Year: 200 body: Mars average deviation: 8763.806376409255 km
+        Year: 200 body: Jupiter average deviation: 765.6251157003284 km
+        Year: 200 body: Saturn average deviation: 490.17468318005365 km
+        Year: 200 body: Uranus average deviation: 268.7787388398082 km
+        Year: 200 body: Neptune average deviation: 155.20261599089613 km
+        Year: 200 body: Pluto average deviation: 80.92425271952612 km
 
-        Year: 300 body: Mercury average deviation: 56126.26170909272 km
-        Year: 300 body: Venus average deviation: 26380.666884768943 km
-        Year: 300 body: Earth average deviation: 17688.801566007525 km
-        Year: 300 body: Moon average deviation: 17850.258548978094 km
-        Year: 300 body: Mars average deviation: 12635.25477551177 km
-        Year: 300 body: Jupiter average deviation: 1067.8319959382754 km
-        Year: 300 body: Saturn average deviation: 758.9715054905869 km
-        Year: 300 body: Uranus average deviation: 412.8778486521169 km
-        Year: 300 body: Neptune average deviation: 296.58095600046363 km
-        Year: 300 body: Pluto average deviation: 79.892085908439 km
+        Year: 300 body: Mercury average deviation: 55901.477190462465 km
+        Year: 300 body: Venus average deviation: 26380.45914627176 km
+        Year: 300 body: Earth average deviation: 17688.834963788195 km
+        Year: 300 body: Moon average deviation: 18014.363472293317 km
+        Year: 300 body: Mars average deviation: 12635.18572093444 km
+        Year: 300 body: Jupiter average deviation: 1067.745279513153 km
+        Year: 300 body: Saturn average deviation: 758.8664405836864 km
+        Year: 300 body: Uranus average deviation: 412.81200807445634 km
+        Year: 300 body: Neptune average deviation: 296.5843053065872 km
+        Year: 300 body: Pluto average deviation: 79.90337143017005 km
 
-        Year: 400 body: Mercury average deviation: 75193.92505375914 km
-        Year: 400 body: Venus average deviation: 35347.3627263678 km
-        Year: 400 body: Earth average deviation: 23594.15404376493 km
-        Year: 400 body: Moon average deviation: 23844.274469388267 km
-        Year: 400 body: Mars average deviation: 15619.399167669719 km
-        Year: 400 body: Jupiter average deviation: 1369.1251469186761 km
-        Year: 400 body: Saturn average deviation: 880.1168349115511 km
-        Year: 400 body: Uranus average deviation: 576.3068529989906 km
-        Year: 400 body: Neptune average deviation: 362.2490932572205 km
-        Year: 400 body: Pluto average deviation: 171.6697647027669 km
+        Year: 400 body: Mercury average deviation: 74794.46132665622 km
+        Year: 400 body: Venus average deviation: 35347.08878788415 km
+        Year: 400 body: Earth average deviation: 23594.17499891564 km
+        Year: 400 body: Moon average deviation: 24135.24135580016 km
+        Year: 400 body: Mars average deviation: 15619.26971059715 km
+        Year: 400 body: Jupiter average deviation: 1368.98280877372 km
+        Year: 400 body: Saturn average deviation: 879.9814271537108 km
+        Year: 400 body: Uranus average deviation: 576.2318712676522 km
+        Year: 400 body: Neptune average deviation: 362.2403333837879 km
+        Year: 400 body: Pluto average deviation: 171.68817221121856 km
 
-        Year: 500 body: Mercury average deviation: 94672.01057168366 km
-        Year: 500 body: Venus average deviation: 44043.75967633921 km
-        Year: 500 body: Earth average deviation: 29501.424067084543 km
-        Year: 500 body: Moon average deviation: 29753.6331329433 km
-        Year: 500 body: Mars average deviation: 18217.78199617646 km
-        Year: 500 body: Jupiter average deviation: 1969.1700119982634 km
-        Year: 500 body: Saturn average deviation: 1322.2480764623965 km
-        Year: 500 body: Uranus average deviation: 762.4007095214944 km
-        Year: 500 body: Neptune average deviation: 423.1528083756864 km
-        Year: 500 body: Pluto average deviation: 122.65355960848973 km
+        Year: 500 body: Mercury average deviation: 94047.0362463686 km
+        Year: 500 body: Venus average deviation: 44043.366508576284 km
+        Year: 500 body: Earth average deviation: 29501.307850313835 km
+        Year: 500 body: Moon average deviation: 30215.70670819663 km
+        Year: 500 body: Mars average deviation: 18217.61168831413 km
+        Year: 500 body: Jupiter average deviation: 1968.94561456277 km
+        Year: 500 body: Saturn average deviation: 1322.0656884715843 km
+        Year: 500 body: Uranus average deviation: 762.3264871013838 km
+        Year: 500 body: Neptune average deviation: 423.12249503777974 km
+        Year: 500 body: Pluto average deviation: 122.64999724811246 km
 
-        Year: 580 body: Mercury average deviation: 110576.45578072112 km
-        Year: 580 body: Venus average deviation: 51135.78074113667 km
-        Year: 580 body: Earth average deviation: 34226.325843627725 km
-        Year: 580 body: Moon average deviation: 34325.29483906366 km
-        Year: 580 body: Mars average deviation: 24951.228781056438 km
-        Year: 580 body: Jupiter average deviation: 2226.8322096002103 km
-        Year: 580 body: Saturn average deviation: 1300.9794381850418 km
-        Year: 580 body: Uranus average deviation: 867.0276991301828 km
-        Year: 580 body: Neptune average deviation: 540.7895744365629 km
-        Year: 580 body: Pluto average deviation: 172.1702850993744 km
+        Year: 580 body: Mercury average deviation: 109733.44807943549 km
+        Year: 580 body: Venus average deviation: 51135.22214016499 km
+        Year: 580 body: Earth average deviation: 34227.39613287761 km
+        Year: 580 body: Moon average deviation: 34833.005088308295 km
+        Year: 580 body: Mars average deviation: 24951.020660519 km
+        Year: 580 body: Jupiter average deviation: 2226.557825483536 km
+        Year: 580 body: Saturn average deviation: 1300.7774733522383 km
+        Year: 580 body: Uranus average deviation: 866.9582740652295 km
+        Year: 580 body: Neptune average deviation: 540.7487247658097 km
+        Year: 580 body: Pluto average deviation: 172.1412957687407 km
+        Computation time Newton Mechanics : 48 s
 
         Results General Relativity
         Running simulation using General Relativity for 580 years
@@ -425,5 +433,6 @@ public class SimulationAccuracyExperiment {
         Year: 580 body: Uranus average deviation: 431.18499103652096 km
         Year: 580 body: Neptune average deviation: 343.5266490381035 km
         Year: 580 body: Pluto average deviation: 237.01167498695162 km
+        Computation time General Relativity : 662 s
      */
 }

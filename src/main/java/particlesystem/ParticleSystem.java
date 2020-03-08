@@ -34,6 +34,12 @@ public class ParticleSystem implements Serializable {
     // Default serialVersion id
     private static final long serialVersionUID = 1L;
 
+    // Four-step Adams-Bashfort-Moulton method
+    private boolean validABM4 = false; // Flag to indicate whether cyclic arrays are valid
+    private long deltaTABM4 = 0L;      // Store ABM4 time step in order to detect change
+    private int nrValidABM4 = 0;       // Number of valid values in cyclic arrays
+    private int indexABM4 = 0;         // Index in cyclic arrays
+
     /**
      * Default mass [kg] for massless particle.
      */
@@ -55,7 +61,7 @@ public class ParticleSystem implements Serializable {
      * These particles apply force to all other particles.
      */
     protected Map<String, Particle> particlesWithMass;
-    
+
     /**
      * Default constructor.
      */
@@ -63,7 +69,7 @@ public class ParticleSystem implements Serializable {
         particles = new HashMap<>();
         particlesWithMass = new HashMap<>();
     }
-    
+
     /**
      * Set/reset flag to apply general relativity when computing
      * acceleration.
@@ -115,7 +121,7 @@ public class ParticleSystem implements Serializable {
 
     /**
      * Add new particle without mass to particle system.
-     * Particles without mass are used to simulate small solar system objects and
+     * Particles without mass are used to simulate small Solar System objects and
      * spacecraft. They do not apply forces on other particles.
      * @param name     Name of particle
      * @param position Initial 3D position vector of particle in m
@@ -148,7 +154,7 @@ public class ParticleSystem implements Serializable {
     }
     
     /**
-     * Advance a time step using leapfrog algorithm
+     * Advance a time step using leapfrog algorithm.
      * @param deltaT time step in s
      */
     public void advanceLeapfrog(long deltaT) {
@@ -182,6 +188,54 @@ public class ParticleSystem implements Serializable {
         computeAcceleration();
         for (Particle p : particles.values()) {
             p.updateStateRungeKuttaD(deltaT);
+        }
+    }
+
+    /**
+     * Four-step Adams-Bashforth-Moulton method.
+     * Set/reset flag to indicate whether values stored in cyclic arrays are valid.
+     */
+    protected void setValidABM4(boolean validABM4) {
+        this.validABM4 = validABM4;
+    }
+
+    /**
+     * Advance a time step using four-step Adams-Bashforth-Moulton method.
+     * @param deltaT time step in s
+     */
+    public void advanceABM4(long deltaT) {
+        // https://en.wikiversity.org/wiki/Adams-Bashforth_and_Adams-Moulton_methods
+        // Initialize Adams-Bashforth-Moulton using Runge-Kutta method
+        // Note that four initial values are needed to start calculation
+        if (deltaT != deltaTABM4 || !validABM4) {
+            deltaTABM4 = deltaT;
+            nrValidABM4 = 0;
+            indexABM4 = 3;
+            setValidABM4(true);
+        }
+        if (nrValidABM4 < 4) {
+            advanceRungeKutta(deltaT);
+            computeAcceleration();
+            indexABM4 = (indexABM4 + 1) % 4;
+            for (Particle p : particles.values()) {
+                p.storeVelocityAccelerationABM4(indexABM4);
+            }
+            nrValidABM4++;
+        }
+        else {
+            // Adams-Bashforth-Moulton predictor step
+            for (Particle p : particles.values()) {
+                p.updateStateABM4Predictor(deltaT,indexABM4);
+            }
+            computeAcceleration();
+            indexABM4 = (indexABM4 + 1) % 4;
+            for (Particle p : particles.values()) {
+                p.storeVelocityAccelerationABM4(indexABM4);
+            }
+            // Adams-Bashforth-Moulton corrector step
+            for (Particle p : particles.values()) {
+                p.updateStateABM4Corrector(deltaT,indexABM4);
+            }
         }
     }
     

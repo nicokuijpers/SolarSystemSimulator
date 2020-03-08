@@ -55,10 +55,20 @@ public class Particle implements Serializable {
     private Vector3D acceleration;
     private Vector3D accelerationNewtonMechanics;
     private double potentialEnergy;
+
+    // Store position and velocity of former time step for
+    // Runge-Kutta method and four-step Adams-Bashforth-Moulton method
+    private Vector3D formerPosition;
+    private Vector3D formerVelocity;
     
-    // Runge-Kutta method
-    Vector3D formerPosition, k1, k2, k3, k4;
-    Vector3D formerVelocity, l1, l2, l3, l4;
+    // Store intermediate state for Runge-Kutta method
+    private Vector3D k1, k2, k3, k4;
+    private Vector3D l1, l2, l3, l4;
+
+    // Cyclic arrays to store velocity and acceleration for
+    // four-step Adams-Bashforth-Moulton method
+    private Vector3D[] velocityABM4 = new Vector3D[4];
+    private Vector3D[] accelerationABM4 = new Vector3D[4];
     
     /**
      * Constructor when standard gravitational parameter is not known.
@@ -236,7 +246,7 @@ public class Particle implements Serializable {
         // Set acceleration computed by Newton Mechanics
         // such that it can be used to compute acceleration by
         // General Relativity
-        accelerationNewtonMechanics = new Vector3D(acceleration);
+        accelerationNewtonMechanics = new Vector3D(acceleration);   
     }
     
     /**
@@ -516,6 +526,84 @@ public class Particle implements Serializable {
         positionTerm.addVector(l3.scalarProduct(2.0));
         positionTerm.addVector(l4);
         position.addVector(positionTerm.scalarProduct(1.0/6.0));
+    }
+
+    /**
+     * Four-step Adams-Bashfort-Moulton method. Store velocity and acceleration in
+     * cyclic arrays of size 4 at given index.
+     * @param index index in cyclic arrays, 0 <= index < 4
+     */
+    public void storeVelocityAccelerationABM4(int index) {
+        velocityABM4[index] = new Vector3D(velocity);
+        accelerationABM4[index] = new Vector3D(acceleration);
+    }
+
+    /**
+     * Predictor step of four-step Adams-Bashforth-Moulton method.
+     * @param deltaT time step in s
+     * @param index index in cyclic arrays, 0 <= index < 4
+     */
+    public void updateStateABM4Predictor(long deltaT, int index) {
+        // Store position and velocity of current simulation time
+        formerPosition = new Vector3D(position);
+        formerVelocity = new Vector3D(velocity);
+
+        /*
+         * Predictor step of four-step Adams-Bashforth-Moulton method
+         * https://en.wikiversity.org/wiki/Adams-Bashforth_and_Adams-Moulton_methods
+         * P_{n+1} = y_n + (h/24) * (55 * f(t_n,y_n) - 59 * f(t_{n-1},y_{n-1}) +
+         *                           37 * f(t_{n-2},y_{n-2}) - 9 * f(t_{n-3},y_{n-3}))
+         * where h is time step and f(t_n,y_n) is velocity/acceleration at time step n
+         */
+        int i = index;
+        position.addVector(velocityABM4[i].scalarProduct(55.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(-59.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(37.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(-9.0*deltaT/24.0));
+        i = index;
+        velocity.addVector(accelerationABM4[i].scalarProduct(55.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(-59.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(37.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(-9.0*deltaT/24.0));
+    }
+
+    /**
+     * Corrector step of four-step Adams-Bashforth-Moulton method.
+     * @param deltaT time step in s
+     * @param index index in cyclic arrays, o <= index < 4
+     */
+    public void updateStateABM4Corrector(long deltaT, int index) {
+        /*
+         * Corrector step of four-step Adams-Bashforth-Moulton method
+         * https://en.wikiversity.org/wiki/Adams-Bashforth_and_Adams-Moulton_methods
+         * y_{n+1} = y_n + (h/24) * (9 * f(t_{n+1},P_{n+1}) + 19 * f(t_n,y_n) -
+         *                           5 * f(t_{n-1},y_{n-1}) + f(t_{n-2},y_{n-2}))
+         * where h is time step and f(t_n,y_n) is velocity/acceleration at time step n
+         */
+        int i = index;
+        position = new Vector3D(formerPosition);
+        position.addVector(velocityABM4[i].scalarProduct(9.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(19.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(-5.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(deltaT/24.0));
+        i = index;
+        velocity = new Vector3D(formerVelocity);
+        velocity.addVector(accelerationABM4[i].scalarProduct(9.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(19.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(-5.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(deltaT/24.0));
     }
 
     /**
