@@ -72,7 +72,7 @@ public class SolarSystemMoonsExperiment {
         // Start simulation at January 1, 1990
         // Note that January is month 0
         // simulationStartDateTime = new GregorianCalendar(1990,0,1,0,0);
-        simulationStartDateTime = new GregorianCalendar(1990,0,1,0,0);
+        simulationStartDateTime = new GregorianCalendar(1990,0,3,0,0);
 
         // https://www.timeanddate.com/time/aboututc.html
         // Use Coordinated Universal Time (UTC) to avoid
@@ -81,11 +81,11 @@ public class SolarSystemMoonsExperiment {
         simulationStartDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         // Stop simulation at January 1, 1992
-        simulationEndDateTime = new GregorianCalendar(1992,0,1,0,0 );
+        simulationEndDateTime = new GregorianCalendar(2000,0,3,0,0 );
         simulationEndDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         // Start collecting results at January 1, 1991
-        startCollectingResultsDateTime = new GregorianCalendar(1991,0,1,0,0 );
+        startCollectingResultsDateTime = new GregorianCalendar(1999,0,3,0,0 );
 
         // Define planets to gather results from
         planets = new ArrayList<>(Arrays.asList("Jupiter","Saturn","Uranus","Neptune"));

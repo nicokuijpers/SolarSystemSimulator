@@ -20,10 +20,7 @@
 package solarsystem;
 
 import application.SolarSystemException;
-import ephemeris.EphemerisSolarSystem;
-import ephemeris.EphemerisUtil;
-import ephemeris.IEphemeris;
-import ephemeris.SolarSystemParameters;
+import ephemeris.*;
 import particlesystem.Particle;
 import particlesystem.ParticleSystem;
 import spacecraft.*;
@@ -513,9 +510,19 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         
         // Move each moon particle to position of present date
         for (String moonName : moons.keySet()) {
-            Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(moonName, simulationDateTime);
-            Vector3D positionMoon = positionAndVelocity[0];
-            Vector3D velocityMoon = positionAndVelocity[1];
+            Vector3D[] positionAndVelocityMoon;
+            if ("Triton".equals(moonName)) {
+                // Use accurate ephemeris to initialize position and velocity for Triton
+                EphemerisNeptuneMoons ephemerisTriton = (EphemerisNeptuneMoons) EphemerisNeptuneMoons.getInstance();
+                positionAndVelocityMoon =
+                        ephemerisTriton.getBodyPositionVelocityTritonForInitialization(simulationDateTime);
+            }
+            else {
+                positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, simulationDateTime);
+            }
+            Vector3D positionMoon = positionAndVelocityMoon[0];
+            Vector3D velocityMoon = positionAndVelocityMoon[1];
+
             if ("Moon".equals(moonName)) {
                 // Position and velocity of Earth's moon is relative to the Sun
                 Particle particleMoon = this.getParticle(moonName);
@@ -597,12 +604,20 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      */
     private void createMoon(String planetName, String moonName, 
             double mass, double mu, double diameter, GregorianCalendar date) {
- 
-        // Obtain position and velocity of moon from Ephemeris
-        Vector3D[] positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, date);
+
+        Vector3D[] positionAndVelocityMoon;
+        if ("Triton".equals(moonName)) {
+            // Use accurate ephemeris to initialize position and velocity for Triton
+            EphemerisNeptuneMoons ephemerisTriton = (EphemerisNeptuneMoons) EphemerisNeptuneMoons.getInstance();
+            positionAndVelocityMoon =
+                    ephemerisTriton.getBodyPositionVelocityTritonForInitialization(date);
+        }
+        else {
+            positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, date);
+        }
         Vector3D positionMoon = positionAndVelocityMoon[0];
         Vector3D velocityMoon = positionAndVelocityMoon[1];
-        
+
         // Obtain position and velocity of planet from Ephemeris
         Vector3D[] positionAndVelocityPlanet = ephemeris.getBodyPositionVelocity(planetName, date);
         Vector3D positionPlanet = positionAndVelocityPlanet[0];

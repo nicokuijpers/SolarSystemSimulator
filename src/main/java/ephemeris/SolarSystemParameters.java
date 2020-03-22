@@ -256,7 +256,9 @@ public class SolarSystemParameters {
     private static final double OBERONMU    = 2.053234302535623E11; // 2.053234302535623E+02
 
     // https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
-    private static final double TRITONMU    = 1.427598140725034E12; //  1427.6 km^3/s^2
+    // private static final double TRITONMU    = 1.427598140725034E12; //  1427.6 km^3/s^2
+    // Optimized for accurate simulation of Triton
+    private static final double TRITONMU  = 1.411E12; // was 1.427598140725034E12;
 
     /**
      * Diameter of sun, planets, asteroids, comets, and moons of solar system in m.
@@ -460,8 +462,11 @@ public class SolarSystemParameters {
                      3.627869335910333E-07, -1.449699463354960E-05};
     private static final double[] URANUSZONALCOEFFICIENTS =
             new double[]{0.0, 0.0, 3.510685384697763E-03,  0.0, -3.416639735448987E-05};
+    // private static final double[] NEPTUNEZONALCOEFFICIENTS =
+    //         new double[]{0.0, 0.0, 3.408428530717952E-03,  0.0, -3.339891759006578E-05};
+    // Optimized for accurate simulation of Triton
     private static final double[] NEPTUNEZONALCOEFFICIENTS =
-            new double[]{0.0, 0.0, 3.408428530717952E-03,  0.0, -3.339891759006578E-05};
+            new double[]{0.0, 0.0, 0.0033562,  0.0, 0.0};
 
     /**
      * Right ascension and declination of z-axis of oblate planets Jupiter, Saturn,

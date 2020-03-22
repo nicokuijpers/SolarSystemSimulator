@@ -19,6 +19,8 @@
  */
 package ephemeris;
 
+import application.SolarSystemException;
+import solarsystem.SolarSystem;
 import util.Vector3D;
 
 import java.util.*;
@@ -164,7 +166,7 @@ public class EphemerisNeptuneMoons implements IEphemeris {
 
         // Check whether date is valid
         if (date.before(firstValidDate) || date.after(lastValidDate)) {
-            throw new IllegalArgumentException("Date not valid for Neptune Moons Ephemeris");
+            throw new IllegalArgumentException("Date not valid for Neptune Moon Ephemeris");
         }
 
         // Compute Ephemeris Time
@@ -187,6 +189,64 @@ public class EphemerisNeptuneMoons implements IEphemeris {
     @Override
     public Vector3D[] getBodyPositionVelocityBarycenter(String name, GregorianCalendar date) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Get accurate position [m] and velocity [m/s] of Triton from Ephemeris. Use this method
+     * only for initialization of simulation. Position and velocity are computed relative to
+     * the position and velocity of Neptune.
+     * @param date date/time
+     * @return array containing position [m] and velocity [m/s]
+     */
+    public Vector3D[] getBodyPositionVelocityTritonForInitialization(GregorianCalendar date) {
+
+        /*
+         * Compute accurate position and velocity by finding the latest date/time before
+         * the required date/time for which it holds u = 0 or u = 180. Both the Solar System
+         * and the Neptune system are simulated from the start date/time till the required
+         * date/time.
+         */
+
+        // Compute Ephemeris Time
+        double ET = JulianDateConverter.convertCalendarToJulianDate(date);
+
+        // Compute start date/time for which u = 0 or u = 180
+        double a = 180.0/u_dot;
+        double b = (360.0 - u0)/u_dot + t0;
+        int N = (int)Math.floor((ET - b)/a);
+        double ETstart = a*N + b;
+
+        // Ensure that at most one recursive call is made to this method
+        if (Math.abs(ET - (a*(N +1 ) + b)) > 1.0/(24 * 60)) {
+            try {
+                // Start date/time for which u is close to 0 or 180
+                GregorianCalendar startDateTime = JulianDateConverter.convertJulianDateToCalendar(ETstart);
+
+                // Create a temporary Solar System with start date/time
+                // Note that this will lead to a recursive call of this method
+                SolarSystem solarSystem = new SolarSystem(startDateTime);
+                solarSystem.createPlanetSystem("Neptune");
+
+                // Simulate the temporary Solar System till the requested date/time has been reached
+                while (solarSystem.getSimulationDateTime().before(date)) {
+                    solarSystem.advanceSimulationSingleStep(60);
+                }
+
+                // Obtain position and velocity of Triton from simulation
+                Vector3D positionNeptune = solarSystem.getPosition("Neptune");
+                Vector3D velocityNeptune = solarSystem.getVelocity("Neptune");
+                Vector3D positionTriton = solarSystem.getPosition("Triton");
+                Vector3D velocityTriton = solarSystem.getVelocity("Triton");
+                Vector3D position = positionTriton.minus(positionNeptune);
+                Vector3D velocity = velocityTriton.minus(velocityNeptune);
+                return new Vector3D[]{position, velocity};
+
+            } catch (SolarSystemException e) {
+                System.err.println("Fatal error in EphemerisNeptuneMoons");
+                return getBodyPositionVelocity("Triton", date);
+            }
+        }
+        return getBodyPositionVelocity("Triton", date);
     }
 
     /**
