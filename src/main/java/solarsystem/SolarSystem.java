@@ -35,6 +35,11 @@ import java.util.*;
  */
 public class SolarSystem extends ParticleSystem implements Serializable {
 
+    /**
+     * Default mass [kg] for particle without mass.
+     */
+    private final double DEFAULTMASS = 1.0;
+
     // Ephemeris for the Solar System
     private static final IEphemeris ephemeris = EphemerisSolarSystem.getInstance();
 
@@ -43,6 +48,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
     // The Sun
     private SolarSystemBody sun;
+
+    // The Earth-Moon Barycenter
+    private Particle earthMoonBarycenter;
 
     // Planets of the Solar System
     private Map<String, SolarSystemBody> planets;
@@ -74,7 +82,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     // Spacecraft events
     private List<SpacecraftEvent> spacecraftEvents;
     private SpacecraftEvent nextEvent;
-    
+
     /**
      * Constructor: create the Solar System and initialize for current date/time.
      */
@@ -89,7 +97,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     public SolarSystem(GregorianCalendar dateTime) {
         // Constructor of ParticleSystem
         super();
-        
+
         // Initialize simulation date/time
         simulationDateTime = new GregorianCalendar();
         
@@ -98,7 +106,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // sudden changes in ephemeris due to changes from 
         // winter time to summer time and vice versa
         simulationDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
-        
+
         // Set simulation dateTime/time to given dateTime/time
         simulationDateTime.set(Calendar.ERA, dateTime.get(Calendar.ERA));
         simulationDateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR));
@@ -123,7 +131,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         double muSun   = solarSystemParameters.getMu("Sun");
         double diameterSun = solarSystemParameters.getDiameter("Sun");
         sun = new SolarSystemBody("Sun", positionSun, velocitySun, null, diameterSun, null);
-        this.addParticle("Sun", massSun, muSun, positionSun, velocitySun);
+        Particle sunParticle = new Particle(massSun, muSun, positionSun, velocitySun);
+        this.addParticle("Sun", sunParticle);
 
         // Create the planets
         List<String> planetNames = solarSystemParameters.getPlanets();
@@ -141,6 +150,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         double mu = solarSystemParameters.getMu(moonName);
         double diameter = solarSystemParameters.getDiameter(moonName);
         createMoon(planetName, moonName, mass, mu, diameter, simulationDateTime);
+
+        // Create the Earth-Moon Barycenter as particle without mass
+        createPlanet("EarthMoonBarycenter",1.0,1.0,1.0, dateTime);
 
         // Create storage for the oblate planet systems
         planetSystems = new HashMap<>();
@@ -191,6 +203,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (particle != null) {
             return particle;
         }
+        if ("EarthMoonBarycenter".equals(name)) {
+            return earthMoonBarycenter;
+        }
         String planetName = centerBodies.get(name);
         OblatePlanetSystem planetSystem = planetSystems.get(planetName);
         particle = planetSystem.getParticle(name);
@@ -229,14 +244,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (simulationDateTime.after(ephemeris.getLastValidDate())) {
             throw new SolarSystemException("Date not valid after AD 3000 for " + planetName + " System");
         }
-
+       
         // Create the planet system
         OblatePlanetSystem planetSystem = new OblatePlanetSystem(planetName,this);
 
         // Set flag to indicate whether general relativity
         // should be applied when computing acceleration
         planetSystem.setGeneralRelativityFlag(getGeneralRelativityFlag());
-
+        
         // Store reference to this planet system
         planetSystems.put(planetName,planetSystem);
 
@@ -287,11 +302,11 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));
         simulationDateTime.set(Calendar.SECOND, 0);
         simulationDateTime.set(Calendar.MILLISECOND, 0);
-        
+
         // Compute new positions and orbits for all bodies
         // corresponding to current simulation date/time
         moveBodies();
-        
+
         // Move corresponding particles to positions
         // corresponding to current simulation date/time
         moveBodyParticles();
@@ -303,19 +318,31 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Reset flag to indicate that values stored in cyclic arrays are not valid.
         setValidABM4(false);
     }
-
+            
     /**
      * Advance simulation of planet systems with time steps
      * of at most 10 minutes.
      * @param deltaT simulation time step [s]
      */
     private void advancePlanetSystems(long deltaT) {
+        // Time step for planet systems is at most 10 minutes
         long timeStep = Math.min(Math.abs(deltaT),10*60L);
+
+        // Position planet systems relative to the Sun
+        for (String planetName : planetSystems.keySet()) {
+            Particle planet = this.getParticle(planetName);
+            Vector3D driftPosition = planet.getPosition();
+            Vector3D driftVelocity = planet.getVelocity();
+            OblatePlanetSystem planetSystem = planetSystems.get(planetName);
+            planetSystem.correctDrift(driftPosition,driftVelocity);
+        }
+
+        // Advance planet systems using Runge-Kutta method
         long totalTime = 0L;
         if (deltaT < 0) {
             while (totalTime > deltaT) {
                 for (OblatePlanetSystem planetSystem : planetSystems.values()) {
-                    planetSystem.advanceRungeKutta(-timeStep);
+                    planetSystem.advanceRungeKutta(-timeStep);                    
                 }
                 totalTime -= timeStep;
             }
@@ -323,11 +350,13 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         else {
             while (totalTime < deltaT) {
                 for (OblatePlanetSystem planetSystem : planetSystems.values()) {
-                    planetSystem.advanceRungeKutta(timeStep);
+                    planetSystem.advanceRungeKutta(timeStep);                    
                 }
                 totalTime += timeStep;
             }
         }
+
+        // Position planet systems such that planet is at the origin
         for (OblatePlanetSystem planetSystem : planetSystems.values()) {
             planetSystem.correctDrift();
         }
@@ -339,6 +368,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      */
     public void advanceSimulationForward(int nrTimeSteps) {
         for (int i = 0; i < nrTimeSteps; i++) {
+            advancePlanetSystems(deltaT);
             if (getGeneralRelativityFlag()) {
                 // Runge-Kutta for General Relativity
                 advanceRungeKutta(deltaT);
@@ -349,7 +379,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                 advanceABM4(deltaTABM4);
             }
             correctDrift();
-            advancePlanetSystems(deltaT);
+            updateEarthMoonBarycenter();
             simulationDateTime.add(Calendar.SECOND, (int) deltaT);
             checkForSpacecraftEvent();
         }
@@ -361,6 +391,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      */
     public void advanceSimulationBackward(int nrTimeSteps) {
         for (int i = 0; i < nrTimeSteps; i++) {
+            advancePlanetSystems(-deltaT);
             if (getGeneralRelativityFlag()) {
                 // Runge-Kutta for General Relativity
                 advanceRungeKutta(-deltaT);
@@ -371,7 +402,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                 advanceABM4(-deltaTABM4);
             }
             correctDrift();
-            advancePlanetSystems(-deltaT);
+            updateEarthMoonBarycenter();
             simulationDateTime.add(Calendar.SECOND, (int) -deltaT);
         }
     }
@@ -386,9 +417,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         setValidABM4(false);
         timeStep = Math.min(timeStep,3600);
         timeStep = Math.max(timeStep,-3600);
+        advancePlanetSystems((long) timeStep);
         advanceRungeKutta((long) timeStep);
         correctDrift();
-        advancePlanetSystems((long) timeStep);
+        updateEarthMoonBarycenter();
         simulationDateTime.add(Calendar.SECOND, timeStep);
         checkForSpacecraftEvent();
     }
@@ -459,7 +491,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             double muPlanet = this.getParticle(planetName).getMu();
             Vector3D[] orbit;
             if ("Moon".equals(name)) {
-                // Position and velocity of the Earth's moon are relative to the Sun
+                // Position and velocity of the Moon are relative to the Sun
                 Vector3D positionRelativeToPlanet = positionMoon.minus(positionPlanet);
                 Vector3D velocityRelativeToPlanet = velocityMoon.minus(velocityPlanet);
                 orbit = EphemerisUtil.computeOrbit(muPlanet,
@@ -580,15 +612,30 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Add the new body to the solar system for computation
         this.planets.put(name, new SolarSystemBody(name, position, velocity, orbit, diameter, sun));
 
-        // Add the new planet as particle for simulation
-        if (mass >= solarSystemParameters.getMass("Pluto")) {
-            // Planet with mass at least mass of Pluto may apply force to other objects
-            // Note that Pluto and Eris both may apply forces to other objects
-            this.addParticle(name, mass, mu, position, velocity);
-        }
-        else {
-            // Planet with mass smaller than the mass of Pluto cannot apply force to other objects
-            this.addParticleWithoutMass(name, position, velocity);
+        // Create particle for simulation
+        if ("EarthMoonBarycenter".equals(name)) {
+            // Earth-Moon Barycenter is not a particle for simulation
+            earthMoonBarycenter = new Particle(mass, mu, position, velocity);
+        } else {
+            // Add the new planet as particle for simulation
+            if (mass >= solarSystemParameters.getMass("Pluto")) {
+                // Planet with mass at least mass of Pluto may apply force to other objects
+                // Note that Pluto and Eris both may apply forces to other objects
+                if ("Earth".equals(name)) {
+                    // Use oblateness to compute acceleration of Earth's Moon
+                    OblatePlanet planet =
+                            new OblatePlanet(name, simulationDateTime, mass, mu, position, velocity);
+                    this.addParticle(name, planet);
+                } else {
+                    // Planet is represented as a point-mass
+                    Particle planet = new Particle(mass, mu, position, velocity);
+                    this.addParticle(name, planet);
+                }
+            } else {
+                // Planet with mass smaller than the mass of Pluto cannot apply force to other objects
+                Particle planet = new Particle(mass, mu, position, velocity);
+                this.addParticleWithoutMass(name, planet);
+            }
         }
     }
     
@@ -651,12 +698,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Add the new moon as particle for simulation
         if ("Moon".equals(moonName)) {
             // Earth's moon applies forces to all other particles in the Solar System
-            this.addParticle(moonName, mass, mu, positionMoon, velocityMoon);
+            Particle moon = new Particle(mass, mu, positionMoon, velocityMoon);
+            this.addParticle(moonName, moon);
         }
         else {
             // Other moons apply forces only to other moons of their planet
             OblatePlanetSystem planetSystem = planetSystems.get(planetName);
-            planetSystem.addParticle(moonName, mass, mu, positionRelativeToPlanet, velocityRelativeToPlanet);
+            Particle moon = new Particle(mass, mu, positionRelativeToPlanet, velocityRelativeToPlanet);
+            planetSystem.addParticle(moonName, moon);
             moonParticles.put(moonName, new Particle(mass, mu, positionMoon, velocityMoon));
         }
 
@@ -687,7 +736,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Add the new spacecraft as particle without mass for simulation
         Vector3D position = craft.getPosition();
         Vector3D velocity = craft.getVelocity();
-        this.addParticleWithoutMass(craft.getName(), position, velocity);
+        Particle particle = new Particle(DEFAULTMASS, position, velocity);
+        this.addParticleWithoutMass(craft.getName(), particle);
     }
 
     /**
@@ -898,5 +948,22 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         else {
             super.correctDrift();
         }
+    }
+
+    /**
+     * Update position and velocity of Earth-Moon Barycenter.
+     */
+    private void updateEarthMoonBarycenter() {
+        Particle earth = getParticle("Earth");
+        Particle moon = getParticle("Moon");
+        Vector3D positionBarycenter = new Vector3D();
+        Vector3D velocityBarycenter = new Vector3D();
+        positionBarycenter.addVector(earth.getPosition().scalarProduct(earth.getMu()));
+        velocityBarycenter.addVector(earth.getVelocity().scalarProduct(earth.getMu()));
+        positionBarycenter.addVector(moon.getPosition().scalarProduct(moon.getMu()));
+        velocityBarycenter.addVector(moon.getVelocity().scalarProduct(moon.getMu()));
+        double totalMu = earth.getMu() + moon.getMu();
+        earthMoonBarycenter.setPosition(positionBarycenter.scalarProduct(1.0 / totalMu));
+        earthMoonBarycenter.setVelocity(velocityBarycenter.scalarProduct(1.0 / totalMu));
     }
 }

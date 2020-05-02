@@ -611,6 +611,7 @@ public class SolarSystemApplication extends Application {
         createCircle("Titania", 3, Color.LIGHTSALMON);
         createCircle("Oberon", 3, Color.BISQUE);
         createCircle("Triton", 3, Color.LIGHTGRAY);
+        createCircle("EarthMoonBarycenter",2,Color.WHITE);
         createCircle("Voyager 1", 3, Color.LIGHTYELLOW);
         createCircle("Voyager 2", 3, Color.LIGHTYELLOW);
         createCircle("New Horizons", 3, Color.LIGHTYELLOW);
@@ -782,6 +783,9 @@ public class SolarSystemApplication extends Application {
                 false), hor, ver++, horsize, versize);
         grid.add(createCheckBox("NeptuneMoons", "Neptune Sys",
                 "Neptune moon Triton",
+                false), hor, ver++, horsize, versize);
+        grid.add(createCheckBox("EarthMoonBarycenter", "E-M Bary",
+                "Earth-Moon barycenter is located on average 4671 km from Earth's center.",
                 false), hor, ver++, horsize, versize);
         hor = 1;
         ver++;
@@ -1155,8 +1159,8 @@ public class SolarSystemApplication extends Application {
                     }
                     else {
                         solarSystem.removePlanetSystem(planetName);
-                        showMoons.put(planetName, false);
                     }
+                    showMoons.put(planetName, isSelected);
                     updateBodiesShown();
                 }
                 else {
@@ -1290,7 +1294,6 @@ public class SolarSystemApplication extends Application {
         return positionRotated.scalarProduct(factor);
     }
 
-
     /**
      * Translate and rotate position for rendering.
      * @param position 3D position in m
@@ -1299,7 +1302,8 @@ public class SolarSystemApplication extends Application {
     private Vector3D convertToScreenView(Vector3D position) {
 
         // Use slider zoom view to zoom in on the scene
-        double zoom = Math.exp(0.1*sliderZoomView.getValue());
+        //double zoom = Math.exp(0.1*sliderZoomView.getValue());
+        double zoom = Math.exp(0.12*sliderZoomView.getValue());
 
         if (observationFromEarth) {
             return position.scalarProduct(10.0*zoom);
@@ -1596,9 +1600,11 @@ public class SolarSystemApplication extends Application {
                 Vector3D[] orbit = body.getOrbit();
                 Vector3D position = body.getPosition();
                 // Draw orbit as a green line
+                // LET OP ASTROLOGY
                 if (orbit != null) {
                     drawOrbit(orbit, position, Color.LIGHTGREEN, Color.GREEN, showSimulation);
                 }
+                // END ASTROLOGY
             }
         }
     }
@@ -1907,7 +1913,7 @@ public class SolarSystemApplication extends Application {
         lastDragX = 0.0;
         lastDragY = 0.0;
     }
-    
+
     /**
      * Clear screen and make background blue for observation from
      * the Earth, or black for normal view.
@@ -1970,10 +1976,12 @@ public class SolarSystemApplication extends Application {
         }
         else {
             // Sort bodies, such that bodies behind the Sun are drawn first
+            // Earth-Moon Barycenter is drawn latest
             Collections.sort(bodies, new Comparator<SolarSystemBody>() {
                 @Override
                 public int compare(SolarSystemBody body1, SolarSystemBody body2) {
-                    if (body1.getPosition().getY() < body2.getPosition().getY()) {
+                    if (body1.getPosition().getY() < body2.getPosition().getY() ||
+                        "EarthMoonBarycenter".equals(body1.getName())) {
                         return 1;
                     }
                     else {
@@ -2030,10 +2038,12 @@ public class SolarSystemApplication extends Application {
         // Draw bodies of the solar system and their orbits
         clearScreen();
         List<SolarSystemBody> bodiesToShow = sortBodiesShown();
-        SolarSystemBody earth = solarSystem.getBody("Earth");
         if (observationFromEarth) {
-            // Do not show the Earth for observation from Earth
+            // Do not show the Earth and Earth-Moon Barycenter for observation from Earth
+            SolarSystemBody earth = solarSystem.getBody("Earth");
+            SolarSystemBody earthMoonBarycenter = solarSystem.getBody("EarthMoonBarycenter");
             bodiesToShow.remove(earth);
+            bodiesToShow.remove(earthMoonBarycenter);
         }
 
         // Do not draw orbits/trajectories for observation from Earth

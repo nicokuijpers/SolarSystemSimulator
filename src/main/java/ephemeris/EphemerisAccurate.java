@@ -142,10 +142,10 @@ public class EphemerisAccurate implements IEphemeris {
     private double currentJulianDateTime;
     
     // Positions of the major planets, Moon, and the Sun for current Julian date/time
-    private final Vector3D[] currentPositions = new Vector3D[11];
+    private final Vector3D[] currentPositions = new Vector3D[12];
     
     // Velocities of the major planets, Moon, and the Sun for current Julian date/time
-    private final Vector3D[] currentVelocities = new Vector3D[11];
+    private final Vector3D[] currentVelocities = new Vector3D[12];
 
     /**
      * Constructor. Singleton pattern.
@@ -155,7 +155,7 @@ public class EphemerisAccurate implements IEphemeris {
         indexMap = new HashMap<>();
         indexMap.put("Mercury", 0);
         indexMap.put("Venus", 1);
-        indexMap.put("Earth", 2);
+        indexMap.put("EarthMoonBarycenter", 2);
         indexMap.put("Mars", 3);
         indexMap.put("Jupiter", 4);
         indexMap.put("Saturn", 5);
@@ -164,6 +164,7 @@ public class EphemerisAccurate implements IEphemeris {
         indexMap.put("Pluto", 8);
         indexMap.put("Moon", 9);
         indexMap.put("Sun", 10);
+        indexMap.put("Earth", 11);
 
         // Names of planets, moon, and sun for which ephemeris can be computed
         bodies = new ArrayList<>();
@@ -515,7 +516,7 @@ public class EphemerisAccurate implements IEphemeris {
         } 
         /* 
          * Note by Nico Kuijpers: 
-         * Date/time before Janary 1, 1620 not supported.
+         * Date/time before January 1, 1620 not supported.
          * Ephemeris results not valid between Nov 30, 1619 and Jan 1, 1620.
          */
         /*
@@ -547,7 +548,7 @@ public class EphemerisAccurate implements IEphemeris {
          * of the Earth-Moon barycenter is determined, while a geocentric vector from the
          * Earth to the Moon is determined instead of the position of the moon.
          */
-        for (int i = 0; i < indexMap.size(); i++) {
+        for (int i = 0; i < indexMap.size() - 1; i++) {
             Vector3D[] positionVelocity = getPlanetPositionVelocity(julianDateTime, i);
             currentPositions[i] = positionVelocity[0];
             currentVelocities[i] = positionVelocity[1];
@@ -560,15 +561,17 @@ public class EphemerisAccurate implements IEphemeris {
          * Using the ratio of masses, we get vectors from the Earth-Moon 
          * barycenter to the Moon and to the Earth.
          */
+        int indexEarthMoonBarycenter = indexMap.get("EarthMoonBarycenter");
         int indexEarth = indexMap.get("Earth");
         int indexMoon = indexMap.get("Moon");
-        Vector3D earthPosition = currentPositions[indexEarth].
+
+        Vector3D earthPosition = currentPositions[indexEarthMoonBarycenter].
                         minus(currentPositions[indexMoon].
                               scalarProduct(1.0 / (1.0 + earthMoonMassRatio)));
         currentPositions[indexEarth] = earthPosition;
         Vector3D moonPosition = earthPosition.plus(currentPositions[indexMoon]);
         currentPositions[indexMoon] = moonPosition;
-        Vector3D earthVelocity = currentVelocities[indexEarth].
+        Vector3D earthVelocity = currentVelocities[indexEarthMoonBarycenter].
                         minus(currentVelocities[indexMoon].
                               scalarProduct(1.0 / (1.0 + earthMoonMassRatio)));
         currentVelocities[indexEarth] = earthVelocity;

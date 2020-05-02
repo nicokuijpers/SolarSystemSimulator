@@ -41,11 +41,6 @@ public class ParticleSystem implements Serializable {
     private int indexABM4 = 0;         // Index in cyclic arrays
 
     /**
-     * Default mass [kg] for massless particle.
-     */
-    private final double DEFAULTMASS = 1.0;
-
-    /**
      * Flag to indicate whether general relativity
      * should be applied when computing acceleration.
      */
@@ -87,22 +82,28 @@ public class ParticleSystem implements Serializable {
     public boolean getGeneralRelativityFlag() {
         return generalRelativityFlag;
     }
-    
+
     /**
-     * Add new particle to particle system when 
-     * standard gravitational parameter is not known.
+     * Add particle to particle system.
      * @param name     Name of particle
-     * @param mass     Mass of particle in kg
-     * @param position Initial 3D position vector of particle in m
-     * @param velocity Initial 3D velocity vector of particle in m/s
+     * @param particle Particle
      */
-    public final void addParticle(String name, double mass,
-                                  Vector3D position, Vector3D velocity) {
-        Particle particle = new Particle(mass,position,velocity);
+    public final void addParticle(String name, Particle particle) {
         particles.put(name,particle);
         particlesWithMass.put(name,particle);
     }
-    
+
+    /**
+     * Add particle without mass to particle system.
+     * Particles without mass are used to simulate small Solar System objects and
+     * spacecraft. They do not apply forces on other particles.
+     * @param name     Name of particle
+     * @param particle Particle
+     */
+    public final void addParticleWithoutMass(String name, Particle particle) {
+        particles.put(name,particle);
+    }
+
     /**
      * Add new particle to particle system when 
      * standard gravitational parameter is known.
@@ -117,19 +118,6 @@ public class ParticleSystem implements Serializable {
         Particle particle = new Particle(mass,mu,position,velocity);
         particles.put(name,particle);
         particlesWithMass.put(name,particle);
-    }
-
-    /**
-     * Add new particle without mass to particle system.
-     * Particles without mass are used to simulate small Solar System objects and
-     * spacecraft. They do not apply forces on other particles.
-     * @param name     Name of particle
-     * @param position Initial 3D position vector of particle in m
-     * @param velocity Initial 3D velocity vector of particle in m/s
-     */
-    public final void addParticleWithoutMass(String name, Vector3D position, Vector3D velocity) {
-        Particle particle = new Particle(DEFAULTMASS,position,velocity);
-        particles.put(name,particle);
     }
 
     /**
@@ -165,11 +153,7 @@ public class ParticleSystem implements Serializable {
             p.updateStateLeapfrog(deltaT);
         }
     }
-    
-    /**
-     * Advance a time step using Runge-Kutta method
-     * @param deltaT time step in s
-     */
+
     public void advanceRungeKutta(long deltaT) {
         // Use Runge-Kutta method
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
@@ -190,7 +174,6 @@ public class ParticleSystem implements Serializable {
             p.updateStateRungeKuttaD(deltaT);
         }
     }
-
     /**
      * Four-step Adams-Bashforth-Moulton method.
      * Set/reset flag to indicate whether values stored in cyclic arrays are valid.
@@ -238,9 +221,9 @@ public class ParticleSystem implements Serializable {
             }
         }
     }
-    
+
     /**
-     * Compute acceleration for all particles.
+     * Compute acceleration using Newton Mechanics for all particles.
      */
     protected void computeAcceleration() {
         // Compute acceleration using Newton mechanics
@@ -265,17 +248,18 @@ public class ParticleSystem implements Serializable {
      */
     public void correctDrift() {
         // Determine position and velocity of the center of mass
+        // Use gravitational parameter mu instead of mass for better accuracy
         Vector3D positionCenterMass = new Vector3D();
         Vector3D velocityCenterMass = new Vector3D();
-        double totalMass = 0.0;
+        double totalMu = 0.0;
         for (Particle p : particles.values()) {
-            positionCenterMass.addVector(p.getPosition().scalarProduct(p.getMass()));
-            velocityCenterMass.addVector(p.getVelocity().scalarProduct(p.getMass()));
-            totalMass += p.getMass();
+            positionCenterMass.addVector(p.getPosition().scalarProduct(p.getMu()));
+            velocityCenterMass.addVector(p.getVelocity().scalarProduct(p.getMu()));
+            totalMu += p.getMu();
         }
-        if (totalMass != 0.0) {
-            positionCenterMass = positionCenterMass.scalarProduct(1.0 / totalMass);
-            velocityCenterMass = velocityCenterMass.scalarProduct(1.0 / totalMass);
+        if (totalMu != 0.0) {
+            positionCenterMass = positionCenterMass.scalarProduct(1.0 / totalMu);
+            velocityCenterMass = velocityCenterMass.scalarProduct(1.0 / totalMu);
         }
             
         // Adjust position and velocity of all particles

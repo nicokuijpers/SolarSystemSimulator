@@ -96,6 +96,7 @@ public class EphemerisSolarSystem implements IEphemeris {
         // Bodies for which ephemeris can be computed or approximated
         bodies = new ArrayList<>();
         bodies.add("Sun");
+        bodies.add("EarthMoonBarycenter");
         bodies.addAll(solarSystemParameters.getPlanets());
         bodies.addAll(solarSystemParameters.getMoons());
      

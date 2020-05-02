@@ -52,14 +52,14 @@ public class Particle implements Serializable {
     private double mu;
     private Vector3D position;
     private Vector3D velocity;
-    private Vector3D acceleration;
-    private Vector3D accelerationNewtonMechanics;
+    private Vector3D acceleration = new Vector3D();
+    private Vector3D accelerationNewtonMechanics = new Vector3D();
     private double potentialEnergy;
 
     // Store position and velocity of former time step for
     // Runge-Kutta method and four-step Adams-Bashforth-Moulton method
-    private Vector3D formerPosition;
-    private Vector3D formerVelocity;
+    public Vector3D formerPosition;
+    public Vector3D formerVelocity;
     
     // Store intermediate state for Runge-Kutta method
     private Vector3D k1, k2, k3, k4;
@@ -69,7 +69,17 @@ public class Particle implements Serializable {
     // four-step Adams-Bashforth-Moulton method
     private Vector3D[] velocityABM4 = new Vector3D[4];
     private Vector3D[] accelerationABM4 = new Vector3D[4];
-    
+
+    /**
+     * Default constructor.
+     */
+    public Particle() {
+        this.mass = 1.0;
+        this.mu = GRAVITATIONALCONSTANT * mass;
+        this.position = new Vector3D();
+        this.velocity = new Vector3D();
+    }
+
     /**
      * Constructor when standard gravitational parameter is not known.
      * @param mass      mass in kg
@@ -235,18 +245,20 @@ public class Particle implements Serializable {
         for (Particle p : particles) {
             if (p != this) {
                 // Add acceleration from other particle
-                acceleration.addVector(accelerationNewtonMechanics(p));
+                Vector3D accelerationFromParticle = p.accelerationNewtonMechanics(this);
+                acceleration.addVector(accelerationFromParticle);
                 // Add contribution to potential energy
                 potentialEnergy += potentialEngergy(p);
             }
         }
+
         // Every pair of particles is counted twice, so divide by 2
         potentialEnergy = 0.5 * potentialEnergy;
-        
+
         // Set acceleration computed by Newton Mechanics
         // such that it can be used to compute acceleration by
         // General Relativity
-        accelerationNewtonMechanics = new Vector3D(acceleration);   
+        accelerationNewtonMechanics = new Vector3D(acceleration);
     }
     
     /**
@@ -607,28 +619,29 @@ public class Particle implements Serializable {
     }
 
     /**
-     * Compute acceleration applied by another particle using Newton Mechanics.
+     * Compute acceleration applied by this particle to another particle
+     * using Newton Mechanics.
      * @param p other particle
      * @return acceleration in m/s2
      */
-    private Vector3D accelerationNewtonMechanics(Particle p) {
+    protected Vector3D accelerationNewtonMechanics(Particle p) {
 
         /*
          * Gravitational force = (G*M*m)/r2 = (mu*m)/r2, where
-         * G = gravitational constant, M = mass of the other body, mu = G*M,
-         * m = mass of this body, and r is distance between the bodies.
+         * G = gravitational constant, M = mass of this body, mu = G*M,
+         * m = mass of the other body, and r is distance between the bodies.
          * Acceleration = Gravitational force / mass, thus
          * Acceleration = (G*M)/r2 = mu/r2
          */
         
         // Square of distance r2
         double distanceSquare = position.euclideanDistanceSquare(p.position);
-        
+
         // Magnitude of acceleration = mu/r2
-        double accelerationMagnitude = p.mu/distanceSquare;
+        double accelerationMagnitude = this.mu/distanceSquare;
         
         // Direction of gravitational force
-        Vector3D direction = position.direction(p.position);
+        Vector3D direction = (p.position).direction(this.position);
         
         // Acceleration
         return direction.scalarProduct(accelerationMagnitude);

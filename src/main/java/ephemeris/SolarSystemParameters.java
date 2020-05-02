@@ -344,15 +344,22 @@ public class SolarSystemParameters {
     private static final double TRITONDIAMETER    =  2.705E06;   //   2705 km
 
     /**
-     * Ellipticity of oblate planets Jupiter, Saturn, Uranus, and Neptune
-     * Values of ellipticity are obtained from Table 1 in
-     * A.M. Hofmeister, R.E. Criss, and E.M. Criss,
+     * Ellipticity of oblate planets Earth, Jupiter, Saturn, Uranus, and Neptune
+     *
+     * Ellipticity e = 0.081821 of planet Earth is obtained from
+     * e = sqrt ( 2*f - f*f ), where flattening f = 0.003353.
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html
+     * https://en.wikipedia.org/wiki/Flattening
+     *
+     * Values of ellipticity of Jupiter, Saturn, Uranus, and Neptune are obtained
+     * from Table 1 in A.M. Hofmeister, R.E. Criss, and E.M. Criss,
      * Verified solutions for the gravitational attraction to an oblate spheroid:
      * Implications for planet mass and satellite orbits,
      * Planetary and Space Science 152 (2018) 68-81
      * https://doi.org/10.1016/j.pss.2018.01.005
      * https://www.sciencedirect.com/science/article/pii/S003206331730257X
      */
+    private static final double EARTHELLIPTICITY =  0.081821;
     private static final double JUPITERELLIPTICITY = 0.354;
     private static final double SATURNELLIPTICITY = 0.432;
     private static final double URANUSELLIPTICITY = 0.213;
@@ -394,10 +401,11 @@ public class SolarSystemParameters {
      *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
      *  Neptune      899    6.835099502439672E+06
      */
-    private static final double JUPITEROBLATEMU = 1.266865341960128E17; // 1.266865341960128E+08
-    private static final double SATURNOBLATEMU  = 3.793120627544314E16; // 3.793120627544314E+07
-    private static final double URANUSOBLATEMU  = 5.793951322279009E15; // 5.793951322279009E+06
-    private static final double NEPTUNEOBLATEMU = 6.835099502439672E15; // 6.835099502439672E+06
+    private static final double EARTHOBLATEMU   = 3.9860043289693922E14; // 0.39860E15
+    private static final double JUPITEROBLATEMU = 1.266865341960128E17;  // 1.266865341960128E+08
+    private static final double SATURNOBLATEMU  = 3.793120627544314E16;  // 3.793120627544314E+07
+    private static final double URANUSOBLATEMU  = 5.793951322279009E15;  // 5.793951322279009E+06
+    private static final double NEPTUNEOBLATEMU = 6.835099502439672E15;  // 6.835099502439672E+06
 
     /**
      * Equatorial radius [m] of oblate planets Jupiter, Saturn, Uranus, and Neptune
@@ -419,6 +427,10 @@ public class SolarSystemParameters {
      *  https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
      *  RADIUS   2.522500000000000E+04
      */
+    // https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html
+    private static final double EARTHEQUATORIALRADIUS   =  6378137; //m
+    // https://ssd.jpl.nasa.gov/?planet_phys_par
+    // private static final double EARTHEQUATORIALRADIUS   =  6378136.6; //m
     private static final double JUPITEREQUATORIALRADIUS = 71492000; // 71492 km
     private static final double SATURNEQUATORIALRADIUS  = 60330000; // 60330 km
     private static final double URANUSEQUATORIALRADIUS  = 25559000; // 25559 km
@@ -453,6 +465,20 @@ public class SolarSystemParameters {
      *   https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/nep081.cmt
      *   J802     3.408428530717952E-03   J804    -3.339891759006578E-05
      */
+    // https://nl.mathworks.com/help/aerotbx/ug/gravityzonal.html
+    private static final double[] EARTHZONALCOEFFICIENTS =
+            new double[]{0.0, 0.0, 0.0010826269, -0.0000025323, -0.0000016204};
+    /* https://en.wikipedia.org/wiki/Geopotential_model
+    Zonal coefficients
+        2	-0.1082635854D-02
+        3	0.2532435346D-05
+        4	0.1619331205D-05
+        5	0.2277161016D-06
+        6	-0.5396484906D-06
+        7	0.3513684422D-06
+        8	0.2025187152D-06
+    */
+
     private static final double[] JUPITERZONALCOEFFICIENTS =
             new double[]{0.0, 0.0, 1.469562477069651E-02, 0.0,  -5.913138887463315E-04,
                     0.0, 2.077510523748891E-05};
@@ -466,7 +492,7 @@ public class SolarSystemParameters {
     //         new double[]{0.0, 0.0, 3.408428530717952E-03,  0.0, -3.339891759006578E-05};
     // Optimized for accurate simulation of Triton
     private static final double[] NEPTUNEZONALCOEFFICIENTS =
-            new double[]{0.0, 0.0, 0.0033562,  0.0, 0.0};
+               new double[]{0.0, 0.0, 0.0033562,  0.0, 0.0};
 
     /**
      * Right ascension and declination of z-axis of oblate planets Jupiter, Saturn,
@@ -505,6 +531,8 @@ public class SolarSystemParameters {
      *  DACPL8   0.000000000000000E+00 degrees/century
      *  DDEPL8   0.000000000000000E+00 degrees/century
      */
+    private static final double[] EARTHZAXISPARAMETERS =
+            new double[]{2.451545000000000E+06, 0.0, 90.0, 0.0, 0.0};
     private static final double[] JUPITERZAXISPARAMETERS =
             new double[]{2.451545000000000E+06, 2.680570781451589E+02, 6.449582320291580E+01,
                         -6.554328185586419E-03, 2.476496988122852E-03};
@@ -1919,6 +1947,7 @@ Pluto     -0.01262724
 
         // Ellipticity of oblate planet
         ellipticityMap = new HashMap<>();
+        ellipticityMap.put("Earth",EARTHELLIPTICITY);
         ellipticityMap.put("Jupiter",JUPITERELLIPTICITY);
         ellipticityMap.put("Saturn",SATURNELLIPTICITY);
         ellipticityMap.put("Uranus",URANUSELLIPTICITY);
@@ -1926,6 +1955,7 @@ Pluto     -0.01262724
 
         // Gravatitational parameter [km3/s2] of oblate planet
         oblateMuMap = new HashMap<>();
+        oblateMuMap.put("Earth",EARTHOBLATEMU);
         oblateMuMap.put("Jupiter",JUPITEROBLATEMU);
         oblateMuMap.put("Saturn",SATURNOBLATEMU);
         oblateMuMap.put("Uranus",URANUSOBLATEMU);
@@ -1933,6 +1963,7 @@ Pluto     -0.01262724
 
         // Equatorial radius [m] of oblate planet
         equatorialRadiusMap = new HashMap<>();
+        equatorialRadiusMap.put("Earth",EARTHEQUATORIALRADIUS);
         equatorialRadiusMap.put("Jupiter",JUPITEREQUATORIALRADIUS);
         equatorialRadiusMap.put("Saturn",SATURNEQUATORIALRADIUS);
         equatorialRadiusMap.put("Uranus",URANUSEQUATORIALRADIUS);
@@ -1940,6 +1971,7 @@ Pluto     -0.01262724
 
         // Zonal coefficients [-] of oblate planet
         zonalCoefficientsMap = new HashMap<>();
+        zonalCoefficientsMap.put("Earth",EARTHZONALCOEFFICIENTS);
         zonalCoefficientsMap.put("Jupiter",JUPITERZONALCOEFFICIENTS);
         zonalCoefficientsMap.put("Saturn",SATURNZONALCOEFFICIENTS);
         zonalCoefficientsMap.put("Uranus",URANUSZONALCOEFFICIENTS);
@@ -1947,6 +1979,7 @@ Pluto     -0.01262724
 
         // Parameters of z-axis of oblate planet
         zAxisParametersMap = new HashMap<>();
+        zAxisParametersMap.put("Earth",EARTHZAXISPARAMETERS);
         zAxisParametersMap.put("Jupiter",JUPITERZAXISPARAMETERS);
         zAxisParametersMap.put("Saturn",SATURNZAXISPARAMETERS);
         zAxisParametersMap.put("Uranus",URANUSZAXISPARAMETERS);
