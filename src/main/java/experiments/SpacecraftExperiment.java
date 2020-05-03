@@ -90,26 +90,43 @@ public class SpacecraftExperiment {
 
         // Define names of solar system particles passed by Voyager 1
         List<String> particleNamesVoyagerOne = new ArrayList<>();
-        particleNamesVoyagerOne.add("Jupiter");
-        particleNamesVoyagerOne.add("Io");
-        particleNamesVoyagerOne.add("Europa");
-        particleNamesVoyagerOne.add("Ganymede");
-        particleNamesVoyagerOne.add("Callisto");
-        particleNamesVoyagerOne.add("Titan");
-        particleNamesVoyagerOne.add("Saturn");
+        particleNamesVoyagerOne.add("Jupiter");     // 1979-03-05 12:05:26 348,890 km (center of mass)
+        particleNamesVoyagerOne.add("Io");          // 1979-03-05 15:14     20,570 km
+        particleNamesVoyagerOne.add("Europa");      // 1979-03-05 18:19    733,760 km
+        particleNamesVoyagerOne.add("Ganymede");    // 1979-03-06 02:15    114,710 km
+        particleNamesVoyagerOne.add("Callisto");    // 1979-03-06 17:08    126,400 km
+        particleNamesVoyagerOne.add("Titan");       // 1980-11-12 05:41:21   6,490 km
+        particleNamesVoyagerOne.add("Tethys");      // 1980-11-12 22:16:32 415,670 km
+        particleNamesVoyagerOne.add("Saturn");      // 1980-11-12 23:46:30 184,300 km (center of mass)
+        particleNamesVoyagerOne.add("Mimas");       // 1980-11-13 01:43:12  88,440 km
+        particleNamesVoyagerOne.add("Enceladus");   // 1980-11-13 01:51:16 202,040 km
+        particleNamesVoyagerOne.add("Rhea");        // 1980-11-13 06:21:53  73,980 km
+        // particleNamesVoyagerOne.add("Hyperion"); // 1980-11-13 16:44:41 880,440 km
         particleNames.put("Voyager 1",particleNamesVoyagerOne);
 
         // Define names of solar system particles passed by Voyager 2
         List<String> particleNamesVoyagerTwo = new ArrayList<>();
-        particleNamesVoyagerTwo.add("Callisto");
-        particleNamesVoyagerTwo.add("Ganymede");
-        particleNamesVoyagerTwo.add("Europa");
-        particleNamesVoyagerTwo.add("Jupiter");
-        particleNamesVoyagerTwo.add("Io");
-        particleNamesVoyagerTwo.add("Titan");
+        particleNamesVoyagerTwo.add("Callisto");    // 1979-07-08 12:21 214,930 km
+        particleNamesVoyagerTwo.add("Ganymede");    // 1979-07-09
+        particleNamesVoyagerTwo.add("Europa");      // 1979-07-09
+        particleNamesVoyagerTwo.add("Jupiter");     // 1979-07-09
+        particleNamesVoyagerTwo.add("Io");          // 1979-07-09
+        particleNamesVoyagerTwo.add("Iapetus");     // 1981-08-22 01:26:57 908,680 km
+        particleNamesVoyagerTwo.add("Titan");       //
+        particleNamesVoyagerTwo.add("Dione");
+        particleNamesVoyagerTwo.add("Mimas");
         particleNamesVoyagerTwo.add("Saturn");
+        particleNamesVoyagerTwo.add("Enceladus");
+        particleNamesVoyagerTwo.add("Tethys");
+        particleNamesVoyagerTwo.add("Rhea");
+        particleNamesVoyagerTwo.add("Miranda");
+        particleNamesVoyagerTwo.add("Arial");
+        particleNamesVoyagerTwo.add("Umbriel");
+        particleNamesVoyagerTwo.add("Titania");
+        particleNamesVoyagerTwo.add("Oberon");
         particleNamesVoyagerTwo.add("Uranus");
         particleNamesVoyagerTwo.add("Neptune");
+        particleNamesVoyagerTwo.add("Triton");
         particleNames.put("Voyager 2",particleNamesVoyagerTwo);
 
         // Define names of solar system particles passed by New Horizons
@@ -130,10 +147,22 @@ public class SpacecraftExperiment {
         simulationEndDate = endDates.get(spacecraftName);
         simulationEndDate.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        // Create solar system
+        // Create the Solar System and planet systems
         solarSystem = new SolarSystem();
+        try {
+            solarSystem.createPlanetSystem("Jupiter");
+            solarSystem.createPlanetSystem("Saturn");
+            solarSystem.createPlanetSystem("Uranus");
+            solarSystem.createPlanetSystem("Neptune");
+        } catch (SolarSystemException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        // Use Newton Mechancis for simulation
         solarSystem.setGeneralRelativityFlag(false); // Newton Mechanics
         // solarSystem.setGeneralRelativityFlag(true); // General Relativity
+
+        // Initialize the Solar System and planet systems
         try {
             solarSystem.initializeSimulation(simulationStartDate);
         } catch (SolarSystemException e) {

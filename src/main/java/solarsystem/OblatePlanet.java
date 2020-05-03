@@ -36,7 +36,8 @@ public class OblatePlanet extends Particle {
     private static final long serialVersionUID = 1L;
 
     // Maximum distance to use oblateness is 5 mln km
-    private static final double MAXDISTANCEOBLATENESS = 5.0E09;
+    // private static final double MAXDISTANCEOBLATENESS = 5.0E09;
+    private static final double MAXDISTANCEOBLATENESS = 0.0;
 
     // Solar System parameters
     private static final SolarSystemParameters solarSystemParameters = SolarSystemParameters.getInstance();
