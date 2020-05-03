@@ -194,6 +194,15 @@ public class EphemerisSolarSystem implements IEphemeris {
             return ephemerisUranusMoons.getBodyPosition(name, date);
         }
 
+        // Check whether ephemeris for Neptune moons can be used
+        if (ephemerisNeptuneMoons.getBodies().contains(name) &&
+                date.after(ephemerisNeptuneMoons.getFirstValidDate()) &&
+                date.before(ephemerisNeptuneMoons.getLastValidDate())) {
+
+            // (x,y,z) position [m] and velocity [m/s] from Neptune Moons Ephemeris
+            return ephemerisNeptuneMoons.getBodyPosition(name, date);
+        }
+
         // Approximate position and velocity of the Moon
         if ("Moon".equals(name)) {
             // Position vector (index = 0)
@@ -271,6 +280,15 @@ public class EphemerisSolarSystem implements IEphemeris {
 
             // (x,y,z) velocity [m/s] from Uranus Moons Ephemeris
             return ephemerisUranusMoons.getBodyVelocity(name, date);
+        }
+
+        // Check whether ephemeris for Neptune moons can be used
+        if (ephemerisNeptuneMoons.getBodies().contains(name) &&
+                date.after(ephemerisNeptuneMoons.getFirstValidDate()) &&
+                date.before(ephemerisNeptuneMoons.getLastValidDate())) {
+
+            // (x,y,z) position [m] and velocity [m/s] from Neptune Moons Ephemeris
+            return ephemerisNeptuneMoons.getBodyVelocity(name, date);
         }
 
         // Approximate position and velocity of the Moon
