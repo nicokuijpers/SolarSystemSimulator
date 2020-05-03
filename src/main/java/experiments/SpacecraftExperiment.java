@@ -90,23 +90,23 @@ public class SpacecraftExperiment {
 
         // Define names of solar system particles passed by Voyager 1
         List<String> particleNamesVoyagerOne = new ArrayList<>();
-        particleNamesVoyagerOne.add("Jupiter");     // 1979-03-05 12:05:26 348,890 km (center of mass)
-        particleNamesVoyagerOne.add("Io");          // 1979-03-05 15:14     20,570 km
-        particleNamesVoyagerOne.add("Europa");      // 1979-03-05 18:19    733,760 km
-        particleNamesVoyagerOne.add("Ganymede");    // 1979-03-06 02:15    114,710 km
-        particleNamesVoyagerOne.add("Callisto");    // 1979-03-06 17:08    126,400 km
-        particleNamesVoyagerOne.add("Titan");       // 1980-11-12 05:41:21   6,490 km
-        particleNamesVoyagerOne.add("Tethys");      // 1980-11-12 22:16:32 415,670 km
-        particleNamesVoyagerOne.add("Saturn");      // 1980-11-12 23:46:30 184,300 km (center of mass)
-        particleNamesVoyagerOne.add("Mimas");       // 1980-11-13 01:43:12  88,440 km
-        particleNamesVoyagerOne.add("Enceladus");   // 1980-11-13 01:51:16 202,040 km
-        particleNamesVoyagerOne.add("Rhea");        // 1980-11-13 06:21:53  73,980 km
-        // particleNamesVoyagerOne.add("Hyperion"); // 1980-11-13 16:44:41 880,440 km
+        particleNamesVoyagerOne.add("Jupiter");     // 1979-03-05 12:05:26  348,890 km (center of mass)
+        particleNamesVoyagerOne.add("Io");          // 1979-03-05 15:14      20,570 km
+        particleNamesVoyagerOne.add("Europa");      // 1979-03-05 18:19     733,760 km
+        particleNamesVoyagerOne.add("Ganymede");    // 1979-03-06 02:15     114,710 km
+        particleNamesVoyagerOne.add("Callisto");    // 1979-03-06 17:08     126,400 km
+        particleNamesVoyagerOne.add("Titan");       // 1980-11-12 05:41:21    6,490 km
+        particleNamesVoyagerOne.add("Tethys");      // 1980-11-12 22:16:32  415,670 km
+        particleNamesVoyagerOne.add("Saturn");      // 1980-11-12 23:46:30  184,300 km (center of mass)
+        particleNamesVoyagerOne.add("Mimas");       // 1980-11-13 01:43:12   88,440 km
+        particleNamesVoyagerOne.add("Enceladus");   // 1980-11-13 01:51:16  202,040 km
+        particleNamesVoyagerOne.add("Rhea");        // 1980-11-13 06:21:53   73,980 km
+        // particleNamesVoyagerOne.add("Hyperion"); // 1980-11-13 16:44:41  880,440 km
         particleNames.put("Voyager 1",particleNamesVoyagerOne);
 
         // Define names of solar system particles passed by Voyager 2
         List<String> particleNamesVoyagerTwo = new ArrayList<>();
-        particleNamesVoyagerTwo.add("Callisto");    // 1979-07-08 12:21 214,930 km
+        particleNamesVoyagerTwo.add("Callisto");    // 1979-07-08 12:21     214,930 km
         particleNamesVoyagerTwo.add("Ganymede");    // 1979-07-09
         particleNamesVoyagerTwo.add("Europa");      // 1979-07-09
         particleNamesVoyagerTwo.add("Jupiter");     // 1979-07-09
@@ -257,8 +257,8 @@ public class SpacecraftExperiment {
         SpacecraftExperiment experiment = new SpacecraftExperiment();
 
         // Run experiments
-        experiment.simulateSpacecraftTrajectory("Voyager 1");
-        experiment.simulateSpacecraftTrajectory("Voyager 2");
+        //experiment.simulateSpacecraftTrajectory("Voyager 1");
+        //experiment.simulateSpacecraftTrajectory("Voyager 2");
         experiment.simulateSpacecraftTrajectory("New Horizons");
     }
 
@@ -434,19 +434,19 @@ public class SpacecraftExperiment {
         Launch 2006-01-19 19:00
         Fly by Jupiter
         Date and time          : 2007-02-28 05:49
-        Distance from center   : 2302925.176787414 km
-        Distance from surface  : 2231433.176787414 km
-        Velocity during fly by : 22850.51622573588 m/s
+        Distance from center   : 2302925.2222991926 km
+        Distance from surface  : 2231433.2222991926 km
+        Velocity during fly by : 22850.51615014031 m/s
         Fly by Pluto
         Date and time          : 2015-07-14 11:37
-        Distance from center   : 14391.351081329158 km
-        Distance from surface  : 13206.351081329158 km
-        Velocity during fly by : 14531.81583917544 m/s
+        Distance from center   : 14389.524213746561 km
+        Distance from surface  : 13204.524213746561 km
+        Velocity during fly by : 14531.816233252986 m/s
         Fly by Ultima Thule
         Date and time          : 2019-01-01 06:44
-        Distance from center   : 26752.060911203884 km
-        Distance from surface  : 26735.560911203884 km
-        Velocity during fly by : 14090.862578985309 m/s
+        Distance from center   : 26753.857512417093 km
+        Distance from surface  : 26737.357512417093 km
+        Velocity during fly by : 14090.862565593674 m/s
      */
 }
 

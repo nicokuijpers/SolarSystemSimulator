@@ -51,12 +51,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="6364" />
+          <entry key="java" value="6388" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="6364" />
+          <entry key="JAVA" value="6388" />
         </counts>
       </usages-collector>
     </session>
@@ -136,8 +136,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3555">
-              <caret line="261" column="8" selection-start-line="261" selection-start-column="8" selection-end-line="261" selection-end-column="8" />
+            <state relative-caret-position="408">
+              <caret line="454" lean-forward="true" selection-start-line="454" selection-end-line="454" />
             </state>
           </provider>
         </entry>
@@ -262,8 +262,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1027" />
-    <option name="y" value="251" />
+    <option name="x" value="959" />
+    <option name="y" value="140" />
     <option name="width" value="1510" />
     <option name="height" value="977" />
   </component>
@@ -506,7 +506,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1588523813018" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1588531750901" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -644,7 +644,7 @@
       <workItem from="1585405373766" duration="1222000" />
       <workItem from="1586601382480" duration="809000" />
       <workItem from="1587992415582" duration="6796000" />
-      <workItem from="1588431548017" duration="15044000" />
+      <workItem from="1588431548017" duration="17152000" />
     </task>
     <servers />
   </component>
@@ -678,11 +678,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="188728000" />
+    <option name="totallyTimeSpent" value="190836000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1027" y="251" width="1510" height="977" extended-state="0" />
-    <editor active="true" />
+    <frame x="959" y="140" width="1510" height="977" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29155314" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -1077,8 +1076,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3555">
-          <caret line="261" column="8" selection-start-line="261" selection-start-column="8" selection-end-line="261" selection-end-column="8" />
+        <state relative-caret-position="408">
+          <caret line="454" lean-forward="true" selection-start-line="454" selection-end-line="454" />
         </state>
       </provider>
     </entry>
