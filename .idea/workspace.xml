@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,12 +51,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="6353" />
+          <entry key="java" value="6364" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="6353" />
+          <entry key="JAVA" value="6364" />
         </counts>
       </usages-collector>
     </session>
@@ -140,8 +136,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+            <state relative-caret-position="3555">
+              <caret line="261" column="8" selection-start-line="261" selection-start-column="8" selection-end-line="261" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -149,8 +145,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="42" column="14" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
+            <state relative-caret-position="-698">
+              <caret line="38" column="63" selection-start-line="38" selection-start-column="63" selection-end-line="38" selection-end-column="63" />
             </state>
           </provider>
         </entry>
@@ -158,7 +154,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
+            <state relative-caret-position="-1817">
               <caret line="210" selection-start-line="210" selection-end-line="210" />
             </state>
           </provider>
@@ -245,8 +241,8 @@
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java" />
-        <option value="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" />
       </list>
     </option>
@@ -266,8 +262,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1018" />
-    <option name="y" value="200" />
+    <option name="x" value="1027" />
+    <option name="y" value="251" />
     <option name="width" value="1510" />
     <option name="height" value="977" />
   </component>
@@ -510,7 +506,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1588518684130" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1588523813018" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -648,7 +644,7 @@
       <workItem from="1585405373766" duration="1222000" />
       <workItem from="1586601382480" duration="809000" />
       <workItem from="1587992415582" duration="6796000" />
-      <workItem from="1588431548017" duration="10998000" />
+      <workItem from="1588431548017" duration="15044000" />
     </task>
     <servers />
   </component>
@@ -682,10 +678,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184682000" />
+    <option name="totallyTimeSpent" value="188728000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1018" y="200" width="1510" height="977" extended-state="0" />
+    <frame x="1027" y="251" width="1510" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29155314" />
@@ -1054,20 +1050,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="42" column="14" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="210" selection-start-line="210" selection-end-line="210" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -1079,10 +1061,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-698">
+          <caret line="38" column="63" selection-start-line="38" selection-start-column="63" selection-end-line="38" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1817">
+          <caret line="210" selection-start-line="210" selection-end-line="210" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+        <state relative-caret-position="3555">
+          <caret line="261" column="8" selection-start-line="261" selection-start-column="8" selection-end-line="261" selection-end-column="8" />
         </state>
       </provider>
     </entry>
