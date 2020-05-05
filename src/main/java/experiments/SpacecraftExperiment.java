@@ -89,6 +89,7 @@ public class SpacecraftExperiment {
         endDates.put("New Horizons", endDateNewHorizons);
 
         // Define names of solar system particles passed by Voyager 1
+        // https://en.wikipedia.org/wiki/Voyager_1
         List<String> particleNamesVoyagerOne = new ArrayList<>();
         particleNamesVoyagerOne.add("Jupiter");     // 1979-03-05 12:05:26  348,890 km (center of mass)
         particleNamesVoyagerOne.add("Io");          // 1979-03-05 15:14      20,570 km
@@ -105,35 +106,38 @@ public class SpacecraftExperiment {
         particleNames.put("Voyager 1",particleNamesVoyagerOne);
 
         // Define names of solar system particles passed by Voyager 2
+        // https://en.wikipedia.org/wiki/Voyager_2
         List<String> particleNamesVoyagerTwo = new ArrayList<>();
-        particleNamesVoyagerTwo.add("Callisto");    // 1979-07-08 12:21     214,930 km
-        particleNamesVoyagerTwo.add("Ganymede");    // 1979-07-09
-        particleNamesVoyagerTwo.add("Europa");      // 1979-07-09
-        particleNamesVoyagerTwo.add("Jupiter");     // 1979-07-09
-        particleNamesVoyagerTwo.add("Io");          // 1979-07-09
-        particleNamesVoyagerTwo.add("Iapetus");     // 1981-08-22 01:26:57 908,680 km
-        particleNamesVoyagerTwo.add("Titan");       //
-        particleNamesVoyagerTwo.add("Dione");
-        particleNamesVoyagerTwo.add("Mimas");
-        particleNamesVoyagerTwo.add("Saturn");
-        particleNamesVoyagerTwo.add("Enceladus");
-        particleNamesVoyagerTwo.add("Tethys");
-        particleNamesVoyagerTwo.add("Rhea");
-        particleNamesVoyagerTwo.add("Miranda");
-        particleNamesVoyagerTwo.add("Ariel");
-        particleNamesVoyagerTwo.add("Umbriel");
-        particleNamesVoyagerTwo.add("Titania");
-        particleNamesVoyagerTwo.add("Oberon");
-        particleNamesVoyagerTwo.add("Uranus");
-        particleNamesVoyagerTwo.add("Neptune");
-        particleNamesVoyagerTwo.add("Triton");
+        particleNamesVoyagerTwo.add("Callisto");    // 1979-07-08 12:21      214,930 km
+        particleNamesVoyagerTwo.add("Ganymede");    // 1979-07-09 07:14       62,130 km
+        particleNamesVoyagerTwo.add("Europa");      // 1979-07-09 17:53      205,720 km
+        particleNamesVoyagerTwo.add("Jupiter");     // 1979-07-09 22:29      721,670 km (center of mass)
+        particleNamesVoyagerTwo.add("Io");          // 1979-07-09 23:17    1,129,900 km
+        particleNamesVoyagerTwo.add("Iapetus");     // 1981-08-22 01:26:57   908,680 km
+        // particleNamesVoyagerOne.add("Hyperion"); // 1981-08-25 01:25:26   431,370 km
+        particleNamesVoyagerTwo.add("Titan");       // 1981-08-25 09:37:46   666,190 km
+        particleNamesVoyagerTwo.add("Dione");       // 1981-08-26 01:04:32   502,310 km
+        particleNamesVoyagerTwo.add("Mimas");       // 1981-08-26 02:24:26   309,930 km
+        particleNamesVoyagerTwo.add("Saturn");      // 1981-08-26 03:24:05   161,000 km (center of mass)
+        particleNamesVoyagerTwo.add("Enceladus");   // 1981-08-26 03:45:16    87,010 km
+        particleNamesVoyagerTwo.add("Tethys");      // 1981-08-26 06:12:30    93,010 km
+        particleNamesVoyagerTwo.add("Rhea");        // 1981-08-26 06:28:48   645,260 km
+        particleNamesVoyagerTwo.add("Miranda");     // 1986-01-24 16:50       29,000 km
+        particleNamesVoyagerTwo.add("Ariel");       // 1986-01-24 17:25      127,000 km
+        particleNamesVoyagerTwo.add("Umbriel");     // 1986-01-24 17:25      325,000 km
+        particleNamesVoyagerTwo.add("Titania");     // 1986-01-24 17:25      365,200 km
+        particleNamesVoyagerTwo.add("Oberon");      // 1986-01-24 17:25      470,600 km
+        particleNamesVoyagerTwo.add("Uranus");      // 1986-01-24 17:59:47   107,000 km (center of mass)
+        particleNamesVoyagerTwo.add("Neptune");     // 1989-08-25 03:56:36     4,950 km (surface)
+        particleNamesVoyagerTwo.add("Triton");      // 1989-08-25 09:23       39,800 km
         particleNames.put("Voyager 2",particleNamesVoyagerTwo);
 
         // Define names of solar system particles passed by New Horizons
+        // https://en.wikipedia.org/wiki/New_Horizons
         List<String> particleNamesNewHorizons = new ArrayList<>();
-        particleNamesNewHorizons.add("Jupiter");
-        particleNamesNewHorizons.add("Pluto");
-        particleNamesNewHorizons.add("Ultima Thule");
+        particleNamesNewHorizons.add("Jupiter");     // 2007-02-28 05:43:40  2.3 million km
+        particleNamesNewHorizons.add("Pluto");       // 2015-07-14 11:49     12,472 km (surface)
+        particleNamesNewHorizons.add("Ultima Thule");// 2019-01-01 05:33      3,500 km
         particleNames.put("New Horizons",particleNamesNewHorizons);
     }
 
