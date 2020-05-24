@@ -269,8 +269,6 @@ public class SolarSystemApplication extends Application {
             public void handle(Event event) {
                 if (observationFromEarth) {
                     checkBoxObservationFromEarth.setSelected(false);
-                    handleObservationFromEarth();
-                    updateDateTimeSelector();
                 }
                 loadSimulationState(primaryStage);
             }
@@ -288,8 +286,6 @@ public class SolarSystemApplication extends Application {
             public void handle(Event event) {
                 if (observationFromEarth) {
                     checkBoxObservationFromEarth.setSelected(false);
-                    handleObservationFromEarth();
-                    updateDateTimeSelector();
                 }
                 saveSimulationState(primaryStage);
             }
@@ -399,10 +395,10 @@ public class SolarSystemApplication extends Application {
         Tooltip tooltipNewtonMechanics = 
                 new Tooltip("Simulation based on Newton Mechanics is faster");
         radioNewtonMechanics.setTooltip(tooltipNewtonMechanics);
-        radioNewtonMechanics.setOnAction(new EventHandler() {
+        radioNewtonMechanics.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(Event event) {
-                solarSystem.setGeneralRelativityFlag(false);
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                solarSystem.setGeneralRelativityFlag(!newValue);
             }
         });
         radioGeneralRelativity =
@@ -410,10 +406,10 @@ public class SolarSystemApplication extends Application {
         Tooltip tooltipGeneralRelativity = 
                 new Tooltip("Simulation based on General Relativity is even more accurate");
         radioGeneralRelativity.setTooltip(tooltipGeneralRelativity);
-        radioGeneralRelativity.setOnAction(new EventHandler() {
+        radioGeneralRelativity.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(Event event) {
-                solarSystem.setGeneralRelativityFlag(true);
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                solarSystem.setGeneralRelativityFlag(newValue);
             }
         });
         ToggleGroup simulationMethod = new ToggleGroup();
@@ -436,11 +432,13 @@ public class SolarSystemApplication extends Application {
         Tooltip tooltipEphemerisOnly = 
                 new Tooltip("Show ephemeris only; simulation results are not shown");
         radioEphemerisOnly.setTooltip(tooltipEphemerisOnly);
-        radioEphemerisOnly.setOnAction(new EventHandler() {
+        radioEphemerisOnly.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(Event event) {
-                showEphemeris = true;
-                showSimulation = false;
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    showEphemeris = true;
+                    showSimulation = false;
+                }
             }
         });
         radioSimulationOnly =
@@ -448,11 +446,13 @@ public class SolarSystemApplication extends Application {
         Tooltip tooltipSimulationOnly = 
                 new Tooltip("Show simulation only; ephemeris is not shown");
         radioSimulationOnly.setTooltip(tooltipSimulationOnly);
-        radioSimulationOnly.setOnAction(new EventHandler() {
+        radioSimulationOnly.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(Event event) {
-                showEphemeris = false;
-                showSimulation = true;
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    showEphemeris = false;
+                    showSimulation = true;
+                }
             }
         });
         radioEphemerisAndSimulation =
@@ -460,11 +460,13 @@ public class SolarSystemApplication extends Application {
         Tooltip tooltipEphemerisAndSimulation = 
                 new Tooltip("Show ephemeris (green) and simulation results (blue)");
         radioEphemerisAndSimulation.setTooltip(tooltipEphemerisAndSimulation);
-        radioEphemerisAndSimulation.setOnAction(new EventHandler() {
+        radioEphemerisAndSimulation.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(Event event) {
-                showEphemeris = true;
-                showSimulation = true;
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    showEphemeris = true;
+                    showSimulation = true;
+                }
             }
         });
         ToggleGroup visualizationMethod = new ToggleGroup();
@@ -481,41 +483,40 @@ public class SolarSystemApplication extends Application {
         // Check box to select observation from Earth
         rowIndex++;
         checkBoxObservationFromEarth = new CheckBox("Set observation from Earth");
-        checkBoxObservationFromEarth.setSelected(observationFromEarth);
-        checkBoxObservationFromEarth.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        checkBoxObservationFromEarth.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(MouseEvent event) {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 handleObservationFromEarth();
             }
         });
         Tooltip toolTipObservationFromEarth =
                 new Tooltip("Check to set observation from surface of the Earth toward the selected body");
         checkBoxObservationFromEarth.setTooltip(toolTipObservationFromEarth);
+        checkBoxObservationFromEarth.setSelected(observationFromEarth);
         grid.add(checkBoxObservationFromEarth,1,rowIndex,20,1);
         
         // Check box to indicate whether ruler should be shown
         rowIndex++;
         checkBoxShowRuler = new CheckBox("Show ruler");
-        checkBoxShowRuler.setSelected(showRuler);
-        checkBoxShowRuler.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        checkBoxShowRuler.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(MouseEvent event) {
-                showRuler = checkBoxShowRuler.selectedProperty().getValue();
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                showRuler = newValue;
             }
         });
         Tooltip toolTipShowRuler = 
                 new Tooltip("Check to show ruler indicating distance or angular diameter");
         checkBoxShowRuler.setTooltip(toolTipShowRuler);
+        checkBoxShowRuler.setSelected(showRuler);
         grid.add(checkBoxShowRuler,1,rowIndex,20,1);
         
         // Check box to select step mode
         rowIndex++;
         checkBoxStepMode = new CheckBox("Single-step mode");
-        checkBoxStepMode.setSelected(stepMode);
-        checkBoxStepMode.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        checkBoxStepMode.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(MouseEvent event) {
-                stepMode = checkBoxStepMode.selectedProperty().getValue();
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                stepMode = newValue;
                 if (stepMode) {
                     pauseSimulation();
                 }
@@ -524,6 +525,7 @@ public class SolarSystemApplication extends Application {
         Tooltip toolTipStepMode = 
                 new Tooltip("Check to simulate in single-step mode and advance 60 s at a time");
         checkBoxStepMode.setTooltip(toolTipStepMode);
+        checkBoxStepMode.setSelected(stepMode);
         grid.add(checkBoxStepMode,1,rowIndex,20,1);
         
         // Slider to set top-bottom view
@@ -694,114 +696,116 @@ public class SolarSystemApplication extends Application {
         int versize = 1;
         grid.add(createCheckBox("Sun", "Sun",
                 "The Sun is in fact a star and is the largest object in our "
-                + "Solar System.",
-                true), hor, ver++, horsize, versize);
+                + "Solar System."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Mercury", "Mercury",
                 "Mercury is the smallest and innermost planet. "
-                + "It orbits around the Sun in 88 days.",
-                false), hor, ver++, horsize, versize);
+                + "It orbits around the Sun in 88 days."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Venus", "Venus",
                 "Venus is the second planet from the Sun and is of similar size "
-                + " as the Earth.",
-                false), hor, ver++, horsize, versize);
+                + " as the Earth."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Earth", "Earth",
                 "Earth is the third planet from the Sun and the only "
-                + "planet known to harbor life.",
-                true), hor, ver++, horsize, versize);
+                + "planet known to harbor life."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Moon", "Moon",
-                "Zoom in to see the moon orbiting around the Earth.",
-                false), hor, ver++, horsize, versize);
+                "Zoom in to see the moon orbiting around the Earth."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Mars", "Mars",
-                "Mars is the second-smallest planet and is also known as the Red Planet.",
-                false), hor, ver++, horsize, versize);
+                "Mars is the second-smallest planet and is also known as the Red Planet."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Jupiter", "Jupiter",
                 "Jupiter is the largest planet in the Solar System. "
-                + "Galileo Galilei discovered the four largest moons in 1610.",
-                false), hor, ver++, horsize, versize);
+                + "Galileo Galilei discovered the four largest moons in 1610."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Saturn", "Saturn",
-                "Saturn is the second-largest planet and is famous for his rings.",
+                "Saturn is the second-largest planet and is famous for his rings."),
                 // "Visited by Pioneer 11, Voyager 1 and 2, and Cassini-Huygens.",
-                false), hor, ver++, horsize, versize);
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Uranus", "Uranus",
                 "Uranus was discovered in 1781 by William Hershel. "
-                + "Visited by Voyager 2 in 1986.", false), hor, ver++, horsize, versize);
+                + "Visited by Voyager 2 in 1986."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Neptune", "Neptune",
                 "Neptune was discovered in 1846. "
-                + "Visited by Voyager 2 on 25 August 1989.", false), hor, ver++, horsize, versize);
+                + "Visited by Voyager 2 on 25 August 1989."),
+                hor, ver++, horsize, versize);
         hor = hor + 9;
         ver = rowIndex;
         grid.add(createCheckBox("Pluto", "Pluto",
                 "Pluto was discovered in 1930 and was considered the "
-                + "ninth planet until 2006. Visited by New Horizons on 14 July 2015.",
-                false), hor, ver++, horsize, versize);
+                + "ninth planet until 2006. Visited by New Horizons on 14 July 2015."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Eris", "Eris",
                 "Eris is the most massive and second-largest dwarf planet known "
-                + "in the Solar System.",
-                false), hor, ver++, horsize, versize);
+                + "in the Solar System."), hor, ver++, horsize, versize);
         grid.add(createCheckBox("Chiron", "Chiron",
                 "Chiron was discovered in 1977 and orbits between Saturn and Uranus. "
-                + "It is the first object of the Centaur class",
-                false), hor, ver++, horsize, versize);
+                + "It is the first object of the Centaur class"), hor, ver++, horsize, versize);
         grid.add(createCheckBox("Ceres", "Ceres",
-                "Ceres is a dwarf planet and the largest object in the asteroid belt.",
-                false), hor, ver++, horsize, versize);
+                "Ceres is a dwarf planet and the largest object in the asteroid belt."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Pallas", "2 Pallas",
                 "Pallas was the second asteroid discovered after Ceres and "
-                + "the third-most-massive asteroid after Vesta",
-                false), hor, ver++, horsize, versize);
+                + "the third-most-massive asteroid after Vesta"),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Juno", "3 Juno",
-                "Juno was the third asteroid discovered and is the 11th largest asteroid",
-                false), hor, ver++, horsize, versize);
+                "Juno was the third asteroid discovered and is the 11th largest asteroid"),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Vesta", "4 Vesta",
-                "Vesta is the second-largest body in the asteroid belt after Ceres",
-                false), hor, ver++, horsize, versize);
+                "Vesta is the second-largest body in the asteroid belt after Ceres"),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Eros", "433 Eros",
                 "Eros is a near-Earth astroid. NASA spacecraft NEAR Shoemaker "
-                + "entered orbit around Eros in 2000, and landed in 2001.",
-                false), hor, ver++, horsize, versize);
+                + "entered orbit around Eros in 2000, and landed in 2001."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Florence", "Florence",
                 "Asteroid 3122 Florence approached Earth within 0.047 au on "
-                + "1 September 2017.",
-                false), hor, ver++, horsize, versize);
+                + "1 September 2017."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Ultima Thule", "Ultima Thule",
                 "Kuiper belt object Ultima Thule was visitied by New Horizons on "
-                        + "1 January 2019.",
-                false), hor, ver++, horsize, versize);
+                        + "1 January 2019."),
+                hor, ver++, horsize, versize);
         hor = hor + 9;
         ver = rowIndex;
         grid.add(createCheckBox("Halley", "1P/Halley",
                 "Halley's Comet has a period of 76 years. Last perihelion 9 Feb 1986. "
-                + "Next perihelion 28 July 2061.", false), hor, ver++, horsize, versize);
+                + "Next perihelion 28 July 2061."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Encke", "2P/Encke",
                 "P2/Encke was the first periodic comet discovered after "
-                + "Halley's Comet.", false), hor, ver++, horsize, versize);
+                + "Halley's Comet."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("67P/Churyumov-Gerasimenko", "67P/Ch-Ge",
                 "67P/Churyumov-Gerasimenko was visited "
-                + "by ESA's Rosetta mission on 6 August 2014.",
-                false), hor, ver++, horsize, versize);
+                + "by ESA's Rosetta mission on 6 August 2014."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Shoemaker-Levy 9", "Shoe-Lev 9",
-                "Shoemaker-Levy 9 collided with Jupiter in July 1994.",
-                false), hor, ver++, horsize, versize);
+                "Shoemaker-Levy 9 collided with Jupiter in July 1994."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("Hale-Bopp", "Hale-Bopp",
                 "Hale-Bopp passed perihelion on 1 April 1997 and "
-                + "was visible to the naked eye for 18 months.",
-                false), hor, ver++, horsize, versize);
+                + "was visible to the naked eye for 18 months."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("JupiterMoons", "Jupiter Sys",
                 "The four largest moons of Jupiter are the Galilean moons " +
-                        "Io, Europa, Ganymede, and Callisto.",
-                false), hor, ver++, horsize, versize);
+                        "Io, Europa, Ganymede, and Callisto."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("SaturnMoons", "Saturn Sys",
-                "Saturn moons Mimas, Enceladus, Tethys, Dione, Rhea, Titan, and Iapetus.",
-                false), hor, ver++, horsize, versize);
+                "Saturn moons Mimas, Enceladus, Tethys, Dione, Rhea, Titan, and Iapetus."),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("UranusMoons", "Uranus Sys",
-                "Uranus moons Miranda, Ariel, Umbriel, Titania, and Oberon",
-                false), hor, ver++, horsize, versize);
+                "Uranus moons Miranda, Ariel, Umbriel, Titania, and Oberon"),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("NeptuneMoons", "Neptune Sys",
-                "Neptune moon Triton",
-                false), hor, ver++, horsize, versize);
+                "Neptune moon Triton"),
+                hor, ver++, horsize, versize);
         grid.add(createCheckBox("EarthMoonBarycenter", "E-M Bary",
-                "Earth-Moon barycenter is located on average 4671 km from Earth's center.",
-                false), hor, ver++, horsize, versize);
+                "Earth-Moon barycenter is located on average 4671 km from Earth's center."),
+                hor, ver++, horsize, versize);
         hor = 1;
         ver++;
         Label labelSpacecraft = new Label("Spacecraft");
@@ -809,18 +813,18 @@ public class SolarSystemApplication extends Application {
         ver++;
         grid.add(createCheckBox("Voyager 1", "Voyager 1",
                 "Voyager 1 was launched on September 5, 1977, and visited" +
-                        "Jupiter and Saturn.",
-                false), hor, ver, horsize, versize);
+                        "Jupiter and Saturn."),
+                hor, ver, horsize, versize);
         hor += 9;
         grid.add(createCheckBox("Voyager 2", "Voyager 2",
                 "Voyager 2 was launched on August 20, 1977, and visited" +
-                        "Jupiter, Saturn, Uranus, and Neptune.",
-                false), hor, ver, horsize, versize);
+                        "Jupiter, Saturn, Uranus, and Neptune."),
+                hor, ver, horsize, versize);
         hor += 9;
         grid.add(createCheckBox("New Horizons", "NwHorizons",
                 "New Horizons was launched on January 19, 2006, and visited" +
-                        "Jupiter, Pluto, and Ultimate Thule.",
-                false), hor, ver, horsize, versize);
+                        "Jupiter, Pluto, and Ultimate Thule."),
+                hor, ver, horsize, versize);
         
         // Set font for all labeled objects
         for (Node n : grid.getChildren()) {
@@ -855,6 +859,12 @@ public class SolarSystemApplication extends Application {
         // Start animation timer to draw the Solar System each 20 ms
         animationTimer = new DrawAnimationTimer();
         animationTimer.start();
+
+        // Initial settings for visualization
+        setVisualizationSettings(new VisualizationSettings());
+
+        // Initialize simulation
+        initializeSimulation();
     }
 
     /**
@@ -1147,10 +1157,9 @@ public class SolarSystemApplication extends Application {
      * @param name         Name of Solar System body
      * @param label        Text to be placed on the label of the check box
      * @param toolTipText  Text to be placed in the tool tip of the check box
-     * @param selected     Indicates whether the new check box should be selected
      * @return instance of CheckBox
      */
-    private CheckBox createCheckBox(String name, String label, String toolTipText, boolean selected) {
+    private CheckBox createCheckBox(String name, String label, String toolTipText) {
         CheckBox checkBox = new CheckBox(label);
         checkBoxesBodies.put(label,checkBox);
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -1209,7 +1218,6 @@ public class SolarSystemApplication extends Application {
         });
         Tooltip toolTip = new Tooltip(toolTipText);
         checkBox.setTooltip(toolTip);
-        checkBox.setSelected(selected);
         return checkBox;
     }
 
@@ -2195,7 +2203,34 @@ public class SolarSystemApplication extends Application {
             panel.show();
         }
     }
-    
+
+    /**
+     * Set visualization settings.
+     * @param settings settings for visualization
+     */
+    private void setVisualizationSettings(VisualizationSettings settings) {
+        dateTimeSelector.setDateTime(settings.getSimulationStartDateTime());
+        bodiesShown.clear();
+        for (String bodyName : settings.getBodiesShown()) {
+            checkBoxesBodies.get(bodyName).setSelected(true);
+        }
+        selectedBody = settings.getSelectedBody();
+        radioGeneralRelativity.setSelected(settings.isGeneralRelativity());
+        if (settings.isShowEphemeris() && settings.isShowSimulation()) {
+            radioEphemerisAndSimulation.setSelected(true);
+        }
+        else {
+            radioEphemerisOnly.setSelected(settings.isShowEphemeris());
+            radioSimulationOnly.setSelected(settings.isShowSimulation());
+        }
+        checkBoxObservationFromEarth.setSelected(settings.isObservationFromEarth());
+        checkBoxShowRuler.setSelected(settings.isShowRuler());
+        checkBoxStepMode.setSelected(settings.isStepMode());
+        sliderTopFrontView.setValue(settings.getValueTopFrontView());
+        sliderZoomView.setValue(settings.getValueZoomView());
+        sliderSimulationSpeed.setValue(settings.getValueSimulationSpeed());
+    }
+
     /**
      * Inner-class for drawing the Solar System.
      * Drawing is done by the JavaFX Application Thread.
