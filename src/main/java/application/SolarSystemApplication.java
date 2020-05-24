@@ -2210,9 +2210,13 @@ public class SolarSystemApplication extends Application {
      */
     private void setVisualizationSettings(VisualizationSettings settings) {
         dateTimeSelector.setDateTime(settings.getSimulationStartDateTime());
-        bodiesShown.clear();
-        for (String bodyName : settings.getBodiesShown()) {
-            checkBoxesBodies.get(bodyName).setSelected(true);
+        for (String bodyName : checkBoxesBodies.keySet()) {
+            if (settings.getBodiesShown().contains(bodyName)) {
+                checkBoxesBodies.get(bodyName).setSelected(true);
+            }
+            else {
+                checkBoxesBodies.get(bodyName).setSelected(false);
+            }
         }
         selectedBody = settings.getSelectedBody();
         radioGeneralRelativity.setSelected(settings.isGeneralRelativity());
