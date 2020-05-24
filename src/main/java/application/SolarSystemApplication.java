@@ -1161,7 +1161,7 @@ public class SolarSystemApplication extends Application {
      */
     private CheckBox createCheckBox(String name, String label, String toolTipText) {
         CheckBox checkBox = new CheckBox(label);
-        checkBoxesBodies.put(label,checkBox);
+        checkBoxesBodies.put(name,checkBox);
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -2209,7 +2209,16 @@ public class SolarSystemApplication extends Application {
      * @param settings settings for visualization
      */
     private void setVisualizationSettings(VisualizationSettings settings) {
-        dateTimeSelector.setDateTime(settings.getSimulationStartDateTime());
+        GregorianCalendar eventDateTime;
+        if (settings.getSimulationStartDateTime() == null) {
+            eventDateTime = new GregorianCalendar();
+            eventDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+        }
+        else {
+            eventDateTime = (GregorianCalendar) settings.getSimulationStartDateTime().clone();
+        }
+        dateTimeSelector.setDateTime(eventDateTime);
+
         for (String bodyName : checkBoxesBodies.keySet()) {
             if (settings.getBodiesShown().contains(bodyName)) {
                 checkBoxesBodies.get(bodyName).setSelected(true);
@@ -2219,6 +2228,7 @@ public class SolarSystemApplication extends Application {
             }
         }
         selectedBody = settings.getSelectedBody();
+
         radioGeneralRelativity.setSelected(settings.isGeneralRelativity());
         if (settings.isShowEphemeris() && settings.isShowSimulation()) {
             radioEphemerisAndSimulation.setSelected(true);

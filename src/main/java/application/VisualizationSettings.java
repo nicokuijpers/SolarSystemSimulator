@@ -31,7 +31,7 @@ public class VisualizationSettings {
     private String eventName = "Current date/time";
 
     // Start date for event
-    private GregorianCalendar simulationStartDateTime = new GregorianCalendar();
+    private GregorianCalendar simulationStartDateTime = null;
 
     // Bodies to be shown on screen
     private Set<String> bodiesShown = new HashSet<>();
