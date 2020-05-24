@@ -54,25 +54,25 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
     // Planets of the Solar System
     private Map<String, SolarSystemBody> planets;
-    
+
     // Moons of the Solar System
     private Map<String, SolarSystemBody> moons;
 
     // Particles for moons of planet systems
     private Map<String, Particle> moonParticles;
-    
+
      // Spacecraft in the Solar System
     private Map<String, Spacecraft> spacecraft;
-    
+
     // Center bodies of moons and spacecraft
     private Map<String,String> centerBodies;
 
     // Planet systems
     private Map<String, OblatePlanetSystem> planetSystems;
-    
+
     // Simulation date/time
     private GregorianCalendar simulationDateTime;
-    
+
     // Simulation time step 60 min
     // General Relativity: Runge-Kutta scheme with time step 60 min
     // Newton Mechanics: Adams-Bashforth-Moulton scheme with time step 30 min
@@ -89,7 +89,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     public SolarSystem() {
         this(new GregorianCalendar());
     }
-        
+
     /**
      * Constructor: create the Solar System and initialize for given date/time.
      * @param dateTime initial simulation date/time
@@ -100,7 +100,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Initialize simulation date/time
         simulationDateTime = new GregorianCalendar();
-        
+
         // https://www.timeanddate.com/time/aboututc.html
         // Use Coordinated Universal Time (UTC) to avoid 
         // sudden changes in ephemeris due to changes from 
@@ -116,14 +116,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));
         simulationDateTime.set(Calendar.SECOND, 0);
         simulationDateTime.set(Calendar.MILLISECOND, 0);
-        
+
         // Initialize hash maps for planets and moons
         planets = new HashMap<>();
         moons = new HashMap<>();
         moonParticles = new HashMap<>();
         spacecraft = new HashMap<>();
         centerBodies = new HashMap<>();
-        
+
         // Create the Sun
         Vector3D positionSun = new Vector3D(); // Origin
         Vector3D velocitySun = new Vector3D(); // Zero velocity
@@ -160,7 +160,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Spacecraft events
         spacecraftEvents = new LinkedList<>();
         nextEvent = null;
-        
+
         // Create spacecraft Voyager 2 (Voyager 2 was launched before Voyager 1)
         Spacecraft voyagerTwo = new VoyagerTwo("Voyager 2",simulationDateTime,this);
         createSpacecraft(voyagerTwo);
@@ -208,14 +208,16 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         }
         String planetName = centerBodies.get(name);
         OblatePlanetSystem planetSystem = planetSystems.get(planetName);
-        particle = planetSystem.getParticle(name);
-        if (particle != null) {
-            Particle planet = super.getParticle(planetName);
-            Vector3D position = planet.getPosition().plus(particle.getPosition());
-            Vector3D velocity = planet.getVelocity().plus(particle.getVelocity());
-            moonParticles.get(name).setPosition(position);
-            moonParticles.get(name).setVelocity(velocity);
-            return moonParticles.get(name);
+        if (planetSystem != null) {
+            particle = planetSystem.getParticle(name);
+            if (particle != null) {
+                Particle planet = super.getParticle(planetName);
+                Vector3D position = planet.getPosition().plus(particle.getPosition());
+                Vector3D velocity = planet.getVelocity().plus(particle.getVelocity());
+                moonParticles.get(name).setPosition(position);
+                moonParticles.get(name).setVelocity(velocity);
+                return moonParticles.get(name);
+            }
         }
         return null;
     }

@@ -26,6 +26,8 @@ import ephemeris.SolarSystemParameters;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -91,6 +93,15 @@ public class SolarSystemApplication extends Application {
     
     // Date/time selector to view and set simulation era, date, and time
     private DateTimeSelector dateTimeSelector;
+
+    // Radio buttons to set simulation method
+    private RadioButton radioNewtonMechanics;
+    private RadioButton radioGeneralRelativity;
+
+    // Radio buttons to set visualization of ephemeris/simulation results
+    private RadioButton radioEphemerisOnly;
+    private RadioButton radioSimulationOnly;
+    private RadioButton radioEphemerisAndSimulation;
     
     // Slider to set top-front view
     private Slider sliderTopFrontView;
@@ -109,7 +120,10 @@ public class SolarSystemApplication extends Application {
     
     // Check box to select step mode
     private CheckBox checkBoxStepMode;
-    
+
+    // Check boxes for bodies to be shown
+    private Map<String,CheckBox> checkBoxesBodies;
+
     // Translate
     private double translateX = 0.0;
     private double translateY = 0.0;
@@ -380,7 +394,7 @@ public class SolarSystemApplication extends Application {
         rowIndex++;
         Label labelSimulationMethod = new Label("Simulation Method:");
         grid.add(labelSimulationMethod,1,4,20,1);
-        RadioButton radioNewtonMechanics =
+        radioNewtonMechanics =
                 new RadioButton("Newton Mechanics");
         Tooltip tooltipNewtonMechanics = 
                 new Tooltip("Simulation based on Newton Mechanics is faster");
@@ -391,7 +405,7 @@ public class SolarSystemApplication extends Application {
                 solarSystem.setGeneralRelativityFlag(false);
             }
         });
-        RadioButton radioGeneralRelativity =
+        radioGeneralRelativity =
                 new RadioButton("General Relativity");
         Tooltip tooltipGeneralRelativity = 
                 new Tooltip("Simulation based on General Relativity is even more accurate");
@@ -417,7 +431,7 @@ public class SolarSystemApplication extends Application {
         rowIndex++;
         Label labelVisualization = new Label("Visualization:");
         grid.add(labelVisualization,1,rowIndex,20,1);
-        RadioButton radioEphemerisOnly = 
+        radioEphemerisOnly =
                 new RadioButton("Ephemeris only");
         Tooltip tooltipEphemerisOnly = 
                 new Tooltip("Show ephemeris only; simulation results are not shown");
@@ -429,7 +443,7 @@ public class SolarSystemApplication extends Application {
                 showSimulation = false;
             }
         });
-        RadioButton radioSimulationOnly = 
+        radioSimulationOnly =
                 new RadioButton("Simulation only");
         Tooltip tooltipSimulationOnly = 
                 new Tooltip("Show simulation only; ephemeris is not shown");
@@ -441,7 +455,7 @@ public class SolarSystemApplication extends Application {
                 showSimulation = true;
             }
         });
-        RadioButton radioEphemerisAndSimulation = 
+        radioEphemerisAndSimulation =
                 new RadioButton("Ephemeris and simulation");
         Tooltip tooltipEphemerisAndSimulation = 
                 new Tooltip("Show ephemeris (green) and simulation results (blue)");
@@ -672,6 +686,7 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate.put("New Horizons", new GregorianCalendar(2006, 1, 1));
 
         // Define check box for each body of the solar system
+        checkBoxesBodies = new HashMap<>();
         rowIndex++;
         int hor = 1;
         int ver = rowIndex;
@@ -1136,43 +1151,53 @@ public class SolarSystemApplication extends Application {
      * @return instance of CheckBox
      */
     private CheckBox createCheckBox(String name, String label, String toolTipText, boolean selected) {
-        if (selected) {
-            bodiesShown.add(name);
-        }
         CheckBox checkBox = new CheckBox(label);
-        checkBox.setSelected(selected);
-        checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        checkBoxesBodies.put(label,checkBox);
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void handle(MouseEvent event) {
-                boolean isSelected = checkBox.selectedProperty().getValue();
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                boolean isSelected = !oldValue && newValue;
                 if (name.endsWith("Moons")) {
-                    String planetName = name.substring(0,name.length()-5);
+                    String planetName = name.substring(0, name.length() - 5);
                     if (isSelected) {
                         try {
                             solarSystem.createPlanetSystem(planetName);
-                            showMoons.put(planetName, true);
-                        }
-                        catch (SolarSystemException ex) {
+                        } catch (SolarSystemException ex) {
                             checkBox.setSelected(false);
-                            showMessage("Error",ex.getMessage());
+                            showMessage("Error", ex.getMessage());
                         }
-                    }
-                    else {
+                    } else {
                         solarSystem.removePlanetSystem(planetName);
+                        for (String moonName : moons.get(planetName)) {
+                            if (informationPanels.containsKey(moonName)) {
+                                informationPanels.get(moonName).close();
+                                informationPanels.remove(moonName);
+                            }
+                        }
                     }
                     showMoons.put(planetName, isSelected);
                     updateBodiesShown();
                 }
                 else {
-                    if (event.getButton() == MouseButton.PRIMARY) {
-                        if (isSelected) {
-                            bodiesShown.add(name);
-                        }
-                        else {
-                            bodiesShown.remove(name);
+                    if (isSelected) {
+                        bodiesShown.add(name);
+                    }
+                    else {
+                        bodiesShown.remove(name);
+                        if (informationPanels.containsKey(name)) {
+                            informationPanels.get(name).close();
+                            informationPanels.remove(name);
                         }
                     }
-                    if (event.getButton() == MouseButton.SECONDARY) {
+                }
+            }
+        });
+        checkBox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY) {
+                    if (!name.endsWith("Moons")) {
+                        boolean isSelected = checkBox.selectedProperty().getValue();
                         if (!isSelected) {
                             checkBox.setSelected(true);
                             bodiesShown.add(name);
@@ -1184,6 +1209,7 @@ public class SolarSystemApplication extends Application {
         });
         Tooltip toolTip = new Tooltip(toolTipText);
         checkBox.setTooltip(toolTip);
+        checkBox.setSelected(selected);
         return checkBox;
     }
 
@@ -1213,12 +1239,19 @@ public class SolarSystemApplication extends Application {
     private Vector3D positionSelectedBody() {
         if (selectedBody != null) {
             if (showSimulation) {
-                return solarSystem.getParticle(selectedBody).getPosition();
+                Particle particle = solarSystem.getParticle(selectedBody);
+                if (particle != null) {
+                    return particle.getPosition();
+                }
             }
             else {
-                return solarSystem.getBody(selectedBody).getPosition();
+                SolarSystemBody body = solarSystem.getBody(selectedBody);
+                if (body != null) {
+                    return body.getPosition();
+                }
             }
         }
+        selectedBody = null;
         return new Vector3D();
     }
 
