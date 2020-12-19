@@ -76,6 +76,55 @@ public class EphemerisUtil {
     }
 
     /**
+     * Compute number of days past J2000.0.
+     *
+     * @param date date
+     * @return number of days past J2000.0
+     */
+    public static double computeNrDaysPastJ2000(GregorianCalendar date) {
+
+        // Compute Julian Ephemeris Date
+        double Teph = JulianDateConverter.convertCalendarToJulianDate(date);
+
+        // Compute number of days past J2000.0
+        return (Teph - J2000);
+    }
+
+    /**
+     * Transform right ascension and declination from equatorial coordinates to
+     * ecliptic coordinates.
+     * @param coordinatesEquatorial right ascension and declination [degrees]
+     * @return ecliptic coordinates lambda and beta [degrees]
+     */
+    public static double[] equatorialToEcliptic(double[] coordinatesEquatorial) {
+        // The code for this method is based on Matlab function equat2eclip(alpha,beta)
+        // https://www.mathworks.com/matlabcentral/fileexchange/23285-conversion-between-equatorial-and-ecliptic-coordinates
+        double rightAscension = coordinatesEquatorial[0];
+        double declination = coordinatesEquatorial[1];
+        double alpha = Math.toRadians(rightAscension);
+        double delta = Math.toRadians(declination);
+        //double epsilon = (23 + 26/60.0 + 21.448/3600.0)*Math.PI/180.0; // radians
+        double epsilon = Math.toRadians(SolarSystemParameters.AXIALTILT);
+        double sb = Math.sin(delta)*Math.cos(epsilon) - Math.cos(delta)*Math.sin(epsilon)*Math.sin(alpha);
+        double cbcl = Math.cos(delta)*Math.cos(alpha);
+        double cbsl = Math.sin(delta)*Math.sin(epsilon) + Math.cos(delta)*Math.cos(epsilon)*Math.sin(alpha);
+        // Calculate coordinates
+        double lambda = Math.atan2(cbsl,cbcl);
+        double r = Math.sqrt(cbsl*cbsl + cbcl*cbcl);
+        double beta = Math.atan2(sb,r);
+        double r2 = Math.sqrt(sb*sb +r*r);
+        // Sanity check: r2 should be equal to 1
+        if (Math.abs(r2 - 1.0) > 1.0E14) {
+            System.err.println("WARNING: EphemerisUtil.equatorToEcliptic(): " +
+                    "Latitude conversion radius is not equal to 1.");
+        }
+        double[] coordinatesEcliptic = new double[2];
+        coordinatesEcliptic[0] = Math.toDegrees(lambda);
+        coordinatesEcliptic[1] = Math.toDegrees(beta);
+        return coordinatesEcliptic;
+    }
+
+    /**
      * Transformation for 23.4 degrees J2000 frame.
      * This transformation is performed such that x-y plane becomes
      * the J2000 ecliptic plane.
@@ -137,6 +186,33 @@ public class EphemerisUtil {
         double xt =  0.9999257080 * x + 0.0111789372 * y + 0.0048590036 * z;
         double yt = -0.0111789372 * x + 0.9999375134 * y - 0.0000271579 * z;
         double zt = -0.0048590035 * x - 0.0000271626 * y + 0.9999881946 * z;
+        return new Vector3D(xt,yt,zt);
+    }
+
+    /**
+     * Transform coordinates from B1969 to J2000.
+     * @param coordinates input coordinates
+     * @return coordinates after transformation
+     */
+    public static Vector3D transformFromB1969ToJ2000(Vector3D coordinates) {
+        /*
+         *  Precession matrix for Besselian year 1969
+         *   9.999714386274325e-01 -6.931554647291017e-03 -3.012553660026933e-03
+         *   6.931554645614955e-03  9.999759764320186e-01 -1.044154562241473e-05
+         *   3.012553663883367e-03 -1.044043291978399e-05  9.999954621954139e-01
+         *
+         *  Precession matrix for Besselian year 1969 is calculated as described in
+         *  J.H. Lieske,
+         *  Precession Matrix Based on IAU (1976) System of Astronomocal Constants,
+         *  Astron Atrophys 73, 282-284 (1979)
+         *  http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?bibcode=1979A%26A....73..282L&db_key=AST&page_ind=0&data_type=GIF&type=SCREEN_VIEW&classic=YES
+         */
+        double x = coordinates.getX();
+        double y = coordinates.getY();
+        double z = coordinates.getZ();
+        double xt = 9.999714386274325e-01 * x - 6.931554647291017e-03 * y - 3.012553660026933e-03 * z;
+        double yt = 6.931554645614955e-03 * x + 9.999759764320186e-01 * y - 1.044154562241473e-05 * z;
+        double zt = 3.012553663883367e-03 * x - 1.044043291978399e-05 * y + 9.999954621954139e-01 * z;
         return new Vector3D(xt,yt,zt);
     }
 
@@ -358,7 +434,7 @@ public class EphemerisUtil {
         }
 
         /*
-         *  For elliptical orbits, starndard gravitational parameter mu can be obtained
+         *  For elliptical orbits, standard gravitational parameter mu can be obtained
          *  from Kepler's third law by
          *  mu = (4 * pi^2 * a^3) / T^2
          *  where a is semi-major axis [m]
@@ -1231,6 +1307,63 @@ public class EphemerisUtil {
         
         // Return Keplerian elements
         return orbitElements;
+    }
+
+    /**
+     * Compute orbital parameters from position and velocity of body at given
+     * date/time
+     *
+     * The following orbital parameters are output:
+     *   semi-major axis [au]
+     *   eccentricity [-]
+     *   inclination [degrees]
+     *   argument of perifocus [degrees]
+     *   longitude of ascending node [degrees]
+     *   time of perifocus passage [Julian Ephemeris Date]
+     *   mean motion [degrees/day]
+     *
+     * @param mu Standard gravitational parameter of center body [m3/s2]
+     * @param position Position of body relative to center body [m]
+     * @param velocity Velocity of body relative to center body [m/s]
+     * @param dateTime Date time of position and velocity
+     * @return orbital parameters
+     */
+    public static double[] computeOrbitalParametersFromPositionVelocity(
+            double mu, Vector3D position, Vector3D velocity, GregorianCalendar dateTime) {
+
+        // Convert date/time to Julian Ephemeris Date
+        double Teph = JulianDateConverter.convertCalendarToJulianDate(dateTime);
+
+        // Compute orbital elements from position and velocity
+        double[] orbitElements = computeOrbitalElementsFromPositionVelocity(mu,position,velocity);
+        double axis          = orbitElements[0]; // semi-major axis [au]
+        double eccentricity  = orbitElements[1]; // eccentricity [-]
+        double inclination   = orbitElements[2]; // inclination [degrees]
+        double meanAnomaly   = orbitElements[3]; // mean anomaly [degrees]
+        double argPerifocus  = orbitElements[4]; // argument of perifocus [degrees]
+        double longNode      = orbitElements[5]; // longitude of ascending node [degrees]
+
+        // Mean motion [degrees/day]
+        // https://en.wikipedia.org/wiki/Mean_motion
+        // Use absolute value of semi-major axis to support both elliptic and hyperbolic orbits
+        double a = Math.abs(axis * SolarSystemParameters.ASTRONOMICALUNIT); // [m]
+        double n = Math.sqrt(mu/(a*a*a)); // [rad/s]
+        int nrSecPerDay = 24 * 60 * 60;
+        double meanMotion = Math.toDegrees(n) * nrSecPerDay; // [degrees/day]
+
+        // Time of perifocus passage [Julian Ephemeris Date]
+        double Tperi = Teph - (meanAnomaly/meanMotion);
+
+        // Orbital parameters
+        double[] orbitPars = new double[7];
+        orbitPars[0] = axis;         // semi-major axis [au]
+        orbitPars[1] = eccentricity; // eccentricity [-]
+        orbitPars[2] = inclination;  // inclination [degrees]
+        orbitPars[3] = argPerifocus; // argument of perifocus [degrees]
+        orbitPars[4] = longNode;     // longitude of ascending node [degrees]
+        orbitPars[5] = Tperi;        // time of perifocus passage [JED]
+        orbitPars[6] = meanMotion;   // mean motion [degrees/day]
+        return orbitPars;
     }
     
     /**

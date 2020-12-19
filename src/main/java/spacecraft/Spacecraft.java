@@ -39,17 +39,17 @@ public abstract class Spacecraft extends SolarSystemBody implements Serializable
 
     /**
      * Constructor.
-     * @param name        name of spacecraft
-     * @param dateTime    current simulation date/time
-     * @param solarSystem the Solar System
+     * @param name           name of spacecraft
+     * @param centerBodyName name of the center body
+     * @param solarSystem    the Solar System
      */
-    public Spacecraft(String name, GregorianCalendar dateTime, SolarSystem solarSystem) {
+    public Spacecraft(String name, String centerBodyName, SolarSystem solarSystem) {
         this.setName(name);
-        this.setCenterBody(solarSystem.getBody("Sun"));
+        this.setCenterBody(solarSystem.getBody(centerBodyName));
         this.trajectories = defineTrajectories();
         defineEvents(solarSystem);
         this.setOrbit(computeTrajectory());
-        updateStatus(dateTime);
+        updateStatus(solarSystem.getSimulationDateTime());
     }
 
     /**
@@ -58,8 +58,13 @@ public abstract class Spacecraft extends SolarSystemBody implements Serializable
      * @param dateTime
      */
     public void updateStatus(GregorianCalendar dateTime) {
-        Vector3D position = computePosition(dateTime);
-        Vector3D velocity = computeVelocity(dateTime);
+        SpacecraftTrajectory trajectory = findTrajectory(dateTime);
+        if (trajectory == null) {
+            trajectory = trajectories.get(0);
+            dateTime = trajectory.getStartDateTime();
+        }
+        Vector3D position = trajectory.computePosition(dateTime);
+        Vector3D velocity = trajectory.computeVelocity(dateTime);
         setPosition(position);
         setVelocity(velocity);
     }
@@ -68,7 +73,7 @@ public abstract class Spacecraft extends SolarSystemBody implements Serializable
      * Find trajectory corresponding to given date/time.
      * Return trajectory with start date/time before given date/time and
      * stop date/time after given date/time.
-     * Null will be returned if no trajectory is found.
+     * Return null when no trajectory is found.
      * @param dateTime date/time for which trajectory should be found
      * @return trajectory
      */
@@ -79,38 +84,6 @@ public abstract class Spacecraft extends SolarSystemBody implements Serializable
             }
         }
         return null;
-    }
-
-    /**
-     * Compute position of spacecraft for given date/time.
-     * @param dateTime
-     * @return position [m]
-     */
-    private Vector3D computePosition(GregorianCalendar dateTime) {
-        SpacecraftTrajectory trajectory = findTrajectory(dateTime);
-        if (trajectory != null) {
-            return trajectory.computePosition(dateTime);
-        }
-        else {
-            trajectory = trajectories.get(0);
-            return trajectory.computePosition(trajectory.getStartDateTime());
-        }
-    }
-
-    /**
-     * Compute velocity of spacecraft for given date/time.
-     * @param dateTime
-     * @return velocity [m/s]
-     */
-    private Vector3D computeVelocity(GregorianCalendar dateTime) {
-        SpacecraftTrajectory trajectory = findTrajectory(dateTime);
-        if (trajectory != null) {
-            return trajectory.computeVelocity(dateTime);
-        }
-        else {
-            trajectory = trajectories.get(0);
-            return trajectory.computeVelocity(trajectory.getStartDateTime());
-        }
     }
 
     /**
@@ -139,6 +112,7 @@ public abstract class Spacecraft extends SolarSystemBody implements Serializable
 
     /**
      * Define events for this spacecraft and add them to the Solar System.
+     * @param solarSystem reference to the Solar System
      */
     protected abstract void defineEvents(SolarSystem solarSystem);
 }

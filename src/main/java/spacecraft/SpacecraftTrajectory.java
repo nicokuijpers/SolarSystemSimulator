@@ -82,6 +82,14 @@ public class SpacecraftTrajectory implements Serializable {
     }
 
     /**
+     * Get name of center body.
+     * @return center body name
+     */
+    public String getCenterBodyName() {
+        return centerBodyName;
+    }
+    
+    /**
      * Compute position at given date/time relative to the Sun.
      * It is assumed that the Sun is located at the origin.
      * @param dateTime

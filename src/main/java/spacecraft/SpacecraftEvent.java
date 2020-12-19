@@ -23,9 +23,11 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 /**
- * SpacecrafEvent. Forces position and velocity of spacecraft particle
- * to position and velocity of spacecraft solar system body at given date/time.
+ * SpacecrafEvent. Forces position and velocity of particle with given name
+ * to position and velocity of Solar System body at given date/time.
  * Spacecraft events are used to simulate launch and Trajectory Correction Maneuvers (TCMs).
+ * They are also used to ensure that small Solar System bodies have accurate position and
+ * velocity at the time of encounter with a spacecraft.
  * @author Nico Kuijpers
  */
 public class SpacecraftEvent implements Serializable {
@@ -33,19 +35,19 @@ public class SpacecraftEvent implements Serializable {
     // Default serialVersion id
     private static final long serialVersionUID = 1L;
 
-    // Name of the spacecraft
-    private String spacecraftName;
+    // Name of the spacecraft or small body
+    private String spacecraftOrBodyName;
 
     // Date/time of this event
     private Calendar dateTime;
 
     /**
-     * Constructor. Set spacecraft name and date/time for this event.
-     * @param spacecraftName spacecraft name
+     * Constructor. Set name of spacecraft or small body and date/time for this event.
+     * @param spacecraftOrBodyName name of spacecraft or small body
      * @param dateTime date/time of this event
      */
-    public SpacecraftEvent(String spacecraftName, Calendar dateTime) {
-        this.spacecraftName = spacecraftName;
+    public SpacecraftEvent(String spacecraftOrBodyName, Calendar dateTime) {
+        this.spacecraftOrBodyName = spacecraftOrBodyName;
         this.dateTime = dateTime;
     }
 
@@ -53,8 +55,8 @@ public class SpacecraftEvent implements Serializable {
      * Get name of spacecraft.
      * @return spacecraft name.
      */
-    public String getSpacecraftName() {
-        return spacecraftName;
+    public String getSpacecraftOrBodyName() {
+        return spacecraftOrBodyName;
     }
 
     /**

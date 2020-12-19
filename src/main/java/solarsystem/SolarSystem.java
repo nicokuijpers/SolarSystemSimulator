@@ -61,14 +61,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     // Particles for moons of planet systems
     private Map<String, Particle> moonParticles;
 
-     // Spacecraft in the Solar System
+    // Spacecraft in the Solar System
     private Map<String, Spacecraft> spacecraft;
 
     // Center bodies of moons and spacecraft
     private Map<String,String> centerBodies;
 
     // Planet systems
-    private Map<String, OblatePlanetSystem> planetSystems;
+    private Map<String,OblatePlanetSystem> planetSystems;
 
     // Simulation date/time
     private GregorianCalendar simulationDateTime;
@@ -102,8 +102,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime = new GregorianCalendar();
 
         // https://www.timeanddate.com/time/aboututc.html
-        // Use Coordinated Universal Time (UTC) to avoid 
-        // sudden changes in ephemeris due to changes from 
+        // Use Coordinated Universal Time (UTC) to avoid
+        // sudden changes in ephemeris due to changes from
         // winter time to summer time and vice versa
         simulationDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
 
@@ -160,18 +160,6 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Spacecraft events
         spacecraftEvents = new LinkedList<>();
         nextEvent = null;
-
-        // Create spacecraft Voyager 2 (Voyager 2 was launched before Voyager 1)
-        Spacecraft voyagerTwo = new VoyagerTwo("Voyager 2",simulationDateTime,this);
-        createSpacecraft(voyagerTwo);
-
-        // Create spacecraft Voyager 1
-        Spacecraft voyagerOne = new VoyagerOne("Voyager 1",simulationDateTime,this);
-        createSpacecraft(voyagerOne);
-
-        // Create spacecraft New Horizons
-        Spacecraft newHorizons = new NewHorizons("New Horizons",simulationDateTime,this);
-        createSpacecraft(newHorizons);
 
         // Four-step Adams-Bashforth-Moulton method.
         // Reset flag to indicate that values stored in cyclic arrays are not valid.
@@ -246,14 +234,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (simulationDateTime.after(ephemeris.getLastValidDate())) {
             throw new SolarSystemException("Date not valid after AD 3000 for " + planetName + " System");
         }
-       
+
         // Create the planet system
         OblatePlanetSystem planetSystem = new OblatePlanetSystem(planetName,this);
 
         // Set flag to indicate whether general relativity
         // should be applied when computing acceleration
         planetSystem.setGeneralRelativityFlag(getGeneralRelativityFlag());
-        
+
         // Store reference to this planet system
         planetSystems.put(planetName,planetSystem);
 
@@ -271,14 +259,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param planetName name of the planet
      */
     public void removePlanetSystem(String planetName) {
-
-        // Remove the moons for this planet system
-        for (String moonName : solarSystemParameters.getMoonsOfPlanet(planetName)) {
-            removeMoon(moonName);
+        if (planetSystems.containsKey(planetName)) {
+            // Remove the moons for this planet system
+            for (String moonName : solarSystemParameters.getMoonsOfPlanet(planetName)) {
+                removeMoon(moonName);
+            }
+            // Remove the planet system
+            planetSystems.remove(planetName);
         }
-
-        // Remove the planet system
-        planetSystems.remove(planetName);
     }
 
     /**
@@ -305,6 +293,11 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.set(Calendar.SECOND, 0);
         simulationDateTime.set(Calendar.MILLISECOND, 0);
 
+        // Initialize trajectories of spacecraft
+        for (String spacecraftName : spacecraft.keySet()) {
+            this.getBody(spacecraftName).initTrajectory();
+        }
+
         // Compute new positions and orbits for all bodies
         // corresponding to current simulation date/time
         moveBodies();
@@ -320,7 +313,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Reset flag to indicate that values stored in cyclic arrays are not valid.
         setValidABM4(false);
     }
-            
+
     /**
      * Advance simulation of planet systems with time steps
      * of at most 10 minutes.
@@ -344,7 +337,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (deltaT < 0) {
             while (totalTime > deltaT) {
                 for (OblatePlanetSystem planetSystem : planetSystems.values()) {
-                    planetSystem.advanceRungeKutta(-timeStep);                    
+                    planetSystem.advanceRungeKutta(-timeStep);
                 }
                 totalTime -= timeStep;
             }
@@ -352,7 +345,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         else {
             while (totalTime < deltaT) {
                 for (OblatePlanetSystem planetSystem : planetSystems.values()) {
-                    planetSystem.advanceRungeKutta(timeStep);                    
+                    planetSystem.advanceRungeKutta(timeStep);
                 }
                 totalTime += timeStep;
             }
@@ -386,7 +379,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             checkForSpacecraftEvent();
         }
     }
-    
+
     /**
      * Advance backward in time for given number of simulation time steps.
      * @param nrTimeSteps number of time steps
@@ -426,7 +419,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.add(Calendar.SECOND, timeStep);
         checkForSpacecraftEvent();
     }
-    
+
     /**
      * Get body with given name.
      * @param name  Name of the body
@@ -447,7 +440,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         }
         return null;
     }
-    
+
     /**
      * Move all bodies to positions corresponding to simulation date/time.
      * Bodies are moved when the simulation date/time is valid, i.e.,
@@ -458,10 +451,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Check whether simulation date/time is valid for ephemeris
         if (simulationDateTime.before(ephemeris.getFirstValidDate()) ||
-            simulationDateTime.after(ephemeris.getLastValidDate())) {
+                simulationDateTime.after(ephemeris.getLastValidDate())) {
             return;
         }
-        
+
         // Move each planet to position of simulation date/time
         for (String name : planets.keySet()) {
             SolarSystemBody planet = planets.get(name);
@@ -474,7 +467,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             planet.setVelocity(velocity);
             planet.setOrbit(orbit);
         }
-        
+
         // Move each moon to position of simulation date/time
         for (String name : moons.keySet()) {
             // Obtain position and velocity of moon from Ephemeris
@@ -482,13 +475,13 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             Vector3D[] positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(name, simulationDateTime);
             Vector3D positionMoon = positionAndVelocityMoon[0];
             Vector3D velocityMoon = positionAndVelocityMoon[1];
-        
+
             // Obtain position and velocity of planet from Ephemeris
             String planetName = centerBodies.get(name);
             Vector3D[] positionAndVelocityPlanet = ephemeris.getBodyPositionVelocity(planetName, simulationDateTime);
             Vector3D positionPlanet = positionAndVelocityPlanet[0];
             Vector3D velocityPlanet = positionAndVelocityPlanet[1];
-            
+
             // Compute orbit of moon relative to planet
             double muPlanet = this.getParticle(planetName).getMu();
             Vector3D[] orbit;
@@ -497,14 +490,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                 Vector3D positionRelativeToPlanet = positionMoon.minus(positionPlanet);
                 Vector3D velocityRelativeToPlanet = velocityMoon.minus(velocityPlanet);
                 orbit = EphemerisUtil.computeOrbit(muPlanet,
-                   positionRelativeToPlanet,velocityRelativeToPlanet);
+                        positionRelativeToPlanet,velocityRelativeToPlanet);
             } else {
                 // Position and velocity of other moons are relative to planet
                 orbit = EphemerisUtil.computeOrbit(muPlanet,positionMoon,velocityMoon);
                 positionMoon.addVector(positionPlanet);
                 velocityMoon.addVector(velocityPlanet);
             }
-            
+
             // Set position and orbit
             moon.setPosition(positionMoon);
             moon.setVelocity(velocityMoon);
@@ -516,7 +509,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             craft.updateStatus(simulationDateTime);
         }
     }
-    
+
     /**
      * Move all body particles to positions corresponding to simulation date/time.
      * Particles are moved when the simulation date/time is valid, i.e.,
@@ -526,10 +519,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Check whether simulation date/time is valid for ephemeris
         if (simulationDateTime.before(ephemeris.getFirstValidDate()) ||
-            simulationDateTime.after(ephemeris.getLastValidDate())) {
+                simulationDateTime.after(ephemeris.getLastValidDate())) {
             return;
         }
-        
+
         // Move each planet particle to position of present date
         for (String name : planets.keySet()) {
             Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(name, simulationDateTime);
@@ -541,7 +534,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                 particle.setVelocity(velocity);
             }
         }
-        
+
         // Move each moon particle to position of present date
         for (String moonName : moons.keySet()) {
             Vector3D[] positionAndVelocityMoon;
@@ -591,7 +584,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     }
 
     /**
-     * Create planet, compute position and velocity, and add the planet 
+     * Create planet, compute position and velocity, and add the planet
      * as well as corresponding particle to the Solar System.
      * It is assumed that the body is orbiting the Sun.
      * @param name      Name of the body
@@ -624,7 +617,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                 // Planet with mass at least mass of Pluto may apply force to other objects
                 // Note that Pluto and Eris both may apply forces to other objects
                 if ("Earth".equals(name)) {
-                    // Use oblateness to compute acceleration of Earth's Moon
+                    // Use oblateness to compute acceleration of Earth's Moon and nearby spacecraft
                     OblatePlanet planet =
                             new OblatePlanet(name, simulationDateTime, mass, mu, position, velocity);
                     this.addParticle(name, planet);
@@ -640,9 +633,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             }
         }
     }
-    
+
     /**
-     * Create moon, compute position and velocity, and add the moon 
+     * Create moon, compute position and velocity, and add the moon
      * as well as corresponding particle to the Solar System.
      * @param planetName  Name of the planet
      * @param moonName    Name of the moon
@@ -651,8 +644,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param diameter    Diameter of the moon in m
      * @param date        Date to determine position of the moon.
      */
-    private void createMoon(String planetName, String moonName, 
-            double mass, double mu, double diameter, GregorianCalendar date) {
+    private void createMoon(String planetName, String moonName,
+                            double mass, double mu, double diameter, GregorianCalendar date) {
 
         Vector3D[] positionAndVelocityMoon;
         if ("Triton".equals(moonName)) {
@@ -671,7 +664,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         Vector3D[] positionAndVelocityPlanet = ephemeris.getBodyPositionVelocity(planetName, date);
         Vector3D positionPlanet = positionAndVelocityPlanet[0];
         Vector3D velocityPlanet = positionAndVelocityPlanet[1];
-        
+
         // Compute orbit of moon relative to planet
         Vector3D positionRelativeToPlanet;
         Vector3D velocityRelativeToPlanet;
@@ -694,9 +687,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Add the new moon to the Solar System for computation
         SolarSystemBody planet = this.getBody(planetName);
-        this.moons.put(moonName, 
+        this.moons.put(moonName,
                 new SolarSystemBody(moonName, positionMoon, velocityMoon, orbit, diameter, planet));
-        
+
         // Add the new moon as particle for simulation
         if ("Moon".equals(moonName)) {
             // Earth's moon applies forces to all other particles in the Solar System
@@ -726,20 +719,70 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     }
 
     /**
-     * Create spacecraft, compute position and velocity, and add the spacecraft
-     * as well as corresponding particle to the Solar System.
-     * @param craft Reference to spacecraft
+     * Create spacecraft with given name, compute position and velocity,
+     * and add the spacecraft as well as corresponding particle to the Solar System.
+     * @param spacecraftName
      */
-    private void createSpacecraft(Spacecraft craft) {
+    public void createSpacecraft(String spacecraftName) {
 
-        // Add the spacecraft to the Solar System for computation
-        spacecraft.put(craft.getName(),craft);
+        Spacecraft craft;
+        switch(spacecraftName) {
+            case "Apollo 8":
+                craft = new ApolloEight("Apollo 8", "Earth", this);
+                break;
+            case "Voyager 2":
+                craft = new VoyagerTwo("Voyager 2", "Sun", this);
+                break;
+            case "Voyager 1":
+                craft = new VoyagerOne("Voyager 1", "Sun", this);
+                break;
+            case "ISS":
+                craft = new ISS("ISS", "Earth", this);
+                break;
+            case "Rosetta":
+                craft = new Rosetta("Rosetta", "Sun", this);
+                break;
+            case "New Horizons":
+                craft = new NewHorizons("New Horizons", "Sun", this);
+                break;
+            default:
+                System.err.println("ERROR: No spacecraft with name " + spacecraftName);
+                craft = null;
+                break;
+        }
 
-        // Add the new spacecraft as particle without mass for simulation
-        Vector3D position = craft.getPosition();
-        Vector3D velocity = craft.getVelocity();
-        Particle particle = new Particle(DEFAULTMASS, position, velocity);
-        this.addParticleWithoutMass(craft.getName(), particle);
+        if (craft != null) {
+            // Add the spacecraft to the Solar System for computation
+            spacecraft.put(craft.getName(), craft);
+
+            // Add the new spacecraft as particle without mass for simulation
+            Vector3D position = craft.getPosition();
+            Vector3D velocity = craft.getVelocity();
+            Particle particle = new Particle(DEFAULTMASS, position, velocity);
+            this.addParticleWithoutMass(craft.getName(), particle);
+        }
+    }
+
+    /**
+     * Remove spacecraft with given name and corresponding particle.
+     * Also the events belonging to that spacecraft are removed.
+     * @param spacecraftName
+     */
+    public void removeSpacecraft(String spacecraftName) {
+        if (spacecraft.containsKey(spacecraftName)) {
+            // Remove events for this spacecraft
+            List<SpacecraftEvent> eventsToBeRemoved = new ArrayList<>();
+            for (SpacecraftEvent event : spacecraftEvents) {
+                if (event.getSpacecraftOrBodyName().equals(spacecraftName)) {
+                    eventsToBeRemoved.add(event);
+                }
+            }
+            for (SpacecraftEvent event : eventsToBeRemoved) {
+                spacecraftEvents.remove(event);
+            }
+            // Remove spacecraft
+            spacecraft.remove(spacecraftName);
+        }
     }
 
     /**
@@ -778,18 +821,29 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     }
 
     /**
-     * Check whether a spacecraft event has occurred and perform event if one
-     * has occurred.
+     * Check whether a spacecraft event has occurred and update position and
+     * velocity of corresponding particle when event has occurred. Spacecraft events
+     * are also used to update position and velocity of other objects to increase
+     * accuracy during flybys of small objects such as comets, asteroids or Kuiper belt
+     * objects.
      */
     private void checkForSpacecraftEvent() {
-        // Check for spacecraft event
         if (nextEvent != null && !nextEvent.getDateTime().after(simulationDateTime)) {
-            // Move spacecraft particle for scheduled spacecraft
-            Spacecraft craft = spacecraft.get(nextEvent.getSpacecraftName());
-            craft.updateStatus(simulationDateTime);
-            Vector3D position = craft.getPosition();
-            Vector3D velocity = craft.getVelocity();
-            Particle particle = getParticle(craft.getName());
+            String name = nextEvent.getSpacecraftOrBodyName();
+            Vector3D position;
+            Vector3D velocity;
+            if (spacecraft.containsKey(name)) {
+                Spacecraft craft = spacecraft.get(name);
+                craft.updateStatus(simulationDateTime);
+                position = craft.getPosition();
+                velocity = craft.getVelocity();
+            }
+            else {
+                Vector3D[] positionAndVelocity = ephemeris.getBodyPositionVelocity(name, simulationDateTime);
+                position = positionAndVelocity[0];
+                velocity = positionAndVelocity[1];
+            }
+            Particle particle = getParticle(name);
             if (particle != null) {
                 particle.setPosition(position);
                 particle.setVelocity(velocity);

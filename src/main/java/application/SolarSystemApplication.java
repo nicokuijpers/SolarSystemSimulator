@@ -19,15 +19,15 @@
  */
 package application;
 
-import ephemeris.EphemerisRingsOfSaturn;
-import ephemeris.EphemerisRingsOfUranus;
-import ephemeris.EphemerisUtil;
-import ephemeris.SolarSystemParameters;
+import ephemeris.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -65,6 +65,8 @@ public class SolarSystemApplication extends Application {
     private static final int BORDERSIZE = 10;
     private static final int SCREENWIDTH = 900;
     private static final int SCREENHEIGHT = 900;
+    private static final double SELECTORWIDTH = 310.0;
+    private static final double BUTTONWIDTH = 70.0;
     private static final double SCREENSCALE = 180.0 * SolarSystemParameters.ASTRONOMICALUNIT;
 
     // Screen to display the bodies of the Solar System
@@ -72,27 +74,30 @@ public class SolarSystemApplication extends Application {
 
     // Monitor for thread synchronization
     private Monitor monitor = null;
-    
+
     // Animation timer for drawing
     private AnimationTimer animationTimer = null;
 
     // Pausable task for simulation
     private SimPausableTask taskSimulate = null;
-    
+
     // Flag to indicate whether simulation is running
     private boolean simulationIsRunning = false;
-    
+
     // Flag to indicate whether simulation is running in step mode
     private boolean simulationIsRunningStepMode = false;
-    
+
     // Flag to indicate whether simulation is running fast
     private boolean simulationIsRunningFast = false;
-    
+
     // Flag to indicate whether simulation is running forward
     private boolean simulationIsRunningForward = true;
-    
+
     // Date/time selector to view and set simulation era, date, and time
     private DateTimeSelector dateTimeSelector;
+
+    // Event selector
+    private ComboBox eventSelector;
 
     // Radio buttons to set simulation method
     private RadioButton radioNewtonMechanics;
@@ -102,22 +107,22 @@ public class SolarSystemApplication extends Application {
     private RadioButton radioEphemerisOnly;
     private RadioButton radioSimulationOnly;
     private RadioButton radioEphemerisAndSimulation;
-    
+
     // Slider to set top-front view
     private Slider sliderTopFrontView;
-    
+
     // Slider to set zoom of view
     private Slider sliderZoomView;
-    
+
     // Slider to set speed of simulation
     private Slider sliderSimulationSpeed;
-    
+
     // Check box to select observation from Earth
     private CheckBox checkBoxObservationFromEarth;
-    
+
     // Check box to indicate whether ruler should be shown
     private CheckBox checkBoxShowRuler;
-    
+
     // Check box to select step mode
     private CheckBox checkBoxStepMode;
 
@@ -129,18 +134,18 @@ public class SolarSystemApplication extends Application {
     private double translateY = 0.0;
     private double lastDragX = 0.0;
     private double lastDragY = 0.0;
-    
+
     // The Solar System
     private SolarSystem solarSystem;
-    
+
     // Circles representing the bodies of the Solar System.
     // Functions as storage for position, radius, and color of circles
     // representing the bodies of the Solar System.
     private Map<String,Circle> bodies;
-    
+
     // Bodies to be shown on screen
     private Set<String> bodiesShown;
-    
+
     // Selected body
     private String selectedBody;
 
@@ -155,63 +160,117 @@ public class SolarSystemApplication extends Application {
 
     // Information panels
     private Map<String, InformationPanel> informationPanels;
-    
+
     // Flag to indicate whether ephemeris is shown on screen
     private boolean showEphemeris = true;
-    
-    // Flag to indicate whether simulation results are shown on screen 
+
+    // Flag to indicate whether simulation results are shown on screen
     private boolean showSimulation = true;
-    
+
     // Flag to indicate whether observation from Earth is selected
     private boolean observationFromEarth = false;
 
     // Flag to indicate whether ruler is shown on screen
     private boolean showRuler = false;
-    
+
     // Flag to indicate whether step mode for simulation is selected
     private boolean stepMode = false;
 
     // Flag to indicate whether moons of planet are shown
     private Map<String,Boolean> showMoons;
-   
+
+    // Reference to the primary stage
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
-        
+
+        // Set reference to the primary stage
+        this.primaryStage = primaryStage;
+
+        // Create the scene
+        Scene scene = createScene();
+
+        // Information panels
+        informationPanels = new HashMap<>();
+
+        // Close information panels when primary stage closes
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                for (InformationPanel panel : informationPanels.values()) {
+                    panel.close();
+                }
+            }
+        });
+
+        // Define title and assign the scene for main window
+        primaryStage.setTitle("Solar System Simulator");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        // Monitor for thread synchronization
+        monitor = new Monitor();
+
+        // Pausable task for simulation of the Solar System
+        taskSimulate = new SimPausableTask();
+
+        // Start animation timer to draw the Solar System each 20 ms
+        animationTimer = new DrawAnimationTimer();
+        animationTimer.start();
+
+        // Initial settings for visualization
+        setVisualizationSettings((VisualizationSettings) eventSelector.getValue());
+
+        // Initialize simulation
+        initializeSimulation();
+    }
+
+    /**
+     * Create the scene, i.e., canvas, buttons, sliders, etc.
+     * @return scene
+     */
+    public Scene createScene() {
+
         // Define grid pane
         GridPane grid;
         grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(BORDERSIZE,BORDERSIZE,BORDERSIZE,BORDERSIZE));
-        
+        grid.setPadding(new Insets(BORDERSIZE, BORDERSIZE, BORDERSIZE, BORDERSIZE));
+
+        // Create the scene and add the grid pane
+        Group root = new Group();
+        Scene scene = new Scene(root, SCREENWIDTH + 2 * BORDERSIZE + 330, SCREENHEIGHT + 2 * BORDERSIZE);
+        root.getChildren().add(grid);
+
         // For debug purposes
         // Make the grid lines visible
         // grid.setGridLinesVisible(true);
-        
+
         // Screen to draw trajectories
-        screen = new Canvas(SCREENWIDTH,SCREENHEIGHT);
-        grid.add(screen,0,0,1,31);
+        screen = new Canvas(SCREENWIDTH, SCREENHEIGHT);
+        grid.add(screen, 0, 0, 1, 31);
         initTranslate();
         clearScreen();
-        
+
         // Add mouse clicked event to screen
         screen.addEventHandler(MouseEvent.MOUSE_CLICKED,
-            new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    screenMouseClicked(event);
-                }
-            });
-        
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        screenMouseClicked(event);
+                    }
+                });
+
         // Add mouse pressed event to screen
         screen.addEventHandler(MouseEvent.MOUSE_PRESSED,
-            new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    screenMousePressed(event);
-                }
-            });
-        
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        screenMousePressed(event);
+                    }
+                });
+
         // Add mouse dragged event to screen
         screen.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
@@ -219,21 +278,33 @@ public class SolarSystemApplication extends Application {
                 screenMouseDragged(event);
             }
         });
-        
-        // Create the scene and add the grid pane
-        Group root = new Group();
-        Scene scene = new Scene(root, SCREENWIDTH+2*BORDERSIZE+330, SCREENHEIGHT+2*BORDERSIZE);
-        root.getChildren().add(grid);
-        
+
+
         // Create the Solar System
         solarSystem = new SolarSystem();
 
+        // The stars STARS
+        //stars = EphemerisStars.getInstance().getAllStars();
+
+        // Start dates for trajectories of spacecraft
+        trajectoryStartDate = new HashMap<>();
+        trajectoryStartDate.put("Voyager 1", new GregorianCalendar(1977,8,5,12,56));
+        trajectoryStartDate.put("Voyager 2", new GregorianCalendar(1977,7,20,14,29));
+        trajectoryStartDate.put("New Horizons", new GregorianCalendar(2006,0,19,19,0));
+        trajectoryStartDate.put("Rosetta", new GregorianCalendar(2004, 2, 2, 7, 17));
+        trajectoryStartDate.put("Apollo 8", new GregorianCalendar(1968, 11, 21, 12, 51));
+        trajectoryStartDate.put("ISS", new GregorianCalendar(1998, 10, 21));
+
+        // Define spacecraft names
+        spacecraftNames = new ArrayList<>();
+        spacecraftNames.addAll(trajectoryStartDate.keySet());
+
         // Row index for vertical placement of labels, buttons, etc
         int rowIndex = 1;
-        
+
         // Date/time selector to view and set era, date, and time
         dateTimeSelector = new DateTimeSelector(solarSystem.getSimulationDateTime());
-        dateTimeSelector.setFont(new Font("Courier",16));
+        dateTimeSelector.setFont(new Font("Courier", 16));
         dateTimeSelector.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -242,12 +313,30 @@ public class SolarSystemApplication extends Application {
                 }
             }
         });
-        grid.add(dateTimeSelector,1,rowIndex,28,1);
-        
+        dateTimeSelector.setMinWidth(SELECTORWIDTH);
+        grid.add(dateTimeSelector, 1, rowIndex, 28, 1);
+
+        // Event selector
+        rowIndex++;
+        eventSelector = new ComboBox();
+        eventSelector.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setVisualizationSettings((VisualizationSettings) eventSelector.getValue());
+            }
+        });
+        ObservableList<VisualizationSettings> events =
+                FXCollections.observableArrayList(new ArrayList<>());
+        events.addAll(createVisualizationSettings());
+        eventSelector.setItems(events);
+        eventSelector.setValue(events.get(0));
+        eventSelector.setMinWidth(SELECTORWIDTH);
+        grid.add(eventSelector, 1, rowIndex, 28, 1);
+
         // Button to initialize simulation
         rowIndex++;
         Button buttonInitialize = new Button("Initialize");
-        Tooltip tooltipInitialize = 
+        Tooltip tooltipInitialize =
                 new Tooltip("Initialize simulation state for given date");
         buttonInitialize.setTooltip(tooltipInitialize);
         buttonInitialize.setOnAction(new EventHandler() {
@@ -256,12 +345,12 @@ public class SolarSystemApplication extends Application {
                 initializeSimulation();
             }
         });
-        buttonInitialize.setMinWidth(70.0);
-        grid.add(buttonInitialize,1,rowIndex,9,1);
-        
+        buttonInitialize.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonInitialize, 1, rowIndex, 9, 1);
+
         // Button to load simulation state from file
         Button buttonLoadState = new Button("Load");
-        Tooltip tooltipLoadState = 
+        Tooltip tooltipLoadState =
                 new Tooltip("Load simulation state from file");
         buttonLoadState.setTooltip(tooltipLoadState);
         buttonLoadState.setOnAction(new EventHandler() {
@@ -270,15 +359,15 @@ public class SolarSystemApplication extends Application {
                 if (observationFromEarth) {
                     checkBoxObservationFromEarth.setSelected(false);
                 }
-                loadSimulationState(primaryStage);
+                loadSimulationState();
             }
         });
-        buttonLoadState.setMinWidth(70.0);
-        grid.add(buttonLoadState,8,rowIndex,10,1);
-        
+        buttonLoadState.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonLoadState, 8, rowIndex, 10, 1);
+
         // Button to save current simulation state to file
         Button buttonSaveState = new Button("Save");
-        Tooltip tooltipSaveState = 
+        Tooltip tooltipSaveState =
                 new Tooltip("Save simulation state to file");
         buttonSaveState.setTooltip(tooltipSaveState);
         buttonSaveState.setOnAction(new EventHandler() {
@@ -287,15 +376,15 @@ public class SolarSystemApplication extends Application {
                 if (observationFromEarth) {
                     checkBoxObservationFromEarth.setSelected(false);
                 }
-                saveSimulationState(primaryStage);
+                saveSimulationState();
             }
         });
-        buttonSaveState.setMinWidth(70.0);
-        grid.add(buttonSaveState,15,rowIndex,10,1);
-        
+        buttonSaveState.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonSaveState, 15, rowIndex, 10, 1);
+
         // Button to pause simulation
         Button buttonPause = new Button("Pause");
-        Tooltip tooltipPause = 
+        Tooltip tooltipPause =
                 new Tooltip("Pause simulation to view current state");
         buttonPause.setTooltip(tooltipPause);
         buttonPause.setOnAction(new EventHandler() {
@@ -304,13 +393,13 @@ public class SolarSystemApplication extends Application {
                 pauseSimulation();
             }
         });
-        buttonPause.setMinWidth(70.0);
-        grid.add(buttonPause,22,rowIndex,10,1);
-        
+        buttonPause.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonPause, 22, rowIndex, 10, 1);
+
         // Button to start fast backward simulation
         rowIndex++;
         Button buttonFastBackward = new Button("<<");
-        Tooltip tooltipFastBackward = 
+        Tooltip tooltipFastBackward =
                 new Tooltip("Normal mode: fast backward, step mode: backward with selected speed");
         buttonFastBackward.setTooltip(tooltipFastBackward);
         buttonFastBackward.setOnAction(new EventHandler() {
@@ -318,18 +407,17 @@ public class SolarSystemApplication extends Application {
             public void handle(Event event) {
                 if (stepMode) {
                     startSimulationStepModeBackward();
-                }
-                else {
+                } else {
                     startSimulationFastBackward();
                 }
             }
         });
-        buttonFastBackward.setMinWidth(70.0);
-        grid.add(buttonFastBackward,1,rowIndex,7,1);
-        
+        buttonFastBackward.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonFastBackward, 1, rowIndex, 7, 1);
+
         // Button to start backward simulation
         Button buttonBackward = new Button("<");
-        Tooltip tooltipBackward = 
+        Tooltip tooltipBackward =
                 new Tooltip("Normal mode: backward with selected speed, step mode: single step of 60 s");
         buttonBackward.setTooltip(tooltipBackward);
         buttonBackward.setOnAction(new EventHandler() {
@@ -337,18 +425,17 @@ public class SolarSystemApplication extends Application {
             public void handle(Event event) {
                 if (stepMode) {
                     smallStepBackward();
-                }
-                else {
+                } else {
                     startSimulationBackward();
                 }
             }
         });
-        buttonBackward.setMinWidth(70.0);
-        grid.add(buttonBackward,8,rowIndex,7,1);
-        
+        buttonBackward.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonBackward, 8, rowIndex, 7, 1);
+
         // Button to start forward simulation
         Button buttonForward = new Button(">");
-        Tooltip tooltipForward = 
+        Tooltip tooltipForward =
                 new Tooltip("Normal mode: forward with selected speed, step mode: single step of 60 s");
         buttonForward.setTooltip(tooltipForward);
         buttonForward.setOnAction(new EventHandler() {
@@ -356,18 +443,17 @@ public class SolarSystemApplication extends Application {
             public void handle(Event event) {
                 if (stepMode) {
                     smallStepForward();
-                }
-                else {
+                } else {
                     startSimulationForward();
                 }
             }
         });
-        buttonForward.setMinWidth(70.0);
-        grid.add(buttonForward,15,rowIndex,7,1);
-        
+        buttonForward.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonForward, 15, rowIndex, 7, 1);
+
         // Button to start fast forward simulation
         Button buttonFastForward = new Button(">>");
-        Tooltip tooltipFastForward = 
+        Tooltip tooltipFastForward =
                 new Tooltip("Normal mode: fast forward, step mode: forward with selected speed");
         buttonFastForward.setTooltip(tooltipFastForward);
         buttonFastForward.setOnAction(new EventHandler() {
@@ -375,24 +461,20 @@ public class SolarSystemApplication extends Application {
             public void handle(Event event) {
                 if (stepMode) {
                     startSimulationStepModeForward();
-                }
-                else {
+                } else {
                     startSimulationFastForward();
                 }
             }
         });
-        buttonFastForward.setMinWidth(70.0);
-        grid.add(buttonFastForward,22,rowIndex,7,1);
-        
+        buttonFastForward.setMinWidth(BUTTONWIDTH);
+        grid.add(buttonFastForward, 22, rowIndex, 7, 1);
+
         // Radio buttons to set simulation method
         // 1. Newton Mechanics
         // 2. General Relativity
-        rowIndex++;
-        Label labelSimulationMethod = new Label("Simulation Method:");
-        grid.add(labelSimulationMethod,1,4,20,1);
         radioNewtonMechanics =
                 new RadioButton("Newton Mechanics");
-        Tooltip tooltipNewtonMechanics = 
+        Tooltip tooltipNewtonMechanics =
                 new Tooltip("Simulation based on Newton Mechanics is faster");
         radioNewtonMechanics.setTooltip(tooltipNewtonMechanics);
         radioNewtonMechanics.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -403,7 +485,7 @@ public class SolarSystemApplication extends Application {
         });
         radioGeneralRelativity =
                 new RadioButton("General Relativity");
-        Tooltip tooltipGeneralRelativity = 
+        Tooltip tooltipGeneralRelativity =
                 new Tooltip("Simulation based on General Relativity is even more accurate");
         radioGeneralRelativity.setTooltip(tooltipGeneralRelativity);
         radioGeneralRelativity.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -417,19 +499,19 @@ public class SolarSystemApplication extends Application {
         radioGeneralRelativity.setToggleGroup(simulationMethod);
         radioNewtonMechanics.setSelected(true);
         rowIndex++;
-        grid.add(radioNewtonMechanics,1,rowIndex,20,1);
-        grid.add(radioGeneralRelativity,15,rowIndex,20,1);
-        
+        grid.add(radioNewtonMechanics, 1, rowIndex, 20, 1);
+        grid.add(radioGeneralRelativity, 15, rowIndex, 20, 1);
+
         // Radio buttons to set visualization of ephemeris/simulation results
         // 1. Show ephemeris only
         // 2. Show simulation only
         // 3. Show ephemeris and simulation
         rowIndex++;
         Label labelVisualization = new Label("Visualization:");
-        grid.add(labelVisualization,1,rowIndex,20,1);
+        grid.add(labelVisualization, 1, rowIndex, 20, 1);
         radioEphemerisOnly =
                 new RadioButton("Ephemeris only");
-        Tooltip tooltipEphemerisOnly = 
+        Tooltip tooltipEphemerisOnly =
                 new Tooltip("Show ephemeris only; simulation results are not shown");
         radioEphemerisOnly.setTooltip(tooltipEphemerisOnly);
         radioEphemerisOnly.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -443,7 +525,7 @@ public class SolarSystemApplication extends Application {
         });
         radioSimulationOnly =
                 new RadioButton("Simulation only");
-        Tooltip tooltipSimulationOnly = 
+        Tooltip tooltipSimulationOnly =
                 new Tooltip("Show simulation only; ephemeris is not shown");
         radioSimulationOnly.setTooltip(tooltipSimulationOnly);
         radioSimulationOnly.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -457,7 +539,7 @@ public class SolarSystemApplication extends Application {
         });
         radioEphemerisAndSimulation =
                 new RadioButton("Ephemeris and simulation");
-        Tooltip tooltipEphemerisAndSimulation = 
+        Tooltip tooltipEphemerisAndSimulation =
                 new Tooltip("Show ephemeris (green) and simulation results (blue)");
         radioEphemerisAndSimulation.setTooltip(tooltipEphemerisAndSimulation);
         radioEphemerisAndSimulation.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -475,11 +557,12 @@ public class SolarSystemApplication extends Application {
         radioEphemerisAndSimulation.setToggleGroup(visualizationMethod);
         radioEphemerisAndSimulation.setSelected(true);
         rowIndex++;
-        grid.add(radioEphemerisOnly,1,rowIndex,20,1);
-        grid.add(radioSimulationOnly,15,rowIndex,20,1);
+        grid.add(radioEphemerisOnly, 1, rowIndex, 20, 1);
         rowIndex++;
-        grid.add(radioEphemerisAndSimulation,1,rowIndex,20,1);
-        
+        grid.add(radioSimulationOnly, 1, rowIndex, 20, 1);
+        rowIndex++;
+        grid.add(radioEphemerisAndSimulation, 1, rowIndex, 20, 1);
+
         // Check box to select observation from Earth
         rowIndex++;
         checkBoxObservationFromEarth = new CheckBox("Set observation from Earth");
@@ -493,8 +576,8 @@ public class SolarSystemApplication extends Application {
                 new Tooltip("Check to set observation from surface of the Earth toward the selected body");
         checkBoxObservationFromEarth.setTooltip(toolTipObservationFromEarth);
         checkBoxObservationFromEarth.setSelected(observationFromEarth);
-        grid.add(checkBoxObservationFromEarth,1,rowIndex,20,1);
-        
+        grid.add(checkBoxObservationFromEarth, 1, rowIndex, 20, 1);
+
         // Check box to indicate whether ruler should be shown
         rowIndex++;
         checkBoxShowRuler = new CheckBox("Show ruler");
@@ -504,12 +587,12 @@ public class SolarSystemApplication extends Application {
                 showRuler = newValue;
             }
         });
-        Tooltip toolTipShowRuler = 
+        Tooltip toolTipShowRuler =
                 new Tooltip("Check to show ruler indicating distance or angular diameter");
         checkBoxShowRuler.setTooltip(toolTipShowRuler);
         checkBoxShowRuler.setSelected(showRuler);
-        grid.add(checkBoxShowRuler,1,rowIndex,20,1);
-        
+        grid.add(checkBoxShowRuler, 1, rowIndex, 20, 1);
+
         // Check box to select step mode
         rowIndex++;
         checkBoxStepMode = new CheckBox("Single-step mode");
@@ -522,16 +605,16 @@ public class SolarSystemApplication extends Application {
                 }
             }
         });
-        Tooltip toolTipStepMode = 
+        Tooltip toolTipStepMode =
                 new Tooltip("Check to simulate in single-step mode and advance 60 s at a time");
         checkBoxStepMode.setTooltip(toolTipStepMode);
         checkBoxStepMode.setSelected(stepMode);
-        grid.add(checkBoxStepMode,1,rowIndex,20,1);
-        
+        grid.add(checkBoxStepMode, 1, rowIndex, 20, 1);
+
         // Slider to set top-bottom view
         rowIndex++;
         Label labelView = new Label("View");
-        grid.add(labelView,1,rowIndex,9,1);
+        grid.add(labelView, 1, rowIndex, 9, 1);
         sliderTopFrontView = new Slider();
         sliderTopFrontView.setMin(-90);
         sliderTopFrontView.setMax(90);
@@ -543,12 +626,12 @@ public class SolarSystemApplication extends Application {
         sliderTopFrontView.setMinorTickCount(10);
         sliderTopFrontView.setBlockIncrement(10);
         rowIndex++;
-        grid.add(sliderTopFrontView,1,rowIndex,28,1);
-        
+        grid.add(sliderTopFrontView, 1, rowIndex, 28, 1);
+
         // Slider to set zoom of view
         rowIndex++;
         Label labelZoom = new Label("Zoom");
-        grid.add(labelZoom,1,rowIndex,9,1);
+        grid.add(labelZoom, 1, rowIndex, 9, 1);
         sliderZoomView = new Slider();
         sliderZoomView.setMin(0);
         sliderZoomView.setMax(100);
@@ -560,12 +643,12 @@ public class SolarSystemApplication extends Application {
         sliderZoomView.setMinorTickCount(10);
         sliderZoomView.setBlockIncrement(10);
         rowIndex++;
-        grid.add(sliderZoomView,1,rowIndex,28,1);
-        
+        grid.add(sliderZoomView, 1, rowIndex, 28, 1);
+
         // Slider to set simulation speed
         rowIndex++;
         Label labelSpeed = new Label("Speed");
-        grid.add(labelSpeed,1,rowIndex,9,1);
+        grid.add(labelSpeed, 1, rowIndex, 9, 1);
         sliderSimulationSpeed = new Slider();
         sliderSimulationSpeed.setMin(0);
         sliderSimulationSpeed.setMax(100);
@@ -577,8 +660,8 @@ public class SolarSystemApplication extends Application {
         sliderSimulationSpeed.setMinorTickCount(10);
         sliderSimulationSpeed.setBlockIncrement(10);
         rowIndex++;
-        grid.add(sliderSimulationSpeed,1,rowIndex,28,1);
-        
+        grid.add(sliderSimulationSpeed, 1, rowIndex, 28, 1);
+
         // Define circles for each body of the Solar System
         // Functions as storage for position, radius, and color of circles
         // representing the bodies of the Solar System.
@@ -602,6 +685,7 @@ public class SolarSystemApplication extends Application {
         createCircle("Juno", 3, Color.ROSYBROWN);
         createCircle("Vesta", 3, Color.YELLOW);
         createCircle("Eros", 3, Color.LIGHTBLUE);
+        createCircle("Bennu", 3, Color.LIGHTGRAY);
         createCircle("Halley", 7, Color.YELLOW);
         createCircle("Encke", 6, Color.LIGHTGREEN);
         createCircle("67P/Churyumov-Gerasimenko", 5, Color.ORANGE);
@@ -627,17 +711,17 @@ public class SolarSystemApplication extends Application {
         createCircle("Titania", 3, Color.LIGHTSALMON);
         createCircle("Oberon", 3, Color.BISQUE);
         createCircle("Triton", 3, Color.LIGHTGRAY);
-        createCircle("EarthMoonBarycenter",2,Color.WHITE);
-        createCircle("Voyager 1", 3, Color.LIGHTYELLOW);
-        createCircle("Voyager 2", 3, Color.LIGHTYELLOW);
-        createCircle("New Horizons", 3, Color.LIGHTYELLOW);
+        createCircle("EarthMoonBarycenter", 2, Color.WHITE);
+        for (String spacecraftName : spacecraftNames) {
+            createCircle(spacecraftName, 3, Color.LIGHTYELLOW);
+        }
 
         // Initialize flags to indicate whether moons are shown
         showMoons = new HashMap<>();
-        showMoons.put("Jupiter",false);
-        showMoons.put("Saturn",false);
-        showMoons.put("Uranus",false);
-        showMoons.put("Neptune",false);
+        showMoons.put("Jupiter", false);
+        showMoons.put("Saturn", false);
+        showMoons.put("Uranus", false);
+        showMoons.put("Neptune", false);
 
         // Names of moons per planet
         moons = new HashMap<>();
@@ -648,7 +732,7 @@ public class SolarSystemApplication extends Application {
         jupiterMoons.add("Europa");
         jupiterMoons.add("Ganymede");
         jupiterMoons.add("Callisto");
-        moons.put("Jupiter",jupiterMoons);
+        moons.put("Jupiter", jupiterMoons);
 
         // Names of moons of Saturn
         List<String> saturnMoons = new ArrayList<>();
@@ -659,7 +743,7 @@ public class SolarSystemApplication extends Application {
         saturnMoons.add("Rhea");
         saturnMoons.add("Titan");
         saturnMoons.add("Iapetus");
-        moons.put("Saturn",saturnMoons);
+        moons.put("Saturn", saturnMoons);
 
         // Names of moons of Uranus
         List<String> uranusMoons = new ArrayList<>();
@@ -668,24 +752,12 @@ public class SolarSystemApplication extends Application {
         uranusMoons.add("Umbriel");
         uranusMoons.add("Titania");
         uranusMoons.add("Oberon");
-        moons.put("Uranus",uranusMoons);
+        moons.put("Uranus", uranusMoons);
 
         // Names of moons of Neptune
         List<String> neptuneMoons = new ArrayList<>();
         neptuneMoons.add("Triton");
-        moons.put("Neptune",neptuneMoons);
-
-        // Spacecraft names
-        spacecraftNames = new ArrayList<>();
-        spacecraftNames.add("Voyager 1");
-        spacecraftNames.add("Voyager 2");
-        spacecraftNames.add("New Horizons");
-
-        // Start dates for trajectories of spacecraft
-        trajectoryStartDate = new HashMap<>();
-        trajectoryStartDate.put("Voyager 1", new GregorianCalendar(1977, 8, 6));
-        trajectoryStartDate.put("Voyager 2", new GregorianCalendar(1977, 7, 21));
-        trajectoryStartDate.put("New Horizons", new GregorianCalendar(2006, 1, 1));
+        moons.put("Neptune", neptuneMoons);
 
         // Define check box for each body of the solar system
         checkBoxesBodies = new HashMap<>();
@@ -696,19 +768,19 @@ public class SolarSystemApplication extends Application {
         int versize = 1;
         grid.add(createCheckBox("Sun", "Sun",
                 "The Sun is in fact a star and is the largest object in our "
-                + "Solar System."),
+                        + "Solar System."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Mercury", "Mercury",
                 "Mercury is the smallest and innermost planet. "
-                + "It orbits around the Sun in 88 days."),
+                        + "It orbits around the Sun in 88 days."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Venus", "Venus",
                 "Venus is the second planet from the Sun and is of similar size "
-                + " as the Earth."),
+                        + " as the Earth."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Earth", "Earth",
                 "Earth is the third planet from the Sun and the only "
-                + "planet known to harbor life."),
+                        + "planet known to harbor life."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Moon", "Moon",
                 "Zoom in to see the moon orbiting around the Earth."),
@@ -718,7 +790,7 @@ public class SolarSystemApplication extends Application {
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Jupiter", "Jupiter",
                 "Jupiter is the largest planet in the Solar System. "
-                + "Galileo Galilei discovered the four largest moons in 1610."),
+                        + "Galileo Galilei discovered the four largest moons in 1610."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Saturn", "Saturn",
                 "Saturn is the second-largest planet and is famous for his rings."),
@@ -726,30 +798,30 @@ public class SolarSystemApplication extends Application {
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Uranus", "Uranus",
                 "Uranus was discovered in 1781 by William Hershel. "
-                + "Visited by Voyager 2 in 1986."),
+                        + "Visited by Voyager 2 in 1986."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Neptune", "Neptune",
                 "Neptune was discovered in 1846. "
-                + "Visited by Voyager 2 on 25 August 1989."),
+                        + "Visited by Voyager 2 on 25 August 1989."),
                 hor, ver++, horsize, versize);
         hor = hor + 9;
         ver = rowIndex;
         grid.add(createCheckBox("Pluto", "Pluto",
                 "Pluto was discovered in 1930 and was considered the "
-                + "ninth planet until 2006. Visited by New Horizons on 14 July 2015."),
+                        + "ninth planet until 2006. Visited by New Horizons on 14 July 2015."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Eris", "Eris",
                 "Eris is the most massive and second-largest dwarf planet known "
-                + "in the Solar System."), hor, ver++, horsize, versize);
+                        + "in the Solar System."), hor, ver++, horsize, versize);
         grid.add(createCheckBox("Chiron", "Chiron",
                 "Chiron was discovered in 1977 and orbits between Saturn and Uranus. "
-                + "It is the first object of the Centaur class"), hor, ver++, horsize, versize);
+                        + "It is the first object of the Centaur class"), hor, ver++, horsize, versize);
         grid.add(createCheckBox("Ceres", "Ceres",
                 "Ceres is a dwarf planet and the largest object in the asteroid belt."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Pallas", "2 Pallas",
                 "Pallas was the second asteroid discovered after Ceres and "
-                + "the third-most-massive asteroid after Vesta"),
+                        + "the third-most-massive asteroid after Vesta"),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Juno", "3 Juno",
                 "Juno was the third asteroid discovered and is the 11th largest asteroid"),
@@ -759,36 +831,42 @@ public class SolarSystemApplication extends Application {
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Eros", "433 Eros",
                 "Eros is a near-Earth astroid. NASA spacecraft NEAR Shoemaker "
-                + "entered orbit around Eros in 2000, and landed in 2001."),
+                        + "entered orbit around Eros in 2000, and landed in 2001."),
+                hor, ver++, horsize, versize);
+        grid.add(createCheckBox("Bennu", "Bennu",
+                "Astroid 101955 Bennu was discovered on 11 September 1999. "
+                        + "The OSIRIS-REx spacecraft arrived at Bennu on 3 December 2018"),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Florence", "Florence",
                 "Asteroid 3122 Florence approached Earth within 0.047 au on "
-                + "1 September 2017."),
+                        + "1 September 2017."),
                 hor, ver++, horsize, versize);
+        hor = hor + 9;
+        ver = rowIndex;
         grid.add(createCheckBox("Ultima Thule", "Ultima Thule",
                 "Kuiper belt object Ultima Thule was visitied by New Horizons on "
                         + "1 January 2019."),
                 hor, ver++, horsize, versize);
-        hor = hor + 9;
-        ver = rowIndex;
         grid.add(createCheckBox("Halley", "1P/Halley",
                 "Halley's Comet has a period of 76 years. Last perihelion 9 Feb 1986. "
-                + "Next perihelion 28 July 2061."),
+                        + "Next perihelion 28 July 2061."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("Encke", "2P/Encke",
                 "P2/Encke was the first periodic comet discovered after "
-                + "Halley's Comet."),
+                        + "Halley's Comet."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("67P/Churyumov-Gerasimenko", "67P/Ch-Ge",
                 "67P/Churyumov-Gerasimenko was visited "
-                + "by ESA's Rosetta mission on 6 August 2014."),
+                        + "by ESA's Rosetta mission on 6 August 2014."),
                 hor, ver++, horsize, versize);
+        /*
         grid.add(createCheckBox("Shoemaker-Levy 9", "Shoe-Lev 9",
                 "Shoemaker-Levy 9 collided with Jupiter in July 1994."),
                 hor, ver++, horsize, versize);
+        */
         grid.add(createCheckBox("Hale-Bopp", "Hale-Bopp",
                 "Hale-Bopp passed perihelion on 1 April 1997 and "
-                + "was visible to the naked eye for 18 months."),
+                        + "was visible to the naked eye for 18 months."),
                 hor, ver++, horsize, versize);
         grid.add(createCheckBox("JupiterMoons", "Jupiter Sys",
                 "The four largest moons of Jupiter are the Galilean moons " +
@@ -806,65 +884,16 @@ public class SolarSystemApplication extends Application {
         grid.add(createCheckBox("EarthMoonBarycenter", "E-M Bary",
                 "Earth-Moon barycenter is located on average 4671 km from Earth's center."),
                 hor, ver++, horsize, versize);
-        hor = 1;
-        ver++;
-        Label labelSpacecraft = new Label("Spacecraft");
-        grid.add(labelSpacecraft,1,ver,9,1);
-        ver++;
-        grid.add(createCheckBox("Voyager 1", "Voyager 1",
-                "Voyager 1 was launched on September 5, 1977, and visited" +
-                        "Jupiter and Saturn."),
-                hor, ver, horsize, versize);
-        hor += 9;
-        grid.add(createCheckBox("Voyager 2", "Voyager 2",
-                "Voyager 2 was launched on August 20, 1977, and visited" +
-                        "Jupiter, Saturn, Uranus, and Neptune."),
-                hor, ver, horsize, versize);
-        hor += 9;
-        grid.add(createCheckBox("New Horizons", "NwHorizons",
-                "New Horizons was launched on January 19, 2006, and visited" +
-                        "Jupiter, Pluto, and Ultimate Thule."),
-                hor, ver, horsize, versize);
-        
+
         // Set font for all labeled objects
         for (Node n : grid.getChildren()) {
             if (n instanceof Labeled) {
-                ((Labeled) n).setFont(new Font("Arial",13));
+                ((Labeled) n).setFont(new Font("Arial", 13));
             }
         }
-        
-        // Information panels
-        informationPanels = new HashMap<>();
-        
-        // Close information panels when primary stage closes
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
-                for (InformationPanel panel : informationPanels.values()) {
-                    panel.close();
-                }
-            }
-        });
-        
-        // Define title and assign the scene for main window
-        primaryStage.setTitle("Solar System Simulator");
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
-        // Monitor for thread synchronization
-        monitor = new Monitor();
-
-        // Pausable task for simulation of the Solar System
-        taskSimulate = new SimPausableTask();
-
-        // Start animation timer to draw the Solar System each 20 ms
-        animationTimer = new DrawAnimationTimer();
-        animationTimer.start();
-
-        // Initial settings for visualization
-        setVisualizationSettings(new VisualizationSettings());
-
-        // Initialize simulation
-        initializeSimulation();
+        // The scene is created
+        return scene;
     }
 
     /**
@@ -912,18 +941,13 @@ public class SolarSystemApplication extends Application {
         simulationIsRunning = false;
         simulationIsRunningFast = false;
         simulationIsRunningForward = true;
-        
+
         // Initialize simulation
         try {
             solarSystem.initializeSimulation(dateTimeSelector.getDateTime());
         }
         catch (SolarSystemException ex) {
             showMessage("Error",ex.getMessage());
-        }
-
-        // Initialize trajectories of spacecraft
-        for (String spacecraftName : spacecraftNames) {
-            solarSystem.getBody(spacecraftName).initTrajectory();
         }
     }
 
@@ -972,13 +996,13 @@ public class SolarSystemApplication extends Application {
     private synchronized void smallStepBackward() {
         // Pause simulation when running
         pauseSimulation();
-        
+
         // Advance 1 minute backward
         solarSystem.advanceSimulationSingleStep(-60);
 
         // Move all bodies to positions corresponding to simulation date/time
         solarSystem.moveBodies();
-        
+
         // Update simulation date/time shown in date/time selector
         updateDateTimeSelector();
     }
@@ -989,13 +1013,13 @@ public class SolarSystemApplication extends Application {
     private synchronized void smallStepForward() {
         // Pause simulation when running
         pauseSimulation();
-        
+
         // Advance 1 minute forward
         solarSystem.advanceSimulationSingleStep(60);
 
         // Move all bodies to positions corresponding to simulation date/time
         solarSystem.moveBodies();
-        
+
         // Update simulation date/time shown in date/time selector
         updateDateTimeSelector();
     }
@@ -1059,15 +1083,14 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Load simulation state from file.
-     * @param stage Primary stage
+     * Load simulation state from file. Primary stage must be defined.
      */
-    private synchronized void loadSimulationState(Stage stage) {
+    private synchronized void loadSimulationState() {
         if (simulationIsRunning()) {
             pauseSimulation();
         }
         FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(stage);
+        File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
             try {
                 monitor.startSimulating();
@@ -1094,10 +1117,9 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Save simulation state to file.
-     * @param stage Primary stage
+     * Save simulation state to file. Primary stage must be defined.
      */
-    private synchronized void saveSimulationState(Stage stage) {
+    private synchronized void saveSimulationState() {
         if (simulationIsRunning()) {
             pauseSimulation();
         }
@@ -1109,7 +1131,7 @@ public class SolarSystemApplication extends Application {
             dateTimeString = dateTimeString.replaceAll(" ", "_");
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialFileName(dateTimeString + ".sol");
-            File file = fileChooser.showSaveDialog(stage);
+            File file = fileChooser.showSaveDialog(primaryStage);
             if (file != null) {
                 FileOutputStream fileOut = null;
                 try {
@@ -1432,7 +1454,7 @@ public class SolarSystemApplication extends Application {
 
     /**
      * Draw circle for body to be shown on screen.
-     * @param circle   circle properties corresponding to body   
+     * @param circle   circle properties corresponding to body
      * @param body     the body for which circle is drawn
      * @param position position of the body to be shown
      */
@@ -1448,7 +1470,7 @@ public class SolarSystemApplication extends Application {
             distance = distance - solarSystem.getBody("Earth").getDiameter()/2.0;
             diameter = (SolarSystemParameters.ASTRONOMICALUNIT * diameter) / distance;
         }
-        
+
         // Determine position on screen
         Vector3D positionView = null;
         if (observationFromEarth) {
@@ -1461,7 +1483,7 @@ public class SolarSystemApplication extends Application {
         double posy = screenY(positionView);
         circle.setCenterX(posx);
         circle.setCenterY(posy);
-        
+
         // Determine radius from body diameter with a minimum equal to circle diameter
         Vector3D diameterBegin = new Vector3D();
         Vector3D diameterEnd = new Vector3D(diameter, 0.0, 0.0);
@@ -1490,7 +1512,7 @@ public class SolarSystemApplication extends Application {
         // Draw shadow of Galilean Moon on the surface of Jupiter
         if (observationFromEarth && "Jupiter".equals(selectedBody) && body.getCenterBody() != null &&
                 "Jupiter".equals(body.getCenterBody().getName())) {
-            double radiusJupiter = 0.5* SolarSystemParameters.getInstance().getDiameter("Jupiter");
+            double radiusJupiter = 0.5*SolarSystemParameters.getInstance().getDiameter("Jupiter");
             Vector3D positionSun, positionJupiter;
             if (showSimulation) {
                 positionSun = solarSystem.getParticle("Sun").getPosition();
@@ -1518,7 +1540,7 @@ public class SolarSystemApplication extends Application {
         gc.setFill(circle.getFill());
         gc.fillText(body.getName(),posx + 0.5*radius,posy - radius);
     }
-    
+
     /**
      * Draw circles for bodies to show on screen.
      * @param bodiesToShow bodies to show on screen
@@ -1567,7 +1589,7 @@ public class SolarSystemApplication extends Application {
             gc.setFill(backColor);
         }
     }
-    
+
     /**
      * Draw orbit and position of body. Orbit segments in front of the Sun are drawn
      * using frontColor and orbit segments behind the Sun are drawn
@@ -1641,11 +1663,9 @@ public class SolarSystemApplication extends Application {
                 Vector3D[] orbit = body.getOrbit();
                 Vector3D position = body.getPosition();
                 // Draw orbit as a green line
-                // LET OP ASTROLOGY
                 if (orbit != null) {
                     drawOrbit(orbit, position, Color.LIGHTGREEN, Color.GREEN, showSimulation);
                 }
-                // END ASTROLOGY
             }
         }
     }
@@ -1660,7 +1680,7 @@ public class SolarSystemApplication extends Application {
         // Position and velocity of center body
         Vector3D positionCenterBody = solarSystem.getParticle(centerBodyName).getPosition();
         Vector3D velocityCenterBody = solarSystem.getParticle(centerBodyName).getVelocity();
-        
+
         // Position and velocity of particle
         Vector3D positionParticle = particle.getPosition();
         Vector3D velocityParticle = particle.getVelocity();
@@ -1671,7 +1691,7 @@ public class SolarSystemApplication extends Application {
         double muCenterBody = solarSystem.getParticle(centerBodyName).getMu();
         Vector3D[] orbitRelativeToCenterBody = EphemerisUtil.computeOrbit(muCenterBody,
                 positionRelativeToCenterBody,velocityRelativeToCenterBody);
-        
+
         // Compute orbit
         Vector3D[] orbit = new Vector3D[orbitRelativeToCenterBody.length];
         for (int i = 0; i < orbitRelativeToCenterBody.length; i++) {
@@ -1688,31 +1708,34 @@ public class SolarSystemApplication extends Application {
      * Draw trajectory of spacecraft. Trajectory segments in front of the Sun
      * are drawn using frontColor and segments behind the Sun are drawn using
      * backColor.
+     * @param centerBodyName   name of the center body
      * @param trajectory       trajectory to be drawn
      * @param frontColor       color for segments in front of the Sun
      * @param backColor        color for segments behind the Sun
      */
-    private void drawTrajectorySpacecraft(List<Vector3D> trajectory, Color frontColor, Color backColor) {
-        // Draw trajectory
+    private void drawTrajectorySpacecraft(String centerBodyName, List<Vector3D> trajectory, Color frontColor, Color backColor) {
         GraphicsContext gc = screen.getGraphicsContext2D();
         Vector3D positionView;
+        Vector3D positionCenterBody = solarSystem.getBody(centerBodyName).getPosition();
+        Vector3D position = positionCenterBody.plus(trajectory.get(0));
         if (observationFromEarth) {
-            positionView = convertToScreenView(observationFromEarthView(trajectory.get(0)));
+            positionView = convertToScreenView(observationFromEarthView(position));
             setColor(gc,positionView,frontColor,backColor);
         }
         else {
-            positionView = convertToScreenView(trajectory.get(0));
+            positionView = convertToScreenView(position);
             setColor(gc,trajectory.get(0),frontColor,backColor);
         }
         double x1 = screenX(positionView);
         double y1 = screenY(positionView);
         for (int i = 1; i < trajectory.size(); i++) {
+            position = positionCenterBody.plus(trajectory.get(i));
             if (observationFromEarth) {
-                positionView = convertToScreenView(observationFromEarthView(trajectory.get(i)));
+                positionView = convertToScreenView(observationFromEarthView(position));
                 setColor(gc,positionView,frontColor,backColor);
             }
             else {
-                positionView = convertToScreenView(trajectory.get(i));
+                positionView = convertToScreenView(position);
                 setColor(gc,trajectory.get(i),frontColor,backColor);
             }
             double x2 = screenX(positionView);
@@ -1750,7 +1773,13 @@ public class SolarSystemApplication extends Application {
                         if (solarSystem.getSimulationDateTime().after(trajectoryStartDate.get(bodyName))) {
                             body.updateTrajectory(particle.getPosition(), particle.getVelocity());
                             if (!body.getTrajectory().isEmpty()) {
-                                drawTrajectorySpacecraft(body.getTrajectory(), Color.RED, Color.RED);
+                                SolarSystemBody centerBody = body.getCenterBody();
+                                if (centerBody != null) {
+                                    String centerBodyName = body.getCenterBody().getName();
+                                    drawTrajectorySpacecraft(centerBodyName, body.getTrajectory(), Color.RED, Color.RED);
+                                } else {
+                                    drawTrajectorySpacecraft("Sun", body.getTrajectory(), Color.RED, Color.RED);
+                                }
                             }
                         }
                     }
@@ -1970,7 +1999,7 @@ public class SolarSystemApplication extends Application {
         }
         gc.fillRect(0.0,0.0,SCREENWIDTH,SCREENHEIGHT);
     }
-    
+
     @Override
     public void stop() {
         if (taskSimulate != null) {
@@ -1980,7 +2009,7 @@ public class SolarSystemApplication extends Application {
             animationTimer.stop();
         }
     }
-    
+
     /**
      * Main method. Not used for JavaFX application.
      * @param args The command line arguments
@@ -1988,7 +2017,7 @@ public class SolarSystemApplication extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     /**
      * Create sorted list of bodies such that they are drawn in an order that corresponds
      * to the currently selected view (observation from earth or normal view).
@@ -2022,7 +2051,7 @@ public class SolarSystemApplication extends Application {
                 @Override
                 public int compare(SolarSystemBody body1, SolarSystemBody body2) {
                     if (body1.getPosition().getY() < body2.getPosition().getY() ||
-                        "EarthMoonBarycenter".equals(body1.getName())) {
+                            "EarthMoonBarycenter".equals(body1.getName())) {
                         return 1;
                     }
                     else {
@@ -2166,13 +2195,13 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Show an alert message. 
+     * Show an alert message.
      * The message will disappear when the user presses ok.
      * @param header   Header of the alert message
      * @param content  Content of the alert message
      */
     private void showMessage(String header, String content) {
-        // Use Platform.runLater() to ensure that code concerning 
+        // Use Platform.runLater() to ensure that code concerning
         // the Alert message is executed by the JavaFX Application Thread
         Platform.runLater(new Runnable() {
             @Override
@@ -2183,9 +2212,9 @@ public class SolarSystemApplication extends Application {
                 alert.setContentText(content);
                 alert.showAndWait();
             }
-        });  
+        });
     }
-    
+
     /**
      * Show information panel for body of the Solar System.
      * @param bodyName Name of the body
@@ -2209,15 +2238,38 @@ public class SolarSystemApplication extends Application {
      * @param settings settings for visualization
      */
     private void setVisualizationSettings(VisualizationSettings settings) {
+        pauseSimulation();
+
+        for (String spacecraftName : spacecraftNames) {
+            if (settings.getBodiesShown().contains(spacecraftName)) {
+                solarSystem.createSpacecraft(spacecraftName);
+                bodiesShown.add(spacecraftName);
+                showInformationPanel(spacecraftName);
+            }
+            else {
+                solarSystem.removeSpacecraft(spacecraftName);
+                bodiesShown.remove(spacecraftName);
+                if (informationPanels.containsKey(spacecraftName)) {
+                    informationPanels.get(spacecraftName).close();
+                    informationPanels.remove(spacecraftName);
+                }
+            }
+        }
+
         GregorianCalendar eventDateTime;
         if (settings.getSimulationStartDateTime() == null) {
             eventDateTime = new GregorianCalendar();
             eventDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
         }
         else {
-            eventDateTime = (GregorianCalendar) settings.getSimulationStartDateTime().clone();
+            eventDateTime = CalendarUtil.createGregorianCalendar(settings.getSimulationStartDateTime());
         }
         dateTimeSelector.setDateTime(eventDateTime);
+        try {
+            solarSystem.initializeSimulation(eventDateTime);
+        } catch (SolarSystemException e) {
+            e.printStackTrace();
+        }
 
         for (String bodyName : checkBoxesBodies.keySet()) {
             if (settings.getBodiesShown().contains(bodyName)) {
@@ -2243,6 +2295,130 @@ public class SolarSystemApplication extends Application {
         sliderTopFrontView.setValue(settings.getValueTopFrontView());
         sliderZoomView.setValue(settings.getValueZoomView());
         sliderSimulationSpeed.setValue(settings.getValueSimulationSpeed());
+    }
+
+    /**
+     * Create a list of visualization settings for event selector.
+     */
+    private List<VisualizationSettings> createVisualizationSettings() {
+        List<VisualizationSettings> events = new ArrayList<>();
+        VisualizationSettings init = new VisualizationSettings();
+        init.setEventName("Initial settings (current time)");
+        events.add(init);
+        VisualizationSettings inner = new VisualizationSettings();
+        inner.setEventName("Inner planets (current time)");
+        inner.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Mercury","Venus",
+                "Earth","Mars")));
+        inner.setValueTopFrontView(15);
+        inner.setValueZoomView(32);
+        events.add(inner);
+        VisualizationSettings outer = new VisualizationSettings();
+        outer.setEventName("Outer planets (current time)");
+        outer.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Jupiter","Saturn",
+                "Uranus","Neptune","Pluto")));
+        outer.setValueTopFrontView(15);
+        outer.setValueZoomView(5);
+        events.add(outer);
+        VisualizationSettings em = new VisualizationSettings();
+        em.setEventName("Earth-Moon system (current time)");
+        em.setBodiesShown(new HashSet<>(Arrays.asList("Earth","Moon","EarthMoonBarycenter")));
+        em.setSelectedBody("EarthMoonBarycenter");
+        em.setValueZoomView(85);
+        events.add(em);
+        VisualizationSettings ast = new VisualizationSettings();
+        ast.setEventName("Jupiter and asteroids (current time)");
+        ast.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Jupiter","Ceres","Pallas",
+                "Juno","Vesta","Eros","Bennu","Florence")));
+        ast.setValueZoomView(23);
+        events.add(ast);
+        VisualizationSettings jup = new VisualizationSettings();
+        jup.setEventName("Jupiter system (current time)");
+        jup.setBodiesShown(new HashSet<>(Arrays.asList("Jupiter","JupiterMoons")));
+        jup.setSelectedBody("Jupiter");
+        jup.setValueZoomView(73);
+        events.add(jup);
+        VisualizationSettings sat = new VisualizationSettings();
+        sat.setEventName("Saturn system (current time)");
+        sat.setBodiesShown(new HashSet<>(Arrays.asList("Saturn","SaturnMoons")));
+        sat.setSelectedBody("Saturn");
+        sat.setValueZoomView(68);
+        events.add(sat);
+        VisualizationSettings ura = new VisualizationSettings();
+        ura.setEventName("Uranus system (current time)");
+        ura.setBodiesShown(new HashSet<>(Arrays.asList("Uranus","UranusMoons")));
+        ura.setSelectedBody("Uranus");
+        ura.setValueTopFrontView(10);
+        ura.setValueZoomView(83);
+        events.add(ura);
+        VisualizationSettings nep = new VisualizationSettings();
+        nep.setEventName("Neptune system (current time)");
+        nep.setBodiesShown(new HashSet<>(Arrays.asList("Neptune","NeptuneMoons")));
+        nep.setSelectedBody("Neptune");
+        nep.setValueZoomView(88);
+        events.add(nep);
+        VisualizationSettings voy1 = new VisualizationSettings();
+        voy1.setEventName("Launch Voyager 1 (1977-09-05  12:56)");
+        voy1.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 1"));
+        voy1.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Voyager 1")));
+        voy1.setSelectedBody("Voyager 1");
+        voy1.setShowRuler(true);
+        voy1.setStepMode(false);
+        voy1.setValueZoomView(15);
+        voy1.setValueSimulationSpeed(100);
+        events.add(voy1);
+        VisualizationSettings voy2 = new VisualizationSettings();
+        voy2.setEventName("Launch Voyager 2 (1977-08-20  14:29)");
+        voy2.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 2"));
+        voy2.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune","Voyager 2")));
+        voy2.setSelectedBody("Voyager 2");
+        voy2.setShowRuler(true);
+        voy2.setStepMode(false);
+        voy2.setValueZoomView(8);
+        voy2.setValueSimulationSpeed(100);
+        events.add(voy2);
+        VisualizationSettings ros = new VisualizationSettings();
+        ros.setEventName("Launch Rosetta (2004-03-02  07:17)");
+        ros.setSimulationStartDateTime(trajectoryStartDate.get("Rosetta"));
+        ros.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Mars","67P/Churyumov-Gerasimenko",
+                "Rosetta")));
+        ros.setSelectedBody("Rosetta");
+        ros.setShowRuler(true);
+        ros.setStepMode(false);
+        ros.setValueZoomView(30);
+        ros.setValueSimulationSpeed(100);
+        events.add(ros);
+        VisualizationSettings nh = new VisualizationSettings();
+        nh.setEventName("Launch New Horizons (2006-01-19  19:00)");
+        nh.setSimulationStartDateTime(trajectoryStartDate.get("New Horizons"));
+        nh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune","Pluto",
+                "Ultima Thule","New Horizons")));
+        nh.setSelectedBody("New Horizons");
+        nh.setShowRuler(true);
+        nh.setStepMode(false);
+        nh.setValueZoomView(7);
+        nh.setValueSimulationSpeed(100);
+        events.add(nh);
+        VisualizationSettings iss = new VisualizationSettings();
+        iss.setEventName("International Space Station (current time)");
+        iss.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Moon","Earth","ISS")));
+        iss.setSelectedBody("ISS");
+        iss.setShowEphemeris(false);
+        iss.setShowRuler(false);
+        iss.setStepMode(true);
+        iss.setValueZoomView(100);
+        iss.setValueSimulationSpeed(1);
+        events.add(iss);
+        VisualizationSettings ap8 = new VisualizationSettings();
+        ap8.setEventName("Launch Apollo 8 S-IVB (1968-12-21  12.51)");
+        ap8.setSimulationStartDateTime(trajectoryStartDate.get("Apollo 8"));
+        ap8.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Moon","Earth","Apollo 8")));
+        ap8.setSelectedBody("Earth");
+        ap8.setShowRuler(true);
+        ap8.setStepMode(true);
+        ap8.setValueZoomView(85);
+        ap8.setValueSimulationSpeed(100);
+        events.add(ap8);
+        return events;
     }
 
     /**

@@ -72,6 +72,7 @@ public class SolarSystemParameters {
      * https://en.wikipedia.org/wiki/3_Juno
      * https://en.wikipedia.org/wiki/4_Vesta
      * https://en.wikipedia.org/wiki/433_Eros
+     * https://en.wikipedia.org/wiki/101955_Bennu : (7.329±0.009)×10^10 kg
      * https://en.wikipedia.org/wiki/Halley%27s_Comet
      * https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19730024004.pdf (page 2)
      * https://en.wikipedia.org/wiki/67P/Churyumov–Gerasimenko
@@ -102,6 +103,7 @@ public class SolarSystemParameters {
     private static final double JUNOMASS      =        2.67E19;
     private static final double VESTAMASS     =        2.59076E20;
     private static final double EROSMASS      =        6.687E15;
+    private static final double BENNUMASS     =        7.329E10; // 7.329 ± 0.009 x 10^10 kg
     private static final double HALLEYMASS    =        2.2E14;
     private static final double ENCKEMASS     =        9.2E15; // nominal model
     private static final double CGMASS        =        9.982E12;
@@ -207,8 +209,7 @@ public class SolarSystemParameters {
     private static final double VESTAMU    = 1.78E10; // 17.8 km3/s2
     private static final double EROSMU     = 4.463E05; // 4.463e-04 km3/s2
     private static final double UTMU       = Math.pow(2.9591220828559093E-04,1.0/3.0)*ASTRONOMICALUNIT/
-                                              Math.pow(86400,2.0); // Converted to m3/s2;
-
+                                              Math.pow(86400,2.0); // Converted to m3/s2;=
     /*
     private static final double IOMU        = 5.959916E12;
     private static final double EUROPAMU    = 3.202739E12;
@@ -273,6 +274,7 @@ public class SolarSystemParameters {
      * https://en.wikipedia.org/wiki/3_Juno: dimensions 233 km
      * https://en.wikipedia.org/wiki/4_Vesta: mean dimensions 525.4 +/- 0.2 km
      * https://en.wikipedia.org/wiki/433_Eros: mean diameter 16.84 +/- 0.06 km
+     * https://en.wikipedia.org/wiki/101955_Bennu: mean radius 245.03±0.08 m
      * https://en.wikipedia.org/wiki/Halley%27s_Comet: mean diameter 11 km
      * https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19730024004.pdf (page 2): radius 1.3 km
      * https://en.wikipedia.org/wiki/67P/Churyumov–Gerasimenko: largest diameter 4.1 km
@@ -298,10 +300,12 @@ public class SolarSystemParameters {
      * Radius Titania from HORIZONS 788.9 +- 1.8 km, diameter = 1578 km
      * Radius Oberon from HORIZONS 761.4 +- 2.6 km, diameter = 1523 km
      * Radius Triton from HORIZONS 1352.6 +- 2.4 km, diameter = 2705 km
+     * Diameter of spacecraft 10 m
      */
     private static final double SUNDIAMETER       =  1.3914E09;  // 1.3914 million km
     private static final double MERCURYDIAMETER   =  4.879E06;   //   4879 km
     private static final double VENUSDIAMETER     =  1.2104E07;  //  12104 km
+    private static final double BARYCENTERDIAMETER=  1.0E03;     //      1 km
     private static final double EARTHDIAMETER     =  1.2756E07;  //  12756 km 
     private static final double MOONDIAMETER      =  3.475E06;   //   3475 km
     private static final double MARSDIAMETER      =  6.792E06;   //   6792 km
@@ -317,6 +321,7 @@ public class SolarSystemParameters {
     private static final double JUNODIAMETER      =  2.33E05;    //    233 km
     private static final double VESTADIAMETER     =  5.254E05;   //    525.4 km
     private static final double EROSDIAMETER      =  1.684E04;   //     16.84 km
+    private static final double BENNUDIAMETER     =  4.90E02;    //      0.490 km
     private static final double HALLEYDIAMETER    =  1.1E04;     //     11 km
     private static final double ENCKEDIAMETER     =  2.6E03;     //      2.6 km
     private static final double CGDIAMETER        =  4.1E03;     //      4.1 km
@@ -342,6 +347,22 @@ public class SolarSystemParameters {
     private static final double TITANIADIAMETER   =  1.578E06;   //   1578 km
     private static final double OBERONDIAMETER    =  1.523E06;   //   1523 km
     private static final double TRITONDIAMETER    =  2.705E06;   //   2705 km
+
+    /**
+     * Flattening of Solar System bodies. Used for visualization.
+     * Ellipticity (Flattening) of the Planets and the Sun obtained from
+     * https://www.smartconversion.com/otherInfo/Ellipticity_Flattening_of_planets_and_the_sun.aspx
+     * Note that flattening for Venus, Mercury and Pluto is 0.0 (= default value)
+     */
+    private static final double SUNFLATTENING     = 0.00005;
+    private static final double EARTHFLATTENING   = 0.00335;
+    private static final double MOONFLATTENING    = 0.0012;
+    private static final double MARSFLATTENING    = 0.00648;
+    private static final double JUPITERFLATTENING = 0.06487;
+    private static final double SATURNFLATTENING  = 0.09796;
+    private static final double URANUSFLATTENING  = 0.02293;
+    private static final double NEPTUNEFLATTENING = 0.01708;
+
 
     /**
      * Ellipticity of oblate planets Earth, Jupiter, Saturn, Uranus, and Neptune
@@ -402,10 +423,10 @@ public class SolarSystemParameters {
      *  Neptune      899    6.835099502439672E+06
      */
     private static final double EARTHOBLATEMU   = 3.9860043289693922E14; // 0.39860E15
-    private static final double JUPITEROBLATEMU = 1.266865341960128E17;  // 1.266865341960128E+08
-    private static final double SATURNOBLATEMU  = 3.793120627544314E16;  // 3.793120627544314E+07
-    private static final double URANUSOBLATEMU  = 5.793951322279009E15;  // 5.793951322279009E+06
-    private static final double NEPTUNEOBLATEMU = 6.835099502439672E15;  // 6.835099502439672E+06
+    private static final double JUPITEROBLATEMU = 1.266865341960128E17; // 1.266865341960128E+08
+    private static final double SATURNOBLATEMU  = 3.793120627544314E16; // 3.793120627544314E+07
+    private static final double URANUSOBLATEMU  = 5.793951322279009E15; // 5.793951322279009E+06
+    private static final double NEPTUNEOBLATEMU = 6.835099502439672E15; // 6.835099502439672E+06
 
     /**
      * Equatorial radius [m] of oblate planets Jupiter, Saturn, Uranus, and Neptune
@@ -482,12 +503,15 @@ public class SolarSystemParameters {
     private static final double[] JUPITERZONALCOEFFICIENTS =
             new double[]{0.0, 0.0, 1.469562477069651E-02, 0.0,  -5.913138887463315E-04,
                     0.0, 2.077510523748891E-05};
+
     private static final double[] SATURNZONALCOEFFICIENTS =
             new double[]{0.0, 0.0, 1.629056318614283E-02, 8.021547362926897E-08,
                     -9.352748124585591E-04, -1.294023676822416E-07, 8.640173180043068E-05,
                      3.627869335910333E-07, -1.449699463354960E-05};
+
     private static final double[] URANUSZONALCOEFFICIENTS =
             new double[]{0.0, 0.0, 3.510685384697763E-03,  0.0, -3.416639735448987E-05};
+
     // private static final double[] NEPTUNEZONALCOEFFICIENTS =
     //         new double[]{0.0, 0.0, 3.408428530717952E-03,  0.0, -3.339891759006578E-05};
     // Optimized for accurate simulation of Triton
@@ -532,7 +556,7 @@ public class SolarSystemParameters {
      *  DDEPL8   0.000000000000000E+00 degrees/century
      */
     private static final double[] EARTHZAXISPARAMETERS =
-            new double[]{2.451545000000000E+06, 0.0, 90.0, 0.0, 0.0};
+            new double[]{2.451545000000000E+06,0.0,90.0,0.0,0.0};
     private static final double[] JUPITERZAXISPARAMETERS =
             new double[]{2.451545000000000E+06, 2.680570781451589E+02, 6.449582320291580E+01,
                         -6.554328185586419E-03, 2.476496988122852E-03};
@@ -545,6 +569,362 @@ public class SolarSystemParameters {
     private static final double[] NEPTUNEZAXISPARAMETERS =
             new double[]{2.447763500000000E+06, 2.994608612607558E+02, 4.340481079071409E+01,
                          0.0, 0.0};
+
+    /**
+     * Sidereal rotational period in hours
+     * https://ssd.jpl.nasa.gov/horizons.cgi
+     *
+     * For Eros, see: https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=2000433
+     *
+     * Rotation period of Halley's comet obtained from
+     * https://en.wikipedia.org/wiki/Halley%27s_Comet
+     *
+     * Rotation period of 67P/Churyumov-Gerasimenko obtained from
+     * https://en.wikipedia.org/wiki/67P/Churyumov–Gerasimenko
+     *
+     * Rotation period of Arrokoth (nickname Ultima Thule) obtained from
+     * https://en.wikipedia.org/wiki/486958_Arrokoth
+     *
+     * Rotation period of Titan is synchronous
+     * https://en.wikipedia.org/wiki/Titan_(moon)
+     *
+     * Sun      : Adopted sid. rot. per.= 25.38 d; Obliquity to ecliptic = 7.25 deg.
+     * Mercury  : Sidereal rot. period  = 58.6463 d
+     * Venus    : Sidereal rot. period  = 243.018484 d
+     * Earth    : Mean sidereal day, hr = 23.9344695944
+     * Moon     : Orbit period          = 27.321582 d; rotational period synchronous
+     * Mars     : Sidereal rot. period  = 24.622962 hr
+     * Jupiter  : Sid. rot. period (III)= 9h 55m 29.71s
+     * Saturn   : Sid. rot. period (III)= 10h 39m 22.4s
+     * Uranus   : Sid. rot. period (III)= 17.24+-0.01 h
+     * Neptune  : Sid. rot. period (III)= 16.11+-0.01 hr
+     * Pluto    : Sidereal rot. period  = 153.29335198 h
+     * Eris     : ROTPER = 25.9 hours
+     * Chiron   : ROTPER = 5.918 hours
+     * Ceres    : ROTPER = 9.07417 hours
+     * Pallas   : ROTPER = 7.8132 hours
+     * Juno     : ROTPER = 7.21 hours
+     * Vesta    : ROTPER = 5.342128 hours
+     * Eros     : 5.270 hours (JPL Small-Body Database Browser)
+     * Bennu    : 4.296057±0.000002 h (wikipedia)
+     * Halley   : 2.2 d (52.8 h) (?)
+     * 67P/Churyumov-Gerasimenko : 12.4043 ± 0.0007 h
+     * Ultima Thule: 15.9380 ± 0.0005 h
+     * Io       : Orbital period =  1.769138 d; Rotational period synchronous
+     * Europa   : Orbital period =  3.551810 d; Rotational period synchronous
+     * Ganymede : Orbital period =  7.154553 d; Rotational period synchronous
+     * Callisto : Orbital period = 16.689018 d; Rotational period synchronous
+     * Mimas    : Orbital period = 0.9424218 d; Rotational period synchronous
+     * Enceladus: Orbital period = 1.370218  d; Rotational period synchronous
+     * Tethys   : Orbital period = 1.888     d; Rotational period synchronous
+     * Dione    : Orbital period = 2.736915  d; Rotational period synchronous
+     * Rhea     : Orbital period = 4.518     d; Rotational period synchronous
+     * Titan    : Orbital period = 15.945421 d; Rotational period synchronous
+     * Hyperion : Orbital period = 21.28     d; Rotational period chaotic
+     * Iapetus  : Orbital period = 79.33     d; Rotational period synchronous
+     * Miranda  : Orbital period = 1.413     d; Rotational period synchronous
+     * Ariel    : Orbital period = 2.520     d; Rotational period synchronous
+     * Umbriel  : Orbital period = 4.144     d; Rotational period synchronous
+     * Titania  : Orbital period = 8.706     d; Rotational period synchronous
+     * Oberon   : Orbital period = 13.463    d; Rotational period synchronous
+     * Triton   : Orbital period = 5.876854 d(R); Rotational period synchronous
+     */
+    private static final double SUNROTPERIOD       =  25.38 * 24.0;
+    private static final double MERCURYROTPERIOD   =  58.6463 * 24.0;
+    private static final double VENUSROTPERIOD     = 243.018484 * 24.0;
+    private static final double EARTHROTPERIOD     =  23.9344695944;
+    private static final double MOONROTPERIOD      =  27.321582 * 24.0;
+    private static final double MARSROTPERIOD      =  24.622962;
+    private static final double JUPITERROTPERIOD   =   9.0 + 55.0/60.0 + 29.71/3600.0;
+    private static final double SATURNROTPERIOD    =  10.0 + 39.0/60.0 + 22.4/3600.0;
+    private static final double URANUSROTPERIOD    =  17.24;
+    private static final double NEPTUNEROTPERIOD   =  16.11;
+    private static final double PLUTOROTPERIOD     = 153.29335198;
+    private static final double ERISROTPERIOD      =  25.9;
+    private static final double CHIRONROTPERIOD    =   5.918;
+    private static final double CERESROTPERIOD     =   9.07417;
+    private static final double PALLASROTPERIOD    =   7.8132;
+    private static final double JUNOROTPERIOD      =   7.21;
+    private static final double VESTAROTPERIOD     =   5.342128;
+    private static final double EROSROTPERIOD      =   5.270;
+    private static final double BENNUROTPERIOD     =   4.296057;
+    private static final double HALLEYROTPERIOD    =  52.8;
+    private static final double CGROTPERIOD        =  12.4043;
+    private static final double UTROTPERIOD        =  15.9380;
+    private static final double IOROTPERIOD        =   1.769138 * 24.0;
+    private static final double EUROPAROTPERIOD    =   3.551810 * 24.0;
+    private static final double GANYMEDEROTPERIOD  =   7.154553 * 24.0;
+    private static final double CALLISTOROTPERIOD  =  16.689018 * 24.0;
+    private static final double MIMASROTPERIOD     =   0.9424218 * 24.0;
+    private static final double ENCELADUSROTPERIOD =   1.370218 * 24.0;
+    private static final double TETHYSROTPERIOD    =   1.888 * 24.0;
+    private static final double DIONEROTPERIOD     =   2.736915 * 24.0;
+    private static final double RHEAROTPERIOD      =   4.518 * 24.0;
+    private static final double TITANROTPERIOD     =  15.945421 * 24.0;
+    private static final double HYPERIONROTPERIOD  =  21.28 * 24.0; // Assume synchronous
+    private static final double IAPETUSROTPERIOD   =  79.33 * 24.0;
+    private static final double MIRANDAROTPERIOD   =   1.413 * 24.0;
+    private static final double ARIELROTPERIOD     =   2.520 * 24.0;
+    private static final double UMBRIELROTPERIOD   =   4.144 * 24.0;
+    private static final double TITANIAROTPERIOD   =   8.706 * 24.0;
+    private static final double OBERONROTPERIOD    =  13.463 * 24.0;
+    private static final double TRITONROTPERIOD    =  -5.876854 * 24.0; // Retrograde orbit
+
+
+    /**
+     * Right ascension and declination of north pole (or positive pole) of rotation.
+     * Note that this is equal to the z-axis of oblate planets.
+     * Right ascension and declination defined here are used for 3D visualization.
+     * Reference values of Jan 1, 2000, are used. Changes over time are not taken
+     * into account.
+     *
+     * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements: 2009
+     * https://web.archive.org/web/20160304065344/http://astropedia.astrogeology.usgs.gov/
+     * alfresco/d/d/workspace/SpacesStore/28fd9e81-1964-44d6-a58b-fbbf61e64e15/WGCCRE2009reprint.pdf
+     *
+     * Report of the IAUIAG Working Group 2006
+     * https://www.researchgate.net/publication/
+     * 225762754_Report_of_the_IAUIAG_Working_Group_on_cartographic_coordinates_and_rotational_elements_2006
+     *
+     * Sun
+     * alpha0 = 286.13 [degrees]
+     * delta0 = 63.87 [degrees]
+     *
+     * Mercury
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html
+     * Right Ascension: 281.010 - 0.033T
+     * Declination    :  61.414 - 0.005T
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * T = Julian centuries from reference date
+     *
+     * Venus
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html
+     * Right Ascension: 272.76
+     * Declination    :  67.16
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     *
+     * Earth
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html
+     * Right Ascension:  0.00 - 0.641T
+     * Declination    : 90.00 - 0.557T
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * T = Julian centuries from reference date
+     *
+     * Moon - Report of the IAU/IAG Working Group 2006 / 2009
+     * alpha0 = 269.9949 [degrees]
+     * delta0 =  66.5392 [degrees]
+     * https://en.wikipedia.org/wiki/Axial_tilt
+     * Right Ascension:  270.00 [degrees]
+     * Declination    :   66.54 [degrees]
+     * IAU 0 January 2010, 0h TT
+     *
+     * Mars
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html
+     * Right Ascension: 317.681 - 0.106T
+     * Declination    :  52.887 - 0.061T
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * T = Julian centuries from reference date
+     *
+     * Jupiter
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html
+     * Right Ascension: 268.057 - 0.006T
+     * Declination    :  64.495 + 0.002T
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * T = Julian centuries from reference date
+     *
+     * Saturn
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturnfact.html
+     * Right Ascension: 40.589 - 0.036T
+     * Declination    : 83.537 - 0.004T
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * T = Julian centuries from reference date
+     *
+     * Uranus
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranusfact.html
+     * Right Ascension: 257.311
+     * Declination    : -15.175
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     *
+     * Neptune
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/neptunefact.html
+     * Right Ascension: 299.36 + 0.70 sin N
+     * Declination    :  43.46 - 0.51 cos N
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * N = 357.85 + 52.316T degrees
+     * T = Julian centuries from reference date
+     *
+     * Pluto
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/plutofact.html
+     * Right Ascension: 132.99
+     * Declination    :   -6.16
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * Note the difference with Report of the IAUIAG Working Group 2006
+     * alpha0 = 312.993 [degrees] The 0-meridian is defined as the mean sub-Charon meridian
+     * delta0 =   6.163 [degrees]
+     *
+     * Eris
+     * https://en.wikipedia.org/wiki/Eris_(dwarf_planet)
+     * Axial tilt 78 degrees (to orbit)
+     * No information regarding RA and DECL of pole of rotation
+     *
+     * Chiron
+     * https://en.wikipedia.org/wiki/2060_Chiron
+     * No information regarding RA and DECL of pole of rotation
+     *
+     * Ceres, Pallas, Vesta, Eros, moons of Jupiter, Saturn, Uranus, and Neptune
+     * Report of IAU Working Group
+     * https://web.archive.org/web/20160304065344/http://astropedia.astrogeology.usgs.gov/
+     * alfresco/d/d/workspace/SpacesStore/28fd9e81-1964-44d6-a58b-fbbf61e64e15/WGCCRE2009reprint.pdf
+     * Ceres
+     * alpha0 = 291 ± 5 [degrees] (Report IAU Working Group)
+     * delta0 = 59  ± 5 [degrees]
+     * https://en.wikipedia.org/wiki/Ceres_(dwarf_planet)
+     * North pole right ascension	291.42744 [degrees]
+     * North pole declination	     66.76033 [degrees]
+     *
+     * Pallas
+     * alpha0 = 33 [degrees]
+     * delta0 = −3 [degrees]
+     * https://en.wikipedia.org/wiki/2_Pallas
+     * Axial tilt 84 +/- 5  degrees
+     *
+     * Juno
+     * https://en.wikipedia.org/wiki/3_Juno
+     * No information regarding RA and DECL of pole of rotation
+     *
+     * Vesta
+     * alpha0 = 305.8 ± 3.1 [degrees]
+     * delta0 = 41.4 ± 1.5 [degrees]
+     * https://en.wikipedia.org/wiki/4_Vesta
+     *
+     * Eros
+     * alpha0 = 11.35 ± 0.02 [degrees]
+     * delta0 = 17.22 ± 0.02 [degrees]
+     * https://en.wikipedia.org/wiki/433_Eros
+     *
+     * Bennu
+     * https://en.wikipedia.org/wiki/101955_Bennu
+     * North pole right ascension +85.65 ± 0.12 [degrees]
+     * North pole declination     −60.17 ± 0.09 [degrees]
+     *
+     * 67P/Churyumov-Gerasimenko
+     * https://en.wikipedia.org/wiki/67P/Churyumov–Gerasimenko
+     * North pole right ascension	69.3 [degrees]
+     * North pole declination	    64.1 [degrees]
+     *
+     * Arrokoth (nickname Ultima Thule)
+     * https://en.wikipedia.org/wiki/486958_Arrokoth
+     * North pole right ascension	317.5  ± 1 [degrees]
+     * North pole declination       −24.89 ± 1 [degrees]
+     *
+     * Io
+     * alpha0 = 268.05 − 0.009T + 0.094 sin J3 + 0.024 sin J4
+     * delta0 = 64.50 + 0.003T + 0.040 cos J3 + 0.011 cos J4
+     *
+     * Europa
+     * alpha0 = 268.08 − 0.009T + 1.086 sin J4 + 0.060 sin J5 + 0.015 sin J6 + 0.009 sin J7
+     * delta0 = 64.51 + 0.003T + 0.468 cos J4 + 0.026 cos J5 + 0.007 cos J6 + 0.002 cos J7
+     *
+     * Ganymede
+     * alpha0 = 268.20 − 0.009T − 0.037 sin J4 + 0.431 sin J5 + 0.091 sin J6
+     * delta0 = 64.57 + 0.003T − 0.016 cos J4 + 0.186 cos J5 + 0.039 cos J6
+     *
+     * Callisto
+     * alpha0 = 268.72 − 0.009T − 0.068 sin J5 + 0.590 sin J6 + 0.010 sin J8
+     * delta0 = 64.83 + 0.003T − 0.029 cosJ5 + 0.254 cosJ6 − 0.004 cos J8
+     *
+     * Mimas
+     * alpha0 = 40.66 − 0.036T + 13.56 sin S3
+     * delta0 = 83.52 − 0.004T − 1.53 cos S3
+     *
+     * Enceladus
+     * alpa0 = 40.66 − 0.036T
+     * delta0 = 83.52 − 0.004T
+     *
+     * Tethys
+     * alpha0 = 40.66 − 0.036T + 9.66 sin S4
+     * delta0 = 83.52 − 0.004T − 1.09 cos S4
+     *
+     * Dione
+     * alpha0 = 40.66 − 0.036T
+     * delta0 = 83.52 − 0.004T
+     *
+     * Rhea
+     * alpha0 = 40.38 − 0.036T + 3.10 sin S6
+     * delta0 = 83.55 − 0.004T − 0.35 cos S6
+     *
+     * Titan
+     * alpha0 = 39.4827
+     * delta0 = 83.4279
+     *
+     * Hyperion
+     * No information regarding RA and DECL of pole of rotation
+     *
+     * Iapetus
+     * alpha0 = 318.16 − 3.949T
+     * delta0 = 75.03 − 1.143T
+     *
+     * Miranda
+     * alpha0 = 257.43 + 4.41 sin U11 − 0.04 sin 2U11
+     * delta0 = −15.08 + 4.25 cos U11 − 0.02 cos 2U11
+     *
+     * Ariel
+     * alpha0 =  257.43 + 0.29 sin U13
+     * delta0 = −15.10 + 0.28 cos U13
+     *
+     * Umbriel
+     * alpha0 = 257.43 + 0.21 sin U14
+     * delta0 = −15.10 + 0.20 cos U14
+     *
+     * Titania
+     * alpha0 = 257.43 + 0.29 sin U15
+     * delta0 = −15.10 + 0.28 cos U15
+     *
+     * Oberon
+     * alpha0 = 257.43 + 0.16 sin U16
+     * detla0 = −15.10 + 0.16 cos U16
+     *
+     * Triton
+     * alpha0 = 299.36 − 32.35 sin N7 − 6.28 sin 2N7 − 2.08sin3N7 − 0.74 sin 4N 7 −
+     *                    0.28 sin 5N7 − 0.11 sin 6N7 − 0.07 sin 7N7 − 0.02 sin 8N7 − 0.01 sin 9N7
+     * delta0 =  41.17 + 22.55 cos N7 + 2.10 cos 2N7 + 0.55 cos 3N7 + 0.16 cos 4N7 +
+     *                    0.05 cos 5N7 + 0.02 cos 6N7 + 0.01 cos 7N7
+     */
+    private static final double[] SUNPOLE       = new double[]{286.13,    63.87};
+    private static final double[] MERCURYPOLE   = new double[]{281.010,   61.414};
+    private static final double[] VENUSPOLE     = new double[]{272.76,    67.16};
+    private static final double[] EARTHPOLE     = new double[]{  0.00,    90.00};
+    private static final double[] MOONPOLE      = new double[]{269.9949,  66.5392};
+    private static final double[] MARSPOLE      = new double[]{317.681,   52.887};
+    private static final double[] JUPITERPOLE   = new double[]{268.057,   64.495};
+    private static final double[] SATURNPOLE    = new double[]{ 40.589,   83.537};
+    private static final double[] URANUSPOLE    = new double[]{257.311,  -15.175};
+    private static final double[] NEPTUNEPOLE   = new double[]{299.36,    43.46};
+    private static final double[] PLUTOPOLE     = new double[]{132.99,    -6.16};
+    private static final double[] CERESPOLE     = new double[]{291.42744, 66.76033};
+    private static final double[] PALLASPOLE    = new double[]{ 33.0,     -3.0};
+    private static final double[] VESTAPOLE     = new double[]{305.8,     41.4};
+    private static final double[] EROSPOLE      = new double[]{ 11.35,    17.22};
+    private static final double[] BENNUPOLE     = new double[]{ 85.65,   -60.17};
+    private static final double[] CGPOLE        = new double[]{ 69.3,     64.1};
+    private static final double[] UTPOLE        = new double[]{317.5,    -24.89};
+    private static final double[] IOPOLE        = new double[]{268.05,    64.50};
+    private static final double[] EUROPAPOLE    = new double[]{268.08,    64.51};
+    private static final double[] GANYMEDEPOLE  = new double[]{268.20,    64.57};
+    private static final double[] CALLISTOPOLE  = new double[]{268.72,    64.83};
+    private static final double[] MIMASPOLE     = new double[]{ 40.66,    83.52};
+    private static final double[] ENCELADUSPOLE = new double[]{ 40.66,    83.52};
+    private static final double[] TETHYSPOLE    = new double[]{ 40.66,    83.52};
+    private static final double[] DIONEPOLE     = new double[]{ 40.66,    83.52};
+    private static final double[] RHEAPOLE      = new double[]{ 40.38,    83.55};
+    private static final double[] TITANPOLE     = new double[]{ 39.4827,  83.4279};
+    private static final double[] IAPETUSPOLE   = new double[]{318.16,    75.03};
+    private static final double[] MIRANDAPOLE   = new double[]{257.43,   -15.08};
+    private static final double[] ARIELPOLE     = new double[]{257.43,   -15.10};
+    private static final double[] UMBRIELPOLE   = new double[]{257.43,   -15.10};
+    private static final double[] TITANIAPOLE   = new double[]{257.43,   -15.10};
+    private static final double[] OBERONPOLE    = new double[]{257.43,   -15.10};
+    private static final double[] TRITONPOLE    = new double[]{299.36,    41.17};
 
 /*    
 =====================================================================
@@ -910,8 +1290,37 @@ Pluto     -0.01262724
     private static final double[] EROSORBITPARS = new double[]
     {axisEros, eccentricityEros, inclinationEros, argPerihelionEros, longNodeEros,
      perihelionPassageEros, meanMotionEros};
-    
-    
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : 101955 Bennu (1999 RQ36)
+     * Observer Location [change] : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2018-12-03, Stop=2018-12-04, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * https://en.wikipedia.org/wiki/101955_Bennu
+     * On 3 December 2018, the OSIRIS-REx spacecraft arrived at Bennu.
+     *
+     * 2458455.500000000 = A.D. 2018-Dec-03 00:00:00.0000 TDB
+     *  EC= 2.037294967480565E-01 QR= 8.965264053606073E-01 IN= 6.034294611323767E+00
+     *  OM= 2.018429891578222E+00 W = 6.630470010136663E+01 Tp=  2458494.271431809291
+     *  N = 8.249932365739326E-01 MA= 3.280138309849828E+02 TA= 3.124854053606339E+02
+     *  A = 1.125906839069414E+00 AD= 1.355287272778221E+00 PR= 4.363672137422889E+02
+     */
+    private static final double axisBennuAU           = 1.125906839069414E+00; // Semi-major axis [au]
+    private static final double eccentricityBennu     = 2.037294967480565E-01; // Eccentricity [-]
+    private static final double inclinationBennu      = 6.034294611323767E+00; // Inclination [degrees]
+    private static final double argPeriapsisBennu     = 6.630470010136663E+01; // Arg perifocus [degrees]
+    private static final double longNodeBennu         = 2.018429891578222E+00; // Long asc node [degrees]
+    private static final double periapsisPassageBennu = 2458494.271431809291;  // Time of periapsis [JD]
+    private static final double meanMotionBennu       = 8.249932365739326E-01; // Mean motion [degrees/day]
+    private static final double[] BENNUORBITPARS = new double[]
+            {axisBennuAU, eccentricityBennu, inclinationBennu, argPeriapsisBennu, longNodeBennu,
+                    periapsisPassageBennu, meanMotionBennu};
+
     /**
      * JPL/HORIZONS                      1P/Halley                2017-May-28 08:05:31
      * Rec #:900033 (+COV)   Soln.date: 2001-Aug-02_13:51:39   # obs: 7428 (1835-1994)
@@ -963,7 +1372,7 @@ Pluto     -0.01262724
      * https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=67P
      * https://en.wikipedia.org/wiki/67P/Churyumov–Gerasimenko
      * Rosetta spacecraft: https://en.wikipedia.org/wiki/Rosetta_(spacecraft)
-     */
+     *
     private static final double axisCG = 3.464737502510219; // [au]
     private static final double eccentricityCG = 0.6405823233437267; // [-]
     private static final double inclinationCG = 7.043680712713979; // [degrees]
@@ -975,8 +1384,39 @@ Pluto     -0.01262724
     private static final double[] CGORBITPARS = new double[]
     {axisCG, eccentricityCG, inclinationCG, argPerihelionCG, longNodeCG,
      perihelionPassageCG, meanMotionCG};
-    
-    
+     */
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Comet 67P/Churyumov-Gerasimenko [2010]
+     * Observer Location [change] : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2014-05-28, Stop=2014-05-29, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * Rosetta reached Comet Churyumov–Gerasimenko on 7 May 2014.
+     * It performed a series of manoeuvres to enter orbit between then and 6 August 2014.
+     *
+     * EPOCH =  2455493.5 ! 2010-Oct-24.0000000 (TDB)
+     * 2456805.500000000 = A.D. 2014-May-28 00:00:00.0000 TDB
+     *  EC= 6.410446888795743E-01 QR= 1.243139403466938E+00 IN= 7.040739880944700E+00
+     *  OM= 5.015120446775977E+01 W = 1.277401708802635E+01 Tp=  2457247.537876891904
+     *  N = 1.529272576444755E-01 MA= 2.924003597119001E+02 TA= 2.205859235916598E+02
+     *  A = 3.463214960064703E+00 AD= 5.683290516662468E+00 PR= 2.354060391489698E+03
+     */
+    private static final double axisCGAU           = 3.463214960064703E+00; // Semi-major axis [au]
+    private static final double eccentricityCG     = 6.410446888795743E-01; // Eccentricity [-]
+    private static final double inclinationCG      = 7.040739880944700E+00; // Inclination [degrees]
+    private static final double argPeriapsisCG     = 1.277401708802635E+01; // Arg perifocus [degrees]
+    private static final double longNodeCG         = 5.015120446775977E+01; // Long asc node [degrees]
+    private static final double periapsisPassageCG = 2457247.537876891904;  // Time of periapsis [JD]
+    private static final double meanMotionCG       = 1.529272576444755E-01; // Mean motion [degrees/day]
+    private static final double[] CGORBITPARS = new double[]
+            {axisCGAU, eccentricityCG, inclinationCG, argPeriapsisCG, longNodeCG,
+                    periapsisPassageCG, meanMotionCG};
+
     /**
      * Keplerian orbital parameters for comet D/1993 F2-A (Shoemaker-Levy 9).
      * https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=1993%20F2-A
@@ -1113,7 +1553,7 @@ Pluto     -0.01262724
      *  OM= 1.589482983942412E+02 W = 1.775741605683169E+02 Tp=  2472638.909251091536
      *  N = 3.332607599482501E-03 MA= 2.970683125324245E+02 TA= 2.932176608369780E+02
      *  A = 4.438946686913731E+01 AD= 4.603062395385389E+01 PR= 1.080235188973050E+05
-     */
+     *
      private static final double axisUTAU           = 4.438946686913731E+01; // Semi-major axis [au]
      private static final double eccentricityUT     = 3.697176831510071E-02; // Eccentricity [-]
      private static final double inclinationUT      = 2.451474757830545E+00; // Inclination [degrees]
@@ -1121,6 +1561,45 @@ Pluto     -0.01262724
      private static final double longNodeUT         = 1.589482983942412E+02; // Long asc node [degrees]
      private static final double periapsisPassageUT = 2472638.909251091536;  // Time of periapsis [JD]
      private static final double meanMotionUT       = 3.332607599482501E-03; // Mean motion [degrees/day]
+     private static final double[] UTORBITPARS = new double[]
+     {axisUTAU, eccentricityUT, inclinationUT, argPeriapsisUT, longNodeUT,
+     periapsisPassageUT, meanMotionUT};
+     */
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Ultima Thule (3713011) [2486958]
+     * Observer Location [change] : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2018-12-01, Stop=2019-01-01, Step=1 MO
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * This pre-computed trajectory is consistent with the New Horizons spacecraft
+     * Kuiper-Belt extended mission, with the reconstructed 3537.7 km flyby of
+     * 2014 MU69 on 2019-Jan-1 @ 05:34:31 TDB (05:33:22 UTC).
+     *
+     * 2458453.500000000 = A.D. 2018-Dec-01 00:00:00.0000 TDB
+     *  EC= 4.081683015901894E-02 QR= 4.272578650883825E+01 IN= 2.451830205640409E+00
+     *  OM= 1.589767972590836E+02 W = 1.747632634476068E+02 Tp=  2471820.637855731416
+     *  N = 3.315288289463411E-03 MA= 3.156840844032503E+02 TA= 3.122948602673823E+02
+     *  A = 4.454392847189091E+01 AD= 4.636207043494358E+01 PR= 1.085878417102203E+05
+     * 2458484.500000000 = A.D. 2019-Jan-01 00:00:00.0000 TDB
+     *  EC= 4.097873475827028E-02 QR= 4.272563856314676E+01 IN= 2.451769758298457E+00
+     *  OM= 1.589786644650622E+02 W = 1.746720281547497E+02 Tp=  2471794.512226176914
+     *  N = 3.314466137893298E-03 MA= 3.158844151813905E+02 TA= 3.124930091663442E+02
+     *  A = 4.455129423264393E+01 AD= 4.637694990214109E+01 PR= 1.086147768668468E+05
+     *
+     *  Orbital parameter of January 1, 2019 are used to define the orbit of Ultima Thule
+     */
+     private static final double axisUTAU           = 4.455129423264393E+01; // Semi-major axis [au]
+     private static final double eccentricityUT     = 4.097873475827028E-02; // Eccentricity [-]
+     private static final double inclinationUT      = 2.451769758298457E+00; // Inclination [degrees]
+     private static final double argPeriapsisUT     = 1.746720281547497E+02; // Arg perifocus [degrees]
+     private static final double longNodeUT         = 1.589786644650622E+02; // Long asc node [degrees]
+     private static final double periapsisPassageUT = 2471794.512226176914;  // Time of periapsis [JD]
+     private static final double meanMotionUT       = 3.314466137893298E-03; // Mean motion [degrees/day]
      private static final double[] UTORBITPARS = new double[]
      {axisUTAU, eccentricityUT, inclinationUT, argPeriapsisUT, longNodeUT,
      periapsisPassageUT, meanMotionUT};
@@ -1136,17 +1615,16 @@ Pluto     -0.01262724
      * Display/Output    : default (formatted HTML)
      * NOTE: ORBIT PARAMETERS ARE NOT CORRECTED FOR DATE
      */
-    private static final double axisMoonAU           = 2.548289534512777E-03; // Semi-major axis [au]
-    private static final double eccentricityMoon     = 6.476694137484437E-02; // Eccentricity [-]
-    private static final double inclinationMoon      = 5.240010960708354E+00; // Inclination [degrees]
-    private static final double argPeriapsisMoon     = 3.081359025079810E+02; // Arg perifocus [degrees]
-    private static final double longNodeMoon         = 1.239837037681769E+02; // Long asc node [degrees]
-    private static final double periapsisPassageMoon = 2451533.965359302238;  // Time of periapsis [JD]
-    private static final double meanMotionMoon       = 1.335975862260855E+01; // Mean motion [degrees/day]
-    private static final double[] MOONORBITPARS = new double[]
-    {axisMoonAU, eccentricityMoon, inclinationMoon, argPeriapsisMoon, longNodeMoon, 
+     private static final double axisMoonAU           = 2.548289534512777E-03; // Semi-major axis [au]
+     private static final double eccentricityMoon     = 6.476694137484437E-02; // Eccentricity [-]
+     private static final double inclinationMoon      = 5.240010960708354E+00; // Inclination [degrees]
+     private static final double argPeriapsisMoon     = 3.081359025079810E+02; // Arg perifocus [degrees]
+     private static final double longNodeMoon         = 1.239837037681769E+02; // Long asc node [degrees]
+     private static final double periapsisPassageMoon = 2451533.965359302238;  // Time of periapsis [JD]
+     private static final double meanMotionMoon       = 1.335975862260855E+01; // Mean motion [degrees/day]
+     private static final double[] MOONORBITPARS = new double[]
+     {axisMoonAU, eccentricityMoon, inclinationMoon, argPeriapsisMoon, longNodeMoon,
      periapsisPassageMoon, meanMotionMoon};
-    
     
     /**
      * https://ssd.jpl.nasa.gov/horizons.cgi#results
@@ -1786,6 +2264,9 @@ Pluto     -0.01262724
     // Diameter in m for solar system bodies
     private final Map<String,Double> diameterMap;
 
+    // Flattening (used for visualization)
+    private final Map<String,Double> flatteningMap;
+
     // Ellipticity of oblate planet
     private final Map<String,Double> ellipticityMap;
 
@@ -1800,6 +2281,12 @@ Pluto     -0.01262724
 
     // Parameters of z-axis of oblate planet
     private final Map<String,double[]> zAxisParametersMap;
+
+    // Sidereal rotational period [hours]
+    private final Map<String,Double> siderealRotationalPeriodMap;
+
+    // Right ascension and declination of north pole (or positive pole) of rotation
+    private final Map<String,double[]> rotationPoleMap;
 
     // Orbital parameters (Keplerian elements and their rates) for solar system bodies
     private final Map<String,double[]> orbitParametersMap;
@@ -1835,6 +2322,7 @@ Pluto     -0.01262724
         massMap.put("Juno",JUNOMASS);
         massMap.put("Vesta",VESTAMASS);
         massMap.put("Eros",EROSMASS);
+        massMap.put("Bennu",BENNUMASS);
         massMap.put("Halley",HALLEYMASS);
         massMap.put("Encke",ENCKEMASS);
         massMap.put("67P/Churyumov-Gerasimenko",CGMASS);
@@ -1919,6 +2407,7 @@ Pluto     -0.01262724
         diameterMap.put("Juno",JUNODIAMETER);
         diameterMap.put("Vesta",VESTADIAMETER);
         diameterMap.put("Eros",EROSDIAMETER);
+        diameterMap.put("Bennu",BENNUDIAMETER);
         diameterMap.put("Halley",HALLEYDIAMETER);
         diameterMap.put("Encke",ENCKEDIAMETER);
         diameterMap.put("67P/Churyumov-Gerasimenko",CGDIAMETER);
@@ -1944,6 +2433,17 @@ Pluto     -0.01262724
         diameterMap.put("Titania",TITANIADIAMETER);
         diameterMap.put("Oberon",OBERONDIAMETER);
         diameterMap.put("Triton",TRITONDIAMETER);
+
+        // Flattening (used for visualization)
+        flatteningMap = new HashMap<>();
+        flatteningMap.put("Sun",SUNFLATTENING);
+        flatteningMap.put("Earth",EARTHFLATTENING);
+        flatteningMap.put("Moon",MOONFLATTENING);
+        flatteningMap.put("Mars",MARSFLATTENING);
+        flatteningMap.put("Jupiter",JUPITERFLATTENING);
+        flatteningMap.put("Saturn",SATURNFLATTENING);
+        flatteningMap.put("Uranus",URANUSFLATTENING);
+        flatteningMap.put("Neptune",NEPTUNEFLATTENING);
 
         // Ellipticity of oblate planet
         ellipticityMap = new HashMap<>();
@@ -1984,7 +2484,87 @@ Pluto     -0.01262724
         zAxisParametersMap.put("Saturn",SATURNZAXISPARAMETERS);
         zAxisParametersMap.put("Uranus",URANUSZAXISPARAMETERS);
         zAxisParametersMap.put("Neptune",NEPTUNEZAXISPARAMETERS);
-        
+
+        // Sidereal rotational period [hours]
+        siderealRotationalPeriodMap = new HashMap<>();
+        siderealRotationalPeriodMap.put("Sun",SUNROTPERIOD);
+        siderealRotationalPeriodMap.put("Mercury",MERCURYROTPERIOD);
+        siderealRotationalPeriodMap.put("Venus",VENUSROTPERIOD);
+        siderealRotationalPeriodMap.put("Earth",EARTHROTPERIOD);
+        siderealRotationalPeriodMap.put("Moon",MOONROTPERIOD);
+        siderealRotationalPeriodMap.put("Mars",MARSROTPERIOD);
+        siderealRotationalPeriodMap.put("Jupiter",JUPITERROTPERIOD);
+        siderealRotationalPeriodMap.put("Saturn",SATURNROTPERIOD);
+        siderealRotationalPeriodMap.put("Uranus",URANUSROTPERIOD);
+        siderealRotationalPeriodMap.put("Neptune",NEPTUNEROTPERIOD);
+        siderealRotationalPeriodMap.put("Pluto",PLUTOROTPERIOD);
+        siderealRotationalPeriodMap.put("Eris",ERISROTPERIOD);
+        siderealRotationalPeriodMap.put("Chiron",CHIRONROTPERIOD);
+        siderealRotationalPeriodMap.put("Ceres",CERESROTPERIOD);
+        siderealRotationalPeriodMap.put("Pallas",PALLASROTPERIOD);
+        siderealRotationalPeriodMap.put("Juno",JUNOROTPERIOD);
+        siderealRotationalPeriodMap.put("Vesta",VESTAROTPERIOD);
+        siderealRotationalPeriodMap.put("Eros",EROSROTPERIOD);
+        siderealRotationalPeriodMap.put("Bennu",BENNUROTPERIOD);
+        siderealRotationalPeriodMap.put("Halley",HALLEYROTPERIOD);
+        siderealRotationalPeriodMap.put("67P/Churyumov-Gerasimenko",CGROTPERIOD);
+        siderealRotationalPeriodMap.put("Ultima Thule",UTROTPERIOD);
+        siderealRotationalPeriodMap.put("Io",IOROTPERIOD);
+        siderealRotationalPeriodMap.put("Europa",EUROPAROTPERIOD);
+        siderealRotationalPeriodMap.put("Ganymede",GANYMEDEROTPERIOD);
+        siderealRotationalPeriodMap.put("Callisto",CALLISTOROTPERIOD);
+        siderealRotationalPeriodMap.put("Mimas",MIMASROTPERIOD);
+        siderealRotationalPeriodMap.put("Enceladus",ENCELADUSROTPERIOD);
+        siderealRotationalPeriodMap.put("Tethys",TETHYSROTPERIOD);
+        siderealRotationalPeriodMap.put("Dione",DIONEROTPERIOD);
+        siderealRotationalPeriodMap.put("Rhea",RHEAROTPERIOD);
+        siderealRotationalPeriodMap.put("Titan",TITANROTPERIOD);
+        siderealRotationalPeriodMap.put("Iapetus",IAPETUSROTPERIOD);
+        siderealRotationalPeriodMap.put("Miranda",MIRANDAROTPERIOD);
+        siderealRotationalPeriodMap.put("Ariel",ARIELROTPERIOD);
+        siderealRotationalPeriodMap.put("Umbriel",UMBRIELROTPERIOD);
+        siderealRotationalPeriodMap.put("Titania",TITANIAROTPERIOD);
+        siderealRotationalPeriodMap.put("Oberon",OBERONROTPERIOD);
+        siderealRotationalPeriodMap.put("Triton",TRITONROTPERIOD);
+
+        // Right ascension and declination of north pole (or positive pole) of rotation
+        rotationPoleMap = new HashMap<>();
+        rotationPoleMap.put("Sun",SUNPOLE);
+        rotationPoleMap.put("Mercury",MERCURYPOLE);
+        rotationPoleMap.put("Venus",VENUSPOLE);
+        rotationPoleMap.put("Earth",EARTHPOLE);
+        rotationPoleMap.put("Moon",MOONPOLE);
+        rotationPoleMap.put("Mars",MARSPOLE);
+        rotationPoleMap.put("Jupiter",JUPITERPOLE);
+        rotationPoleMap.put("Saturn",SATURNPOLE);
+        rotationPoleMap.put("Uranus",URANUSPOLE);
+        rotationPoleMap.put("Neptune",NEPTUNEPOLE);
+        rotationPoleMap.put("Pluto",PLUTOPOLE);
+        rotationPoleMap.put("Ceres",CERESPOLE);
+        rotationPoleMap.put("Pallas",PALLASPOLE);
+        rotationPoleMap.put("Vesta",VESTAPOLE);
+        rotationPoleMap.put("Eros",EROSPOLE);
+        rotationPoleMap.put("Bennu",BENNUPOLE);
+        rotationPoleMap.put("67P/Churyumov-Gerasimenko",CGPOLE);
+        rotationPoleMap.put("Ultima Thule",UTPOLE);
+        rotationPoleMap.put("Io",IOPOLE);
+        rotationPoleMap.put("Europa",EUROPAPOLE);
+        rotationPoleMap.put("Ganymede",GANYMEDEPOLE);
+        rotationPoleMap.put("Callisto",CALLISTOPOLE);
+        rotationPoleMap.put("Mimas",MIMASPOLE);
+        rotationPoleMap.put("Enceladus",ENCELADUSPOLE);
+        rotationPoleMap.put("Tethys",TETHYSPOLE);
+        rotationPoleMap.put("Dione",DIONEPOLE);
+        rotationPoleMap.put("Rhea",RHEAPOLE);
+        rotationPoleMap.put("Titan",TITANPOLE);
+        rotationPoleMap.put("Iapetus",IAPETUSPOLE);
+        rotationPoleMap.put("Miranda",MIRANDAPOLE);
+        rotationPoleMap.put("Ariel",ARIELPOLE);
+        rotationPoleMap.put("Umbriel",UMBRIELPOLE);
+        rotationPoleMap.put("Titania",TITANIAPOLE);
+        rotationPoleMap.put("Oberon",OBERONPOLE);
+        rotationPoleMap.put("Triton",TRITONPOLE);
+
         // Orbital parameters: Keplerian elements and their rates (Mercury - Pluto)
         orbitParametersMap = new HashMap<>();
         orbitParametersMap.put("Mercury",MERCURYORBITPARS);
@@ -2004,6 +2584,7 @@ Pluto     -0.01262724
         orbitParametersMap.put("Juno",JUNOORBITPARS); // Asteroid 3 Juno
         orbitParametersMap.put("Vesta",VESTAORBITPARS); // Asteroid 4 Vesta
         orbitParametersMap.put("Eros",EROSORBITPARS); // Asteroid 433 Eros
+        orbitParametersMap.put("Bennu",BENNUORBITPARS); // Asteroid 101955 Bennu
         orbitParametersMap.put("Halley",HALLEYORBITPARS);// Comet P1/Halley
         orbitParametersMap.put("Encke",ENCKEORBITPARS);// Comet P2/Encke
         orbitParametersMap.put("67P/Churyumov-Gerasimenko",CGORBITPARS);// Comet P67/Churyumov-Gerasimenko
@@ -2176,6 +2757,21 @@ Pluto     -0.01262724
     }
 
     /**
+     * Get flattening of Solar System body with given name.
+     * Used for visualization.
+     * @param name name of Solar System body
+     * @return flattening
+     */
+    public double getFlattening(String name) {
+        if (flatteningMap.keySet().contains(name)) {
+            return flatteningMap.get(name);
+        }
+        else {
+            return 0.0;
+        }
+    }
+
+    /**
      * Get ellipticity of oblate planet with given name
      * @param name name of oblate planet
      * @return ellipticity
@@ -2218,5 +2814,41 @@ Pluto     -0.01262724
      */
     public double[] getZaxisParameters(String name) {
         return zAxisParametersMap.get(name);
+    }
+
+    /**
+     * Get sidereal rotational period of Solar System body with given name.
+     * A default value of 24 hours is returned when the rotational period is not defined.
+     * @param name
+     * @return
+     */
+    public double getSiderealRotationalPeriod(String name) {
+        if (siderealRotationalPeriodMap.keySet().contains(name)) {
+            return siderealRotationalPeriodMap.get(name);
+        }
+        else {
+            return 24.0;
+        }
+    }
+
+    /**
+     * Get right ascension and declination of north pole (or positive pole) of rotation.
+     * For the moons of Jupiter, Saturn, Uranus, and Neptune, RA and DECL for their planet
+     * are returned.
+     * A default value of RA = 0.0 and DECL = 90.0 is returned when not defined.
+     */
+    public double[] getRotationPole(String name) {
+        if (rotationPoleMap.keySet().contains(name)) {
+            return rotationPoleMap.get(name);
+        }
+        else {
+            if (moons.keySet().contains(name)) {
+                String planetName = moons.get(name);
+                return rotationPoleMap.get(planetName);
+            }
+            else {
+                return new double[]{0.0,90.0};
+            }
+        }
     }
 }

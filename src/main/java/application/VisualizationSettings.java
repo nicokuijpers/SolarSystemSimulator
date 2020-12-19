@@ -19,16 +19,16 @@
  */
 package application;
 
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import ephemeris.CalendarUtil;
+
+import java.util.*;
 
 /**
  * Settings for visualization of events such as spacecraft flybys, solar eclipses, etc.
  */
 public class VisualizationSettings {
     // Name of event
-    private String eventName = "Current date/time";
+    private String eventName = "No name";
 
     // Start date for event
     private GregorianCalendar simulationStartDateTime = null;
@@ -86,8 +86,9 @@ public class VisualizationSettings {
         return simulationStartDateTime;
     }
 
-    public void setSimulationStartDateTime(GregorianCalendar simulationStartDateTime) {
-        this.simulationStartDateTime = simulationStartDateTime;
+    public void setSimulationStartDateTime(Calendar dateTime) {
+        this.simulationStartDateTime = CalendarUtil.createGregorianCalendar(dateTime);
+        this.simulationStartDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     public Set<String> getBodiesShown() {
@@ -176,5 +177,10 @@ public class VisualizationSettings {
 
     public void setValueSimulationSpeed(double valueSimulationSpeed) {
         this.valueSimulationSpeed = valueSimulationSpeed;
+    }
+
+    @Override
+    public String toString() {
+        return eventName;
     }
 }

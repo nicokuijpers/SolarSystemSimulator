@@ -92,12 +92,20 @@ public class NewHorizons extends Spacecraft implements Serializable {
 
     // Schedule simulated correction on July 1, 2015, after TCM on June 30, 2015
     private static final GregorianCalendar correctionF =
-            new GregorianCalendar(2015, 5, 1, 0, 0, 0);
+            new GregorianCalendar(2015, 6, 1, 0, 0, 0);
 
     // Schedule simulated correction on November 5, 2015, after targeting manoeuvres
     // on October 22, 25, 28, and November 4
     private static final GregorianCalendar correctionG =
             new GregorianCalendar(2015, 10, 5, 0, 0, 0);
+
+    // Schedule simulated correction on December 1, 2018, one month before Ultima Thule flyby
+    private static final GregorianCalendar correctionH =
+            new GregorianCalendar(2018, 11, 1, 0, 0, 0);
+
+    // Schedule simulated correction on January 1, 2019, shortly before Ultima Thule flyby
+    private static final GregorianCalendar correctionI =
+            new GregorianCalendar(2019, 0, 1, 0, 0, 0);
 
     // Jupiter fly February 28, 2007, 05:43:40 UTC (distance 2.3 million km)
     private static final GregorianCalendar jupiterFlyBy =
@@ -306,13 +314,67 @@ public class NewHorizons extends Spacecraft implements Serializable {
                     longNodeNewHorizonsG, periapsisPassageNewHorizonsG, meanMotionNewHorizonsG};
 
     /**
-     * Constructor.
-     * @param name        name of spacecraft
-     * @param dateTime    current simulation date/time
-     * @param solarSystem the Solar System
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : New Horizons (spacecraft) [NH New_Horizons] [-98]
+     * Center [change]            : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2018-12-01, Stop=2019-01-01, Step=1 MO
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * 2458453.500000000 = A.D. 2018-Dec-01 00:00:00.0000 TDB
+     *  EC= 1.423246590526184E+00 QR= 2.381539791722414E+00 IN= 2.231839785012886E+00
+     *  OM= 2.250977613899296E+02 W = 2.935784781509246E+02 Tp=  2453768.446808363311
+     *  N = 7.384269065341301E-02 MA= 3.459569335248075E+02 TA= 1.274722235173446E+02
+     *  A =-5.626837510401844E+00 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
      */
-    public NewHorizons(String name, GregorianCalendar dateTime, SolarSystem solarSystem) {
-        super(name, dateTime, solarSystem);
+    private static final double axisNewHorizonsH = -5.626837510401844E+00; // Semi-major axis [au]
+    private static final double eccentricityNewHorizonsH = 1.423246590526184E+00; // Eccentricity [-]
+    private static final double inclinationNewHorizonsH = 2.231839785012886E+00; // Inclination [degrees]
+    private static final double argPeriapsisNewHorizonsH = 2.935784781509246E+02; // Arg perifocus [degrees]
+    private static final double longNodeNewHorizonsH = 2.250977613899296E+02; // Long asc node [degrees]
+    private static final double periapsisPassageNewHorizonsH = 2453768.446808363311;  // Time of periapsis [JD]
+    private static final double meanMotionNewHorizonsH = 7.384269065341301E-02; // Mean motion [degrees/day]
+    private static final double[] ORBITPARSCORRH = new double[]
+            {axisNewHorizonsH, eccentricityNewHorizonsH, inclinationNewHorizonsH, argPeriapsisNewHorizonsH,
+                    longNodeNewHorizonsH, periapsisPassageNewHorizonsH, meanMotionNewHorizonsH};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : New Horizons (spacecraft) [NH New_Horizons] [-98]
+     * Center [change]            : Sun (body center) [500@10]
+     * Time Span [change]         : Start=2018-12-01, Stop=2019-01-01, Step=1 MO
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * 2458484.500000000 = A.D. 2019-Jan-01 00:00:00.0000 TDB
+     *  EC= 1.423498352586861E+00 QR= 2.382657591051644E+00 IN= 2.232642151939460E+00
+     *  OM= 2.251348307428457E+02 W = 2.935530987895121E+02 Tp=  2453768.554234809708
+     *  N = 7.385658274070957E-02 MA= 3.483036386074741E+02 TA= 1.274999877991278E+02
+     *  A =-5.626131899917977E+00 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
+     */
+    private static final double axisNewHorizonsI = -5.626131899917977E+00; // Semi-major axis [au]
+    private static final double eccentricityNewHorizonsI = 1.423498352586861E+00; // Eccentricity [-]
+    private static final double inclinationNewHorizonsI = 2.232642151939460E+00; // Inclination [degrees]
+    private static final double argPeriapsisNewHorizonsI = 2.935530987895121E+02; // Arg perifocus [degrees]
+    private static final double longNodeNewHorizonsI = 2.251348307428457E+02; // Long asc node [degrees]
+    private static final double periapsisPassageNewHorizonsI = 2453768.554234809708;  // Time of periapsis [JD]
+    private static final double meanMotionNewHorizonsI = 7.385658274070957E-02; // Mean motion [degrees/day]
+    private static final double[] ORBITPARSCORRI = new double[]
+            {axisNewHorizonsI, eccentricityNewHorizonsI, inclinationNewHorizonsI, argPeriapsisNewHorizonsI,
+                    longNodeNewHorizonsI, periapsisPassageNewHorizonsI, meanMotionNewHorizonsI};
+
+    /**
+     * Constructor.
+     * @param name           name of spacecraft
+     * @param centerBodyName name of the center body
+     * @param solarSystem    the Solar System
+     */
+    public NewHorizons(String name, String centerBodyName, SolarSystem solarSystem) {
+        super(name, centerBodyName, solarSystem);
     }
 
     @Override
@@ -344,17 +406,23 @@ public class NewHorizons extends Spacecraft implements Serializable {
         trajectories.add(
                 new SpacecraftTrajectory(plutoFlyBy, correctionG, "Sun", ORBITPARSCORRF));
         trajectories.add(
-                new SpacecraftTrajectory(correctionG, ultimaThuleFlyBy, "Sun", ORBITPARSCORRG));
+                new SpacecraftTrajectory(correctionG, correctionH, "Sun", ORBITPARSCORRG));
+        trajectories.add(
+                new SpacecraftTrajectory(correctionH, correctionI, "Sun", ORBITPARSCORRH));
+        trajectories.add(
+                new SpacecraftTrajectory(correctionI, ultimaThuleFlyBy, "Sun", ORBITPARSCORRI));
 
         // Beyond Ultima Thule
         trajectories.add(
-                new SpacecraftTrajectory(ultimaThuleFlyBy, endOfTrajectory, "Sun", ORBITPARSCORRF));
+                new SpacecraftTrajectory(ultimaThuleFlyBy, endOfTrajectory, "Sun", ORBITPARSCORRI));
 
         return trajectories;
     }
 
     @Override
     protected void defineEvents(SolarSystem solarSystem) {
+
+        // Corrections for New Horizons
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(launch)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionB)));
@@ -363,5 +431,11 @@ public class NewHorizons extends Spacecraft implements Serializable {
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionE)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionF)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionG)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionH)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionI)));
+
+        // Corrections for Ultima Thule on December 1, 2018 and January 1, 2019 before fly by
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent("Ultima Thule",correctionH));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent("Ultima Thule",correctionI));
     }
 }

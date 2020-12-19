@@ -121,7 +121,11 @@ public class VoyagerOne extends Spacecraft implements Serializable {
 
     // Saturn fly by November 12, 1980, 23:46:30 UTC
     private static final GregorianCalendar saturnFlyBy =
-            new GregorianCalendar(1981, 7, 25, 3, 24, 5);
+            new GregorianCalendar(1980, 10, 12, 23, 46, 30);
+
+    // Schedule simulated correction on December 1, 1980 after Saturn fly
+    private static final GregorianCalendar corrAfterSaturnFlybyA =
+            new GregorianCalendar(1980, 11, 1, 0, 0, 0);
 
     // Voyager 2 reached a distance of 100 A.U. from the Sun on November 7, 2012
     private static final GregorianCalendar hundredAU =
@@ -316,16 +320,41 @@ public class VoyagerOne extends Spacecraft implements Serializable {
             {axisVoyagerOneJSC, eccentricityVoyagerOneJSC, inclinationVoyagerOneJSC, argPeriapsisVoyagerOneJSC,
                     longNodeVoyagerOneJSC, periapsisPassageVoyagerOneJSC, meanMotionVoyagerOneJSC};
 
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Voyager 1 (spacecraft) [-31]
+     * Center [change]            : Sun (body center) [500@10]
+     * Time Span [change]         : Start=1980-12-01, Stop=1980-12-02, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * 2444574.500000000 = A.D. 1980-Dec-01 00:00:00.0000 TDB
+     *  EC= 3.779309074990923E+00 QR= 8.777289217204046E+00 IN= 3.582061662216526E+01
+     *  OM= 1.789892689670488E+02 W = 3.383183914954462E+02 Tp=  2444229.521408423781
+     *  N = 1.756178794437604E-01 MA= 6.058440870610889E+01 TA= 2.690765978451616E+01
+     *  A =-3.158083171168252E+00 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
+     */
+    private static final double axisVoyagerOneASA = -3.158083171168252E+00; // Semi-major axis [au]
+    private static final double eccentricityVoyagerOneASA = 3.779309074990923E+00; // Eccentricity [-]
+    private static final double inclinationVoyagerOneASA = 3.582061662216526E+01; // Inclination [degrees]
+    private static final double argPeriapsisVoyagerOneASA = 3.383183914954462E+02; // Arg perifocus [degrees]
+    private static final double longNodeVoyagerOneASA = 1.789892689670488E+02; // Long asc node [degrees]
+    private static final double periapsisPassageVoyagerOneASA = 2444229.521408423781;  // Time of periapsis [JD]
+    private static final double meanMotionVoyagerOneASA = 1.756178794437604E-01; // Mean motion [degrees/day]
+    private static final double[] ORBITPARSAFTERSATURNFLYBYA = new double[]
+            {axisVoyagerOneASA, eccentricityVoyagerOneASA, inclinationVoyagerOneASA, argPeriapsisVoyagerOneASA,
+                    longNodeVoyagerOneASA, periapsisPassageVoyagerOneASA, meanMotionVoyagerOneASA};
 
     /**
      * Constructor.
-     *
-     * @param name        name of spacecraft
-     * @param dateTime    current simulation date/time
-     * @param solarSystem the Solar System
+     * @param name           name of spacecraft
+     * @param centerBodyName name of the center body
+     * @param solarSystem    the Solar System
      */
-    public VoyagerOne(String name, GregorianCalendar dateTime, SolarSystem solarSystem) {
-        super(name, dateTime, solarSystem);
+    public VoyagerOne(String name, String centerBodyName, SolarSystem solarSystem) {
+        super(name, centerBodyName, solarSystem);
     }
 
     @Override
@@ -357,8 +386,9 @@ public class VoyagerOne extends Spacecraft implements Serializable {
 
         // From Saturn till Voyager 2 reaches 100 A.U. from the Sun
         trajectories.add(
-                new SpacecraftTrajectory(saturnFlyBy, hundredAU, "Sun", ORBITPARSJUPITERSATURNC));
-
+                new SpacecraftTrajectory(saturnFlyBy, corrAfterSaturnFlybyA, "Sun", ORBITPARSJUPITERSATURNC));
+        trajectories.add(
+                new SpacecraftTrajectory(corrAfterSaturnFlybyA, hundredAU, "Sun", ORBITPARSAFTERSATURNFLYBYA));
         return trajectories;
     }
 
@@ -372,6 +402,6 @@ public class VoyagerOne extends Spacecraft implements Serializable {
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnB)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnC)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrAfterSaturnFlybyA)));
     }
-
 }
