@@ -2360,7 +2360,7 @@ public class SolarSystemApplication extends Application {
         voy1.setEventName("Launch Voyager 1 (1977-09-05  12:56)");
         voy1.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 1"));
         voy1.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn",
-                "Voyager 1","Voyager 2")));
+                "Voyager 1")));
         voy1.setSelectedBody("Voyager 1");
         voy1.setShowRuler(true);
         voy1.setStepMode(false);
@@ -2371,7 +2371,7 @@ public class SolarSystemApplication extends Application {
         voy2.setEventName("Launch Voyager 2 (1977-08-20  14:29)");
         voy2.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 2"));
         voy2.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
-                "Voyager 1","Voyager 2")));
+                "Voyager 2")));
         voy2.setSelectedBody("Voyager 2");
         voy2.setShowRuler(true);
         voy2.setStepMode(false);
