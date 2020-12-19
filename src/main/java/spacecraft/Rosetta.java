@@ -405,7 +405,7 @@ public class Rosetta extends Spacecraft implements Serializable {
         eventDateTimes = new ArrayList<>();
 
         // Define first trajectory from launch until first date
-        // During launch Rosetta is so close that starts orbiting the Earth
+        // During launch Rosetta is so close that it starts orbiting the Earth
         GregorianCalendar firstDateTime = JulianDateConverter.convertJulianDateToCalendar(orbitDates[0]);
         trajectories.add(
                 new SpacecraftTrajectory(launch, firstDateTime,"Sun", ORBITPARSLAUNCH));
