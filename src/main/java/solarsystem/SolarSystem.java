@@ -790,8 +790,12 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param event
      */
     public void addSpacecraftEvent(SpacecraftEvent event) {
+        if (!spacecraftEvents.isEmpty() && event.getDateTime().before(spacecraftEvents.get(0).getDateTime())) {
+            spacecraftEvents.add(0,event);
+            return;
+        }
         int index = 0;
-        while (index < spacecraftEvents.size()-1) {
+        while (index < spacecraftEvents.size() - 1) {
             if (event.getDateTime().after(spacecraftEvents.get(index).getDateTime()) &&
                     event.getDateTime().before(spacecraftEvents.get(index+1).getDateTime())) {
                 spacecraftEvents.add(index+1,event);
