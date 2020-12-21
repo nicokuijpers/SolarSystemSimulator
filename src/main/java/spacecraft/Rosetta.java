@@ -446,9 +446,11 @@ public class Rosetta extends Spacecraft implements Serializable {
         }
         // The orbit of 67P/Churyumov-Gerasimenko changes due to gravitational pull by Jupiter
         // Update position and velocity of 67P/Churyumov-Gerasimenko each year on May 28
+        List<String> bodyNames = new ArrayList<>();
+        bodyNames.add("67P/Churyumov-Gerasimenko");
         for (int year = 2004; year < 2015; year++) {
             Calendar dateTimeCG = new GregorianCalendar(year,4,28,0,0);
-            solarSystem.addSpacecraftEvent(new SpacecraftEvent("67P/Churyumov-Gerasimenko",dateTimeCG));
+            solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(),dateTimeCG,bodyNames));
         }
     }
 }

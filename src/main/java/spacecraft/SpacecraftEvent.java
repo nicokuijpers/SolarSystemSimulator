@@ -19,8 +19,13 @@
  */
 package spacecraft;
 
+import ephemeris.CalendarUtil;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * SpacecrafEvent. Forces position and velocity of particle with given name
@@ -35,28 +40,49 @@ public class SpacecraftEvent implements Serializable {
     // Default serialVersion id
     private static final long serialVersionUID = 1L;
 
-    // Name of the spacecraft or small body
-    private String spacecraftOrBodyName;
+    // Name of the spacecraft
+    private String spacecraftName;
 
     // Date/time of this event
-    private Calendar dateTime;
+    private GregorianCalendar dateTime;
+
+    // Names of bodies to be moved
+    private List<String> bodyNames;
 
     /**
-     * Constructor. Set name of spacecraft or small body and date/time for this event.
-     * @param spacecraftOrBodyName name of spacecraft or small body
-     * @param dateTime date/time of this event
+     * Constructor. Set name of spacecraft and date/time for this event.
+     * Postion and velocity of spacecraft with given name will be updated at
+     * given date/time
+     * @param spacecraftName name of spacecraft to be updated
+     * @param dateTime       date/time of this event
      */
-    public SpacecraftEvent(String spacecraftOrBodyName, Calendar dateTime) {
-        this.spacecraftOrBodyName = spacecraftOrBodyName;
-        this.dateTime = dateTime;
+    public SpacecraftEvent(String spacecraftName, Calendar dateTime) {
+        this.spacecraftName = spacecraftName;
+        this.dateTime = CalendarUtil.createGregorianCalendar(dateTime);
+        this.bodyNames = new ArrayList<>();
+        this.bodyNames.add(spacecraftName);
+    }
+
+    /**
+     * Constructor. Set name of spacecraft and date/time for this event.
+     * Position and velocity of solar system bodies with given names will
+     * be updated at given date/time
+     * @param spacecraftName name of the spacecraft
+     * @param dateTime       date/time of this event
+     * @param bodyNames      names of bodies to be updated
+     */
+    public SpacecraftEvent(String spacecraftName, Calendar dateTime, List<String> bodyNames) {
+        this.spacecraftName = spacecraftName;
+        this.dateTime = CalendarUtil.createGregorianCalendar(dateTime);
+        this.bodyNames = new ArrayList<>(bodyNames);
     }
 
     /**
      * Get name of spacecraft.
      * @return spacecraft name.
      */
-    public String getSpacecraftOrBodyName() {
-        return spacecraftOrBodyName;
+    public String getSpacecraftName() {
+        return spacecraftName;
     }
 
     /**
@@ -65,5 +91,13 @@ public class SpacecraftEvent implements Serializable {
      */
     public Calendar getDateTime() {
         return dateTime;
+    }
+
+    /**
+     * Get names of bodies to be updated.
+     * @return names of bodies to be updated
+     */
+    public List<String> getBodyNames() {
+        return bodyNames;
     }
 }

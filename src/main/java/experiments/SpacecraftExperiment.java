@@ -29,7 +29,7 @@ import java.util.*;
 
 /**
  * Determine date/time and closest distance at flyby of planets and moons for
- * Voyager 1, Voyager 2, and New Horizons.
+ * Voyager 1, Voyager 2, New Horizons, Rosetta
  * @author Nico Kuijpers
  */
 public class SpacecraftExperiment {
@@ -58,6 +58,14 @@ public class SpacecraftExperiment {
     private final GregorianCalendar endDateNewHorizons =
             new GregorianCalendar(2020, 0, 1, 0, 0, 0);
 
+    // Launch Rosetta: March 2, 2004, 07:17 UTC
+    private static final GregorianCalendar startDateRosetta =
+            new GregorianCalendar(2004, 2, 2, 7, 17, 0);
+
+    // End of simulation for Rosetta: October 1, 2016
+    private final GregorianCalendar endDateRosetta =
+            new GregorianCalendar(2016, 9, 1, 0, 0, 0);
+
     // Simulation start dates
     private final Map<String,GregorianCalendar> startDates = new HashMap<>();
 
@@ -82,11 +90,13 @@ public class SpacecraftExperiment {
         startDates.put("Voyager 1", startDateVoyagerOne);
         startDates.put("Voyager 2", startDateVoyagerTwo);
         startDates.put("New Horizons", startDateNewHorizons);
+        startDates.put("Rosetta", startDateRosetta);
 
         // Define end dates for simulation
         endDates.put("Voyager 1", endDateVoyagerOne);
         endDates.put("Voyager 2", endDateVoyagerTwo);
         endDates.put("New Horizons", endDateNewHorizons);
+        endDates.put("Rosetta", endDateRosetta);
 
         // Define names of solar system particles passed by Voyager 1
         // https://en.wikipedia.org/wiki/Voyager_1
@@ -137,8 +147,16 @@ public class SpacecraftExperiment {
         List<String> particleNamesNewHorizons = new ArrayList<>();
         particleNamesNewHorizons.add("Jupiter");     // 2007-02-28 05:43:40  2.3 million km
         particleNamesNewHorizons.add("Pluto");       // 2015-07-14 11:49     12,472 km (surface)
-        particleNamesNewHorizons.add("Ultima Thule");// 2019-01-01 05:33      3,500 km
+        particleNamesNewHorizons.add("Ultima Thule");// 2019-01-01 05:34:31   3,537.7 km
         particleNames.put("New Horizons",particleNamesNewHorizons);
+
+        // Define names of solar system particles passed by Rosetta
+        // https://ssd.jpl.nasa.gov/horizons.cgi#results
+        List<String> particleNamesRosetta = new ArrayList<>();
+        particleNamesRosetta.add("Earth");
+        particleNamesRosetta.add("Mars");
+        particleNamesRosetta.add("67P/Churyumov-Gerasimenko");
+        particleNames.put("Rosetta",particleNamesRosetta);
     }
 
     private void simulateSpacecraftTrajectory(String spacecraftName) {
@@ -154,17 +172,24 @@ public class SpacecraftExperiment {
         // Create the Solar System and planet systems
         solarSystem = new SolarSystem();
         try {
-            solarSystem.createPlanetSystem("Jupiter");
-            solarSystem.createPlanetSystem("Saturn");
-            solarSystem.createPlanetSystem("Uranus");
-            solarSystem.createPlanetSystem("Neptune");
+            if ("Voyager 1".equals(spacecraftName) || "Voyager 2".equals(spacecraftName)) {
+                solarSystem.createPlanetSystem("Jupiter");
+                solarSystem.createPlanetSystem("Saturn");
+            }
+            if ("Voyager 2".equals(spacecraftName)) {
+                solarSystem.createPlanetSystem("Uranus");
+                solarSystem.createPlanetSystem("Neptune");
+            }
         } catch (SolarSystemException ex) {
             System.err.println(ex.getMessage());
         }
 
-        // Use Newton Mechancis for simulation
-        //solarSystem.setGeneralRelativityFlag(false); // Newton Mechanics
-        solarSystem.setGeneralRelativityFlag(true); // General Relativity
+        // Create the spacecraft
+        solarSystem.createSpacecraft(spacecraftName);
+
+        // Use Newton Mechanics for simulation
+        solarSystem.setGeneralRelativityFlag(false); // Newton Mechanics
+        // solarSystem.setGeneralRelativityFlag(true); // General Relativity
 
         // Initialize the Solar System and planet systems
         try {
@@ -264,10 +289,12 @@ public class SpacecraftExperiment {
         experiment.simulateSpacecraftTrajectory("Voyager 1");
         experiment.simulateSpacecraftTrajectory("Voyager 2");
         experiment.simulateSpacecraftTrajectory("New Horizons");
+        experiment.simulateSpacecraftTrajectory("Rosetta");
     }
 
     /*
-        Results Newton Mechanics (time step 60s):
+        Simulation performed December 21, 2020
+        Results Newton Mechanics (time step 60s)
         Spacecraft Voyager 1
         Launch 1977-09-05 12:56
         Fly by Jupiter
@@ -277,34 +304,34 @@ public class SpacecraftExperiment {
         Velocity during fly by : 36075.826829027494 m/s
         Fly by Io
         Date and time          : 1979-03-05 15:15
-        Distance from center   : 20577.10763583587 km
-        Distance from surface  : 18755.807635835867 km
+        Distance from center   : 20520.100113501765 km
+        Distance from surface  : 18698.800113501766 km
         Velocity during fly by : 36671.61606701444 m/s
         Fly by Europa
         Date and time          : 1979-03-05 17:20
-        Distance from center   : 732302.2923334201 km
-        Distance from surface  : 730737.2923334201 km
+        Distance from center   : 732975.4423176781 km
+        Distance from surface  : 731410.4423176781 km
         Velocity during fly by : 35308.78932760341 m/s
         Fly by Ganymede
         Date and time          : 1979-03-06 02:17
-        Distance from center   : 113009.97021299892 km
-        Distance from surface  : 110375.97021299892 km
+        Distance from center   : 113168.95968676741 km
+        Distance from surface  : 110534.95968676741 km
         Velocity during fly by : 30918.427778591136 m/s
         Fly by Callisto
-        Date and time          : 1979-03-06 17:11
-        Distance from center   : 124057.35089845926 km
-        Distance from surface  : 121654.35089845926 km
-        Velocity during fly by : 28157.439965016445 m/s
+        Date and time          : 1979-03-06 17:10
+        Distance from center   : 124105.66643136628 km
+        Distance from surface  : 121702.66643136628 km
+        Velocity during fly by : 28159.30308426901 m/s
         Fly by Titan
-        Date and time          : 1980-11-12 05:39
-        Distance from center   : 2326.2232182844627 km
-        Distance from surface  : -249.27678171553742 km
-        Velocity during fly by : 21812.221303109396 m/s
+        Date and time          : 1980-11-12 05:40
+        Distance from center   : 4684.366929080939 km
+        Distance from surface  : 2108.866929080939 km
+        Velocity during fly by : 21813.667949909264 m/s
         Fly by Tethys
-        Date and time          : 1980-11-12 22:07
-        Distance from center   : 413720.46292191633 km
-        Distance from surface  : 413184.1629219163 km
-        Velocity during fly by : 28781.991294083367 m/s
+        Date and time          : 1980-11-12 22:15
+        Distance from center   : 422177.64244051056 km
+        Distance from surface  : 421641.3424405106 km
+        Velocity during fly by : 28972.428519531775 m/s
         Fly by Saturn
         Date and time          : 1980-11-12 23:44
         Distance from center   : 190511.10561351234 km
@@ -312,36 +339,36 @@ public class SpacecraftExperiment {
         Velocity during fly by : 30479.739971882078 m/s
         Fly by Mimas
         Date and time          : 1980-11-13 01:39
-        Distance from center   : 94824.91563330565 km
-        Distance from surface  : 94626.11563330564 km
+        Distance from center   : 94887.98229978402 km
+        Distance from surface  : 94689.18229978402 km
         Velocity during fly by : 29311.26862600851 m/s
         Fly by Enceladus
-        Date and time          : 1980-11-13 01:46
-        Distance from center   : 218761.95062997832 km
-        Distance from surface  : 218509.65062997834 km
-        Velocity during fly by : 29183.364805438458 m/s
+        Date and time          : 1980-11-13 01:48
+        Distance from center   : 212922.82620541507 km
+        Distance from surface  : 212670.52620541508 km
+        Velocity during fly by : 29146.745039399528 m/s
         Fly by Rhea
         Date and time          : 1980-11-13 06:24
-        Distance from center   : 55102.49145407612 km
-        Distance from surface  : 54337.99145407612 km
+        Distance from center   : 56154.08229101511 km
+        Distance from surface  : 55389.58229101511 km
         Velocity during fly by : 25671.27651699476 m/s
 
         Spacecraft Voyager 2
         Launch 1977-08-20 14:29
         Fly by Callisto
         Date and time          : 1979-07-08 12:22
-        Distance from center   : 215036.45551251178 km
-        Distance from surface  : 212633.45551251178 km
+        Distance from center   : 215539.56268618218 km
+        Distance from surface  : 213136.56268618218 km
         Velocity during fly by : 13170.341292101772 m/s
         Fly by Ganymede
         Date and time          : 1979-07-09 07:15
-        Distance from center   : 61239.17917488123 km
-        Distance from surface  : 58605.17917488123 km
+        Distance from center   : 61407.98951779529 km
+        Distance from surface  : 58773.98951779529 km
         Velocity during fly by : 17368.452427899472 m/s
         Fly by Europa
         Date and time          : 1979-07-09 17:51
-        Distance from center   : 205904.0517708431 km
-        Distance from surface  : 204339.0517708431 km
+        Distance from center   : 205538.80469858614 km
+        Distance from surface  : 203973.80469858614 km
         Velocity during fly by : 22728.098194898917 m/s
         Fly by Jupiter
         Date and time          : 1979-07-09 22:29
@@ -349,90 +376,90 @@ public class SpacecraftExperiment {
         Distance from surface  : 650280.3179243297 km
         Velocity during fly by : 25178.35937654697 m/s
         Fly by Io
-        Date and time          : 1979-07-09 23:17
-        Distance from center   : 1129996.267570368 km
-        Distance from surface  : 1128174.967570368 km
-        Velocity during fly by : 25510.539716072068 m/s
+        Date and time          : 1979-07-09 23:18
+        Distance from center   : 1129812.1723818842 km
+        Distance from surface  : 1127990.8723818841 km
+        Velocity during fly by : 25517.07416110551 m/s
         Fly by Iapetus
         Date and time          : 1981-08-23 01:27
-        Distance from center   : 911169.7560318401 km
-        Distance from surface  : 910435.2560318401 km
+        Distance from center   : 908845.6034178874 km
+        Distance from surface  : 908111.1034178874 km
         Velocity during fly by : 16166.254303150803 m/s
         Fly by Titan
-        Date and time          : 1981-08-25 09:33
-        Distance from center   : 657171.8033418255 km
-        Distance from surface  : 654596.3033418255 km
-        Velocity during fly by : 18156.346530906016 m/s
+        Date and time          : 1981-08-25 09:37
+        Distance from center   : 663766.3155168174 km
+        Distance from surface  : 661190.8155168174 km
+        Velocity during fly by : 18165.227384697635 m/s
         Fly by Dione
-        Date and time          : 1981-08-26 00:53
-        Distance from center   : 492710.51595065295 km
-        Distance from surface  : 492148.01595065295 km
-        Velocity during fly by : 26847.720797494345 m/s
+        Date and time          : 1981-08-26 01:03
+        Distance from center   : 500623.99878533324 km
+        Distance from surface  : 500061.49878533324 km
+        Velocity during fly by : 27213.001434650654 m/s
         Fly by Mimas
-        Date and time          : 1981-08-26 02:36
-        Distance from center   : 314769.06924360635 km
-        Distance from surface  : 314570.2692436063 km
-        Velocity during fly by : 30990.88703870894 m/s
+        Date and time          : 1981-08-26 02:33
+        Distance from center   : 308951.3079681845 km
+        Distance from surface  : 308752.50796818454 km
+        Velocity during fly by : 30876.99560155576 m/s
         Fly by Saturn
         Date and time          : 1981-08-26 03:23
         Distance from center   : 159077.20676037716 km
         Distance from surface  : 98809.20676037717 km
         Velocity during fly by : 32321.41204779268 m/s
         Fly by Enceladus
-        Date and time          : 1981-08-26 04:03
-        Distance from center   : 80840.93789472601 km
-        Distance from surface  : 80588.63789472601 km
-        Velocity during fly by : 32534.536754563742 m/s
+        Date and time          : 1981-08-26 03:41
+        Distance from center   : 89517.73909146323 km
+        Distance from surface  : 89265.43909146322 km
+        Velocity during fly by : 32527.61267775264 m/s
         Fly by Tethys
-        Date and time          : 1981-08-26 06:15
-        Distance from center   : 95616.92047846456 km
-        Distance from surface  : 95080.62047846457 km
-        Velocity during fly by : 29950.38891005729 m/s
+        Date and time          : 1981-08-26 06:09
+        Distance from center   : 94049.64359664418 km
+        Distance from surface  : 93513.34359664418 km
+        Velocity during fly by : 30083.391246047944 m/s
         Fly by Rhea
-        Date and time          : 1981-08-26 06:19
-        Distance from center   : 648715.284746537 km
-        Distance from surface  : 647950.784746537 km
-        Velocity during fly by : 29862.848798739997 m/s
+        Date and time          : 1981-08-26 06:30
+        Distance from center   : 641566.2901272982 km
+        Distance from surface  : 640801.7901272982 km
+        Velocity during fly by : 29627.095838417186 m/s
         Fly by Miranda
-        Date and time          : 1986-01-24 16:53
-        Distance from center   : 46105.94286476669 km
-        Distance from surface  : 45865.94286476669 km
-        Velocity during fly by : 21208.19261126696 m/s
+        Date and time          : 1986-01-24 17:01
+        Distance from center   : 31934.07506936233 km
+        Distance from surface  : 31694.07506936233 km
+        Velocity during fly by : 21374.991474550814 m/s
         Fly by Ariel
-        Date and time          : 1986-01-24 16:18
-        Distance from center   : 134112.85067306756 km
-        Distance from surface  : 133531.85067306756 km
-        Velocity during fly by : 20640.890871350424 m/s
+        Date and time          : 1986-01-24 16:19
+        Distance from center   : 129778.65463950277 km
+        Distance from surface  : 129197.65463950277 km
+        Velocity during fly by : 20671.698281757406 m/s
         Fly by Umbriel
-        Date and time          : 1986-01-24 20:50
-        Distance from center   : 315830.9331528194 km
-        Distance from surface  : 315245.9331528194 km
-        Velocity during fly by : 21419.020309878288 m/s
+        Date and time          : 1986-01-24 20:51
+        Distance from center   : 316194.67913991923 km
+        Distance from surface  : 315609.67913991923 km
+        Velocity during fly by : 21420.675652121863 m/s
         Fly by Titania
         Date and time          : 1986-01-24 15:08
-        Distance from center   : 362341.40350632684 km
-        Distance from surface  : 361552.40350632684 km
-        Velocity during fly by : 19828.32398226172 m/s
+        Distance from center   : 368394.342428635 km
+        Distance from surface  : 367605.342428635 km
+        Velocity during fly by : 19834.488090117284 m/s
         Fly by Oberon
-        Date and time          : 1986-01-24 16:07
-        Distance from center   : 471809.4889267265 km
-        Distance from surface  : 471047.9889267265 km
-        Velocity during fly by : 20484.19315502906 m/s
+        Date and time          : 1986-01-24 16:09
+        Distance from center   : 473595.1701008287 km
+        Distance from surface  : 472833.6701008287 km
+        Velocity during fly by : 20525.751616180227 m/s
         Fly by Uranus
-        Date and time          : 1986-01-24 17:57
-        Distance from center   : 102340.81621035282 km
-        Distance from surface  : 76781.81621035282 km
-        Velocity during fly by : 22167.19408428945 m/s
+        Date and time          : 1986-01-24 17:56
+        Distance from center   : 101305.76184686647 km
+        Distance from surface  : 75746.76184686647 km
+        Velocity during fly by : 22196.720745041715 m/s
         Fly by Neptune
-        Date and time          : 1989-08-25 04:04
-        Distance from center   : 35359.89670891972 km
-        Distance from surface  : 10595.89670891972 km
-        Velocity during fly by : 26412.87417638609 m/s
+        Date and time          : 1989-08-25 04:09
+        Distance from center   : 35510.36307886572 km
+        Distance from surface  : 10746.363078865714 km
+        Velocity during fly by : 26364.311425359 m/s
         Fly by Triton
-        Date and time          : 1989-08-25 09:22
-        Distance from center   : 102463.928808066 km
-        Distance from surface  : 101111.428808066 km
-        Velocity during fly by : 17320.204154684347 m/s
+        Date and time          : 1989-08-25 09:27
+        Distance from center   : 102693.64590317445 km
+        Distance from surface  : 101341.14590317445 km
+        Velocity during fly by : 17321.45005090662 m/s
 
         Spacecraft New Horizons
         Launch 2006-01-19 19:00
@@ -443,16 +470,37 @@ public class SpacecraftExperiment {
         Velocity during fly by : 22850.51615014031 m/s
         Fly by Pluto
         Date and time          : 2015-07-14 11:37
-        Distance from center   : 14389.524213746561 km
-        Distance from surface  : 13204.524213746561 km
-        Velocity during fly by : 14531.816233252986 m/s
+        Distance from center   : 13256.341556581314 km
+        Distance from surface  : 12071.341556581314 km
+        Velocity during fly by : 14531.808243819474 m/s
         Fly by Ultima Thule
-        Date and time          : 2019-01-01 06:44
-        Distance from center   : 26753.857512417093 km
-        Distance from surface  : 26737.357512417093 km
-        Velocity during fly by : 14090.862565593674 m/s
+        Date and time          : 2019-01-01 05:35
+        Distance from center   : 3561.40458165672 km
+        Distance from surface  : 3544.90458165672 km
+        Velocity during fly by : 14095.250816970856 m/s
 
-        Results General Relativity (timestep 60s)
+        Spacecraft Rosetta
+        Launch 2004-03-02 07:17
+        Fly by Earth
+        Date and time          : 2004-03-02 09:40
+        Distance from center   : 8134.146419032116 km
+        Distance from surface  : 1756.1464190321155 km
+        Velocity during fly by : 27062.920740839192 m/s
+        Fly by Mars
+        Date and time          : 2007-02-25 01:46
+        Distance from center   : 3655.4747147726694 km
+        Distance from surface  : 259.47471477266913 km
+        Velocity during fly by : 22849.080399982675 m/s
+        Fly by 67P/Churyumov-Gerasimenko
+        Date and time          : 2015-06-18 11:37
+        Distance from center   : 339.2829359666815 km
+        Distance from surface  : 337.2329359666815 km
+        Velocity during fly by : 31595.336238707136 m/s
+     */
+
+    /*
+        Simulation performed December 21, 2020
+        Results General Relativity (time step 60s)
         Spacecraft Voyager 1
         Launch 1977-09-05 12:56
         Fly by Jupiter
@@ -462,34 +510,34 @@ public class SpacecraftExperiment {
         Velocity during fly by : 36075.77934489113 m/s
         Fly by Io
         Date and time          : 1979-03-05 15:15
-        Distance from center   : 20576.886687818445 km
-        Distance from surface  : 18755.586687818446 km
+        Distance from center   : 20519.885121355637 km
+        Distance from surface  : 18698.585121355638 km
         Velocity during fly by : 36671.63327960877 m/s
         Fly by Europa
         Date and time          : 1979-03-05 17:20
-        Distance from center   : 732303.6774302138 km
-        Distance from surface  : 730738.6774302138 km
+        Distance from center   : 732976.8163039136 km
+        Distance from surface  : 731411.8163039136 km
         Velocity during fly by : 35308.813161975355 m/s
         Fly by Ganymede
         Date and time          : 1979-03-06 02:17
-        Distance from center   : 113011.4072853455 km
-        Distance from surface  : 110377.4072853455 km
+        Distance from center   : 113170.42513319735 km
+        Distance from surface  : 110536.42513319735 km
         Velocity during fly by : 30918.438594161144 m/s
         Fly by Callisto
-        Date and time          : 1979-03-06 17:11
-        Distance from center   : 124057.52858047427 km
-        Distance from surface  : 121654.52858047427 km
-        Velocity during fly by : 28157.443754120384 m/s
+        Date and time          : 1979-03-06 17:10
+        Distance from center   : 124105.8601680871 km
+        Distance from surface  : 121702.8601680871 km
+        Velocity during fly by : 28159.30687684898 m/s
         Fly by Titan
-        Date and time          : 1980-11-12 05:39
-        Distance from center   : 2327.2196700586387 km
-        Distance from surface  : -248.2803299413612 km
-        Velocity during fly by : 21812.219703820618 m/s
+        Date and time          : 1980-11-12 05:40
+        Distance from center   : 4683.491371170795 km
+        Distance from surface  : 2107.9913711707945 km
+        Velocity during fly by : 21813.66634799477 m/s
         Fly by Tethys
-        Date and time          : 1980-11-12 22:07
-        Distance from center   : 413719.47411272954 km
-        Distance from surface  : 413183.17411272955 km
-        Velocity during fly by : 28781.971974511867 m/s
+        Date and time          : 1980-11-12 22:15
+        Distance from center   : 422177.0238613656 km
+        Distance from surface  : 421640.72386136564 km
+        Velocity during fly by : 28972.409718301693 m/s
         Fly by Saturn
         Date and time          : 1980-11-12 23:44
         Distance from center   : 190510.84306433675 km
@@ -497,144 +545,22 @@ public class SpacecraftExperiment {
         Velocity during fly by : 30479.740214962876 m/s
         Fly by Mimas
         Date and time          : 1980-11-13 01:39
-        Distance from center   : 94824.70937032535 km
-        Distance from surface  : 94625.90937032535 km
+        Distance from center   : 94887.80914220463 km
+        Distance from surface  : 94689.00914220462 km
         Velocity during fly by : 29311.282348877437 m/s
         Fly by Enceladus
-        Date and time          : 1980-11-13 01:46
-        Distance from center   : 218761.61568049644 km
-        Distance from surface  : 218509.31568049642 km
-        Velocity during fly by : 29183.378136136445 m/s
+        Date and time          : 1980-11-13 01:48
+        Distance from center   : 212922.96316103716 km
+        Distance from surface  : 212670.66316103714 km
+        Velocity during fly by : 29146.758246749738 m/s
         Fly by Rhea
         Date and time          : 1980-11-13 06:24
-        Distance from center   : 55103.189881395665 km
-        Distance from surface  : 54338.689881395665 km
+        Distance from center   : 56154.74149284827 km
+        Distance from surface  : 55390.24149284827 km
         Velocity during fly by : 25671.273658483995 m/s
-        Spacecraft Voyager 2
-        Launch 1977-08-20 14:29
-        Fly by Callisto
-        Date and time          : 1979-07-08 12:22
-        Distance from center   : 215038.1408696183 km
-        Distance from surface  : 212635.1408696183 km
-        Velocity during fly by : 13170.332492335365 m/s
-        Fly by Ganymede
-        Date and time          : 1979-07-09 07:15
-        Distance from center   : 61237.63319709697 km
-        Distance from surface  : 58603.63319709697 km
-        Velocity during fly by : 17368.422801993845 m/s
-        Fly by Europa
-        Date and time          : 1979-07-09 17:51
-        Distance from center   : 205901.2774766956 km
-        Distance from surface  : 204336.2774766956 km
-        Velocity during fly by : 22728.048620505513 m/s
-        Fly by Jupiter
-        Date and time          : 1979-07-09 22:29
-        Distance from center   : 721772.723107829 km
-        Distance from surface  : 650280.723107829 km
-        Velocity during fly by : 25178.318737263267 m/s
-        Fly by Io
-        Date and time          : 1979-07-09 23:17
-        Distance from center   : 1129995.7976564807 km
-        Distance from surface  : 1128174.4976564806 km
-        Velocity during fly by : 25510.502324212783 m/s
-        Fly by Iapetus
-        Date and time          : 1981-08-23 01:27
-        Distance from center   : 911170.3790229411 km
-        Distance from surface  : 910435.8790229411 km
-        Velocity during fly by : 16166.253943065156 m/s
-        Fly by Titan
-        Date and time          : 1981-08-25 09:33
-        Distance from center   : 657170.4647468721 km
-        Distance from surface  : 654594.9647468721 km
-        Velocity during fly by : 18156.341514705753 m/s
-        Fly by Dione
-        Date and time          : 1981-08-26 00:53
-        Distance from center   : 492708.6753445418 km
-        Distance from surface  : 492146.1753445418 km
-        Velocity during fly by : 26847.6750681866 m/s
-        Fly by Mimas
-        Date and time          : 1981-08-26 02:36
-        Distance from center   : 314767.76656984887 km
-        Distance from surface  : 314568.9665698488 km
-        Velocity during fly by : 30990.87339801816 m/s
-        Fly by Saturn
-        Date and time          : 1981-08-26 03:23
-        Distance from center   : 159076.38394984335 km
-        Distance from surface  : 98808.38394984335 km
-        Velocity during fly by : 32321.44346202247 m/s
-        Fly by Enceladus
-        Date and time          : 1981-08-26 04:03
-        Distance from center   : 80841.59103966925 km
-        Distance from surface  : 80589.29103966925 km
-        Velocity during fly by : 32534.59788570704 m/s
-        Fly by Tethys
-        Date and time          : 1981-08-26 06:15
-        Distance from center   : 95617.41071165392 km
-        Distance from surface  : 95081.11071165392 km
-        Velocity during fly by : 29950.43750662623 m/s
-        Fly by Rhea
-        Date and time          : 1981-08-26 06:19
-        Distance from center   : 648714.1638186052 km
-        Distance from surface  : 647949.6638186052 km
-        Velocity during fly by : 29862.89636026401 m/s
-        Fly by Miranda
-        Date and time          : 1986-01-24 16:53
-        Distance from center   : 46104.69333612742 km
-        Distance from surface  : 45864.69333612742 km
-        Velocity during fly by : 21208.18772036549 m/s
-        Fly by Ariel
-        Date and time          : 1986-01-24 16:18
-        Distance from center   : 134112.59150528267 km
-        Distance from surface  : 133531.59150528267 km
-        Velocity during fly by : 20640.883533497017 m/s
-        Fly by Umbriel
-        Date and time          : 1986-01-24 20:50
-        Distance from center   : 315830.11976956256 km
-        Distance from surface  : 315245.11976956256 km
-        Velocity during fly by : 21419.03481606717 m/s
-        Fly by Titania
-        Date and time          : 1986-01-24 15:08
-        Distance from center   : 362341.92669225484 km
-        Distance from surface  : 361552.92669225484 km
-        Velocity during fly by : 19828.3178097398 m/s
-        Fly by Oberon
-        Date and time          : 1986-01-24 16:07
-        Distance from center   : 471809.85377869924 km
-        Distance from surface  : 471048.35377869924 km
-        Velocity during fly by : 20484.185715742355 m/s
-        Fly by Uranus
-        Date and time          : 1986-01-24 17:57
-        Distance from center   : 102340.25964363466 km
-        Distance from surface  : 76781.25964363466 km
-        Velocity during fly by : 22167.206916732797 m/s
-        Fly by Neptune
-        Date and time          : 1989-08-25 04:04
-        Distance from center   : 35360.03271794748 km
-        Distance from surface  : 10596.032717947475 km
-        Velocity during fly by : 26412.863455180774 m/s
-        Fly by Triton
-        Date and time          : 1989-08-25 09:22
-        Distance from center   : 102466.32662806501 km
-        Distance from surface  : 101113.82662806501 km
-        Velocity during fly by : 17320.20187613872 m/s
-        Spacecraft New Horizons
-        Launch 2006-01-19 19:00
-        Fly by Jupiter
-        Date and time          : 2007-02-28 05:49
-        Distance from center   : 2302923.951850609 km
-        Distance from surface  : 2231431.951850609 km
-        Velocity during fly by : 22850.53636598604 m/s
-        Fly by Pluto
-        Date and time          : 2015-07-14 11:37
-        Distance from center   : 14389.45076529282 km
-        Distance from surface  : 13204.45076529282 km
-        Velocity during fly by : 14531.81627518156 m/s
-        Fly by Ultima Thule
-        Date and time          : 2019-01-01 06:44
-        Distance from center   : 26753.776318303084 km
-        Distance from surface  : 26737.276318303084 km
-        Velocity during fly by : 14090.862569256677 m/s
      */
+
+
 }
 
 

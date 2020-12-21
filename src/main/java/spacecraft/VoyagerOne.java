@@ -20,6 +20,7 @@
 package spacecraft;
 
 import ephemeris.CalendarUtil;
+import ephemeris.SolarSystemParameters;
 import solarsystem.SolarSystem;
 
 import java.io.Serializable;
@@ -99,6 +100,10 @@ public class VoyagerOne extends Spacecraft implements Serializable {
     private static final GregorianCalendar corrEarthToJupiterB =
             new GregorianCalendar(1979, 0, 30, 0, 0, 0);
 
+    // Update position and velocity of the moons of Jupiter on February 21, 1979 (about two weeks before fly by)
+    private static final GregorianCalendar updateJupiterMoons =
+            new GregorianCalendar(1979, 1, 21, 0, 0, 0);
+
     // Schedule simulated correction on February 22, 1979 after TCM4 on February 21, 1979
     private static final GregorianCalendar corrEarthToJupiterC =
             new GregorianCalendar(1979, 1, 22, 0, 0, 0);
@@ -114,6 +119,10 @@ public class VoyagerOne extends Spacecraft implements Serializable {
     // Schedule simulated correction on October 11, 1980 after TCM8 on October 10, 1980
     private static final GregorianCalendar corrJupiterToSaturnB =
             new GregorianCalendar(1980, 9, 11, 0, 0, 0);
+
+    // Update position and velocity of the moons of Saturn on October 29, 1980 (about two weeks before fly by)
+    private static final GregorianCalendar updateSaturnMoons =
+            new GregorianCalendar(1980, 9, 29, 0, 0, 0);
 
     // Schedule simulated correction on November 8, 1980 after TCM9 on November 7, 1980
     private static final GregorianCalendar corrJupiterToSaturnC =
@@ -394,13 +403,17 @@ public class VoyagerOne extends Spacecraft implements Serializable {
 
     @Override
     protected void defineEvents(SolarSystem solarSystem) {
+        List<String> jupiterMoons = SolarSystemParameters.getInstance().getMoonsOfPlanet("Jupiter");
+        List<String> saturnMoons = SolarSystemParameters.getInstance().getMoonsOfPlanet("Saturn");
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(launch)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterInj)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterB)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(updateJupiterMoons), jupiterMoons));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterC)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnB)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(updateSaturnMoons), saturnMoons));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnC)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrAfterSaturnFlybyA)));
     }

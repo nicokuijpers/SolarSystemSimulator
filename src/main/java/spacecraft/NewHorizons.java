@@ -431,11 +431,12 @@ public class NewHorizons extends Spacecraft implements Serializable {
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionE)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionF)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionG)));
-        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionH)));
-        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionI)));
 
-        // Corrections for Ultima Thule on December 1, 2018 and January 1, 2019 before fly by
-        solarSystem.addSpacecraftEvent(new SpacecraftEvent("Ultima Thule",correctionH));
-        solarSystem.addSpacecraftEvent(new SpacecraftEvent("Ultima Thule",correctionI));
+        // Corrections for New Horizons and Ultima Thule on December 1, 2018 and January 1, 2019 before fly by
+        List<String> bodyNames = new ArrayList<>();
+        bodyNames.add(getName());
+        bodyNames.add("Ultima Thule");
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), correctionH, bodyNames));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), correctionI, bodyNames));
     }
 }

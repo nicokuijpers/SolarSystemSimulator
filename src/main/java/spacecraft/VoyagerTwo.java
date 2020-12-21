@@ -20,6 +20,7 @@
 package spacecraft;
 
 import ephemeris.CalendarUtil;
+import ephemeris.SolarSystemParameters;
 import solarsystem.SolarSystem;
 
 import java.io.Serializable;
@@ -121,6 +122,10 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
     private static final GregorianCalendar corrEarthToJupiterB =
             new GregorianCalendar(1978, 4, 4, 0, 0, 0);
 
+    // Update position and velocity of the moons of Jupiter on June 25, 1979 (about two weeks before fly by)
+    private static final GregorianCalendar updateJupiterMoons =
+            new GregorianCalendar(1979, 5, 25, 0, 0, 0);
+
     // Schedule simulated correction on June 28, 1979 after TCM? on June 27, 1979
     private static final GregorianCalendar corrEarthToJupiterC =
             new GregorianCalendar(1979, 5, 28, 0, 0, 0);
@@ -136,6 +141,10 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
     // Schedule simulated correction on July 20, 1981 after TCM8 on July 19, 1981
     private static final GregorianCalendar corrJupiterToSaturnB =
             new GregorianCalendar(1981, 6, 20, 0, 0, 0);
+
+    // Update position and velocity of the moons of Saturn on August 11, 1981 (about two weeks before fly by)
+    private static final GregorianCalendar updateSaturnMoons =
+            new GregorianCalendar(1981, 7, 11, 0, 0, 0);
 
     // Schedule simulated correction on August 19, 1981 after TCM9 on August 18, 1981
     private static final GregorianCalendar corrJupiterToSaturnC =
@@ -155,6 +164,10 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
     private static final GregorianCalendar corrSaturnToUranusB =
             new GregorianCalendar(1984, 10, 14, 0, 0, 0);
 
+    // Update position and velocity of the moons of Uranus on January 10, 1986 (about two weeks before fly by)
+    private static final GregorianCalendar updateUranusMoons =
+            new GregorianCalendar(1986, 0, 10, 0, 0, 0);
+
     // Uranus fly by January 24, 1986, 17:59:47 UTC (distance 81,500 km)
     private static final GregorianCalendar uranusFlyBy =
             new GregorianCalendar(1986, 0, 24, 17, 59, 47);
@@ -172,6 +185,10 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
     // This date was found by inspection of deviations in velocity of Voyager 2
     private static final GregorianCalendar corrUranusToNeptuneC =
             new GregorianCalendar(1989, 6, 31, 0, 0, 0);
+
+    // Update position and velocity of the moons of Neptune on August 11, 1989 (about two weeks before fly by)
+    private static final GregorianCalendar updateNeptuneMoons =
+            new GregorianCalendar(1989, 7, 11, 0, 0, 0);
 
     // Neptune fly by August 25, 1989, 03:56:36 UTC (distance 4,951 km)
     private static final GregorianCalendar neptuneFlyBy =
@@ -661,19 +678,27 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
 
     @Override
     protected void defineEvents(SolarSystem solarSystem) {
+        List<String> jupiterMoons = SolarSystemParameters.getInstance().getMoonsOfPlanet("Jupiter");
+        List<String> saturnMoons = SolarSystemParameters.getInstance().getMoonsOfPlanet("Saturn");
+        List<String> uranusMoons = SolarSystemParameters.getInstance().getMoonsOfPlanet("Uranus");
+        List<String> neptuneMoons = SolarSystemParameters.getInstance().getMoonsOfPlanet("Neptune");
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(launch)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterInj)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterB)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(updateJupiterMoons), jupiterMoons));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrEarthToJupiterC)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnB)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(updateSaturnMoons), saturnMoons));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrJupiterToSaturnC)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrSaturnToUranusA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrSaturnToUranusB)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(updateUranusMoons), uranusMoons));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrUranusToNeptuneA)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrUranusToNeptuneB)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrUranusToNeptuneC)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(updateNeptuneMoons), neptuneMoons));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrAfterNeptuneFlyby)));
     }
 }
