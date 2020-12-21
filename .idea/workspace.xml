@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Spacecraft.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Spacecraft.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftTrajectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftTrajectory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerOne.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerOne.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" afterDir="false" />
-    </list>
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,12 +50,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7447" />
+          <entry key="java" value="7453" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7447" />
+          <entry key="JAVA" value="7453" />
         </counts>
       </usages-collector>
     </session>
@@ -156,8 +146,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3061">
-              <caret line="299" column="22" lean-forward="true" selection-start-line="299" selection-start-column="22" selection-end-line="299" selection-end-column="22" />
+            <state relative-caret-position="2505">
+              <caret line="191" column="48" selection-start-line="191" selection-start-column="48" selection-end-line="191" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -278,8 +268,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="862" />
-    <option name="y" value="216" />
+    <option name="x" value="980" />
+    <option name="y" value="298" />
     <option name="width" value="1510" />
     <option name="height" value="977" />
   </component>
@@ -539,7 +529,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1608554931397" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1608556749538" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -688,7 +678,7 @@
       <workItem from="1589032309477" duration="613000" />
       <workItem from="1589727408768" duration="611000" />
       <workItem from="1590246693445" duration="10778000" />
-      <workItem from="1608373550668" duration="12655000" />
+      <workItem from="1608373550668" duration="13481000" />
     </task>
     <servers />
   </component>
@@ -725,13 +715,12 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="221617000" />
+    <option name="totallyTimeSpent" value="222443000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="862" y="216" width="1510" height="977" extended-state="0" />
-    <editor active="true" />
+    <frame x="980" y="298" width="1510" height="977" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3038147" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3038147" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -740,7 +729,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1122,8 +1111,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3061">
-          <caret line="299" column="22" lean-forward="true" selection-start-line="299" selection-start-column="22" selection-end-line="299" selection-end-column="22" />
+        <state relative-caret-position="2505">
+          <caret line="191" column="48" selection-start-line="191" selection-start-column="48" selection-end-line="191" selection-end-column="48" />
         </state>
       </provider>
     </entry>
