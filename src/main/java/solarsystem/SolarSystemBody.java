@@ -161,14 +161,22 @@ public class SolarSystemBody implements Serializable {
      * Update trajectory.
      */
     public void updateTrajectory(Vector3D currentPosition, Vector3D currentVelocity) {
-        if (trajectory.isEmpty()) {
-            trajectory.add(currentPosition);
+        Vector3D trajectoryPosition, trajectoryVelocity;
+        if (centerBody != null) {
+            trajectoryPosition = currentPosition.minus(centerBody.getPosition());
+            trajectoryVelocity = currentVelocity.minus(centerBody.getVelocity());
         }
         else {
+            trajectoryPosition = new Vector3D(currentPosition);
+            trajectoryVelocity = new Vector3D(currentVelocity);
+        }
+        if (trajectory.isEmpty()) {
+            trajectory.add(trajectoryPosition);
+        } else {
             Vector3D formerPosition = trajectory.get(trajectory.size() - 1);
-            if (formerPosition.euclideanDistance(currentPosition) > 1E06 ||
-                    formerPosition.direction(currentPosition).angleDeg(currentVelocity) > 1.0) {
-                trajectory.add(currentPosition);
+            if (formerPosition.euclideanDistance(trajectoryPosition) > 1E06 ||
+                    formerPosition.direction(trajectoryPosition).angleDeg(trajectoryVelocity) > 1.0) {
+                trajectory.add(trajectoryPosition);
             }
         }
     }
