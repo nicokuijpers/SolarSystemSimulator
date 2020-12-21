@@ -2239,6 +2239,7 @@ public class SolarSystemApplication extends Application {
      */
     private void setVisualizationSettings(VisualizationSettings settings) {
         pauseSimulation();
+        initTranslate();
 
         for (String spacecraftName : spacecraftNames) {
             if (settings.getBodiesShown().contains(spacecraftName)) {
