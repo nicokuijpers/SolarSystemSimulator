@@ -151,8 +151,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2617">
-              <caret line="564" column="34" selection-start-line="564" selection-start-column="34" selection-end-line="564" selection-end-column="34" />
+            <state relative-caret-position="6635">
+              <caret line="700" column="49" lean-forward="true" selection-start-line="700" selection-start-column="49" selection-end-line="700" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -535,7 +535,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1608574080726" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1608623581530" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -684,7 +684,7 @@
       <workItem from="1589032309477" duration="613000" />
       <workItem from="1589727408768" duration="611000" />
       <workItem from="1590246693445" duration="10778000" />
-      <workItem from="1608373550668" duration="15741000" />
+      <workItem from="1608373550668" duration="16110000" />
     </task>
     <servers />
   </component>
@@ -721,7 +721,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="224703000" />
+    <option name="totallyTimeSpent" value="225072000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1038" y="337" width="1510" height="977" extended-state="0" />
@@ -1118,8 +1118,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2617">
-          <caret line="564" column="34" selection-start-line="564" selection-start-column="34" selection-end-line="564" selection-end-column="34" />
+        <state relative-caret-position="6635">
+          <caret line="700" column="49" lean-forward="true" selection-start-line="700" selection-start-column="49" selection-end-line="700" selection-end-column="49" />
         </state>
       </provider>
     </entry>
