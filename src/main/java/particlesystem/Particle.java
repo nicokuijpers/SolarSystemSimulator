@@ -52,8 +52,8 @@ public class Particle implements Serializable {
     private double mu;
     private Vector3D position;
     private Vector3D velocity;
-    private Vector3D acceleration = new Vector3D();
-    private Vector3D accelerationNewtonMechanics = new Vector3D();
+    private Vector3D acceleration = new Vector3D(); // DEBUG GR
+    private Vector3D accelerationNewtonMechanics = new Vector3D(); // DEBUG GR
     private double potentialEnergy;
 
     // Store position and velocity of former time step for
@@ -440,7 +440,7 @@ public class Particle implements Serializable {
      * Initialize velocity for leapfrog algorithm.
      * @param deltaT time step in s
      */
-    public void initStateLeapfrog(long deltaT) {
+    public void initStateLeapfrog(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute velocity v(-1/2) at time -0.5 * deltaT
         // v(-1/2) = v(0) - 0.5 * deltaT * a(0)
@@ -451,7 +451,7 @@ public class Particle implements Serializable {
      * Update velocity and position of particle using leapfrog algorithm.
      * @param deltaT time step in s
      */
-    public void updateStateLeapfrog(long deltaT) {
+    public void updateStateLeapfrog(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute velocity v(n+1/2)
         // v(n+1/2) = v(n-1/2) + deltaT * a(n)
@@ -466,7 +466,7 @@ public class Particle implements Serializable {
      * Step 1: compute k1 and l1.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaA(long deltaT) {
+    public void updateStateRungeKuttaA(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Store position and velocity of current simulation time
         formerPosition = new Vector3D(position);
@@ -485,7 +485,7 @@ public class Particle implements Serializable {
      * Step 2: compute k2 and l2.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaB(long deltaT) {
+    public void updateStateRungeKuttaB(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute k2 and l2 for Runge-Kutta method
         k2 = acceleration.scalarProduct(deltaT);
@@ -501,7 +501,7 @@ public class Particle implements Serializable {
      * Step 3: compute k3 and l3.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaC(long deltaT) {
+    public void updateStateRungeKuttaC(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute k3 and l3 for Runge-Kutta method
         k3 = acceleration.scalarProduct(deltaT);
@@ -517,7 +517,7 @@ public class Particle implements Serializable {
      * Step 4: compute k4 and l4; compute new position and velocity.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaD(long deltaT) {
+    public void updateStateRungeKuttaD(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute k4 and l4 for Runge-Kutta method
         k4 = acceleration.scalarProduct(deltaT);
@@ -555,7 +555,7 @@ public class Particle implements Serializable {
      * @param deltaT time step in s
      * @param index index in cyclic arrays, 0 <= index < 4
      */
-    public void updateStateABM4Predictor(long deltaT, int index) {
+    public void updateStateABM4Predictor(double deltaT, int index) {
         // Store position and velocity of current simulation time
         formerPosition = new Vector3D(position);
         formerVelocity = new Vector3D(velocity);
@@ -590,7 +590,7 @@ public class Particle implements Serializable {
      * @param deltaT time step in s
      * @param index index in cyclic arrays, o <= index < 4
      */
-    public void updateStateABM4Corrector(long deltaT, int index) {
+    public void updateStateABM4Corrector(double deltaT, int index) {
         /*
          * Corrector step of four-step Adams-Bashforth-Moulton method
          * https://en.wikiversity.org/wiki/Adams-Bashforth_and_Adams-Moulton_methods

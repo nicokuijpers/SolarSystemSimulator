@@ -27,13 +27,14 @@ import java.util.TimeZone;
 
 /**
  * Selector to view and set era, date, and time.
- * The format is "G yyyy-MM-dd HH:mm", where 
+ * The format is "G yyyy-MM-dd HH:mm:ss", where
  * G represents era, either "BC" or "AD"
  * yyyy represents the year (4 digits)
  * MM represents month (2 digits), 01-12
  * dd represents day of month (2 digits), 01-31
  * HH represents hour of day (2 digits), 00-23
  * mm represent minutes (2 digits), 00-59
+ * ss represent seconds (2 digits), 00-59
  * @author Nico Kuijpers
  */
 public class DateTimeSelector extends TextField {
@@ -80,6 +81,7 @@ public class DateTimeSelector extends TextField {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
         
         // Construct string representing era, date, and time
         StringBuilder result = new StringBuilder();
@@ -94,7 +96,8 @@ public class DateTimeSelector extends TextField {
         result.append(String.format("%02d", month+1)).append("-");
         result.append(String.format("%02d", day)).append(" ");
         result.append(String.format("%02d", hour)).append(":");
-        result.append(String.format("%02d", minute));
+        result.append(String.format("%02d", minute)).append(":");
+        result.append(String.format("%02d", second));
         
         // Add time zone
         result.append(" (");
@@ -120,9 +123,10 @@ public class DateTimeSelector extends TextField {
         int day = Integer.parseInt(text.substring(11,13));
         int hour = Integer.parseInt(text.substring(14,16));
         int minute = Integer.parseInt(text.substring(17,19));
+        int second = Integer.parseInt(text.substring(20,22));
         
         // Create new GregorianCalendar-object corresponding to era, date, and time
-        GregorianCalendar calendar = new GregorianCalendar(year,month-1,day,hour,minute);
+        GregorianCalendar calendar = new GregorianCalendar(year,month-1,day,hour,minute,second);
         calendar.set(Calendar.ERA, era);
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         return calendar;

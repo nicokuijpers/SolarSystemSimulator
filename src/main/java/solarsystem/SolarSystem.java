@@ -76,8 +76,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     // Simulation time step 60 min
     // General Relativity: Runge-Kutta scheme with time step 60 min
     // Newton Mechanics: Adams-Bashforth-Moulton scheme with time step 30 min
-    private final long deltaT = (long) (60 * 60);
-    private final long deltaTABM4 = deltaT/2;
+    private final double deltaT = 3600.0;
+    private final double deltaTABM4 = deltaT/2;
 
     // Spacecraft events
     private List<SpacecraftEvent> spacecraftEvents;
@@ -114,7 +114,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.set(Calendar.DAY_OF_MONTH, dateTime.get(Calendar.DAY_OF_MONTH));
         simulationDateTime.set(Calendar.HOUR_OF_DAY, dateTime.get(Calendar.HOUR_OF_DAY));
         simulationDateTime.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));
-        simulationDateTime.set(Calendar.SECOND, 0);
+        simulationDateTime.set(Calendar.SECOND, dateTime.get(Calendar.SECOND));
         simulationDateTime.set(Calendar.MILLISECOND, 0);
         
         // Initialize hash maps for planets and moons
@@ -290,7 +290,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.set(Calendar.DAY_OF_MONTH, dateTime.get(Calendar.DAY_OF_MONTH));
         simulationDateTime.set(Calendar.HOUR_OF_DAY, dateTime.get(Calendar.HOUR_OF_DAY));
         simulationDateTime.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));
-        simulationDateTime.set(Calendar.SECOND, 0);
+        simulationDateTime.set(Calendar.SECOND, dateTime.get(Calendar.SECOND));
         simulationDateTime.set(Calendar.MILLISECOND, 0);
 
         // Initialize trajectories of spacecraft
@@ -319,9 +319,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * of at most 10 minutes.
      * @param deltaT simulation time step [s]
      */
-    private void advancePlanetSystems(long deltaT) {
+    private void advancePlanetSystems(double deltaT) {
         // Time step for planet systems is at most 10 minutes
-        long timeStep = Math.min(Math.abs(deltaT),10*60L);
+        double timeStep = Math.min(Math.abs(deltaT),600.0);
 
         // Position planet systems relative to the Sun
         for (String planetName : planetSystems.keySet()) {
@@ -333,8 +333,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         }
 
         // Advance planet systems using Runge-Kutta method
-        long totalTime = 0L;
-        if (deltaT < 0) {
+        double totalTime = 0.0;
+        if (deltaT < 0.0) {
             while (totalTime > deltaT) {
                 for (OblatePlanetSystem planetSystem : planetSystems.values()) {
                     planetSystem.advanceRungeKutta(-timeStep);                    
@@ -407,16 +407,17 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * Note that the time step should not exceed 1 hour.
      * @param timeStep time step in seconds
      */
-    public void advanceSimulationSingleStep(int timeStep) {
+    public void advanceSimulationSingleStep(double timeStep) {
         // Advance using Runge-Kutta scheme
         setValidABM4(false);
-        timeStep = Math.min(timeStep,3600);
-        timeStep = Math.max(timeStep,-3600);
-        advancePlanetSystems((long) timeStep);
-        advanceRungeKutta((long) timeStep);
+        timeStep = Math.min(timeStep,3600.0);
+        timeStep = Math.max(timeStep,-3600.0);
+        advancePlanetSystems(timeStep);
+        advanceRungeKutta(timeStep);
         correctDrift();
         updateEarthMoonBarycenter();
-        simulationDateTime.add(Calendar.SECOND, timeStep);
+        int millisecond = (int) Math.floor(1000.0*timeStep);
+        simulationDateTime.add(Calendar.MILLISECOND, millisecond);
         checkForSpacecraftEvent();
     }
     

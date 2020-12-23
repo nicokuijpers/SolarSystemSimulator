@@ -36,7 +36,7 @@ public class ParticleSystem implements Serializable {
 
     // Four-step Adams-Bashfort-Moulton method
     private boolean validABM4 = false; // Flag to indicate whether cyclic arrays are valid
-    private long deltaTABM4 = 0L;      // Store ABM4 time step in order to detect change
+    private double deltaTABM4 = 0L;    // Store ABM4 time step in order to detect change
     private int nrValidABM4 = 0;       // Number of valid values in cyclic arrays
     private int indexABM4 = 0;         // Index in cyclic arrays
 
@@ -133,7 +133,7 @@ public class ParticleSystem implements Serializable {
      * Initialize state for leapfrog algorithm.
      * @param deltaT time step in s
      */
-    public void initLeapfrog(long deltaT) {
+    public void initLeapfrog(double deltaT) {
         // Initialalize state for leapfrog algorithm
         computeAcceleration();
         for (Particle p : particles.values()) {
@@ -145,7 +145,7 @@ public class ParticleSystem implements Serializable {
      * Advance a time step using leapfrog algorithm.
      * @param deltaT time step in s
      */
-    public void advanceLeapfrog(long deltaT) {
+    public void advanceLeapfrog(double deltaT) {
         // Use leapfrog algorithm
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         computeAcceleration();
@@ -154,7 +154,7 @@ public class ParticleSystem implements Serializable {
         }
     }
 
-    public void advanceRungeKutta(long deltaT) {
+    public void advanceRungeKutta(double deltaT) {
         // Use Runge-Kutta method
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         computeAcceleration();
@@ -162,7 +162,7 @@ public class ParticleSystem implements Serializable {
             p.updateStateRungeKuttaA(deltaT);
         }
         computeAcceleration();
-        for (Particle p : particles.values()) {
+        for (Particle p : particles.values()) {            
             p.updateStateRungeKuttaB(deltaT);
         }
         computeAcceleration();
@@ -186,7 +186,7 @@ public class ParticleSystem implements Serializable {
      * Advance a time step using four-step Adams-Bashforth-Moulton method.
      * @param deltaT time step in s
      */
-    public void advanceABM4(long deltaT) {
+    public void advanceABM4(double deltaT) {
         // https://en.wikiversity.org/wiki/Adams-Bashforth_and_Adams-Moulton_methods
         // Initialize Adams-Bashforth-Moulton using Runge-Kutta method
         // Note that four initial values are needed to start calculation

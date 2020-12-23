@@ -176,6 +176,15 @@ public class SolarSystemApplication extends Application {
     // Flag to indicate whether step mode for simulation is selected
     private boolean stepMode = false;
 
+    // Time step in seconds for single-step simulation
+    private double singleStepTimeStep = 60.0;
+
+    // Time step in seconds for simulation step mode
+    private double stepModeTimeStep = 60.0;
+
+    // Time of last update of time step for step mode
+    private long lastUpdateStepModeTimeStep = System.nanoTime();
+
     // Flag to indicate whether moons of planet are shown
     private Map<String,Boolean> showMoons;
 
@@ -998,7 +1007,7 @@ public class SolarSystemApplication extends Application {
         pauseSimulation();
 
         // Advance 1 minute backward
-        solarSystem.advanceSimulationSingleStep(-60);
+        solarSystem.advanceSimulationSingleStep(-singleStepTimeStep);
 
         // Move all bodies to positions corresponding to simulation date/time
         solarSystem.moveBodies();
@@ -1015,7 +1024,7 @@ public class SolarSystemApplication extends Application {
         pauseSimulation();
 
         // Advance 1 minute forward
-        solarSystem.advanceSimulationSingleStep(60);
+        solarSystem.advanceSimulationSingleStep(singleStepTimeStep);
 
         // Move all bodies to positions corresponding to simulation date/time
         solarSystem.moveBodies();
@@ -2145,6 +2154,26 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
+     * Update time step in seconds for simulation step mode.
+     */
+    private void updateStepModeTimeStep() {
+        long now = System.nanoTime();
+        long elapsedTimeNanoSeconds = now - lastUpdateStepModeTimeStep;
+        double elapsedTimeSeconds = elapsedTimeNanoSeconds/1.0E9;
+        elapsedTimeSeconds = Math.min(1.0,elapsedTimeSeconds);
+        lastUpdateStepModeTimeStep = now;
+        if (sliderSimulationSpeed.getValue() < 1.0) {
+            // Real-time simulation
+            stepModeTimeStep = elapsedTimeSeconds;
+        }
+        else {
+            // Faster than real-time simulation
+            stepModeTimeStep = 0.01 * Math.exp(0.08 * sliderSimulationSpeed.getValue());
+            stepModeTimeStep = Math.max(elapsedTimeSeconds,stepModeTimeStep);
+        }
+    }
+
+    /**
      * Advance simulation of Solar System.
      * Number of time steps depends on simulation mode.
      */
@@ -2158,7 +2187,8 @@ public class SolarSystemApplication extends Application {
         }
         if (simulationIsRunningForward) {
             if (simulationIsRunningStepMode) {
-                solarSystem.advanceSimulationSingleStep(60);
+                updateStepModeTimeStep();
+                solarSystem.advanceSimulationSingleStep(stepModeTimeStep);
             }
             else {
                 solarSystem.advanceSimulationForward(nrTimeSteps);
@@ -2166,7 +2196,8 @@ public class SolarSystemApplication extends Application {
         }
         else {
             if (simulationIsRunningStepMode) {
-                solarSystem.advanceSimulationSingleStep(-60);
+                updateStepModeTimeStep();
+                solarSystem.advanceSimulationSingleStep(-stepModeTimeStep);
             }
             else {
                 solarSystem.advanceSimulationBackward(nrTimeSteps);

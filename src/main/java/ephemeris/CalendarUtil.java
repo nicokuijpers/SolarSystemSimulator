@@ -51,7 +51,7 @@ public class CalendarUtil {
         calendar.set(Calendar.HOUR_OF_DAY, dateTime.get(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));
         calendar.set(Calendar.SECOND, dateTime.get(Calendar.SECOND));
-        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.MILLISECOND, dateTime.get(Calendar.MILLISECOND));
 
         return calendar;
     }
@@ -68,6 +68,8 @@ public class CalendarUtil {
         int dayOfMonth = dateTime.get(Calendar.DAY_OF_MONTH);
         int hourOfDay = dateTime.get(Calendar.HOUR_OF_DAY);
         int minute = dateTime.get(Calendar.MINUTE);
+        int second = dateTime.get(Calendar.SECOND);
+        int millisecond = dateTime.get(Calendar.MILLISECOND);
         StringBuilder result = new StringBuilder();
         result.append(year);
         result.append("-");
@@ -78,6 +80,10 @@ public class CalendarUtil {
         result.append(String.format("%02d",hourOfDay));
         result.append(":");
         result.append(String.format("%02d",minute));
+        result.append(":");
+        result.append(String.format("%02d",second));
+        result.append(".");
+        result.append(String.format("%03d",millisecond));
         return result.toString();
     }
 }
