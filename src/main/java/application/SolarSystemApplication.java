@@ -2159,7 +2159,8 @@ public class SolarSystemApplication extends Application {
     private void updateStepModeTimeStep() {
         long now = System.nanoTime();
         long elapsedTimeNanoSeconds = now - lastUpdateStepModeTimeStep;
-        double elapsedTimeSeconds = elapsedTimeNanoSeconds/1.0E9;
+        double elapsedTimeMilliSeconds = Math.round(elapsedTimeNanoSeconds/1.0E6);
+        double elapsedTimeSeconds = elapsedTimeMilliSeconds/1.0E3;
         elapsedTimeSeconds = Math.min(1.0,elapsedTimeSeconds);
         lastUpdateStepModeTimeStep = now;
         if (sliderSimulationSpeed.getValue() < 1.0) {
@@ -2168,7 +2169,7 @@ public class SolarSystemApplication extends Application {
         }
         else {
             // Faster than real-time simulation
-            stepModeTimeStep = 0.01 * Math.exp(0.08 * sliderSimulationSpeed.getValue());
+            stepModeTimeStep = Math.round(0.01 * Math.exp(0.08 * sliderSimulationSpeed.getValue()));
             stepModeTimeStep = Math.max(elapsedTimeSeconds,stepModeTimeStep);
         }
     }
@@ -2213,14 +2214,11 @@ public class SolarSystemApplication extends Application {
      */
     private void haltSimulation() throws InterruptedException {
         int period;
-        if (simulationIsRunningFast) {
+        if (simulationIsRunningFast || simulationIsRunningStepMode) {
             period = 1;
         }
         else {
             period = 1 + (20 - (int) (sliderSimulationSpeed.getValue() / 5.0));
-            if (simulationIsRunningStepMode) {
-                period = period * 10;
-            }
         }
         taskSimulate.sleep(period);
     }
