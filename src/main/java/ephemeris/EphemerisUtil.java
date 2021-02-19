@@ -91,6 +91,24 @@ public class EphemerisUtil {
     }
 
     /**
+     * Compute local sidereal time for given longitude and date/time.
+     * @param longitude longitude [degrees]
+     * @param dateTime  date/time [UTC]
+     * @return local sidereal time [degrees]
+     */
+    public static double computeLocalSiderealTime(double longitude, GregorianCalendar dateTime) {
+
+        // https://www.aa.quae.nl/en/reken/sterrentijd.html
+        double JED = JulianDateConverter.convertCalendarToJulianDate(dateTime);
+        double DJ = JED - 2451544.5;
+        double L0 =  99.967794687;      // [degrees]
+        double L1 = 360.98564736628603; // [degrees]
+        double L2 =   2.907879E-13;     // [degrees]
+        double L3 =  -5.302E-22;        // [degrees]
+        return (L0 + L1*DJ + L2*DJ*DJ + L3*DJ*DJ*DJ + longitude) % 360.0;
+    }
+
+    /**
      * Transform right ascension and declination from equatorial coordinates to
      * ecliptic coordinates.
      * @param coordinatesEquatorial right ascension and declination [degrees]
@@ -1377,5 +1395,94 @@ public class EphemerisUtil {
     public static Vector3D[] computeOrbit(double mu, Vector3D position, Vector3D velocity) {
         double[] orbitElements = computeOrbitalElementsFromPositionVelocity(mu,position,velocity);
         return computeOrbit(orbitElements);
+    }
+
+    /**
+     * Compute azimuth, elevation, and distance for an object at given position in heliocentric
+     * ecliptic J2000 coordinates as observed from given location and date/time from the
+     * surface of the Earth.
+     * @param position  Position (x,y,z) in ecliptic J2000 coordinates relative to the Sun [m]
+     * @param latitude  latitude of observation location [degrees]
+     * @param longitude longitude of observation location [degrees]
+     * @param dateTime  date/time of observation [UTC]
+     * @return azimuth [degrees], elevation [degrees], distance [a.u.]
+     */
+    public static double[] computeAzimuthElevationDistance(
+            Vector3D position, double latitude, double longitude, GregorianCalendar dateTime) {
+
+        // https://create.arduino.cc/projecthub/30506/calculation-of-right-ascension-and-declination-402218
+        // Position of the Earth in ecliptic J2000 coordinates at given date/time
+        Vector3D positionEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth",dateTime);
+
+        // Geocentric ecliptic coordinates
+        Vector3D positionEcliptic = position.minus(positionEarth);
+
+        // Geocentric equatorial coordinates
+        Vector3D positionEquatorial = transformJ2000(positionEcliptic);
+
+        double au = SolarSystemParameters.ASTRONOMICALUNIT;
+        double xq = positionEquatorial.getX()/au;
+        double yq = positionEquatorial.getY()/au;
+        double zq = positionEquatorial.getZ()/au;
+        double alphaRad = Math.atan2(yq,xq); // [rad]
+        double alphaDeg = Math.toDegrees(alphaRad); // [degrees]
+        double deltaRad = Math.atan2(zq,Math.sqrt(xq*xq + yq*yq)); // [rad]
+        double distanceAU = Math.sqrt(xq*xq + yq*yq + zq*zq); // [a.u.]
+
+        double localSiderealTime = computeLocalSiderealTime(longitude,dateTime);
+        double hourAngle = (localSiderealTime - alphaDeg + 360.0) % 360.0;
+        double hourAngleRad = Math.toRadians(hourAngle);
+        double x = Math.cos(hourAngleRad) * Math.cos(deltaRad);
+        double y = Math.sin(hourAngleRad) * Math.cos(deltaRad);
+        double z = Math.sin(deltaRad);
+
+        // Horizontal coordinates
+        double xHor = x * Math.cos(Math.toRadians(90.0 - latitude)) -
+                z * Math.sin(Math.toRadians(90.0 - latitude));
+        double yHor = y;
+        double zHor = x * Math.sin(Math.toRadians(90.0 - latitude)) +
+                z * Math.cos(Math.toRadians(90.0 - latitude));
+        double azimuth = Math.toDegrees(Math.atan2(yHor,xHor)) + 180.0;
+        double elevation = Math.toDegrees(Math.asin(zHor));
+
+        return new double[]{azimuth,elevation,distanceAU};
+    }
+
+    /**
+     * Compute position in geocentric J2000 ecliptic coordinates at a given date/time for
+     * given latitude, longitude, ane height representing a location on Earth.
+     * @param latitude latitude of location [degrees]
+     * @param longitude longitude of location [degrees]
+     * @param height height of location [m]
+     * @param dateTime date/time [UTC]
+     * @return position in heliocentric J2000 ecliptic coordinates [m]
+     */
+    public static Vector3D computePositionFromLatitudeLongitudeHeight(
+            double latitude, double longitude, double height, GregorianCalendar dateTime) {
+
+        // Local sidereal time
+        double localSiderealTime = computeLocalSiderealTime(longitude,dateTime);
+
+        // Radius of the Earth
+        double radiusEarth = 0.5* SolarSystemParameters.getInstance().getDiameter("Earth");
+
+        // Geocentric equatorial coordinates
+        double r = radiusEarth + height;
+        double alphaRad = Math.toRadians(localSiderealTime);
+        double deltaRad = Math.toRadians(latitude);
+        double xq = r * Math.cos(alphaRad) * Math.cos(deltaRad);
+        double yq = r * Math.sin(alphaRad) * Math.cos(deltaRad);
+        double zq = r * Math.sin(deltaRad);
+        Vector3D positionEquatorial = new Vector3D(xq,yq,zq);
+
+        // Geocentric ecliptic coordinates
+        Vector3D positionEcliptic = inverseTransformJ2000(positionEquatorial);
+
+        // Position of the Earth in ecliptic J2000 coordinates at given date/time
+        Vector3D positionEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth",dateTime);
+
+        // Heliocentric ecliptic coordinates
+        //return positionEcliptic.plus(positionEarth);
+        return positionEcliptic;
     }
 }
