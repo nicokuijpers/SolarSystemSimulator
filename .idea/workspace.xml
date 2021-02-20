@@ -2,29 +2,44 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/visualization/SmartGroup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemViewMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_earth_clouds.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_earth_daycloud3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_eris_fictional.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_jupiter.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_mars.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_mercury.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_moon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_venus_atmosphere.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_venus_surface.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ArielVoyagerAdapted.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/CeresGrayscale2k.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/DioneGrayscale2k.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/EnceladusGrayscale2k.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/IapetusColor2k.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/MimasGrayscale2017_2k.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/MirandaVoyagerAdapted.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/OberonVoyagerAdapted.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/PlutoAdapted.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/RheaGrayscale2k.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Solar_eclipse_1999_4_NR.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/TethysGrayscale2k.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/TitaniaVoyagerAdapted.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/TritonVoyagerAdapted.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/UmbrielVoyagerAdapted.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/VestaGRAY2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/callisto.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/europa.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ganymede.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/io.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/neptunemap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/planvis_hyperion.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/planvis_titan.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/saturnmap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/stockSaturnRing_2000x2000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/sunmap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/uranusmap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/uranusring.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisApproximate.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/IEphemeris.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/JulianDateConverter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/CreateSolarSystemStateFiles.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/FlorenceEarthExperiment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/SimulationAccuracyExperiment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemBody.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/Vector3D.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ephemeris/EphemerisUtilTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ephemeris/JulianDateConverterTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/util/Vector3DTest.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,7 +73,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="226" />
+          <entry key="java" value="227" />
           <entry key="md" value="1" />
           <entry key="txt" value="2" />
           <entry key="xml" value="4" />
@@ -66,7 +81,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="226" />
+          <entry key="JAVA" value="227" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="XML" value="4" />
@@ -108,11 +123,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="113" column="12" selection-start-line="113" selection-start-column="12" selection-end-line="113" selection-end-column="12" />
+            <state relative-caret-position="223">
+              <caret line="421" column="42" lean-forward="true" selection-start-line="421" selection-start-column="42" selection-end-line="421" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -127,11 +142,11 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="45">
-              <caret line="21" column="49" lean-forward="true" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+              <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -215,7 +230,6 @@
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/ISS.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SpacecraftTrajectory.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/ApolloEight.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" />
@@ -236,6 +250,7 @@
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
       </list>
     </option>
   </component>
@@ -254,14 +269,14 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="889" />
-    <option name="y" value="245" />
+    <option name="x" value="925" />
+    <option name="y" value="630" />
     <option name="width" value="1510" />
     <option name="height" value="977" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
@@ -271,6 +286,11 @@
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="Images" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
@@ -426,39 +446,6 @@
               <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
             </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="visualization" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="resources" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -469,7 +456,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1613757068553" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1613757835991" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -479,16 +466,17 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/src/main/resources/Trajectories" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/java" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ephemeris" />
       <recent name="visualization" />
       <recent name="spacecraft" />
       <recent name="particlesystem" />
       <recent name="solarsystem" />
-      <recent name="application" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
@@ -625,7 +613,7 @@
       <workItem from="1608716492286" duration="3756000" />
       <workItem from="1608724570406" duration="1270000" />
       <workItem from="1609511227121" duration="1251000" />
-      <workItem from="1613755529209" duration="1452000" />
+      <workItem from="1613755529209" duration="2941000" />
     </task>
     <servers />
   </component>
@@ -662,13 +650,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="233642000" />
+    <option name="totallyTimeSpent" value="235131000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="889" y="245" width="1510" height="977" extended-state="0" />
+    <frame x="925" y="630" width="1510" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.32425067" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32425067" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -677,7 +665,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.38418078" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -686,7 +674,7 @@
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Messages" order="11" visible="true" weight="0.32881355" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32881355" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -831,13 +819,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="107" column="65" lean-forward="true" selection-start-line="107" selection-start-column="65" selection-end-line="107" selection-end-column="65" />
         </state>
       </provider>
     </entry>
@@ -1023,20 +1004,27 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemViewMode.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="113" column="12" selection-start-line="113" selection-start-column="12" selection-end-line="113" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SmartGroup.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
-          <caret line="21" column="49" lean-forward="true" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+          <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="107" column="65" lean-forward="true" selection-start-line="107" selection-start-column="65" selection-end-line="107" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="421" column="42" lean-forward="true" selection-start-line="421" selection-start-column="42" selection-end-line="421" selection-end-column="42" />
         </state>
       </provider>
     </entry>
