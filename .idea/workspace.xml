@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Models/apollo 8.mtl" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Apollo 8.mtl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/apollo 8.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Apollo 8.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,8 +37,8 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="232" />
-          <entry key="md" value="1" />
+          <entry key="java" value="233" />
+          <entry key="md" value="2" />
           <entry key="mtl" value="4" />
           <entry key="obj" value="9" />
           <entry key="txt" value="2" />
@@ -48,31 +47,33 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="232" />
-          <entry key="Markdown" value="1" />
+          <entry key="JAVA" value="233" />
+          <entry key="Markdown" value="2" />
           <entry key="PLAIN_TEXT" value="15" />
           <entry key="XML" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7952" />
+          <entry key="java" value="7953" />
+          <entry key="md" value="68" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7952" />
+          <entry key="JAVA" value="7953" />
+          <entry key="Markdown" value="68" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="3426" column="51" lean-forward="true" selection-start-line="3426" selection-start-column="51" selection-end-line="3426" selection-end-column="51" />
+            <state relative-caret-position="178">
+              <caret line="3415" column="23" selection-start-line="3415" selection-start-column="23" selection-end-line="3415" selection-end-column="23" />
               <folding>
                 <element signature="e#0#152462#0" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -91,6 +92,30 @@
                 <element signature="e#25361#25362#0" expanded="true" />
                 <element signature="e#25410#25411#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="277">
+              <caret line="40" column="34" selection-start-line="39" selection-start-column="3" selection-end-line="42" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="285">
+                <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -157,7 +182,6 @@
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/JupiterSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SaturnSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisRingsOfSaturn.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main/java/util/VectorUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisRingsOfUranus.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSaturnMoons.java" />
@@ -193,8 +217,9 @@
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
-        <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
+        <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -213,9 +238,9 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="525" />
-    <option name="y" value="175" />
-    <option name="width" value="1510" />
+    <option name="x" value="222" />
+    <option name="y" value="361" />
+    <option name="width" value="2187" />
     <option name="height" value="977" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -234,11 +259,6 @@
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
-              <item name="Models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -260,19 +280,22 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="application" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
+              <item name="visualization" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="jimObjModelImporterJFX" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="jimObjModelImporterJFX" type="70bed36:NamedLibraryElementNode" />
+              <item name="jimObjModelImporterJFX.jar" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -323,7 +346,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1613818257470" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1613818462902" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -481,7 +504,7 @@
       <workItem from="1608716492286" duration="3756000" />
       <workItem from="1608724570406" duration="1270000" />
       <workItem from="1609511227121" duration="1251000" />
-      <workItem from="1613755529209" duration="5084000" />
+      <workItem from="1613755529209" duration="5854000" />
     </task>
     <servers />
   </component>
@@ -518,13 +541,12 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="237274000" />
+    <option name="totallyTimeSpent" value="238044000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="715" y="349" width="1510" height="977" extended-state="0" />
-    <editor active="true" />
+    <frame x="222" y="361" width="2187" height="977" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32425067" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22191142" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -565,13 +587,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2295">
-          <caret line="177" column="34" selection-start-line="177" selection-start-column="30" selection-end-line="177" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6240">
@@ -836,16 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="699" column="5" selection-start-line="699" selection-start-column="5" selection-end-line="699" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d.mtl">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -871,8 +876,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="3426" column="51" lean-forward="true" selection-start-line="3426" selection-start-column="51" selection-end-line="3426" selection-end-column="51" />
+        <state relative-caret-position="178">
+          <caret line="3415" column="23" selection-start-line="3415" selection-start-column="23" selection-end-line="3415" selection-end-column="23" />
           <folding>
             <element signature="e#0#152462#0" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -891,6 +896,26 @@
             <element signature="e#25361#25362#0" expanded="true" />
             <element signature="e#25410#25411#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="40" column="34" selection-start-line="39" selection-start-column="3" selection-end-line="42" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="285">
+            <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

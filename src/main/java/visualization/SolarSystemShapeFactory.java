@@ -37,6 +37,10 @@ import java.util.Map;
 
 /**
  * Factory for 3D shapes for visualization in JavaFX 3D.
+ * Models are read from file in Wavefront format (extension .obj)
+ * using ObjModelImporter from library jimObjModelImporterJFX.jar
+ * http://www.InteractiveMesh.com
+ * http://www.InteractiveMesh.org
  */
 public class SolarSystemShapeFactory {
 
