@@ -20,6 +20,7 @@
 package application;
 
 import ephemeris.CalendarUtil;
+import visualization.SolarSystemViewMode;
 
 import java.util.*;
 
@@ -65,6 +66,18 @@ public class VisualizationSettings {
 
     // Value for slider simulation speed
     private double valueSimulationSpeed = 50.0;
+
+    // Value for view mode
+    private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
+
+    // Value for automatic view
+    private boolean automaticView = false;
+
+    // Latitude of location
+    private double latitude = 52.3676;
+
+    // Longitude of location
+    private double longitude = 4.9041;
 
     /**
      * Default constructor.
@@ -177,6 +190,38 @@ public class VisualizationSettings {
 
     public void setValueSimulationSpeed(double valueSimulationSpeed) {
         this.valueSimulationSpeed = valueSimulationSpeed;
+    }
+
+    public SolarSystemViewMode getViewMode() {
+        return viewMode;
+    }
+
+    public void setViewMode(SolarSystemViewMode viewMode) {
+        this.viewMode = viewMode;
+    }
+
+    public boolean isAutomaticView() {
+        return automaticView;
+    }
+
+    public void setAutomaticView(boolean automaticView) {
+        this.automaticView = automaticView;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     @Override

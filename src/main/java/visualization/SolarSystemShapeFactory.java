@@ -669,7 +669,7 @@ public class SolarSystemShapeFactory {
                 // objImporter.read("Models/CSHP_DV_130_01_______00200.obj");
                 // Selected ID is 3, model: ../Models/CSHP_DV_130_01_______00200.scaled_0-dot-000598.obj
                 // Afmetingen: Xmax-min 0.003029, Ymax-min 0.002223, Zmax-min 0.001982
-                objImporter.read("Models/CSHP_DV_130_scaled.obj");
+                objImporter.read("Models/CSHP_DV_130_01_scaled.obj");
                 objMesh = (Node[]) objImporter.getImport();
                 objImporter.close();
                 shape = (Shape3D) objMesh[0];

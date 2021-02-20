@@ -2,30 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Models/CSHP_DV_130_01_scaled.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Eros_Gaskell_50k_poly_scaled.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ISS/iss.out.A.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ISS/iss.out.B.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ISS/iss.out.C.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ISS/iss.out.D.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ISS/iss.out.E.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ISS/iss.out.F.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ISS/iss.out.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/New Horizons.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/New Horizons.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Pallas_Torppa_scaled.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Rosetta.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Voyager 1.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Voyager 1.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Voyager 2.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Voyager 2.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/apollo 8.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/apollo 8.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/bennu_v20_200k_scaled.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/halley_scaled_0-dot-0005.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/juno_scaled.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/ultima-thule-3d_scaled.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/ultima-thule-3d.mtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -60,9 +42,9 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="228" />
+          <entry key="java" value="232" />
           <entry key="md" value="1" />
-          <entry key="mtl" value="3" />
+          <entry key="mtl" value="4" />
           <entry key="obj" value="9" />
           <entry key="txt" value="2" />
           <entry key="xml" value="4" />
@@ -70,20 +52,20 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="228" />
+          <entry key="JAVA" value="232" />
           <entry key="Markdown" value="1" />
-          <entry key="PLAIN_TEXT" value="14" />
+          <entry key="PLAIN_TEXT" value="15" />
           <entry key="XML" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7948" />
+          <entry key="java" value="7951" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7948" />
+          <entry key="JAVA" value="7951" />
         </counts>
       </usages-collector>
     </session>
@@ -91,10 +73,63 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="327">
+              <caret line="3185" column="9" selection-start-line="3185" selection-start-column="9" selection-end-line="3185" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#152462#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#16872#16873#0" expanded="true" />
+                <element signature="e#16928#16929#0" expanded="true" />
+                <element signature="e#17464#17465#0" expanded="true" />
+                <element signature="e#17516#17517#0" expanded="true" />
+                <element signature="e#19928#19929#0" expanded="true" />
+                <element signature="e#20001#20002#0" expanded="true" />
+                <element signature="e#20262#20263#0" expanded="true" />
+                <element signature="e#20335#20336#0" expanded="true" />
+                <element signature="e#20540#20541#0" expanded="true" />
+                <element signature="e#20597#20598#0" expanded="true" />
+                <element signature="e#23454#23455#0" expanded="true" />
+                <element signature="e#23508#23509#0" expanded="true" />
+                <element signature="e#25361#25362#0" expanded="true" />
+                <element signature="e#25410#25411#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1088">
+              <folding>
+                <element signature="e#0#3653#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="579" column="36" selection-start-line="579" selection-start-column="36" selection-end-line="579" selection-end-column="36" />
+            <state relative-caret-position="356">
+              <caret line="699" column="5" selection-start-line="699" selection-start-column="5" selection-end-line="699" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -103,10 +138,15 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d.mtl">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Models/ISS/iss.out.A.obj">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="71" lean-forward="true" selection-start-line="13" selection-start-column="71" selection-end-line="13" selection-end-column="71" />
+            <state relative-caret-position="360">
+              <caret line="24" column="71" selection-start-line="24" selection-start-column="71" selection-end-line="24" selection-end-column="71" />
             </state>
           </provider>
         </entry>
@@ -189,7 +229,6 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/ISS.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SpacecraftTrajectory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/ApolloEight.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" />
@@ -206,10 +245,11 @@
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" />
         <option value="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" />
-        <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
+        <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
       </list>
     </option>
@@ -229,8 +269,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="862" />
-    <option name="y" value="466" />
+    <option name="x" value="722" />
+    <option name="y" value="407" />
     <option name="width" value="1510" />
     <option name="height" value="977" />
   </component>
@@ -255,8 +295,36 @@
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
-              <item name="Models" type="462c0819:PsiDirectoryNode" />
-              <item name="ISS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
@@ -311,7 +379,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1613817184720" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1613817829176" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -321,18 +389,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Models/ISS" />
       <recent name="$PROJECT_DIR$/Models" />
+      <recent name="$PROJECT_DIR$/Models/ISS" />
       <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/src/main/resources/Trajectories" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="application" />
       <recent name="ephemeris" />
       <recent name="visualization" />
       <recent name="spacecraft" />
       <recent name="particlesystem" />
-      <recent name="solarsystem" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
@@ -469,7 +537,7 @@
       <workItem from="1608716492286" duration="3756000" />
       <workItem from="1608724570406" duration="1270000" />
       <workItem from="1609511227121" duration="1251000" />
-      <workItem from="1613755529209" duration="4029000" />
+      <workItem from="1613755529209" duration="4571000" />
     </task>
     <servers />
   </component>
@@ -506,13 +574,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="236219000" />
+    <option name="totallyTimeSpent" value="236761000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="925" y="630" width="1510" height="977" extended-state="0" />
+    <frame x="821" y="319" width="1510" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32425067" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.32425067" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -521,7 +589,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -553,20 +621,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="998">
-          <caret line="244" column="33" selection-start-line="244" selection-start-column="33" selection-end-line="244" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/HalleyPerihelionPassageExperiment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3120">
-          <caret line="231" selection-start-line="231" selection-end-line="231" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2295">
@@ -610,13 +664,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SpacecraftTrajectory.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/ApolloEight.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="327">
@@ -756,9 +803,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1305">
@@ -798,26 +842,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemViewMode.java">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33390">
-          <caret line="2250" column="62" selection-start-line="2250" selection-start-column="62" selection-end-line="2250" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9096#9097#0" expanded="true" />
-            <element signature="e#9169#9170#0" expanded="true" />
-            <element signature="e#9430#9431#0" expanded="true" />
-            <element signature="e#9503#9504#0" expanded="true" />
-            <element signature="e#9708#9709#0" expanded="true" />
-            <element signature="e#9765#9766#0" expanded="true" />
-            <element signature="e#12511#12512#0" expanded="true" />
-            <element signature="e#12565#12566#0" expanded="true" />
-            <element signature="e#14418#14419#0" expanded="true" />
-            <element signature="e#14467#14468#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Models/Eros_Gaskell_50k_poly_scaled.obj">
       <provider selected="true" editor-type-id="text-editor" />
@@ -861,22 +885,70 @@
     <entry file="file://$PROJECT_DIR$/Models/Rosetta.obj">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Models/ISS/iss.out.A.obj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="71" selection-start-line="24" selection-start-column="71" selection-end-line="24" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1088">
+          <folding>
+            <element signature="e#0#3653#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="3185" column="9" selection-start-line="3185" selection-start-column="9" selection-end-line="3185" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#152462#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#16872#16873#0" expanded="true" />
+            <element signature="e#16928#16929#0" expanded="true" />
+            <element signature="e#17464#17465#0" expanded="true" />
+            <element signature="e#17516#17517#0" expanded="true" />
+            <element signature="e#19928#19929#0" expanded="true" />
+            <element signature="e#20001#20002#0" expanded="true" />
+            <element signature="e#20262#20263#0" expanded="true" />
+            <element signature="e#20335#20336#0" expanded="true" />
+            <element signature="e#20540#20541#0" expanded="true" />
+            <element signature="e#20597#20598#0" expanded="true" />
+            <element signature="e#23454#23455#0" expanded="true" />
+            <element signature="e#23508#23509#0" expanded="true" />
+            <element signature="e#25361#25362#0" expanded="true" />
+            <element signature="e#25410#25411#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="579" column="36" selection-start-line="579" selection-start-column="36" selection-end-line="579" selection-end-column="36" />
+        <state relative-caret-position="356">
+          <caret line="699" column="5" selection-start-line="699" selection-start-column="5" selection-end-line="699" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Models/ISS/iss.out.A.obj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="71" lean-forward="true" selection-start-line="13" selection-start-column="71" selection-end-line="13" selection-end-column="71" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d.mtl">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
   <component name="masterDetails">

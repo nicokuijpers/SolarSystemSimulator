@@ -57,6 +57,23 @@ public class CalendarUtil {
     }
 
     /**
+     * Create Gregorian Calendar date/time with time zone UTC.
+     * @param year   year
+     * @param month  month [1-12]
+     * @param day    day [1-31]
+     * @param hour   hour [0-23]
+     * @param minute minute [0-59]
+     * @param second second [0-59]
+     * @return dateTime [GC]
+     */
+    public static GregorianCalendar createGregorianCalendar(int year, int month, int day, int hour, int minute, int second) {
+        // In GregorianCalendar January = 0, February = 1, etc.
+        GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day, hour, minute, second);
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return calendar;
+    }
+
+    /**
      * Convert date/time to string.
      *
      * @param dateTime

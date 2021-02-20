@@ -51,8 +51,11 @@ import solarsystem.SolarSystem;
 import solarsystem.SolarSystemBody;
 import util.Vector3D;
 import util.VectorUtil;
+import visualization.SolarSystemViewMode;
+import visualization.SolarSystemVisualization;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -108,6 +111,32 @@ public class SolarSystemApplication extends Application {
     private RadioButton radioSimulationOnly;
     private RadioButton radioEphemerisAndSimulation;
 
+    // Radio buttons and check box to set view mode
+    private RadioButton radioTelescopeView;
+    private RadioButton radioSpacecraftView;
+    private CheckBox checkBoxAutomaticView;
+    private boolean automaticView = false;
+    private String closestBody = "";
+    private String observedBody = "";
+
+    // Location Amsterdam, The Netherlands
+    private double latitude = 52.3676; // degrees
+    private double longitude = 4.9041; // degrees
+
+    // Decimal formats
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
+    private static final DecimalFormat DECIMAL_FORMAT_LATLON = new DecimalFormat("0.0000");
+
+    // Slider to set latitude of location
+    private Label labelLatitude;
+    private TextField textFieldLatitude;
+    private Slider sliderLatitude;
+
+    // Slider to set longitude of location
+    private Label labelLongitude;
+    private TextField textFieldLongitude;
+    private Slider sliderLongitude;
+
     // Slider to set top-front view
     private Slider sliderTopFrontView;
 
@@ -125,6 +154,9 @@ public class SolarSystemApplication extends Application {
 
     // Check box to select step mode
     private CheckBox checkBoxStepMode;
+
+    // Body selector panel with check boxes for each body to be shown
+    private BodySelectorPanel bodySelectorPanel;
 
     // Check boxes for bodies to be shown
     private Map<String,CheckBox> checkBoxesBodies;
@@ -160,6 +192,184 @@ public class SolarSystemApplication extends Application {
 
     // Information panels
     private Map<String, InformationPanel> informationPanels;
+
+    // 3D visualization
+    private SolarSystemVisualization visualization;
+
+    // View mode for 3D visualization
+    private SolarSystemViewMode viewMode;
+
+    /*
+     * Date/times in UTC to control 3D visualization from Apollo 8
+     * January = 1, February = 2, etc
+     *
+     * Launch 21 December 1968 at 12.51.00 UTC
+     * Entry trajectory initialization 27 December 1968 at 15:36:52
+     * Splashdown 27 December 1968 at 15.52 UTC
+     * National Aeronautics and Space Administration - Apollo 8 Mission Report
+     * https://www.hq.nasa.gov/alsj/a410/A08_MissionReport.pdf
+     *
+     * NASA Scientific Visualization Studio - Earthrise
+     * https://svs.gsfc.nasa.gov/3936
+     */
+    private GregorianCalendar startEarthRise =
+            CalendarUtil.createGregorianCalendar(1968, 12, 24, 16, 37, 50);
+    private GregorianCalendar endEarthRise =
+            CalendarUtil.createGregorianCalendar(1968, 12, 24, 16, 39, 0);
+    private GregorianCalendar entryTrajectInitApolloEight =
+            CalendarUtil.createGregorianCalendar(1968, 12, 27, 15, 36, 52);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Voyager 1 during flyby of Jupiter
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Voyager_1
+     * 1979-03-05  06:54	Amalthea flyby at 420,200 km.
+     * 1979-03-05  12:05:26	Jupiter closest approach at 348,890 km from the center of mass.
+     * 1979-03-05  15:14	Io flyby at 20,570 km.
+     * 1979-03-05  18:19	Europa flyby at 733,760 km.
+     * 1979-03-06  02:15	Ganymede flyby at 114,710 km.
+     * 1979-03-06  17:08	Callisto flyby at 126,400 km.
+     * Note that Amalthea is not simulated.
+     */
+    private GregorianCalendar startVoyagerOneIo =
+            CalendarUtil.createGregorianCalendar(1979,3,5,12,0,0);
+    private GregorianCalendar startVoyagerOneEuropa =
+            CalendarUtil.createGregorianCalendar(1979,3,5,15,0,0);
+    private GregorianCalendar startVoyagerOneGanymede =
+            CalendarUtil.createGregorianCalendar(1979,3,5,21,0,0);
+    private GregorianCalendar startVoyagerOneCallisto =
+            CalendarUtil.createGregorianCalendar(1979,3,6,2,0,0);
+    private GregorianCalendar startVoyagerOneJupiter =
+            CalendarUtil.createGregorianCalendar(1979,3,6,18,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Voyager 1 during flyby of Saturn
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Voyager_1
+     * 1980-11-12  05:41:21  Titan flyby at 6,490 km.
+     * 1980-11-12  22:16:32	 Tethys flyby at 415,670 km.
+     * 1980-11-12  23:46:30	 Saturn closest approach at 184,300 km from the center of mass.
+     * 1980-11-13  01:43:12	 Mimas flyby at 88,440 km.
+     * 1980-11-13  01:51:16	 Enceladus flyby at 202,040 km.
+     * 1980-11-13  06:21:53	 Rhea flyby at 73,980 km.
+     * 1980-11-13  16:44:41	 Hyperion flyby at 880,440 km.
+     * Note that Hyperion is not simulated.
+     */
+    private GregorianCalendar startVoyagerOneTitan =
+            CalendarUtil.createGregorianCalendar(1980,11,12,0,0,0);
+    private GregorianCalendar startVoyagerOneSaturnAfterTitan =
+            CalendarUtil.createGregorianCalendar(1980,11,12,5,0,0);
+    private GregorianCalendar startVoyagerOneRhea =
+            CalendarUtil.createGregorianCalendar(1980,11,13,3,0,0);
+    private GregorianCalendar startVoyagerOneSaturnAfterRhea =
+            CalendarUtil.createGregorianCalendar(1980,11,13,7,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Voyager 2 during flyby of Jupiter
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Voyager_2
+     * 1979-07-08  12:21  Callisto flyby at 214,930 km.
+     * 1979-07-09  07:14  Ganymede flyby at 62,130 km.
+     * 1979-07-09  17:53  Europa flyby at 205,720 km.
+     * 1979-07-09  20:01  Amalthea flyby at 558,370 km.
+     * 1979-07-09  22:29  Jupiter closest approach at 721,670 km from the center of mass.
+     * 1979-07-09  23:17  Io flyby at 1,129,900 km.
+     * Note that Amalthea is not simulated.
+     */
+    private GregorianCalendar startVoyagerTwoCallisto =
+            CalendarUtil.createGregorianCalendar(1979,7,8,5,0,0);
+    private GregorianCalendar startVoyagerTwoGanymede =
+            CalendarUtil.createGregorianCalendar(1979,7,8,14,0,0);
+    private GregorianCalendar startVoyagerTwoEuropa =
+            CalendarUtil.createGregorianCalendar(1979,7,9,9,0,0);
+    private GregorianCalendar startVoyagerTwoJupiter =
+            CalendarUtil.createGregorianCalendar(1979,7,9,18,0,0);
+    /*
+     * Date/times in UTC to control 3D visualization from Voyager 2 during flyby of Saturn
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Voyager_2
+     * 1981-08-22  01:26:57  Iapetus flyby at 908,680 km.
+     * 1981-08-25  01:25:26  Hyperion flyby at 431,370 km.
+     * 1981-08-25  09:37:46	 Titan flyby at 666,190 km.
+     * 1981-08-26  01:04:32  Dione flyby at 502,310 km.
+     * 1981-08-26  02:24:26  Mimas flyby at 309,930 km.
+     * 1981-08-26  03:24:05  Saturn closest approach at 161,000 km from the center of mass.
+     * 1981-08-26  03:45:16  Enceladus flyby at 87,010 km.
+     * 1981-08-26  06:12:30  Tethys flyby at 93,010 km.
+     * 1981-08-26  06:28:48  Rhea flyby at 645,260 km.
+     * Note that Hyperion is not simulated.
+     */
+    private GregorianCalendar startVoyagerTwoTitan =
+            CalendarUtil.createGregorianCalendar(1981,8,25,0,0,0);
+    private GregorianCalendar startVoyagerTwoSaturnAfterTitan =
+            CalendarUtil.createGregorianCalendar(1981,8,25,9,0,0);
+    private GregorianCalendar startVoyagerTwoTethys =
+            CalendarUtil.createGregorianCalendar(1981,8,26,3,0,0);
+    private GregorianCalendar startVoyagerTwoSaturnAfterTethys =
+            CalendarUtil.createGregorianCalendar(1981,8,26,9,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Voyager 2 during flyby of Uranus
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Voyager_2
+     * 1986-01-24  16:50     Miranda flyby at 29,000 km.
+     * 1986-01-24  17:25     Ariel flyby at 127,000 km.
+     * 1986-01-24  17:25     Umbriel flyby at 325,000 km.
+     * 1986-01-24  17:25     Titania flyby at 365,200 km.
+     * 1986-01-24  17:25     Oberon flyby at 470,600 km.
+     * 1986-01-24  17:59:47  Uranus closest approach at 107,000 km from the center of mass.
+     */
+    private GregorianCalendar startVoyagerTwoOberon =
+            CalendarUtil.createGregorianCalendar(1986,1,24,12,0,0);
+    private GregorianCalendar startVoyagerTwoTitania =
+            CalendarUtil.createGregorianCalendar(1986,1,24,13,0,0);
+    private GregorianCalendar startVoyagerTwoUmbriel =
+            CalendarUtil.createGregorianCalendar(1986,1,24,14,0,0);
+    private GregorianCalendar startVoyagerTwoAriel =
+            CalendarUtil.createGregorianCalendar(1986,1,24,15,0,0);
+    private GregorianCalendar startVoyagerTwoMiranda =
+            CalendarUtil.createGregorianCalendar(1986,1,24,16,0,0);
+    private GregorianCalendar startVoyagerTwoUranus =
+            CalendarUtil.createGregorianCalendar(1986,1,24,17,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Voyager 2 during flyby of Neptune
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Voyager_2
+     * 1989-08-25  03:56:36  Neptune closest approach at 4,950 km.
+     * 1989-08-25  09:23     Triton flyby at 39,800 km.
+     */
+    private GregorianCalendar startVoyagerTwoTriton =
+            CalendarUtil.createGregorianCalendar(1989,8,25,6,0,0);
+    private GregorianCalendar startVoyagerTwoNeptune =
+            CalendarUtil.createGregorianCalendar(1989,8,25,10,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from New Horizons during flyby of Pluto
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/New_Horizons
+     * 2015-07-14  11:49  Pluto fly by
+     */
+    private GregorianCalendar endNewHorizonsPlutoFlyby =
+            CalendarUtil.createGregorianCalendar(2015, 7, 14, 12, 0, 0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Rosetta during encounter with 67P
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Rosetta_(spacecraft)
+     * Rosetta reached 67P/Churyumov–Gerasimenko on 7 May 2014.
+     * It performed a series of manoeuvres to enter orbit between then and 6 August 2014.
+     */
+    private GregorianCalendar startRosetta67P =
+            CalendarUtil.createGregorianCalendar(2014, 7, 11, 0, 0, 0);
 
     // Flag to indicate whether ephemeris is shown on screen
     private boolean showEphemeris = true;
@@ -197,17 +407,45 @@ public class SolarSystemApplication extends Application {
         // Set reference to the primary stage
         this.primaryStage = primaryStage;
 
+        // Body selector panel with check boxes for each body to be shown
+        bodySelectorPanel = new BodySelectorPanel();
+        bodySelectorPanel.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                bodySelectorPanel.hide();
+            }
+        });
+
+        // Create check box for each body of the solar system
+        checkBoxesBodies = new HashMap<>();
+        createAllCheckBoxes();
+
         // Create the scene
         Scene scene = createScene();
 
         // Information panels
         informationPanels = new HashMap<>();
 
-        // Close information panels when primary stage closes
+        // 3D visualization
+        visualization = new SolarSystemVisualization(solarSystem);
+        visualization.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                visualization.hide();
+            }
+        });
+
+        // Close all panels when primary stage closes
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
                 for (InformationPanel panel : informationPanels.values()) {
                     panel.close();
+                }
+                if (bodySelectorPanel != null) {
+                    bodySelectorPanel.close();
+                }
+                if (visualization != null) {
+                    visualization.close();
                 }
             }
         });
@@ -249,7 +487,7 @@ public class SolarSystemApplication extends Application {
 
         // Create the scene and add the grid pane
         Group root = new Group();
-        Scene scene = new Scene(root, SCREENWIDTH + 2 * BORDERSIZE + 330, SCREENHEIGHT + 2 * BORDERSIZE);
+        Scene scene = new Scene(root, SCREENWIDTH + 2 * BORDERSIZE + 320, SCREENHEIGHT + 2 * BORDERSIZE);
         root.getChildren().add(grid);
 
         // For debug purposes
@@ -258,7 +496,7 @@ public class SolarSystemApplication extends Application {
 
         // Screen to draw trajectories
         screen = new Canvas(SCREENWIDTH, SCREENHEIGHT);
-        grid.add(screen, 0, 0, 1, 31);
+        grid.add(screen, 0, 0, 1, 28);
         initTranslate();
         clearScreen();
 
@@ -297,12 +535,12 @@ public class SolarSystemApplication extends Application {
 
         // Start dates for trajectories of spacecraft
         trajectoryStartDate = new HashMap<>();
-        trajectoryStartDate.put("Voyager 1", new GregorianCalendar(1977,8,5,12,56));
-        trajectoryStartDate.put("Voyager 2", new GregorianCalendar(1977,7,20,14,29));
-        trajectoryStartDate.put("New Horizons", new GregorianCalendar(2006,0,19,19,0));
-        trajectoryStartDate.put("Rosetta", new GregorianCalendar(2004, 2, 2, 7, 17));
-        trajectoryStartDate.put("Apollo 8", new GregorianCalendar(1968, 11, 21, 12, 51));
-        trajectoryStartDate.put("ISS", new GregorianCalendar(1998, 10, 21));
+        trajectoryStartDate.put("Voyager 1", CalendarUtil.createGregorianCalendar(1977,9,5,12,56,0));
+        trajectoryStartDate.put("Voyager 2", CalendarUtil.createGregorianCalendar(1977,8,20,14,29,0));
+        trajectoryStartDate.put("New Horizons", CalendarUtil.createGregorianCalendar(2006,1,19,19,0,0));
+        trajectoryStartDate.put("Rosetta", CalendarUtil.createGregorianCalendar(2004, 3, 2, 7, 17, 0));
+        trajectoryStartDate.put("Apollo 8", CalendarUtil.createGregorianCalendar(1968, 12, 21, 12, 51, 0));
+        trajectoryStartDate.put("ISS", CalendarUtil.createGregorianCalendar(1998, 11, 21, 0, 0, 0));
 
         // Define spacecraft names
         spacecraftNames = new ArrayList<>();
@@ -481,6 +719,9 @@ public class SolarSystemApplication extends Application {
         // Radio buttons to set simulation method
         // 1. Newton Mechanics
         // 2. General Relativity
+        rowIndex++;
+        Label labelSimulationMethod = new Label("Simulation Method:");
+        grid.add(labelSimulationMethod,1,rowIndex,20,1);
         radioNewtonMechanics =
                 new RadioButton("Newton Mechanics");
         Tooltip tooltipNewtonMechanics =
@@ -511,12 +752,30 @@ public class SolarSystemApplication extends Application {
         grid.add(radioNewtonMechanics, 1, rowIndex, 20, 1);
         grid.add(radioGeneralRelativity, 15, rowIndex, 20, 1);
 
+        // Check box to select step mode
+        rowIndex++;
+        checkBoxStepMode = new CheckBox("Single-step mode");
+        checkBoxStepMode.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                stepMode = newValue;
+                if (stepMode) {
+                    pauseSimulation();
+                }
+            }
+        });
+        Tooltip toolTipStepMode =
+                new Tooltip("Check to simulate in single-step mode and advance 60 s or less");
+        checkBoxStepMode.setTooltip(toolTipStepMode);
+        checkBoxStepMode.setSelected(stepMode);
+        grid.add(checkBoxStepMode, 1, rowIndex, 20, 1);
+
         // Radio buttons to set visualization of ephemeris/simulation results
         // 1. Show ephemeris only
         // 2. Show simulation only
         // 3. Show ephemeris and simulation
         rowIndex++;
-        Label labelVisualization = new Label("Visualization:");
+        Label labelVisualization = new Label("2D Visualization:");
         grid.add(labelVisualization, 1, rowIndex, 20, 1);
         radioEphemerisOnly =
                 new RadioButton("Ephemeris only");
@@ -567,14 +826,13 @@ public class SolarSystemApplication extends Application {
         radioEphemerisAndSimulation.setSelected(true);
         rowIndex++;
         grid.add(radioEphemerisOnly, 1, rowIndex, 20, 1);
-        rowIndex++;
-        grid.add(radioSimulationOnly, 1, rowIndex, 20, 1);
+        grid.add(radioSimulationOnly, 15, rowIndex, 20, 1);
         rowIndex++;
         grid.add(radioEphemerisAndSimulation, 1, rowIndex, 20, 1);
 
         // Check box to select observation from Earth
         rowIndex++;
-        checkBoxObservationFromEarth = new CheckBox("Set observation from Earth");
+        checkBoxObservationFromEarth = new CheckBox("Observe from Earth");
         checkBoxObservationFromEarth.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -588,7 +846,6 @@ public class SolarSystemApplication extends Application {
         grid.add(checkBoxObservationFromEarth, 1, rowIndex, 20, 1);
 
         // Check box to indicate whether ruler should be shown
-        rowIndex++;
         checkBoxShowRuler = new CheckBox("Show ruler");
         checkBoxShowRuler.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -600,25 +857,146 @@ public class SolarSystemApplication extends Application {
                 new Tooltip("Check to show ruler indicating distance or angular diameter");
         checkBoxShowRuler.setTooltip(toolTipShowRuler);
         checkBoxShowRuler.setSelected(showRuler);
-        grid.add(checkBoxShowRuler, 1, rowIndex, 20, 1);
+        grid.add(checkBoxShowRuler, 15, rowIndex, 20, 1);
 
-        // Check box to select step mode
+        // Radio buttons to set view mode for 3D visualization
+        // 1. View selected object from the Earth
+        // 2. View observed object from position of spacecraft
         rowIndex++;
-        checkBoxStepMode = new CheckBox("Single-step mode");
-        checkBoxStepMode.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        Label labelVisualization3D = new Label("3D Visualization:");
+        grid.add(labelVisualization3D, 1, rowIndex, 20, 1);
+        radioTelescopeView = new RadioButton("Telescope view");
+        Tooltip tooltipTelescopeView = new Tooltip("View selected object from the Earth");
+        radioTelescopeView.setTooltip(tooltipTelescopeView);
+        radioTelescopeView.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                stepMode = newValue;
-                if (stepMode) {
-                    pauseSimulation();
+                if (newValue) {
+                    viewMode = SolarSystemViewMode.TELESCOPE;
                 }
             }
         });
-        Tooltip toolTipStepMode =
-                new Tooltip("Check to simulate in single-step mode and advance 60 s at a time");
-        checkBoxStepMode.setTooltip(toolTipStepMode);
-        checkBoxStepMode.setSelected(stepMode);
-        grid.add(checkBoxStepMode, 1, rowIndex, 20, 1);
+        radioSpacecraftView = new RadioButton("Spacecraft view");
+        Tooltip tooltipFromSpacecraftView = new Tooltip("View observed object from spacecraft");
+        radioSpacecraftView.setTooltip(tooltipFromSpacecraftView);
+        radioSpacecraftView.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    viewMode = SolarSystemViewMode.FROMSPACECRAFT;
+                }
+            }
+        });
+        ToggleGroup visualizationViewMode = new ToggleGroup();
+        radioTelescopeView.setToggleGroup(visualizationViewMode);
+        radioSpacecraftView.setToggleGroup(visualizationViewMode);
+        radioTelescopeView.setSelected(true);
+        rowIndex++;
+        grid.add(radioTelescopeView, 1, rowIndex, 20, 1);
+        grid.add(radioSpacecraftView, 15, rowIndex, 20, 1);
+
+        // Check box to select automatic update of visualization settings
+        checkBoxAutomaticView = new CheckBox("Automatic");
+        Tooltip tooltipAutomicView = new Tooltip("Set automatic view");
+        checkBoxAutomaticView.setTooltip(tooltipAutomicView);
+        checkBoxAutomaticView.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                automaticView = newValue;
+                if (automaticView) {
+                    updateVisualizationSettings();
+                }
+            }
+        });
+        checkBoxAutomaticView.setSelected(automaticView);
+        rowIndex++;
+        grid.add(checkBoxAutomaticView, 1, rowIndex, 20, 1);
+
+        // Slider to set latitude
+        rowIndex++;
+        labelLatitude = new Label("Latitude");
+        grid.add(labelLatitude,1, rowIndex, 20, 1);
+        textFieldLatitude = new TextField();
+        textFieldLatitude.setMaxWidth(100.0);
+        textFieldLatitude.setText(DECIMAL_FORMAT_LATLON.format(latitude));
+        textFieldLatitude.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    latitude = Double.parseDouble(textFieldLatitude.getText());
+                    latitude = Math.max(-90.0,Math.min(90.0,latitude));
+                    textFieldLatitude.setText(DECIMAL_FORMAT_LATLON.format(latitude));
+                    sliderLatitude.setValue(latitude);
+                }
+                catch (Exception e) {
+                    latitude = sliderLatitude.getValue();
+                    textFieldLatitude.setText(DECIMAL_FORMAT_LATLON.format(latitude));
+                }
+            }
+        });
+        grid.add(textFieldLatitude, 20, rowIndex, 20, 1);
+        sliderLatitude = new Slider();
+        sliderLatitude.setMin(-90);
+        sliderLatitude.setMax(90);
+        sliderLatitude.setValue(latitude);
+        sliderLatitude.setShowTickLabels(true);
+        sliderLatitude.setShowTickMarks(true);
+        sliderLatitude.setSnapToTicks(false);
+        sliderLatitude.setMajorTickUnit(20);
+        sliderLatitude.setMinorTickCount(10);
+        sliderLatitude.setBlockIncrement(10);
+        sliderLatitude.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                latitude = (double) newValue;
+                textFieldLatitude.setText(DECIMAL_FORMAT_LATLON.format(latitude));
+            }
+        });
+        rowIndex++;
+        grid.add(sliderLatitude, 1, rowIndex, 28,1);
+
+        // Slider to set longitude
+        rowIndex++;
+        labelLongitude = new Label("Longitude");
+        grid.add(labelLongitude,1, rowIndex, 20, 1);
+        textFieldLongitude= new TextField();
+        textFieldLongitude.setMaxWidth(100.0);
+        textFieldLongitude.setText(DECIMAL_FORMAT_LATLON.format(longitude));
+        textFieldLongitude.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    longitude = Double.parseDouble(textFieldLongitude.getText());
+                    longitude = Math.max(-180.0,Math.min(180.0,longitude));
+                    textFieldLongitude.setText(DECIMAL_FORMAT_LATLON.format(longitude));
+                    sliderLongitude.setValue(longitude);
+                }
+                catch (Exception e) {
+                    longitude = sliderLongitude.getValue();
+                    textFieldLongitude.setText(DECIMAL_FORMAT_LATLON.format(longitude));
+                }
+            }
+        });
+        grid.add(textFieldLongitude, 20, rowIndex, 20, 1);
+        sliderLongitude = new Slider();
+        sliderLongitude.setMin(-180);
+        sliderLongitude.setMax(180);
+        sliderLongitude.setValue(longitude);
+        sliderLongitude.setShowTickLabels(true);
+        sliderLongitude.setShowTickMarks(true);
+        sliderLongitude.setSnapToTicks(false);
+        sliderLongitude.setMajorTickUnit(40);
+        sliderLongitude.setMinorTickCount(20);
+        sliderLongitude.setBlockIncrement(20);
+        sliderLongitude.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                longitude = (double) newValue;
+                textFieldLongitude.setText(DECIMAL_FORMAT_LATLON.format(longitude));
+            }
+        });
+        rowIndex++;
+        grid.add(sliderLongitude, 1, rowIndex, 28,1);
 
         // Slider to set top-bottom view
         rowIndex++;
@@ -725,6 +1103,20 @@ public class SolarSystemApplication extends Application {
             createCircle(spacecraftName, 3, Color.LIGHTYELLOW);
         }
 
+        // Compare EphemerisUranusMoons to HORIZONS (Jan 24, 1986)
+        /*
+        createCircle("MirandaHOR", 3, Color.YELLOW);
+        createCircle("ArielHOR", 3, Color.YELLOW);
+        createCircle("UmbrielHOR", 3, Color.YELLOW);
+        createCircle("TitaniaHOR", 3, Color.YELLOW);
+        createCircle("OberonHOR", 3, Color.YELLOW);
+        */
+
+        // Compare EphemerisNeptuneMoons to HORIZONS (Aug 25, 1989)
+        // createCircle("TritonHOR", 3, Color.YELLOW);
+
+
+
         // Initialize flags to indicate whether moons are shown
         showMoons = new HashMap<>();
         showMoons.put("Jupiter", false);
@@ -763,136 +1155,47 @@ public class SolarSystemApplication extends Application {
         uranusMoons.add("Oberon");
         moons.put("Uranus", uranusMoons);
 
+        // Compare EphemerisUranusMoons to HORIZONS (Jan 24, 1986)
+        /*
+        uranusMoons.add("MirandaHOR");
+        uranusMoons.add("ArielHOR");
+        uranusMoons.add("UmbrielHOR");
+        uranusMoons.add("TitaniaHOR");
+        uranusMoons.add("OberonHOR");
+        */
+
         // Names of moons of Neptune
         List<String> neptuneMoons = new ArrayList<>();
         neptuneMoons.add("Triton");
         moons.put("Neptune", neptuneMoons);
+        // Compare EphemerisNeptuneMoons to HORIZONS (Aug 25, 1989)
+        // neptuneMoons.add("TritonHOR");
 
-        // Define check box for each body of the solar system
-        checkBoxesBodies = new HashMap<>();
+        // Button to select Solar System bodies
         rowIndex++;
-        int hor = 1;
-        int ver = rowIndex;
-        int horsize = 10;
-        int versize = 1;
-        grid.add(createCheckBox("Sun", "Sun",
-                "The Sun is in fact a star and is the largest object in our "
-                        + "Solar System."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Mercury", "Mercury",
-                "Mercury is the smallest and innermost planet. "
-                        + "It orbits around the Sun in 88 days."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Venus", "Venus",
-                "Venus is the second planet from the Sun and is of similar size "
-                        + " as the Earth."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Earth", "Earth",
-                "Earth is the third planet from the Sun and the only "
-                        + "planet known to harbor life."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Moon", "Moon",
-                "Zoom in to see the moon orbiting around the Earth."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Mars", "Mars",
-                "Mars is the second-smallest planet and is also known as the Red Planet."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Jupiter", "Jupiter",
-                "Jupiter is the largest planet in the Solar System. "
-                        + "Galileo Galilei discovered the four largest moons in 1610."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Saturn", "Saturn",
-                "Saturn is the second-largest planet and is famous for his rings."),
-                // "Visited by Pioneer 11, Voyager 1 and 2, and Cassini-Huygens.",
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Uranus", "Uranus",
-                "Uranus was discovered in 1781 by William Hershel. "
-                        + "Visited by Voyager 2 in 1986."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Neptune", "Neptune",
-                "Neptune was discovered in 1846. "
-                        + "Visited by Voyager 2 on 25 August 1989."),
-                hor, ver++, horsize, versize);
-        hor = hor + 9;
-        ver = rowIndex;
-        grid.add(createCheckBox("Pluto", "Pluto",
-                "Pluto was discovered in 1930 and was considered the "
-                        + "ninth planet until 2006. Visited by New Horizons on 14 July 2015."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Eris", "Eris",
-                "Eris is the most massive and second-largest dwarf planet known "
-                        + "in the Solar System."), hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Chiron", "Chiron",
-                "Chiron was discovered in 1977 and orbits between Saturn and Uranus. "
-                        + "It is the first object of the Centaur class"), hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Ceres", "Ceres",
-                "Ceres is a dwarf planet and the largest object in the asteroid belt."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Pallas", "2 Pallas",
-                "Pallas was the second asteroid discovered after Ceres and "
-                        + "the third-most-massive asteroid after Vesta"),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Juno", "3 Juno",
-                "Juno was the third asteroid discovered and is the 11th largest asteroid"),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Vesta", "4 Vesta",
-                "Vesta is the second-largest body in the asteroid belt after Ceres"),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Eros", "433 Eros",
-                "Eros is a near-Earth astroid. NASA spacecraft NEAR Shoemaker "
-                        + "entered orbit around Eros in 2000, and landed in 2001."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Bennu", "Bennu",
-                "Astroid 101955 Bennu was discovered on 11 September 1999. "
-                        + "The OSIRIS-REx spacecraft arrived at Bennu on 3 December 2018"),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Florence", "Florence",
-                "Asteroid 3122 Florence approached Earth within 0.047 au on "
-                        + "1 September 2017."),
-                hor, ver++, horsize, versize);
-        hor = hor + 9;
-        ver = rowIndex;
-        grid.add(createCheckBox("Ultima Thule", "Ultima Thule",
-                "Kuiper belt object Ultima Thule was visitied by New Horizons on "
-                        + "1 January 2019."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Halley", "1P/Halley",
-                "Halley's Comet has a period of 76 years. Last perihelion 9 Feb 1986. "
-                        + "Next perihelion 28 July 2061."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("Encke", "2P/Encke",
-                "P2/Encke was the first periodic comet discovered after "
-                        + "Halley's Comet."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("67P/Churyumov-Gerasimenko", "67P/Ch-Ge",
-                "67P/Churyumov-Gerasimenko was visited "
-                        + "by ESA's Rosetta mission on 6 August 2014."),
-                hor, ver++, horsize, versize);
-        /*
-        grid.add(createCheckBox("Shoemaker-Levy 9", "Shoe-Lev 9",
-                "Shoemaker-Levy 9 collided with Jupiter in July 1994."),
-                hor, ver++, horsize, versize);
-        */
-        grid.add(createCheckBox("Hale-Bopp", "Hale-Bopp",
-                "Hale-Bopp passed perihelion on 1 April 1997 and "
-                        + "was visible to the naked eye for 18 months."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("JupiterMoons", "Jupiter Sys",
-                "The four largest moons of Jupiter are the Galilean moons " +
-                        "Io, Europa, Ganymede, and Callisto."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("SaturnMoons", "Saturn Sys",
-                "Saturn moons Mimas, Enceladus, Tethys, Dione, Rhea, Titan, and Iapetus."),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("UranusMoons", "Uranus Sys",
-                "Uranus moons Miranda, Ariel, Umbriel, Titania, and Oberon"),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("NeptuneMoons", "Neptune Sys",
-                "Neptune moon Triton"),
-                hor, ver++, horsize, versize);
-        grid.add(createCheckBox("EarthMoonBarycenter", "E-M Bary",
-                "Earth-Moon barycenter is located on average 4671 km from Earth's center."),
-                hor, ver++, horsize, versize);
+        Button buttonBodySelector = new Button("Select Solar System bodies");
+        buttonBodySelector.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                bodySelectorPanel.show();
+                bodySelectorPanel.toFront();
+            }
+        });
+        buttonBodySelector.setMinWidth(SELECTORWIDTH);
+        grid.add(buttonBodySelector, 1, rowIndex, 28, 1);
+
+        // Button to show 3D visualization
+        rowIndex++;
+        Button buttonVisualization = new Button("3D Visualization");
+        buttonVisualization.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                visualization.show();
+                visualization.toFront();
+            }
+        });
+        buttonVisualization.setMinWidth(SELECTORWIDTH);
+        grid.add(buttonVisualization, 1, rowIndex, 28, 1);
 
         // Set font for all labeled objects
         for (Node n : grid.getChildren()) {
@@ -903,6 +1206,98 @@ public class SolarSystemApplication extends Application {
 
         // The scene is created
         return scene;
+    }
+
+    /**
+     * Create check box for each body of the Solar System.
+     */
+    private void createAllCheckBoxes() {
+
+        // Define check box for each body of the solar system
+        createCheckBox("Sun", "Sun",
+                "The Sun is in fact a star and is the largest object in our "
+                        + "Solar System.");
+        createCheckBox("Mercury", "Mercury",
+                "Mercury is the smallest and innermost planet. "
+                        + "It orbits around the Sun in 88 days.");
+        createCheckBox("Venus", "Venus",
+                "Venus is the second planet from the Sun and is of similar size "
+                        + " as the Earth.");
+        createCheckBox("Earth", "Earth",
+                "Earth is the third planet from the Sun and the only "
+                        + "planet known to harbor life.");
+        createCheckBox("Moon", "Moon",
+                "Zoom in to see the moon orbiting around the Earth.");
+        createCheckBox("Mars", "Mars",
+                "Mars is the second-smallest planet and is also known as the Red Planet.");
+        createCheckBox("Jupiter", "Jupiter",
+                "Jupiter is the largest planet in the Solar System. "
+                        + "Galileo Galilei discovered the four largest moons in 1610.");
+        createCheckBox("Saturn", "Saturn",
+                "Saturn is the second-largest planet and is famous for his rings.");
+        createCheckBox("Uranus", "Uranus",
+                "Uranus was discovered in 1781 by William Hershel. "
+                        + "Visited by Voyager 2 in 1986.");
+        createCheckBox("Neptune", "Neptune",
+                "Neptune was discovered in 1846. "
+                        + "Visited by Voyager 2 on 25 August 1989.");
+        createCheckBox("Pluto", "Pluto",
+                "Pluto was discovered in 1930 and was considered the "
+                        + "ninth planet until 2006. Visited by New Horizons on 14 July 2015.");
+        createCheckBox("Eris", "Eris",
+                "Eris is the most massive and second-largest dwarf planet known "
+                        + "in the Solar System.");
+        createCheckBox("Chiron", "Chiron",
+                "Chiron was discovered in 1977 and orbits between Saturn and Uranus. "
+                        + "It is the first object of the Centaur class");
+        createCheckBox("Ceres", "Ceres",
+                "Ceres is a dwarf planet and the largest object in the asteroid belt.");
+        createCheckBox("Pallas", "2 Pallas",
+                "Pallas was the second asteroid discovered after Ceres and "
+                        + "the third-most-massive asteroid after Vesta");
+        createCheckBox("Juno", "3 Juno",
+                "Juno was the third asteroid discovered and is the 11th largest asteroid");
+        createCheckBox("Vesta", "4 Vesta",
+                "Vesta is the second-largest body in the asteroid belt after Ceres");
+        createCheckBox("Eros", "433 Eros",
+                "Eros is a near-Earth astroid. NASA spacecraft NEAR Shoemaker "
+                        + "entered orbit around Eros in 2000, and landed in 2001.");
+        createCheckBox("Bennu", "Bennu",
+                "Astroid 101955 Bennu was discovered on 11 September 1999. "
+                        + "The OSIRIS-REx spacecraft arrived at Bennu on 3 December 2018");
+        createCheckBox("Florence", "Florence",
+                "Asteroid 3122 Florence approached Earth within 0.047 au on "
+                        + "1 September 2017.");
+        createCheckBox("Ultima Thule", "Ultima Thule",
+                "Kuiper belt object Ultima Thule was visitied by New Horizons on "
+                        + "1 January 2019.");
+        createCheckBox("Halley", "1P/Halley",
+                "Halley's Comet has a period of 76 years. Last perihelion 9 Feb 1986. "
+                        + "Next perihelion 28 July 2061.");
+        createCheckBox("Encke", "2P/Encke",
+                "P2/Encke was the first periodic comet discovered after "
+                        + "Halley's Comet.");
+        createCheckBox("67P/Churyumov-Gerasimenko", "67P/Ch-Ge",
+                "67P/Churyumov-Gerasimenko was visited "
+                        + "by ESA's Rosetta mission on 6 August 2014.");
+        /*
+        createCheckBox("Shoemaker-Levy 9", "Shoe-Lev 9",
+                "Shoemaker-Levy 9 collided with Jupiter in July 1994.");
+        */
+        createCheckBox("Hale-Bopp", "Hale-Bopp",
+                "Hale-Bopp passed perihelion on 1 April 1997 and "
+                        + "was visible to the naked eye for 18 months.");
+        createCheckBox("JupiterMoons", "Jupiter Sys",
+                "The four largest moons of Jupiter are the Galilean moons " +
+                        "Io, Europa, Ganymede, and Callisto.");
+        createCheckBox("SaturnMoons", "Saturn Sys",
+                "Saturn moons Mimas, Enceladus, Tethys, Dione, Rhea, Titan, and Iapetus.");
+        createCheckBox("UranusMoons", "Uranus Sys",
+                "Uranus moons Miranda, Ariel, Umbriel, Titania, and Oberon");
+        createCheckBox("NeptuneMoons", "Neptune Sys",
+                "Neptune moon Triton");
+        createCheckBox("EarthMoonBarycenter", "E-M Bary",
+                "Earth-Moon barycenter is located on average 4671 km from Earth's center.");
     }
 
     /**
@@ -1060,7 +1455,7 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Start simulatin in fast forward mode.
+     * Start simulation in fast forward mode.
      */
     private synchronized void startSimulationFastForward() {
         simulationIsRunning = true;
@@ -1191,7 +1586,8 @@ public class SolarSystemApplication extends Application {
      * @return instance of CheckBox
      */
     private CheckBox createCheckBox(String name, String label, String toolTipText) {
-        CheckBox checkBox = new CheckBox(label);
+        //CheckBox checkBox = new CheckBox(label);
+        CheckBox checkBox = bodySelectorPanel.createCheckBox(label,toolTipText);
         checkBoxesBodies.put(name,checkBox);
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -1247,8 +1643,8 @@ public class SolarSystemApplication extends Application {
                 }
             }
         });
-        Tooltip toolTip = new Tooltip(toolTipText);
-        checkBox.setTooltip(toolTip);
+        //Tooltip toolTip = new Tooltip(toolTipText);
+        //checkBox.setTooltip(toolTip);
         return checkBox;
     }
 
@@ -1315,20 +1711,11 @@ public class SolarSystemApplication extends Application {
      */
     private Vector3D observationFromEarthView(Vector3D position) {
 
-        // Use slider top-front view to determine the latitude of the viewing position on
-        // the surface of the Earth. The distance in z-direction from the center of the
-        // Earth is equal to sin(latitude) * diameter/2.
-        // The latter correction is necessary to get a total solar eclipse on March 20, 2015
-        // with the slider set to approximately +70 degrees. This solar eclipse was only visible
-        // in the far north.
-        // https://en.wikipedia.org/wiki/Solar_eclipse_of_March_20,_2015
-        double latitudeDeg = sliderTopFrontView.getValue();
-        double latitudeRad = Math.toRadians(latitudeDeg);
-        double radiusEarth = solarSystem.getBody("Earth").getDiameter()/2.0;
-        double distanceFromCenterZ = Math.sin(latitudeRad) * radiusEarth;
-
-        // Viewing position is translated along Z-axis with respect to center of the Earth
-        Vector3D viewingPosition = positionEarth().plus(new Vector3D(0.0,0.0,distanceFromCenterZ));
+        // Viewing position of camera is determined by latitude and longitude, height = 0
+        Vector3D geocentricPosition =
+                EphemerisUtil.computePositionFromLatitudeLongitudeHeight(latitude, longitude, 0.0,
+                        solarSystem.getSimulationDateTime());
+        Vector3D viewingPosition = positionEarth().plus(geocentricPosition);
 
         // Viewing direction of camera
         Vector3D viewingDirection = positionSelectedBody().minus(viewingPosition);
@@ -1361,6 +1748,7 @@ public class SolarSystemApplication extends Application {
         // Take perspective into account
         // Assume that we are standing on the surface of the Earth
         double distance = position.euclideanDistance(positionEarth());
+        double radiusEarth = solarSystem.getBody("Earth").getDiameter()/2.0;
         distance = distance - radiusEarth;
         double factor = SolarSystemParameters.ASTRONOMICALUNIT/distance;
         return positionRotated.scalarProduct(factor);
@@ -1547,7 +1935,24 @@ public class SolarSystemApplication extends Application {
 
         // Draw name on screen using color from Circle-object
         gc.setFill(circle.getFill());
-        gc.fillText(body.getName(),posx + 0.5*radius,posy - radius);
+        String label;
+        if (observationFromEarth && showRuler) {
+            double[] result =
+                    EphemerisUtil.computeAzimuthElevationDistance(position,latitude,longitude,solarSystem.getSimulationDateTime());
+            double azimuth = result[0];
+            double elevation = result[1];
+            StringBuilder sb = new StringBuilder(body.getName());
+            sb.append(" (azi ");
+            sb.append(DECIMAL_FORMAT.format(azimuth));
+            sb.append(" ele ");
+            sb.append(DECIMAL_FORMAT.format(elevation));
+            sb.append(")");
+            label = sb.toString();
+        }
+        else {
+            label = body.getName();
+        }
+        gc.fillText(label,posx + 0.5*radius,posy - radius);
     }
 
     /**
@@ -1560,7 +1965,16 @@ public class SolarSystemApplication extends Application {
             Circle circle = bodies.get(bodyName);
             if (showEphemeris && !showSimulation) {
                 // Draw circle at positon of body
+                // LET OP ASTROLOGY
                 drawCircle(circle, body, body.getPosition());
+                /*
+                Vector3D astroPosition = new Vector3D(body.getPosition());
+                astroPosition = astroPosition.minus(positionEarth());
+                astroPosition = astroPosition.normalize();
+                astroPosition = astroPosition.scalarProduct(10*SolarSystemParameters.ASTRONOMICALUNIT);
+                drawCircle(circle, body, astroPosition);
+                */
+                // EINDE LET OP ASTROLOGY
             }
             else {
                 // Draw circle at particle position
@@ -1672,9 +2086,11 @@ public class SolarSystemApplication extends Application {
                 Vector3D[] orbit = body.getOrbit();
                 Vector3D position = body.getPosition();
                 // Draw orbit as a green line
+                // LET OP ASTROLOGY
                 if (orbit != null) {
                     drawOrbit(orbit, position, Color.LIGHTGREEN, Color.GREEN, showSimulation);
                 }
+                // END ASTROLOGY
             }
         }
     }
@@ -1951,7 +2367,12 @@ public class SolarSystemApplication extends Application {
             Circle circle = bodies.get(bodyName);
             double distance = distanceCircle(event, circle);
             if (distance < minDistance) {
-                selectedBody = bodyName;
+                if (viewMode.equals(SolarSystemViewMode.FROMSPACECRAFT) && !spacecraftNames.contains(bodyName)) {
+                    observedBody = bodyName;
+                }
+                else {
+                    selectedBody = bodyName;
+                }
                 minDistance = distance;
                 initTranslate();
             }
@@ -2114,6 +2535,11 @@ public class SolarSystemApplication extends Application {
             }
         }
 
+        // 3D visualization
+        if (visualization.isShowing()) {
+            visualization.update(bodiesShown, selectedBody, observedBody, viewMode, latitude, longitude);
+        }
+
         // Draw bodies of the solar system and their orbits
         clearScreen();
         List<SolarSystemBody> bodiesToShow = sortBodiesShown();
@@ -2143,6 +2569,9 @@ public class SolarSystemApplication extends Application {
         // Draw circles indicating either the simulated or ephemeris positions of bodies
         drawCircles(bodiesToShow);
 
+        // Draw stars STARS
+        //drawStars();
+
         // Draw rulers
         if (showRuler && !observationFromEarth) {
             drawRulerDistance();
@@ -2169,7 +2598,8 @@ public class SolarSystemApplication extends Application {
         }
         else {
             // Faster than real-time simulation
-            stepModeTimeStep = Math.round(0.01 * Math.exp(0.08 * sliderSimulationSpeed.getValue()));
+            // stepModeTimeStep = Math.round(0.01 * Math.exp(0.08 * sliderSimulationSpeed.getValue()));
+            stepModeTimeStep = sliderSimulationSpeed.getValue()*0.3;
             stepModeTimeStep = Math.max(elapsedTimeSeconds,stepModeTimeStep);
         }
     }
@@ -2263,6 +2693,418 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
+     * Update visualizaton settings.
+     */
+    private void updateVisualizationSettings() {
+        if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
+            updateVisualizationSettingsTelescopeView();
+        }
+        else {
+            updateVisualizationSettingsSpacecraftView();
+        }
+    }
+
+    /**
+     * Update visualizaton settings for telescope view.
+     */
+    private void updateVisualizationSettingsTelescopeView() {
+        VisualizationSettings currentSettings = (VisualizationSettings) eventSelector.getValue();
+        if (currentSettings.getEventName().contains("Shoemaker-Levy") && simulationIsRunning) {
+            Vector3D shoemakerLevyPosition = solarSystem.getParticle("Shoemaker-Levy 9").getPosition();
+            Vector3D jupiterPosition = solarSystem.getParticle("Jupiter").getPosition();
+            double distance = shoemakerLevyPosition.euclideanDistance(jupiterPosition);
+            double value = Math.min(1.0E10,distance)/1.0E08;
+            if (value > 10.0) {
+                checkBoxStepMode.setSelected(false);
+                startSimulationForward();
+                sliderSimulationSpeed.setValue(value / 2.0);
+                sliderZoomView.setValue(Math.max(62.0,75.0 - value/4.0));
+            }
+            else {
+                checkBoxStepMode.setSelected(true);
+                startSimulationStepModeForward();
+                sliderSimulationSpeed.setValue(3.0*value);
+                sliderZoomView.setValue(Math.max(62.0,75.0 - value/4.0));
+                if (distance < 0.49*SolarSystemParameters.getInstance().getDiameter("Jupiter")) {
+                    pauseSimulation();
+                }
+                if (distance < 0.48*SolarSystemParameters.getInstance().getDiameter("Jupiter")) {
+                    bodiesShown.remove("Shoemaker-Levy 9");
+                }
+            }
+        }
+        if (currentSettings.getEventName().startsWith("Launch") && simulationIsRunning) {
+            Vector3D spacecraftPosition = solarSystem.getParticle(selectedBody).getPosition();
+            Vector3D closestBodyPosition = new Vector3D();
+            double closestBodyDiameter = 0.0;
+            String closestBodyFound = "";
+            double minDistance = Double.MAX_VALUE;
+            for (String bodyName : bodiesShown) {
+                Vector3D bodyPosition = null;
+                double bodyDiameter = 0.0;
+                try {
+                    bodyPosition = solarSystem.getPosition(bodyName);
+                    if (!spacecraftNames.contains(bodyName)) {
+                        bodyDiameter = SolarSystemParameters.getInstance().getDiameter(bodyName);
+                    }
+                } catch (SolarSystemException ex) {
+                    showMessage("Error",ex.getMessage());
+                }
+                double distanceFromCenter = spacecraftPosition.euclideanDistance(bodyPosition);
+                double distanceFromSurface = distanceFromCenter - 0.5*bodyDiameter;
+                if (distanceFromCenter > 1000.0 && distanceFromSurface < minDistance) {
+                    minDistance = distanceFromSurface;
+                    closestBodyPosition = new Vector3D(bodyPosition);
+                    closestBodyDiameter = bodyDiameter;
+                    closestBodyFound = bodyName;
+                }
+            }
+            if (!"".equals(closestBodyFound)) {
+                closestBody = closestBodyFound;
+            }
+            observedBody = closestBody;
+            if (minDistance < 1.0E10) {
+                double angle;
+                if ("Earth".equals(observedBody)) {
+                    angle = spacecraftPosition.angleDeg(positionEarth());
+                }
+                else {
+                    angle = spacecraftPosition.minus(positionEarth()).angleDeg(closestBodyPosition.minus(positionEarth()));
+                }
+                if (((angle < closestBodyDiameter/5.0E09) || "Jupiter".equals(closestBody)) &&
+                        minDistance < 2.5E9) {
+                    checkBoxStepMode.setSelected(true);
+                    startSimulationStepModeForward();
+                    double value = Math.min(100.0, Math.max(5.0, minDistance / 1.0E07));
+                    sliderZoomView.setValue(95.0 - 0.3 * value);
+                    sliderSimulationSpeed.setValue(Math.max(15.0,Math.min(100.0,value)));
+                } else {
+                    checkBoxStepMode.setSelected(false);
+                    startSimulationForward();
+                    double value = Math.min(100.0, Math.max(0.0, (minDistance - 1.0E09) / 7.0E07));
+                    sliderZoomView.setValue(65.0 - 0.3 * value);
+                    sliderSimulationSpeed.setValue(value);
+                }
+            } else {
+                checkBoxStepMode.setSelected(false);
+                startSimulationFastForward();
+                sliderZoomView.setValue(20.0);
+                sliderSimulationSpeed.setValue(100.0);
+            }
+            if (currentSettings.getEventName().contains("Apollo 8")) {
+                if (solarSystem.getSimulationDateTime().after(entryTrajectInitApolloEight)) {
+                    bodiesShown.remove("Apollo 8");
+                    selectedBody = "Earth";
+                    pauseSimulation();
+                }
+            }
+        }
+    }
+
+    /**
+     * Update visualizaton settings for spacecraft view.
+     */
+    private void updateVisualizationSettingsSpacecraftView() {
+        VisualizationSettings currentSettings = (VisualizationSettings) eventSelector.getValue();
+        if (currentSettings.getEventName().startsWith("Launch") && simulationIsRunning) {
+            Vector3D spacecraftPosition = solarSystem.getParticle(selectedBody).getPosition();
+            Vector3D closestBodyPosition = new Vector3D();
+            String closestBodyFound = "";
+            double minDistance = Double.MAX_VALUE;
+            for (String bodyName : currentSettings.getBodiesShown()) {
+                Vector3D bodyPosition = null;
+                try {
+                    bodyPosition = solarSystem.getPosition(bodyName);
+                } catch (SolarSystemException ex) {
+                    showMessage("Error",ex.getMessage());
+                }
+                double distance = spacecraftPosition.euclideanDistance(bodyPosition);
+                if (distance > 1000.0 && distance < minDistance) {
+                    minDistance = distance;
+                    closestBodyPosition = new Vector3D(bodyPosition);
+                    closestBodyFound = bodyName;
+                }
+            }
+            if (!closestBody.equals(closestBodyFound)) {
+                if ("Jupiter".equals(closestBody) || "Saturn".equals(closestBody) ||
+                        "Uranus".equals(closestBody) || "Neptune".equals(closestBody)) {
+                    checkBoxesBodies.get(closestBody + "Moons").setSelected(false);
+                }
+                closestBody = closestBodyFound;
+            }
+            observedBody = closestBody;
+            if (minDistance < 8.0E09 ||
+                    (minDistance < 1.5E10 && spacecraftPosition.magnitude() < closestBodyPosition.magnitude())) {
+                if ("Voyager 1".equals(selectedBody)) {
+                    if ("Jupiter".equals(closestBody)) {
+                        checkBoxesBodies.get("JupiterMoons").setSelected(true);
+                        /*
+                         * https://en.wikipedia.org/wiki/Voyager_1
+                         * 1979-03-05  06:54	Amalthea flyby at 420,200 km.
+                         * 1979-03-05  12:05:26	Jupiter closest approach at 348,890 km from the center of mass.
+                         * 1979-03-05  15:14	Io flyby at 20,570 km.
+                         * 1979-03-05  18:19	Europa flyby at 733,760 km.
+                         * 1979-03-06  02:15	Ganymede flyby at 114,710 km.
+                         * 1979-03-06  17:08	Callisto flyby at 126,400 km.
+                         * Note that Amalthea is not simulated.
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneIo)) {
+                            observedBody = "Io";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneEuropa)) {
+                            observedBody = "Europa";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneGanymede)) {
+                            observedBody = "Ganymede";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneCallisto)) {
+                            observedBody = "Callisto";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneJupiter)) {
+                            observedBody = "Jupiter";
+                        }
+                    }
+                    if ("Saturn".equals(closestBody)) {
+                        checkBoxesBodies.get("SaturnMoons").setSelected(true);
+                        /*
+                         * https://en.wikipedia.org/wiki/Voyager_1
+                         * 1980-11-12  05:41:21  Titan flyby at 6,490 km.
+                         * 1980-11-12  22:16:32	 Tethys flyby at 415,670 km.
+                         * 1980-11-12  23:46:30	 Saturn closest approach at 184,300 km from the center of mass.
+                         * 1980-11-13  01:43:12	 Mimas flyby at 88,440 km.
+                         * 1980-11-13  01:51:16	 Enceladus flyby at 202,040 km.
+                         * 1980-11-13  06:21:53	 Rhea flyby at 73,980 km.
+                         * 1980-11-13  16:44:41	 Hyperion flyby at 880,440 km.
+                         * Note that Hyperion is not simulated.
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneTitan)) {
+                            observedBody = "Titan";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneSaturnAfterTitan)) {
+                            observedBody = "Saturn";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneRhea)) {
+                            observedBody = "Rhea";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerOneSaturnAfterRhea)) {
+                            observedBody = "Saturn";
+                        }
+                    }
+                    try {
+                        Vector3D observedBodyPosition = solarSystem.getPosition(observedBody);
+                        minDistance = spacecraftPosition.euclideanDistance(observedBodyPosition);
+                    } catch (SolarSystemException ex) {
+                        showMessage("Error",ex.getMessage());
+                    }
+                }
+                if ("Voyager 2".equals(selectedBody)) {
+                    if ("Jupiter".equals(closestBody)) {
+                        checkBoxesBodies.get("JupiterMoons").setSelected(true);
+                        /*
+                         * https://en.wikipedia.org/wiki/Voyager_2
+                         * 1979-07-08  12:21  Callisto flyby at 214,930 km.
+                         * 1979-07-09  07:14  Ganymede flyby at 62,130 km.
+                         * 1979-07-09  17:53  Europa flyby at 205,720 km.
+                         * 1979-07-09  20:01  Amalthea flyby at 558,370 km.
+                         * 1979-07-09  22:29  Jupiter closest approach at 721,670 km from the center of mass.
+                         * 1979-07-09  23:17  Io flyby at 1,129,900 km.
+                         * Note that Amalthea is not simulated.
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoCallisto)) {
+                            observedBody = "Callisto";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoGanymede)) {
+                            observedBody = "Ganymede";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoEuropa)) {
+                            observedBody = "Europa";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoJupiter)) {
+                            observedBody = "Jupiter";
+                        }
+                    }
+                    if ("Saturn".equals(closestBody)) {
+                        checkBoxesBodies.get("SaturnMoons").setSelected(true);
+                        /*
+                         * https://en.wikipedia.org/wiki/Voyager_2
+                         * 1981-08-22  01:26:57  Iapetus flyby at 908,680 km.
+                         * 1981-08-25  01:25:26  Hyperion flyby at 431,370 km.
+                         * 1981-08-25  09:37:46	 Titan flyby at 666,190 km.
+                         * 1981-08-26  01:04:32  Dione flyby at 502,310 km.
+                         * 1981-08-26  02:24:26  Mimas flyby at 309,930 km.
+                         * 1981-08-26  03:24:05  Saturn closest approach at 161,000 km from the center of mass.
+                         * 1981-08-26  03:45:16  Enceladus flyby at 87,010 km.
+                         * 1981-08-26  06:12:30  Tethys flyby at 93,010 km.
+                         * 1981-08-26  06:28:48  Rhea flyby at 645,260 km.
+                         * Note that Hyperion is not simulated.
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoTitan)) {
+                            observedBody = "Titan";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoSaturnAfterTitan)) {
+                            observedBody = "Saturn";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoTethys)) {
+                            observedBody = "Tethys";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoSaturnAfterTethys)) {
+                            observedBody = "Saturn";
+                        }
+                    }
+                    if ("Uranus".equals(closestBody)) {
+                        checkBoxesBodies.get("UranusMoons").setSelected(true);
+                        /*
+                         * https://en.wikipedia.org/wiki/Voyager_2
+                         * 1986-01-24  16:50     Miranda flyby at 29,000 km.
+                         * 1986-01-24  17:25     Ariel flyby at 127,000 km.
+                         * 1986-01-24  17:25     Umbriel flyby at 325,000 km.
+                         * 1986-01-24  17:25     Titania flyby at 365,200 km.
+                         * 1986-01-24  17:25     Oberon flyby at 470,600 km.
+                         * 1986-01-24  17:59:47  Uranus closest approach at 107,000 km from the center of mass.
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoOberon)) {
+                            observedBody = "Oberon";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoTitania)) {
+                            observedBody = "Titania";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoUmbriel)) {
+                            observedBody = "Umbriel";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoAriel)) {
+                            observedBody = "Ariel";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoMiranda)) {
+                            observedBody = "Miranda";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoUranus)) {
+                            observedBody = "Uranus";
+                        }
+                    }
+                    if ("Neptune".equals(closestBody)) {
+                        checkBoxesBodies.get("NeptuneMoons").setSelected(true);
+                        /*
+                         * https://en.wikipedia.org/wiki/Voyager_2
+                         * 1989-08-25  03:56:36  Neptune closest approach at 4,950 km.
+                         * 1989-08-25  09:23     Triton flyby at 39,800 km.
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoTriton)) {
+                            observedBody = "Triton";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startVoyagerTwoNeptune)) {
+                            observedBody = "Neptune";
+                        }
+                    }
+                    try {
+                        Vector3D observedBodyPosition = solarSystem.getPosition(observedBody);
+                        minDistance = spacecraftPosition.euclideanDistance(observedBodyPosition);
+                    } catch (SolarSystemException ex) {
+                        showMessage("Error",ex.getMessage());
+                    }
+                }
+                if ("New Horizons".equals(selectedBody)) {
+                    /*
+                     * https://en.wikipedia.org/wiki/New_Horizons
+                     * 2015-07-14  11:49  Pluto fly by
+                     */
+                    if (solarSystem.getSimulationDateTime().after(endNewHorizonsPlutoFlyby)) {
+                        observedBody = "Ultima Thule";
+                    }
+                    try {
+                        Vector3D observedBodyPosition = solarSystem.getPosition(observedBody);
+                        minDistance = spacecraftPosition.euclideanDistance(observedBodyPosition);
+                    } catch (SolarSystemException ex) {
+                        showMessage("Error",ex.getMessage());
+                    }
+                }
+                if ("Rosetta".equals(selectedBody)) {
+                    if (minDistance < 2.0E08 && (!"67P/Churyumov-Gerasimenko".equals(observedBody) ||
+                            solarSystem.getSimulationDateTime().after(startRosetta67P))) {
+                        checkBoxStepMode.setSelected(true);
+                        startSimulationStepModeForward();
+                        double value = Math.min(100.0, Math.max(5.0, minDistance / 2.0E06));
+                        sliderZoomView.setValue(95.0 - 0.3 * value);
+                        if ("67P/Churyumov-Gerasimenko".equals(observedBody)) {
+                            sliderSimulationSpeed.setValue(100);
+                        }
+                        else {
+                            sliderSimulationSpeed.setValue(value);
+                        }
+                    } else {
+                        checkBoxStepMode.setSelected(false);
+                        startSimulationForward();
+                        double value = Math.min(100.0, Math.max(0.0, (minDistance - 2.0E08) / 7.0E06));
+                        sliderZoomView.setValue(65.0 - 0.3 * value);
+                        sliderSimulationSpeed.setValue(value);
+                    }
+                }
+                else {
+                    if ("Apollo 8".equals(selectedBody)) {
+                        checkBoxStepMode.setSelected(true);
+                        startSimulationStepModeForward();
+                        observedBody = "Earth";
+                        double value = Math.min(100.0, Math.max(1.0,(minDistance - 6.4E6) / 1.0E05));
+                        sliderZoomView.setValue(100.0 - 0.1*value);
+                        if (minDistance < 1.5E7) {
+                            if (solarSystem.getSimulationDateTime().after(startEarthRise) &&
+                                    solarSystem.getSimulationDateTime().before(endEarthRise)) {
+                                // Real-time simulation during Earth Rise
+                                sliderSimulationSpeed.setValue(0.0);
+                            } else{
+                                // Slow simulation near the Earth and the Moon
+                                if ("Earth".equals(closestBodyFound)) {
+                                    sliderSimulationSpeed.setValue(5.0);
+                                }
+                                else {
+                                    sliderSimulationSpeed.setValue(15.0);
+                                }
+                            }
+                        } else {
+                            // Fast simulation when flying from the Earth to the Moon and vice versa
+                            sliderSimulationSpeed.setValue(100.0);
+                        }
+                        if (solarSystem.getSimulationDateTime().after(entryTrajectInitApolloEight)) {
+                            bodiesShown.remove("Apollo 8");
+                            selectedBody = "Earth";
+                            radioTelescopeView.setSelected(true);
+                            pauseSimulation();
+                        }
+                    }
+                    else {
+                        if (minDistance < 1.0E09) {
+                            checkBoxStepMode.setSelected(true);
+                            startSimulationStepModeForward();
+                            double value = Math.min(100.0, Math.max(5.0, minDistance / 1.0E07));
+                            sliderZoomView.setValue(95.0 - 0.3 * value);
+                            if (moons.get("Uranus").contains(observedBody)) {
+                                value = Math.min(value,10.0);
+                            }
+                            sliderSimulationSpeed.setValue(value);
+                        } else {
+                            checkBoxStepMode.setSelected(false);
+                            startSimulationForward();
+                            double value = Math.min(100.0, Math.max(0.0, (minDistance - 1.0E09) / 7.0E07));
+                            sliderZoomView.setValue(65.0 - 0.3 * value);
+                            sliderSimulationSpeed.setValue(value);
+                        }
+                    }
+                }
+            } else {
+                // minDistance >= 8.0E09 (8 million km) and spacecraft has passed the planet system
+                checkBoxesBodies.get("JupiterMoons").setSelected(false);
+                checkBoxesBodies.get("SaturnMoons").setSelected(false);
+                checkBoxesBodies.get("UranusMoons").setSelected(false);
+                checkBoxesBodies.get("NeptuneMoons").setSelected(false);
+                checkBoxStepMode.setSelected(false);
+                startSimulationFastForward();
+                sliderZoomView.setValue(20.0);
+                sliderSimulationSpeed.setValue(100.0);
+            }
+        }
+    }
+
+
+    /**
      * Set visualization settings.
      * @param settings settings for visualization
      */
@@ -2274,7 +3116,6 @@ public class SolarSystemApplication extends Application {
             if (settings.getBodiesShown().contains(spacecraftName)) {
                 solarSystem.createSpacecraft(spacecraftName);
                 bodiesShown.add(spacecraftName);
-                showInformationPanel(spacecraftName);
             }
             else {
                 solarSystem.removeSpacecraft(spacecraftName);
@@ -2288,8 +3129,7 @@ public class SolarSystemApplication extends Application {
 
         GregorianCalendar eventDateTime;
         if (settings.getSimulationStartDateTime() == null) {
-            eventDateTime = new GregorianCalendar();
-            eventDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+            eventDateTime = CalendarUtil.createGregorianCalendar(new GregorianCalendar());
         }
         else {
             eventDateTime = CalendarUtil.createGregorianCalendar(settings.getSimulationStartDateTime());
@@ -2297,8 +3137,8 @@ public class SolarSystemApplication extends Application {
         dateTimeSelector.setDateTime(eventDateTime);
         try {
             solarSystem.initializeSimulation(eventDateTime);
-        } catch (SolarSystemException e) {
-            e.printStackTrace();
+        } catch (SolarSystemException ex) {
+            showMessage("Error",ex.getMessage());
         }
 
         for (String bodyName : checkBoxesBodies.keySet()) {
@@ -2309,7 +3149,14 @@ public class SolarSystemApplication extends Application {
                 checkBoxesBodies.get(bodyName).setSelected(false);
             }
         }
+        if (settings.getBodiesShown().contains("Shoemaker-Levy 9")) {
+            bodiesShown.add("Shoemaker-Levy 9");
+        }
+        else {
+            bodiesShown.remove("Shoemaker-Levy 9");
+        }
         selectedBody = settings.getSelectedBody();
+        observedBody = "Earth";
 
         radioGeneralRelativity.setSelected(settings.isGeneralRelativity());
         if (settings.isShowEphemeris() && settings.isShowSimulation()) {
@@ -2325,6 +3172,28 @@ public class SolarSystemApplication extends Application {
         sliderTopFrontView.setValue(settings.getValueTopFrontView());
         sliderZoomView.setValue(settings.getValueZoomView());
         sliderSimulationSpeed.setValue(settings.getValueSimulationSpeed());
+
+        if (settings.getViewMode().equals(SolarSystemViewMode.TELESCOPE)) {
+            radioTelescopeView.setSelected(true);
+        }
+        else {
+            radioSpacecraftView.setSelected(true);
+        }
+
+        if (settings.isAutomaticView()) {
+            checkBoxAutomaticView.setSelected(true);
+            updateVisualizationSettings();
+        }
+        else {
+            checkBoxAutomaticView.setSelected(false);
+        }
+
+        latitude = settings.getLatitude();
+        textFieldLatitude.setText(DECIMAL_FORMAT_LATLON.format(latitude));
+        sliderLatitude.setValue(latitude);
+        longitude = settings.getLongitude();
+        textFieldLongitude.setText(DECIMAL_FORMAT_LATLON.format(longitude));
+        sliderLongitude.setValue(longitude);
     }
 
     /**
@@ -2386,27 +3255,116 @@ public class SolarSystemApplication extends Application {
         nep.setSelectedBody("Neptune");
         nep.setValueZoomView(88);
         events.add(nep);
+        VisualizationSettings sol = new VisualizationSettings();
+        sol.setEventName("Solar eclipse Nancy (1999-08-11)");
+        GregorianCalendar solStartDateTime = CalendarUtil.createGregorianCalendar(1999,8,11,9,10, 0);
+        sol.setSimulationStartDateTime(solStartDateTime);
+        sol.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Moon")));
+        sol.setSelectedBody("Sun");
+        sol.setShowEphemeris(false);
+        sol.setObservationFromEarth(true);
+        sol.setShowRuler(false);
+        sol.setStepMode(true);
+        sol.setValueZoomView(60);
+        sol.setValueSimulationSpeed(1);
+        sol.setLatitude(48.6921); // Nancy
+        sol.setLongitude(6.1844); // Nancy
+        events.add(sol);
+        VisualizationSettings ann = new VisualizationSettings();
+        ann.setEventName("Annular solar eclipse (2012-05-21)");
+        GregorianCalendar annStartDateTime = CalendarUtil.createGregorianCalendar(2012,5,21,0,15, 0);
+        ann.setSimulationStartDateTime(annStartDateTime);
+        ann.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Moon")));
+        ann.setSelectedBody("Sun");
+        ann.setShowEphemeris(false);
+        ann.setObservationFromEarth(true);
+        ann.setShowRuler(false);
+        ann.setStepMode(true);
+        ann.setValueZoomView(60);
+        ann.setValueSimulationSpeed(1);
+        ann.setLatitude(40.1785); // Red Bluff, CA
+        ann.setLongitude(-122.2358); // Red Bluff, CA
+        events.add(ann);
+        VisualizationSettings lun = new VisualizationSettings();
+        lun.setEventName("Lunar eclipse (2019-01-21)");
+        GregorianCalendar lunStartDateTime = CalendarUtil.createGregorianCalendar(2019,1,21,3,30, 0);
+        lun.setSimulationStartDateTime(lunStartDateTime);
+        lun.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Moon")));
+        lun.setSelectedBody("Moon");
+        lun.setShowEphemeris(false);
+        lun.setShowRuler(true);
+        lun.setStepMode(true);
+        lun.setValueZoomView(80);
+        lun.setValueSimulationSpeed(5);
+        events.add(lun);
+        VisualizationSettings ven = new VisualizationSettings();
+        ven.setEventName("Venus transit (2004-06-08)");
+        GregorianCalendar venStartDateTime = CalendarUtil.createGregorianCalendar(2004,6,8,5,15, 0);
+        ven.setSimulationStartDateTime(venStartDateTime);
+        ven.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Venus","Earth")));
+        ven.setSelectedBody("Sun");
+        ven.setShowEphemeris(false);
+        ven.setObservationFromEarth(true);
+        ven.setShowRuler(false);
+        ven.setStepMode(true);
+        ven.setValueZoomView(62);
+        ven.setValueSimulationSpeed(5);
+        events.add(ven);
+        VisualizationSettings mer = new VisualizationSettings();
+        mer.setEventName("Mercury transit (2016-05-09)");
+        GregorianCalendar merStartDateTime = CalendarUtil.createGregorianCalendar(2016,5,9,11,5, 0);
+        mer.setSimulationStartDateTime(merStartDateTime);
+        mer.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Mercury","Earth")));
+        mer.setSelectedBody("Sun");
+        mer.setShowEphemeris(false);
+        mer.setObservationFromEarth(true);
+        mer.setShowRuler(false);
+        mer.setStepMode(true);
+        mer.setValueZoomView(62);
+        mer.setValueSimulationSpeed(5);
+        events.add(mer);
+        VisualizationSettings shoe = new VisualizationSettings();
+        shoe.setEventName("Impact Shoemaker-Levy July 1994");
+        GregorianCalendar shoeStartDateTime = CalendarUtil.createGregorianCalendar(1994,5,8,0,0,0);
+        shoe.setSimulationStartDateTime(shoeStartDateTime);
+        shoe.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","JupiterMoons",
+                "Shoemaker-Levy 9")));
+        shoe.setSelectedBody("Jupiter");
+        shoe.setShowEphemeris(false);
+        shoe.setShowRuler(true);
+        shoe.setStepMode(false);
+        shoe.setValueTopFrontView(30);
+        shoe.setValueZoomView(62);
+        shoe.setValueSimulationSpeed(50);
+        shoe.setAutomaticView(true);
+        events.add(shoe);
         VisualizationSettings voy1 = new VisualizationSettings();
         voy1.setEventName("Launch Voyager 1 (1977-09-05  12:56)");
         voy1.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 1"));
         voy1.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn",
-                "Voyager 1","Voyager 2")));
+                "Voyager 1")));
         voy1.setSelectedBody("Voyager 1");
+        voy1.setShowEphemeris(false);
         voy1.setShowRuler(true);
         voy1.setStepMode(false);
         voy1.setValueZoomView(15);
         voy1.setValueSimulationSpeed(100);
+        voy1.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        voy1.setAutomaticView(true);
         events.add(voy1);
         VisualizationSettings voy2 = new VisualizationSettings();
         voy2.setEventName("Launch Voyager 2 (1977-08-20  14:29)");
         voy2.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 2"));
         voy2.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
-                "Voyager 1","Voyager 2")));
+                "Voyager 2")));
         voy2.setSelectedBody("Voyager 2");
+        voy2.setShowEphemeris(false);
         voy2.setShowRuler(true);
         voy2.setStepMode(false);
         voy2.setValueZoomView(8);
         voy2.setValueSimulationSpeed(100);
+        voy2.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        voy2.setAutomaticView(true);
         events.add(voy2);
         VisualizationSettings ros = new VisualizationSettings();
         ros.setEventName("Launch Rosetta (2004-03-02  07:17)");
@@ -2414,10 +3372,13 @@ public class SolarSystemApplication extends Application {
         ros.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Mars","67P/Churyumov-Gerasimenko",
                 "Rosetta")));
         ros.setSelectedBody("Rosetta");
+        ros.setShowEphemeris(false);
         ros.setShowRuler(true);
         ros.setStepMode(false);
-        ros.setValueZoomView(30);
+        ros.setValueZoomView(20);
         ros.setValueSimulationSpeed(100);
+        ros.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        ros.setAutomaticView(true);
         events.add(ros);
         VisualizationSettings nh = new VisualizationSettings();
         nh.setEventName("Launch New Horizons (2006-01-19  19:00)");
@@ -2425,11 +3386,27 @@ public class SolarSystemApplication extends Application {
         nh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune","Pluto",
                 "Ultima Thule","New Horizons")));
         nh.setSelectedBody("New Horizons");
+        nh.setShowEphemeris(false);
         nh.setShowRuler(true);
         nh.setStepMode(false);
         nh.setValueZoomView(7);
         nh.setValueSimulationSpeed(100);
         events.add(nh);
+        nh.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        nh.setAutomaticView(true);
+        VisualizationSettings ap8 = new VisualizationSettings();
+        ap8.setEventName("Launch Apollo 8 (1968-12-21  12.51)");
+        ap8.setSimulationStartDateTime(trajectoryStartDate.get("Apollo 8"));
+        ap8.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Moon","Earth","Apollo 8")));
+        ap8.setSelectedBody("Apollo 8");
+        ap8.setShowEphemeris(false);
+        ap8.setShowRuler(true);
+        ap8.setStepMode(true);
+        ap8.setValueZoomView(85);
+        ap8.setValueSimulationSpeed(100);
+        ap8.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        ap8.setAutomaticView(true);
+        events.add(ap8);
         VisualizationSettings iss = new VisualizationSettings();
         iss.setEventName("International Space Station (current time)");
         iss.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Moon","Earth","ISS")));
@@ -2439,17 +3416,8 @@ public class SolarSystemApplication extends Application {
         iss.setStepMode(true);
         iss.setValueZoomView(100);
         iss.setValueSimulationSpeed(1);
+        iss.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         events.add(iss);
-        VisualizationSettings ap8 = new VisualizationSettings();
-        ap8.setEventName("Launch Apollo 8 S-IVB (1968-12-21  12.51)");
-        ap8.setSimulationStartDateTime(trajectoryStartDate.get("Apollo 8"));
-        ap8.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Moon","Earth","Apollo 8")));
-        ap8.setSelectedBody("Earth");
-        ap8.setShowRuler(true);
-        ap8.setStepMode(true);
-        ap8.setValueZoomView(85);
-        ap8.setValueSimulationSpeed(100);
-        events.add(ap8);
         return events;
     }
 
@@ -2467,6 +3435,9 @@ public class SolarSystemApplication extends Application {
             if (lag >= 20000000) {
                 try {
                     monitor.startDrawing();
+                    if (automaticView) {
+                        updateVisualizationSettings();
+                    }
                     drawSimulationState();
                 }
                 catch (InterruptedException e) {
