@@ -1103,20 +1103,6 @@ public class SolarSystemApplication extends Application {
             createCircle(spacecraftName, 3, Color.LIGHTYELLOW);
         }
 
-        // Compare EphemerisUranusMoons to HORIZONS (Jan 24, 1986)
-        /*
-        createCircle("MirandaHOR", 3, Color.YELLOW);
-        createCircle("ArielHOR", 3, Color.YELLOW);
-        createCircle("UmbrielHOR", 3, Color.YELLOW);
-        createCircle("TitaniaHOR", 3, Color.YELLOW);
-        createCircle("OberonHOR", 3, Color.YELLOW);
-        */
-
-        // Compare EphemerisNeptuneMoons to HORIZONS (Aug 25, 1989)
-        // createCircle("TritonHOR", 3, Color.YELLOW);
-
-
-
         // Initialize flags to indicate whether moons are shown
         showMoons = new HashMap<>();
         showMoons.put("Jupiter", false);
@@ -1155,21 +1141,10 @@ public class SolarSystemApplication extends Application {
         uranusMoons.add("Oberon");
         moons.put("Uranus", uranusMoons);
 
-        // Compare EphemerisUranusMoons to HORIZONS (Jan 24, 1986)
-        /*
-        uranusMoons.add("MirandaHOR");
-        uranusMoons.add("ArielHOR");
-        uranusMoons.add("UmbrielHOR");
-        uranusMoons.add("TitaniaHOR");
-        uranusMoons.add("OberonHOR");
-        */
-
         // Names of moons of Neptune
         List<String> neptuneMoons = new ArrayList<>();
         neptuneMoons.add("Triton");
         moons.put("Neptune", neptuneMoons);
-        // Compare EphemerisNeptuneMoons to HORIZONS (Aug 25, 1989)
-        // neptuneMoons.add("TritonHOR");
 
         // Button to select Solar System bodies
         rowIndex++;
@@ -1280,10 +1255,6 @@ public class SolarSystemApplication extends Application {
         createCheckBox("67P/Churyumov-Gerasimenko", "67P/Ch-Ge",
                 "67P/Churyumov-Gerasimenko was visited "
                         + "by ESA's Rosetta mission on 6 August 2014.");
-        /*
-        createCheckBox("Shoemaker-Levy 9", "Shoe-Lev 9",
-                "Shoemaker-Levy 9 collided with Jupiter in July 1994.");
-        */
         createCheckBox("Hale-Bopp", "Hale-Bopp",
                 "Hale-Bopp passed perihelion on 1 April 1997 and "
                         + "was visible to the naked eye for 18 months.");
@@ -1586,7 +1557,6 @@ public class SolarSystemApplication extends Application {
      * @return instance of CheckBox
      */
     private CheckBox createCheckBox(String name, String label, String toolTipText) {
-        //CheckBox checkBox = new CheckBox(label);
         CheckBox checkBox = bodySelectorPanel.createCheckBox(label,toolTipText);
         checkBoxesBodies.put(name,checkBox);
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -1643,8 +1613,6 @@ public class SolarSystemApplication extends Application {
                 }
             }
         });
-        //Tooltip toolTip = new Tooltip(toolTipText);
-        //checkBox.setTooltip(toolTip);
         return checkBox;
     }
 
@@ -1965,16 +1933,7 @@ public class SolarSystemApplication extends Application {
             Circle circle = bodies.get(bodyName);
             if (showEphemeris && !showSimulation) {
                 // Draw circle at positon of body
-                // LET OP ASTROLOGY
                 drawCircle(circle, body, body.getPosition());
-                /*
-                Vector3D astroPosition = new Vector3D(body.getPosition());
-                astroPosition = astroPosition.minus(positionEarth());
-                astroPosition = astroPosition.normalize();
-                astroPosition = astroPosition.scalarProduct(10*SolarSystemParameters.ASTRONOMICALUNIT);
-                drawCircle(circle, body, astroPosition);
-                */
-                // EINDE LET OP ASTROLOGY
             }
             else {
                 // Draw circle at particle position
@@ -2086,11 +2045,9 @@ public class SolarSystemApplication extends Application {
                 Vector3D[] orbit = body.getOrbit();
                 Vector3D position = body.getPosition();
                 // Draw orbit as a green line
-                // LET OP ASTROLOGY
                 if (orbit != null) {
                     drawOrbit(orbit, position, Color.LIGHTGREEN, Color.GREEN, showSimulation);
                 }
-                // END ASTROLOGY
             }
         }
     }
@@ -2568,9 +2525,6 @@ public class SolarSystemApplication extends Application {
 
         // Draw circles indicating either the simulated or ephemeris positions of bodies
         drawCircles(bodiesToShow);
-
-        // Draw stars STARS
-        //drawStars();
 
         // Draw rulers
         if (showRuler && !observationFromEarth) {
