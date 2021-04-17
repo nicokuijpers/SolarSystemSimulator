@@ -150,6 +150,8 @@ public class EphemerisUtil {
      * @return coordinates after transformation
      */
     public static Vector3D transformJ2000(Vector3D coordinates) {
+        // https://space.fandom.com/wiki/Axial_tilt
+        // Axial tilt epoch 2000 is 23° 26’ 21.44” or 23.439289 degrees
         double sinEP = 0.397776995;
         double cosEP = Math.sqrt(1.0 - sinEP*sinEP);
         double x = coordinates.getX();
@@ -166,6 +168,8 @@ public class EphemerisUtil {
      * @return coordinates after transformation
      */
     public static Vector3D inverseTransformJ2000(Vector3D coordinates) {
+        // https://space.fandom.com/wiki/Axial_tilt
+        // Axial tilt epoch 2000 is 23° 26’ 21.44” or 23.439289 degrees
         double sinEP = -0.397776995;
         double cosEP = Math.sqrt(1.0 - sinEP*sinEP);
         double x = coordinates.getX();

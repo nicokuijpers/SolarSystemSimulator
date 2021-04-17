@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,47 +21,48 @@
     <session id="858141413">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="19" />
+          <entry key="project.closed" value="21" />
           <entry key="project.open.time.1" value="12" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="22" />
+          <entry key="project.open.time.6" value="2" />
+          <entry key="project.opened" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="233" />
+          <entry key="java" value="235" />
           <entry key="md" value="2" />
-          <entry key="mtl" value="4" />
-          <entry key="obj" value="9" />
-          <entry key="txt" value="2" />
+          <entry key="mtl" value="5" />
+          <entry key="obj" value="10" />
+          <entry key="txt" value="3" />
           <entry key="xml" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="233" />
+          <entry key="JAVA" value="235" />
           <entry key="Markdown" value="2" />
-          <entry key="PLAIN_TEXT" value="15" />
+          <entry key="PLAIN_TEXT" value="18" />
           <entry key="XML" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7953" />
+          <entry key="java" value="7985" />
           <entry key="md" value="68" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7953" />
+          <entry key="JAVA" value="7985" />
           <entry key="Markdown" value="68" />
         </counts>
       </usages-collector>
@@ -70,52 +71,28 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+        <entry file="file://$PROJECT_DIR$/EphemerisFiles/orbitParsRosetta.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="3415" column="23" selection-start-line="3415" selection-start-column="23" selection-end-line="3415" selection-end-column="23" />
-              <folding>
-                <element signature="e#0#152462#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-                <element signature="e#16872#16873#0" expanded="true" />
-                <element signature="e#16928#16929#0" expanded="true" />
-                <element signature="e#17464#17465#0" expanded="true" />
-                <element signature="e#17516#17517#0" expanded="true" />
-                <element signature="e#19928#19929#0" expanded="true" />
-                <element signature="e#20001#20002#0" expanded="true" />
-                <element signature="e#20262#20263#0" expanded="true" />
-                <element signature="e#20335#20336#0" expanded="true" />
-                <element signature="e#20540#20541#0" expanded="true" />
-                <element signature="e#20597#20598#0" expanded="true" />
-                <element signature="e#23454#23455#0" expanded="true" />
-                <element signature="e#23508#23509#0" expanded="true" />
-                <element signature="e#25361#25362#0" expanded="true" />
-                <element signature="e#25410#25411#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="240">
+              <caret line="16" column="100" selection-start-line="16" selection-start-column="100" selection-end-line="16" selection-end-column="100" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="40" column="34" selection-start-line="39" selection-start-column="3" selection-end-line="42" selection-end-column="33" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="444">
+              <caret line="390" column="65" lean-forward="true" selection-start-line="390" selection-start-column="65" selection-end-line="390" selection-end-column="65" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="285">
-                <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="698">
+              <caret line="171" column="71" selection-start-line="171" selection-start-column="71" selection-end-line="171" selection-end-column="71" />
             </state>
           </provider>
         </entry>
@@ -200,7 +177,6 @@
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/ApolloEight.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" />
-        <option value="$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/Spacecraft.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftTrajectory.java" />
@@ -215,11 +191,12 @@
         <option value="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
       </list>
     </option>
   </component>
@@ -238,8 +215,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="222" />
-    <option name="y" value="361" />
+    <option name="x" value="576" />
+    <option name="y" value="316" />
     <option name="width" value="2187" />
     <option name="height" value="977" />
   </component>
@@ -259,6 +236,11 @@
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="EphemerisFiles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -273,6 +255,22 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="ephemeris" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="spacecraft" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
@@ -301,7 +299,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="Scope">
         <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
           <expand>
@@ -341,12 +338,13 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1613818462902" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1614532950136" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -504,7 +502,9 @@
       <workItem from="1608716492286" duration="3756000" />
       <workItem from="1608724570406" duration="1270000" />
       <workItem from="1609511227121" duration="1251000" />
-      <workItem from="1613755529209" duration="5854000" />
+      <workItem from="1613755529209" duration="6326000" />
+      <workItem from="1614521968247" duration="2981000" />
+      <workItem from="1618651327479" duration="1279000" />
     </task>
     <servers />
   </component>
@@ -541,12 +541,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="238044000" />
+    <option name="totallyTimeSpent" value="242776000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="222" y="361" width="2187" height="977" extended-state="0" />
+    <frame x="576" y="316" width="2187" height="977" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22191142" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22564103" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -555,7 +556,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -587,13 +588,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6240">
-          <caret line="442" column="71" selection-start-line="442" selection-start-column="71" selection-end-line="442" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3855">
@@ -661,13 +655,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5865">
-          <caret line="418" column="49" selection-start-line="418" selection-start-column="49" selection-end-line="418" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Spacecraft.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
@@ -728,9 +715,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -766,9 +750,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1305">
           <caret line="112" column="64" selection-start-line="112" selection-start-column="64" selection-end-line="112" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -781,13 +762,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SmartGroup.java">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="107" column="65" lean-forward="true" selection-start-line="107" selection-start-column="65" selection-end-line="107" selection-end-column="65" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -821,9 +795,6 @@
     <entry file="file://$PROJECT_DIR$/Models/CSHP_DV_130_01_scaled.obj">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d_scaled.obj">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Models/Apollo 8.mtl">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -851,17 +822,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d.mtl">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1088">
-          <folding>
-            <element signature="e#0#3653#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-1088" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/CalendarUtil.java">
@@ -876,46 +839,52 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
+        <state relative-caret-position="50100">
           <caret line="3415" column="23" selection-start-line="3415" selection-start-column="23" selection-end-line="3415" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#152462#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#16872#16873#0" expanded="true" />
-            <element signature="e#16928#16929#0" expanded="true" />
-            <element signature="e#17464#17465#0" expanded="true" />
-            <element signature="e#17516#17517#0" expanded="true" />
-            <element signature="e#19928#19929#0" expanded="true" />
-            <element signature="e#20001#20002#0" expanded="true" />
-            <element signature="e#20262#20263#0" expanded="true" />
-            <element signature="e#20335#20336#0" expanded="true" />
-            <element signature="e#20540#20541#0" expanded="true" />
-            <element signature="e#20597#20598#0" expanded="true" />
-            <element signature="e#23454#23455#0" expanded="true" />
-            <element signature="e#23508#23509#0" expanded="true" />
-            <element signature="e#25361#25362#0" expanded="true" />
-            <element signature="e#25410#25411#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="40" column="34" selection-start-line="39" selection-start-column="3" selection-end-line="42" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="285">
-            <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+          <first_editor relative-caret-position="210">
+            <caret line="14" column="61" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d.mtl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d_scaled.obj">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="40" column="34" selection-start-line="39" selection-start-column="3" selection-end-line="42" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EphemerisFiles/orbitParsRosetta.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="100" selection-start-line="16" selection-start-column="100" selection-end-line="16" selection-end-column="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="390" column="65" lean-forward="true" selection-start-line="390" selection-start-column="65" selection-end-line="390" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="698">
+          <caret line="171" column="71" selection-start-line="171" selection-start-column="71" selection-end-line="171" selection-end-column="71" />
         </state>
       </provider>
     </entry>
