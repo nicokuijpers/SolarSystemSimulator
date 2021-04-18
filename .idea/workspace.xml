@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java" afterDir="false" />
-    </list>
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -253,8 +248,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1062" />
-    <option name="y" value="138" />
+    <option name="x" value="958" />
+    <option name="y" value="104" />
     <option name="width" value="2187" />
     <option name="height" value="977" />
   </component>
@@ -406,7 +401,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1618744221685" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1618750261809" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -445,13 +440,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.SolarSystemApplication (1)">
-    <configuration name="SolarSystemApplication (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="application.SolarSystemApplication" />
+  <component name="RunManager" selected="Application.FlorenceEarthExperiment">
+    <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="application.*" />
+          <option name="PATTERN" value="experiments.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -459,12 +454,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SpacecraftExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="experiments.SpacecraftExperiment" />
+    <configuration name="SolarSystemApplication (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="application.SolarSystemApplication" />
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="experiments.*" />
+          <option name="PATTERN" value="application.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -518,18 +513,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.SolarSystemApplication (1)" />
-      <item itemvalue="Application.SpacecraftExperiment" />
       <item itemvalue="JUnit.EphemerisUtilTest" />
       <item itemvalue="JUnit.CalendarUtilTest" />
       <item itemvalue="JUnit.EphemerisAccurateTest" />
+      <item itemvalue="Application.FlorenceEarthExperiment" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
         <item itemvalue="JUnit.CalendarUtilTest" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
         <item itemvalue="JUnit.EphemerisUtilTest" />
-        <item itemvalue="Application.SpacecraftExperiment" />
       </list>
     </recent_temporary>
   </component>
@@ -566,7 +561,7 @@
       <workItem from="1609511227121" duration="1251000" />
       <workItem from="1613755529209" duration="6326000" />
       <workItem from="1614521968247" duration="2981000" />
-      <workItem from="1618651327479" duration="3285000" />
+      <workItem from="1618651327479" duration="3779000" />
     </task>
     <servers />
   </component>
@@ -603,7 +598,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244782000" />
+    <option name="totallyTimeSpent" value="245276000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1062" y="138" width="2187" height="977" extended-state="0" />
