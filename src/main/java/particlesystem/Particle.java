@@ -312,10 +312,12 @@ public class Particle implements Serializable {
             if (p != this) {
                 // distAB = r_AB = Euclidean distance between A and B
                 double distAB = this.position.euclideanDistance(p.position);
-                
-                // factor = GM_B / r_AB^3
-                double factor = p.mu/(distAB*distAB*distAB);
-                
+
+                // accelerationFromParticle = GM_B (vec_r_B - vec_r_A) / r_AB^3
+                // Use perturbation forces from zonal coefficients for oblate planet
+                Vector3D accelerationFromParticle = new Vector3D(p.accelerationNewtonMechanics(this));
+
+
                 // sumCnotA = (Sum C : C != A : GM_C / r_AC)
                 double sumCnotA = 0.0;
                 for (Particle q : particles) {
@@ -367,8 +369,8 @@ public class Particle implements Serializable {
                     (3.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rAminrBdotvBdivrAB*rAminrBdotvBdivrAB +
                     (1.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rBminrAdotaB;
 
-                // Add factor * (vec_r_B - vec_r_A) * factorCurlyBraces to the first term
-                firstTermVector.addVector(diffPositionBA.scalarProduct(factor*factorCurlyBraces));
+                // Add accelerationFromParticle * factorCurlyBraces to the first term
+                firstTermVector.addVector(accelerationFromParticle.scalarProduct(factorCurlyBraces));
             }
         }
         

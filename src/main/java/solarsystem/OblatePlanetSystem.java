@@ -75,12 +75,6 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
                 massPlanet, muPlanet, new Vector3D(), new Vector3D());
         this.addParticle(planetName, planet);
     }
-    
-    @Override
-    public void setGeneralRelativityFlag(boolean flag) {
-        // Do not apply General Relativity for oblate planet system
-        super.setGeneralRelativityFlag(false);
-    }
 
     @Override
     protected void computeAcceleration() 

@@ -367,6 +367,85 @@ public class SolarSystemMoonsExperiment {
         Planet: Neptune
         Deviation 0.34713047657416507 km for Neptune
         Deviation 77912.18343647943 km for Triton
+
+
+        Results with oblateness and General Relativity
+        Maximum distance to use oblateness is 5 mln km
+        OblatePlanet.java: MAXDISTANCEOBLATENESS = 5.0E09;
+        Experiment date/time       : 2021-04-18 13:02:37.079
+        Simulation start date/time : 1985-01-01 00:00:00.000
+        Simulation end date/time   : 1987-01-01 00:00:00.000
+        Simulation method          : General Relativity
+        Deviation is averaged over final year of simulation
+        Deviation for planets is relative to the Sun
+        Deviation for moons is relative to their planet
+        Planet: Earth
+        Deviation 0.5518453749161654 km for Earth
+        Deviation 1.221842442959866 km for Moon
+        Planet: Jupiter
+        Deviation 0.2430788401062364 km for Jupiter
+        Deviation 309.005633936853 km for Io
+        Deviation 297.4810856724613 km for Europa
+        Deviation 371.1310911965169 km for Ganymede
+        Deviation 229.24836607232973 km for Callisto
+        Planet: Saturn
+        Deviation 0.3134320893571472 km for Saturn
+        Deviation 13840.18151284414 km for Mimas
+        Deviation 4119.407747906133 km for Enceladus
+        Deviation 8352.464395749956 km for Tethys
+        Deviation 4898.468550900315 km for Dione
+        Deviation 7745.058200850103 km for Rhea
+        Deviation 3663.3633011781103 km for Titan
+        Deviation 1814.8932791128839 km for Iapetus
+        Planet: Uranus
+        Deviation 0.33237059134968244 km for Uranus
+        Deviation 1056.2239836757165 km for Miranda
+        Deviation 8737.780297517123 km for Ariel
+        Deviation 7380.670088006834 km for Umbriel
+        Deviation 3249.0795142310653 km for Titania
+        Deviation 2350.093819756013 km for Oberon
+        Planet: Neptune
+        Deviation 0.3383170169709396 km for Neptune
+        Deviation 29.070493572091056 km for Triton
+
+        Results without oblateness and General Relativity
+        Maximum distance to use oblateness is 0 km
+        OblatePlanet.java: MAXDISTANCEOBLATENESS = 0.0;
+        Experiment date/time       : 2021-04-18 13:06:15.518
+        Simulation start date/time : 1985-01-01 00:00:00.000
+        Simulation end date/time   : 1987-01-01 00:00:00.000
+        Simulation method          : General Relativity
+        Deviation is averaged over final year of simulation
+        Deviation for planets is relative to the Sun
+        Deviation for moons is relative to their planet
+        Planet: Earth
+        Deviation 0.4151881299399081 km for Earth
+        Deviation 33.04995040278566 km for Moon
+        Planet: Jupiter
+        Deviation 0.24307691294765513 km for Jupiter
+        Deviation 587966.2117082529 km for Io
+        Deviation 176905.3857668799 km for Europa
+        Deviation 117143.23235288069 km for Ganymede
+        Deviation 137542.5519294342 km for Callisto
+        Planet: Saturn
+        Deviation 0.31343267680216863 km for Saturn
+        Deviation 236350.71315463402 km for Mimas
+        Deviation 241499.79824216093 km for Enceladus
+        Deviation 559919.9062577988 km for Tethys
+        Deviation 338271.9469837319 km for Dione
+        Deviation 50136.76702493959 km for Rhea
+        Deviation 106379.19995061151 km for Titan
+        Deviation 73239.50957632838 km for Iapetus
+        Planet: Uranus
+        Deviation 0.3323705858957742 km for Uranus
+        Deviation 63134.24892799694 km for Miranda
+        Deviation 4165.978809212782 km for Ariel
+        Deviation 31484.829595816635 km for Umbriel
+        Deviation 32519.459362859976 km for Titania
+        Deviation 30119.80001547284 km for Oberon
+        Planet: Neptune
+        Deviation 0.33831357170568976 km for Neptune
+        Deviation 77945.64354080617 km for Triton
     */
 }
 
