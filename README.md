@@ -10,8 +10,6 @@ Technical notes: [SolarSystemTechnicalNotes.pdf](https://github.com/nicokuijpers
 
 Video The Journey of Voyager 1: https://youtu.be/HgLGFVqZAUw
 
-Video The Journey of Voyager 1: https://youtu.be/HgLGFVqZAUw
-
 Video The Journey of Voyager 2: https://youtu.be/_JBRZJpCbRg
 
 Video The Grand Tour of Voyager: https://youtu.be/Yq0LxCjSxdI
