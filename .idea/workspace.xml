@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +21,8 @@
     <session id="858141413">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="21" />
-          <entry key="project.open.time.1" value="12" />
+          <entry key="project.closed" value="22" />
+          <entry key="project.open.time.1" value="13" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.17" value="1" />
@@ -30,13 +33,13 @@
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="24" />
+          <entry key="project.opened" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="java" value="240" />
-          <entry key="md" value="2" />
+          <entry key="md" value="3" />
           <entry key="mtl" value="5" />
           <entry key="obj" value="10" />
           <entry key="txt" value="3" />
@@ -46,7 +49,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JAVA" value="240" />
-          <entry key="Markdown" value="2" />
+          <entry key="Markdown" value="3" />
           <entry key="PLAIN_TEXT" value="18" />
           <entry key="XML" value="4" />
         </counts>
@@ -54,13 +57,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="7994" />
-          <entry key="md" value="68" />
+          <entry key="md" value="138" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="7994" />
-          <entry key="Markdown" value="68" />
+          <entry key="Markdown" value="138" />
         </counts>
       </usages-collector>
     </session>
@@ -79,8 +82,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="444">
-              <caret line="390" column="65" lean-forward="true" selection-start-line="390" selection-start-column="65" selection-end-line="390" selection-end-column="65" />
+            <state relative-caret-position="5445">
+              <caret line="390" column="65" selection-start-line="390" selection-start-column="65" selection-end-line="390" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -88,8 +91,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="803">
-              <caret line="178" column="5" lean-forward="true" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
+            <state relative-caret-position="2355">
+              <caret line="178" column="5" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -97,8 +100,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="602">
-              <caret line="80" column="5" lean-forward="true" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+            <state relative-caret-position="810">
+              <caret line="80" column="5" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -106,8 +109,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="519">
-              <caret line="339" column="70" lean-forward="true" selection-start-line="339" selection-start-column="70" selection-end-line="339" selection-end-column="70" />
+            <state relative-caret-position="4695">
+              <caret line="339" column="70" selection-start-line="339" selection-start-column="70" selection-end-line="339" selection-end-column="70" />
             </state>
           </provider>
         </entry>
@@ -115,17 +118,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="413" column="60" lean-forward="true" selection-start-line="413" selection-start-column="60" selection-end-line="413" selection-end-column="60" />
+            <state relative-caret-position="5805">
+              <caret line="413" column="60" selection-start-line="413" selection-start-column="60" selection-end-line="413" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="616">
+              <caret line="114" column="65" lean-forward="true" selection-start-line="114" selection-start-column="65" selection-end-line="114" selection-end-column="65" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="84" column="54" lean-forward="true" selection-start-line="84" selection-start-column="54" selection-end-line="84" selection-end-column="54" />
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="180">
+                <caret line="12" column="60" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -133,7 +148,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/Particle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="666">
+            <state relative-caret-position="4995">
               <caret line="370" selection-start-line="370" selection-end-line="370" />
             </state>
           </provider>
@@ -231,7 +246,6 @@
         <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java" />
@@ -239,6 +253,7 @@
         <option value="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -257,8 +272,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="958" />
-    <option name="y" value="104" />
+    <option name="x" value="465" />
+    <option name="y" value="230" />
     <option name="width" value="2187" />
     <option name="height" value="977" />
   </component>
@@ -268,6 +283,44 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
+          <expand>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -365,52 +418,14 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
-          <expand>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1618751514406" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1618752356132" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -571,6 +586,7 @@
       <workItem from="1613755529209" duration="6326000" />
       <workItem from="1614521968247" duration="2981000" />
       <workItem from="1618651327479" duration="4454000" />
+      <workItem from="1620131818848" duration="249000" />
     </task>
     <servers />
   </component>
@@ -607,13 +623,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245951000" />
+    <option name="totallyTimeSpent" value="246200000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="958" y="104" width="2187" height="977" extended-state="0" />
+    <frame x="465" y="230" width="2187" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22564103" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22750583" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -622,7 +638,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -875,16 +891,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="210">
-            <caret line="14" column="61" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d.mtl">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -907,50 +913,60 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="390" column="65" lean-forward="true" selection-start-line="390" selection-start-column="65" selection-end-line="390" selection-end-column="65" />
+        <state relative-caret-position="5445">
+          <caret line="390" column="65" selection-start-line="390" selection-start-column="65" selection-end-line="390" selection-end-column="65" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="803">
-          <caret line="178" column="5" lean-forward="true" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/Particle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="370" selection-start-line="370" selection-end-line="370" />
+        <state relative-caret-position="2355">
+          <caret line="178" column="5" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="602">
-          <caret line="80" column="5" lean-forward="true" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+        <state relative-caret-position="810">
+          <caret line="80" column="5" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="339" column="70" lean-forward="true" selection-start-line="339" selection-start-column="70" selection-end-line="339" selection-end-column="70" />
+        <state relative-caret-position="4695">
+          <caret line="339" column="70" selection-start-line="339" selection-start-column="70" selection-end-line="339" selection-end-column="70" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="413" column="60" lean-forward="true" selection-start-line="413" selection-start-column="60" selection-end-line="413" selection-end-column="60" />
+        <state relative-caret-position="5805">
+          <caret line="413" column="60" selection-start-line="413" selection-start-column="60" selection-end-line="413" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/Particle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4995">
+          <caret line="370" selection-start-line="370" selection-end-line="370" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="84" column="54" lean-forward="true" selection-start-line="84" selection-start-column="54" selection-end-line="84" selection-end-column="54" />
+        <state relative-caret-position="616">
+          <caret line="114" column="65" lean-forward="true" selection-start-line="114" selection-start-column="65" selection-end-line="114" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="180">
+            <caret line="12" column="60" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

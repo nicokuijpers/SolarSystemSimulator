@@ -8,6 +8,10 @@ User's manual: SolarSystemManual.pdf
 
 Technical notes: SolarSystemTechnicalNotes.pdf
 
+Video The Journey of Voyager 1: https://youtu.be/HgLGFVqZAUw
+
+Video The Journey of Voyager 2: https://youtu.be/_JBRZJpCbRg
+
 Video The Grand Tour of Voyager: https://youtu.be/Yq0LxCjSxdI
 
 Required ephemeris files: DE405EphemerisFiles (directory containing ephemeris data as text files)
