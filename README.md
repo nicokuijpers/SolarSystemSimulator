@@ -4,9 +4,11 @@ either Newton mechanics or General Relativity. Initial positions and velocities 
 While simulating, both simulated positions and ephemeris data are visualised for comparison. Source code is made publicly
 availaible under the MIT licence.
 
-User's manual: SolarSystemManual.pdf
+User's manual: [SolarSystemManual.pdf](https://github.com/nicokuijpers/SolarSystemSimulator/blob/master/SolarSystemSimulatorManual.pdf)
 
-Technical notes: SolarSystemTechnicalNotes.pdf
+Technical notes: [SolarSystemTechnicalNotes.pdf](https://github.com/nicokuijpers/SolarSystemSimulator/blob/master/SolarSystemSimulatorTechnicalNotes.pdf)
+
+Video The Journey of Voyager 1: https://youtu.be/HgLGFVqZAUw
 
 Video The Journey of Voyager 1: https://youtu.be/HgLGFVqZAUw
 
