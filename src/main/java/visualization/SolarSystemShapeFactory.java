@@ -724,6 +724,10 @@ public class SolarSystemShapeFactory {
          * Voyager spacecraft have an apparent size of approximately 5000 km
          * New Horizons has an apparent size of approximately 800 km
          *
+         * Models of Pioneer 10 and 11 are the same and are adapted from
+         * https://free3d.com/3d-model/pioneer-10-v1--330916.html
+         * Geometry was moved to the origin, rotated, and scaled with factor 0.000145
+         *
          * Model of Voyager 1 is adapted from
          * https://free3d.com/3d-model/voyager-1-v2--602253.html
          * Geometry was moved to the origin and scaled with factor 0.00025
@@ -744,6 +748,7 @@ public class SolarSystemShapeFactory {
          * Model of Rosetta is adapted from
          * https://nasa3d.arc.nasa.gov/detail/eoss-rosetta
          * Geometry is scaled such that it is 5 times smaller than 67P
+         *
          */
         String fileName = DIRECTORYMODELS + spacecraftName + EXTENSIONMODEL;
         Shape3D shape;

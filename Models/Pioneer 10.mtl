@@ -1,7 +1,7 @@
-# Blender MTL File: 'None'
+# Blender MTL File: 'pioneer_centered.blend'
 # Material Count: 1
 
-newmtl Default_OBJ
+newmtl _17242_Pioneer_10_v1default
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000

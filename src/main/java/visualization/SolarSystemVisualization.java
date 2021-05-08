@@ -263,8 +263,8 @@ public class SolarSystemVisualization extends Stage {
         ultimaThule = factory.createSmallBody("Ultima Thule", Color.LIGHTGRAY);
 
         // Spacecraft
-        pioneer10 = factory.createSpacecraft("Pioneer 10", Color.LIGHTYELLOW); // TODO Model Pioneer 10
-        pioneer11 = factory.createSpacecraft("Pioneer 11", Color.LIGHTYELLOW); // TODO Model Pioneer 11
+        pioneer10 = factory.createSpacecraft("Pioneer 10", Color.LIGHTYELLOW);
+        pioneer11 = factory.createSpacecraft("Pioneer 11", Color.LIGHTYELLOW);
         voyager1 = factory.createSpacecraft("Voyager 1", Color.LIGHTYELLOW);
         voyager2 = factory.createSpacecraft("Voyager 2", Color.LIGHTYELLOW);
         newhorizons = factory.createSpacecraft("New Horizons", Color.LIGHTYELLOW);
