@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Models/Pioneer 10.mtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Pioneer 10.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Pioneer 11.mtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Pioneer 11.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/PioneerEleven.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/PioneerTen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,26 +31,26 @@
     <session id="858141413">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="22" />
+          <entry key="project.closed" value="23" />
           <entry key="project.open.time.1" value="13" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.18" value="1" />
-          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="25" />
+          <entry key="project.opened" value="26" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="240" />
+          <entry key="java" value="247" />
           <entry key="md" value="3" />
-          <entry key="mtl" value="5" />
+          <entry key="mtl" value="6" />
           <entry key="obj" value="10" />
           <entry key="txt" value="3" />
           <entry key="xml" value="4" />
@@ -48,21 +58,21 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="240" />
+          <entry key="JAVA" value="247" />
           <entry key="Markdown" value="3" />
-          <entry key="PLAIN_TEXT" value="18" />
+          <entry key="PLAIN_TEXT" value="19" />
           <entry key="XML" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7994" />
+          <entry key="java" value="8002" />
           <entry key="md" value="138" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7994" />
+          <entry key="JAVA" value="8002" />
           <entry key="Markdown" value="138" />
         </counts>
       </usages-collector>
@@ -71,76 +81,85 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EphemerisFiles/orbitParsRosetta.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="100" selection-start-line="16" selection-start-column="100" selection-end-line="16" selection-end-column="100" />
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="495">
+                <caret line="33" selection-start-line="33" selection-end-line="33" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5445">
-              <caret line="390" column="65" selection-start-line="390" selection-start-column="65" selection-end-line="390" selection-end-column="65" />
+            <state relative-caret-position="360">
+              <caret line="66" column="59" selection-start-line="66" selection-start-column="59" selection-end-line="66" selection-end-column="59" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/PioneerEleven.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2355">
-              <caret line="178" column="5" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
+            <state relative-caret-position="360">
+              <caret line="49" column="45" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/PioneerTen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="810">
-              <caret line="80" column="5" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+            <state relative-caret-position="390">
+              <caret line="51" column="41" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4695">
-              <caret line="339" column="70" selection-start-line="339" selection-start-column="70" selection-end-line="339" selection-end-column="70" />
+            <state relative-caret-position="315">
+              <caret line="96" column="52" selection-start-line="96" selection-start-column="52" selection-end-line="96" selection-end-column="52" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5805">
-              <caret line="413" column="60" selection-start-line="413" selection-start-column="60" selection-end-line="413" selection-end-column="60" />
+            <state relative-caret-position="4800">
+              <caret line="344" column="5" selection-start-line="344" selection-start-column="5" selection-end-line="344" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="616">
-              <caret line="114" column="65" lean-forward="true" selection-start-line="114" selection-start-column="65" selection-end-line="114" selection-end-column="65" />
+            <state relative-caret-position="233">
+              <caret line="3524" column="26" selection-start-line="3524" selection-start-column="26" selection-end-line="3524" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="750" selection-start-line="750" selection-end-line="750" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="180">
-                <caret line="12" column="60" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/Models/Pioneer 10.mtl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
             </state>
           </provider>
         </entry>
@@ -165,8 +184,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>InterruptedException</find>
-      <find>updateDateTimeAndPanels</find>
       <find>getPlanetPositionVelocity</find>
       <find>correctdri</find>
       <find>Draw name</find>
@@ -195,6 +212,8 @@
       <find>mecha</find>
       <find>advanceSim</find>
       <find>60</find>
+      <find>giotto</find>
+      <find>updateVis</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -203,8 +222,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/util/Vector3D.java" />
-        <option value="$PROJECT_DIR$/src/main/java/application/PausableTask.java" />
         <option value="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisUtilTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/InformationPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisApproximate.java" />
@@ -235,16 +252,12 @@
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/SpacecraftTrajectory.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerOne.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemBody.java" />
-        <option value="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" />
         <option value="$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/ephemeris/CalendarUtilTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/DateTimeSelector.java" />
-        <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
-        <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java" />
         <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
@@ -254,6 +267,12 @@
         <option value="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
+        <option value="$PROJECT_DIR$/src/main/java/spacecraft/PioneerEleven.java" />
+        <option value="$PROJECT_DIR$/src/main/java/spacecraft/PioneerTen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" />
+        <option value="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
       </list>
     </option>
   </component>
@@ -272,8 +291,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="465" />
-    <option name="y" value="230" />
+    <option name="x" value="259" />
+    <option name="y" value="463" />
     <option name="width" value="2187" />
     <option name="height" value="977" />
   </component>
@@ -283,44 +302,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
-          <expand>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -332,6 +314,11 @@
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
               <item name="EphemerisFiles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="Models" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
@@ -350,6 +337,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SolarSystemSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SolarSystemSimulator" type="b2602c69:ProjectViewProjectNode" />
@@ -418,14 +413,51 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
+          <expand>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="SolarSystemSimulator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="SolarSystemSimulator" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1618752356132" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1620482268811" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -434,22 +466,22 @@
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/EphemerisFiles" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="experiments" />
+      <recent name="solarsystem" />
+      <recent name="spacecraft" />
+      <recent name="visualization" />
+      <recent name="application" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Models" />
       <recent name="$PROJECT_DIR$/Models/ISS" />
       <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/src/main/resources/Trajectories" />
       <recent name="$PROJECT_DIR$" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="application" />
-      <recent name="ephemeris" />
-      <recent name="visualization" />
-      <recent name="spacecraft" />
-      <recent name="particlesystem" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -464,7 +496,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.FlorenceEarthExperiment">
+  <component name="RunManager" selected="Application.SolarSystemApplication (1)">
     <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
       <module name="SolarSystemSimulator" />
@@ -544,8 +576,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
+        <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="JUnit.CalendarUtilTest" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
         <item itemvalue="JUnit.EphemerisUtilTest" />
@@ -586,7 +618,8 @@
       <workItem from="1613755529209" duration="6326000" />
       <workItem from="1614521968247" duration="2981000" />
       <workItem from="1618651327479" duration="4454000" />
-      <workItem from="1620131818848" duration="249000" />
+      <workItem from="1620131818848" duration="1239000" />
+      <workItem from="1620481226672" duration="1522000" />
     </task>
     <servers />
   </component>
@@ -623,13 +656,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="246200000" />
+    <option name="totallyTimeSpent" value="248712000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="465" y="230" width="2187" height="977" extended-state="0" />
+    <frame x="259" y="463" width="2187" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22750583" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22937062" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -638,7 +671,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.38418078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -670,17 +703,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SpacecraftTrajectory.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/ApolloEight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="587" column="77" selection-start-line="587" selection-start-column="77" selection-end-line="587" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/EphemerisFiles/orbitParsISS.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSaturnMoons.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -737,13 +759,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4500">
-          <caret line="324" column="20" selection-start-line="324" selection-start-column="20" selection-end-line="324" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemBody.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="808">
@@ -779,13 +794,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3600">
@@ -809,13 +817,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SmartGroup.java">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="425" selection-start-line="425" selection-end-line="425" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Models/Pallas_Torppa_scaled.obj">
       <provider selected="true" editor-type-id="text-editor" />
@@ -884,25 +885,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50100">
-          <caret line="3415" column="23" selection-start-line="3415" selection-start-column="23" selection-end-line="3415" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d.mtl">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Models/ultima-thule-3d_scaled.obj">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="40" column="34" selection-start-line="39" selection-start-column="3" selection-end-line="42" selection-end-column="33" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EphemerisFiles/orbitParsRosetta.txt">
       <provider selected="true" editor-type-id="text-editor">
@@ -946,6 +933,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1320">
+          <caret line="114" column="65" selection-start-line="114" selection-start-column="65" selection-end-line="114" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/particlesystem/Particle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4995">
@@ -953,20 +947,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="114" column="65" lean-forward="true" selection-start-line="114" selection-start-column="65" selection-end-line="114" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="180">
-            <caret line="12" column="60" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
+          <first_editor relative-caret-position="495">
+            <caret line="33" selection-start-line="33" selection-end-line="33" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="66" column="59" selection-start-line="66" selection-start-column="59" selection-end-line="66" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/PioneerEleven.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="49" column="45" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/PioneerTen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="51" column="41" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="96" column="52" selection-start-line="96" selection-start-column="52" selection-end-line="96" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4800">
+          <caret line="344" column="5" selection-start-line="344" selection-start-column="5" selection-end-line="344" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="3524" column="26" selection-start-line="3524" selection-start-column="26" selection-end-line="3524" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="750" selection-start-line="750" selection-end-line="750" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Pioneer 10.mtl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>

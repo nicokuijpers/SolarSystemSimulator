@@ -75,8 +75,10 @@ public class SolarSystemVisualization extends Stage {
     private static final double SCALESMALLBODY = 2.0E02; // factor 200
 
     // Spacecraft are visualized much larger than they are in reality
+    private static final double DIAMETERPIONEER     = 5.0E6; // 5000 km
     private static final double DIAMETERVOYAGER     = 5.0E6; // 5000 km
     private static final double DIAMETERNEWHORIZONS = 8.0E5; //  800 km
+    private static final double DIAMETERGIOTTO      = 2.5E5; //  250 km
     private static final double DIAMETERROSETTA     = 2.5E5; //  250 km
     private static final double DIAMETERISS         = 2.0E5; //  200 km
     private static final double DIAMETERAPOLLO      = 2.0E5; //  200 km
@@ -129,7 +131,7 @@ public class SolarSystemVisualization extends Stage {
     private Cylinder shadowEarth;
     private Shape3D pallas, juno, vesta, eros, bennu;
     private Shape3D halley, churyumov, ultimaThule;
-    private Shape3D voyager1, voyager2, newhorizons, rosetta, apollo8;
+    private Shape3D pioneer10, pioneer11, voyager1, voyager2, newhorizons, rosetta, apollo8;
     private Map<String,Node> bodies;
     private Map<String,Rotate> bodyRotationsX;
     private Map<String,Rotate> bodyRotationsY;
@@ -261,6 +263,8 @@ public class SolarSystemVisualization extends Stage {
         ultimaThule = factory.createSmallBody("Ultima Thule", Color.LIGHTGRAY);
 
         // Spacecraft
+        pioneer10 = factory.createSpacecraft("Pioneer 10", Color.LIGHTYELLOW); // TODO Model Pioneer 10
+        pioneer11 = factory.createSpacecraft("Pioneer 11", Color.LIGHTYELLOW); // TODO Model Pioneer 11
         voyager1 = factory.createSpacecraft("Voyager 1", Color.LIGHTYELLOW);
         voyager2 = factory.createSpacecraft("Voyager 2", Color.LIGHTYELLOW);
         newhorizons = factory.createSpacecraft("New Horizons", Color.LIGHTYELLOW);
@@ -272,9 +276,12 @@ public class SolarSystemVisualization extends Stage {
 
         // Names of spacecraft
         spacecraftNames = new ArrayList<>();
+        spacecraftNames.add("Pioneer 10");
+        spacecraftNames.add("Pioneer 11");
         spacecraftNames.add("Voyager 1");
         spacecraftNames.add("Voyager 2");
         spacecraftNames.add("New Horizons");
+        spacecraftNames.add("Giotto");
         spacecraftNames.add("Rosetta");
         spacecraftNames.add("Apollo 8");
         spacecraftNames.add("ISS");
@@ -566,12 +573,19 @@ public class SolarSystemVisualization extends Stage {
     private double diameterBody(String bodyName) {
         double diameter;
         switch (bodyName) {
+            case "Pioneer 10":
+            case "Pioneer 11":
+                diameter = DIAMETERPIONEER;
+                break;
             case "Voyager 1":
             case "Voyager 2":
                 diameter = DIAMETERVOYAGER;
                 break;
             case "New Horizons":
                 diameter = DIAMETERNEWHORIZONS;
+                break;
+            case "Giotto":
+                diameter = DIAMETERGIOTTO;
                 break;
             case "Rosetta":
                 diameter = DIAMETERROSETTA;
@@ -1392,6 +1406,7 @@ public class SolarSystemVisualization extends Stage {
 
         // Update the position and orientation of all visible objects
         try {
+            locationOnEarth.setVisible(false);
             if (viewMode.equals(SolarSystemViewMode.FROMSPACECRAFT)) {
                 // View from spacecraft
                 bodies.get(this.selectedBody).setVisible(false);
@@ -1399,13 +1414,11 @@ public class SolarSystemVisualization extends Stage {
                     case "ISS":
                         earth.setVisible(true);
                         iss.setVisible(true);
-                        locationOnEarth.setVisible(false);
                         viewFromISS();
                         break;
                     case "Apollo 8":
                         earth.setVisible(true);
                         moon.setVisible(true);
-                        locationOnEarth.setVisible(false);
                         viewFromApollo();
                         break;
                     default:
@@ -1420,35 +1433,32 @@ public class SolarSystemVisualization extends Stage {
                         earth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
-                        locationOnEarth.setVisible(false);
                         viewFromEarthToSun();
                         break;
                     case "Earth":
                         sun.setVisible(false);
-                        locationOnEarth.setVisible(true);
                         viewFromSunToEarth();
                         break;
                     case "Moon":
                         earth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(true);
-                        locationOnEarth.setVisible(false);
                         viewFromEarthToMoon();
                         break;
                     case "E-M Barycenter":
                         earth.setVisible(true);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
-                        locationOnEarth.setVisible(false);
                         viewEarthMoonSystem();
                         break;
+                    case "Pioneer 10":
+                    case "Pioneer 11":
                     case "Voyager 1":
                     case "Voyager 2":
                     case "New Horizons":
                     case "Rosetta":
                         if ("Earth".equals(observedBody)) {
                             sun.setVisible(false);
-                            locationOnEarth.setVisible(false);
                             viewFromSunToEarth();
                         }
                         else {
@@ -1459,13 +1469,11 @@ public class SolarSystemVisualization extends Stage {
                         if (bodies.keySet().contains(this.selectedBody)) {
                             earth.setVisible(false);
                             shadowEarth.setVisible(false);
-                            locationOnEarth.setVisible(false);
                             viewFromEarthToSelectedBody();
                         } else {
                             sun.setVisible(false);
                             earth.setVisible(true);
                             moon.setVisible(true);
-                            locationOnEarth.setVisible(true);
                             viewFromSunToEarth();
                         }
                         break;

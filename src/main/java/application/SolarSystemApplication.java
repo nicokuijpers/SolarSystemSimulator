@@ -220,6 +220,93 @@ public class SolarSystemApplication extends Application {
             CalendarUtil.createGregorianCalendar(1968, 12, 27, 15, 36, 52);
 
     /*
+     * Date/times in UTC to control 3D visualization from Pioneer 10 during flyby of Jupiter
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Pioneer_10
+     * 1973-12-03  12:26:00 Callisto flyby at 1,392,300 km
+     * 1973-12-03  13:56:00 Ganymede flyby at 446,250 km
+     * 1973-12-03  19:26:00 Europa flyby at 321,000 km
+     * 1973-12-03  22:56:00 Io flyby at 357,000 km
+     * 1973-12-04  02:26:00 Jupiter closest approach at 200,000 km
+     * 1973-12-04  02:36:00 Jupiter equator plane crossing
+     */
+    private GregorianCalendar startPioneerTenCallisto =
+            CalendarUtil.createGregorianCalendar(1973,12,2,12,0,0);
+    private GregorianCalendar startPioneerTenGanymede =
+            CalendarUtil.createGregorianCalendar(1973,12,3,0,0,0);
+    private GregorianCalendar startPioneerTenEuropa =
+            CalendarUtil.createGregorianCalendar(1973,12,3,15,0,0);
+    private GregorianCalendar startPioneerTenIo =
+            CalendarUtil.createGregorianCalendar(1973,12,3,20,0,0);
+    private GregorianCalendar startPioneerTenJupiter =
+            CalendarUtil.createGregorianCalendar(1973,12,3,23,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Pioneer 11 during flyby of Jupiter
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Pioneer_11
+     * 1974-12-02  08:21:00 Callisto flyby at 786,500 km.
+     * 1974-12-02  22:09:00 Ganymede flyby at 692,300 km.
+     * 1974-12-03  03:11:00 Io flyby at 314,000 km.
+     * 1974-12-03  04:15:00 Europa flyby at 586,700 km.
+     * 1974-12-03  05:21:19 Jupiter closest approach at 42,828 km.
+     * 1974-12-03  22:29:00 Amalthea flyby at 127,500 km.
+     * Note that Amalthea is not simulated.
+     */
+    private GregorianCalendar startPioneerElevenCallisto =
+            CalendarUtil.createGregorianCalendar(1974,12,2,0,0,0);
+    private GregorianCalendar startPioneerElevenGanymede =
+            CalendarUtil.createGregorianCalendar(1974,12,2,8,0,0);
+    private GregorianCalendar startPioneerElevenIo =
+            CalendarUtil.createGregorianCalendar(1974,12,2,23,0,0);
+    private GregorianCalendar startPioneerElevenEuropa =
+            CalendarUtil.createGregorianCalendar(1974,12,3,3,0,0);
+    private GregorianCalendar startPioneerElevenJupiter =
+            CalendarUtil.createGregorianCalendar(1974,12,3,7,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Pioneer 11 during flyby of Saturn
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Pioneer_11
+     * 1979-08-29  06:06:10 Iapetus flyby at 1,032,535 km.
+     * 1979-08-29  11:53:33 Phoebe flyby at 13,713,574 km.
+     * 1979-08-31  12:32:33 Hyperion flyby at 666,153 km.
+     * 1979-09-01  14:26:56 Descending ring plane crossing.
+     * 1979-09-01  14:50:55 Epimetheus flyby at 6,676 km.
+     * 1979-09-01  15:06:32 Atlas flyby at 45,960 km.
+     * 1979-09-01  15:59:30 Dione flyby at 291,556 km.
+     * 1979-09-01  16:26:28 Mimas flyby at 104,263 km.
+     * 1979-09-01  16:29:34 Saturn closest approach at 20,591 km.
+     * 1979-09-01  16:35:00 Saturn occultation entry.
+     * 1979-09-01  16:35:57 Saturn shadow entry.
+     * 1979-09-01  16:51:11 Janus flyby at 228,988 km.
+     * 1979-09-01  17:53:32 Saturn occultation exit.
+     * 1979-09-01  17:54:47 Saturn shadow exit.
+     * 1979-09-01  18:21:59 Ascending ring plane crossing.
+     * 1979-09-01  18:25:34 Tethys flyby at 329,197 km.
+     * 1979-09-01  18:30:14 Enceladus flyby at 222,027 km.
+     * 1979-09-01  20:04:13 Calypso flyby at 109,916 km.
+     * 1979-09-01  22:15:27 Rhea flyby at 345,303 km.
+     * 1979-09-02  18:00:33 Titan flyby at 362,962 km.
+     */
+    private GregorianCalendar startPioneerElevenIapetus =
+            CalendarUtil.createGregorianCalendar(1979,8,29,0,0,0);
+    private GregorianCalendar startPioneerElevenSaturnA =
+            CalendarUtil.createGregorianCalendar(1979,8,29,12,0,0);
+    private GregorianCalendar startPioneerElevenMimas =
+            CalendarUtil.createGregorianCalendar(1979,9,1,15,0,0);
+    private GregorianCalendar startPioneerElevenSaturnB =
+            CalendarUtil.createGregorianCalendar(1979,9,1,18,0,0);
+    private GregorianCalendar startPioneerElevenTitan =
+            CalendarUtil.createGregorianCalendar(1979,9,2,12,0,0);
+    private GregorianCalendar startPioneerElevenSaturnC =
+            CalendarUtil.createGregorianCalendar(1979,9,2,21,0,0);
+
+
+    /*
      * Date/times in UTC to control 3D visualization from Voyager 1 during flyby of Jupiter
      * January = 1, February = 2, etc
      *
@@ -535,6 +622,8 @@ public class SolarSystemApplication extends Application {
 
         // Start dates for trajectories of spacecraft
         trajectoryStartDate = new HashMap<>();
+        trajectoryStartDate.put("Pioneer 10", CalendarUtil.createGregorianCalendar(1972,3,3,1,49,0));
+        trajectoryStartDate.put("Pioneer 11", CalendarUtil.createGregorianCalendar(1973,4,6,2,11,0));
         trajectoryStartDate.put("Voyager 1", CalendarUtil.createGregorianCalendar(1977,9,5,12,56,0));
         trajectoryStartDate.put("Voyager 2", CalendarUtil.createGregorianCalendar(1977,8,20,14,29,0));
         trajectoryStartDate.put("New Horizons", CalendarUtil.createGregorianCalendar(2006,1,19,19,0,0));
@@ -2788,7 +2877,122 @@ public class SolarSystemApplication extends Application {
             }
             observedBody = closestBody;
             if (minDistance < 8.0E09 ||
-                    (minDistance < 1.5E10 && spacecraftPosition.magnitude() < closestBodyPosition.magnitude())) {
+                    (minDistance < 1.5E10 && spacecraftPosition.magnitude() < closestBodyPosition.magnitude()) ||
+                    (selectedBody.startsWith("Pioneer") && minDistance < 5.0E10)) {
+                if ("Pioneer 10".equals(selectedBody)) {
+                    if ("Jupiter".equals(closestBody)) {
+                        checkBoxesBodies.get("JupiterMoons").setSelected(true);
+                        /* https://en.wikipedia.org/wiki/Pioneer_10
+                         * 1973-12-03  12:26:00 Callisto flyby at 1,392,300 km
+                         * 1973-12-03  13:56:00 Ganymede flyby at 446,250 km
+                         * 1973-12-03  19:26:00 Europa flyby at 321,000 km
+                         * 1973-12-03  22:56:00 Io flyby at 357,000 km
+                         * 1973-12-04  02:26:00 Jupiter closest approach at 200,000 km
+                         * 1973-12-04  02:36:00 Jupiter equator plane crossing
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startPioneerTenCallisto)) {
+                            observedBody = "Callisto";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerTenGanymede)) {
+                            observedBody = "Ganymede";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerTenEuropa)) {
+                            observedBody = "Europa";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerTenIo)) {
+                            observedBody = "Io";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerTenJupiter)) {
+                            observedBody = "Jupiter";
+                        }
+                    }
+                    try {
+                        Vector3D observedBodyPosition = solarSystem.getPosition(observedBody);
+                        minDistance = spacecraftPosition.euclideanDistance(observedBodyPosition);
+                    } catch (SolarSystemException ex) {
+                        showMessage("Error",ex.getMessage());
+                    }
+                }
+                if ("Pioneer 11".equals(selectedBody)) {
+                    if ("Jupiter".equals(closestBody)) {
+                        checkBoxesBodies.get("JupiterMoons").setSelected(true);
+                        /* https://en.wikipedia.org/wiki/Pioneer_11
+                         * 1974-12-02  08:21:00 Callisto flyby at 786,500 km.
+                         * 1974-12-02  22:09:00 Ganymede flyby at 692,300 km.
+                         * 1974-12-03  03:11:00 Io flyby at 314,000 km.
+                         * 1974-12-03  04:15:00 Europa flyby at 586,700 km.
+                         * 1974-12-03  05:21:19 Jupiter closest approach at 42,828 km.
+                         * 1974-12-03  22:29:00 Amalthea flyby at 127,500 km.
+                         * Note that Amalthea is not simulated.
+                         */
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenCallisto)) {
+                            observedBody = "Callisto";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenGanymede)) {
+                            observedBody = "Ganymede";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenIo)) {
+                            observedBody = "Io";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenEuropa)) {
+                            observedBody = "Europa";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenJupiter)) {
+                            observedBody = "Jupiter";
+                        }
+                    }
+                    if ("Saturn".equals(closestBody)) {
+                        checkBoxesBodies.get("SaturnMoons").setSelected(true);
+                        /* https://en.wikipedia.org/wiki/Pioneer_11
+                         * 1979-08-29  06:06:10 Iapetus flyby at 1,032,535 km.
+                         * 1979-08-29  11:53:33 Phoebe flyby at 13,713,574 km.
+                         * 1979-08-31  12:32:33 Hyperion flyby at 666,153 km.
+                         * 1979-09-01  14:26:56 Descending ring plane crossing.
+                         * 1979-09-01  14:50:55 Epimetheus flyby at 6,676 km.
+                         * 1979-09-01  15:06:32 Atlas flyby at 45,960 km.
+                         * 1979-09-01  15:59:30 Dione flyby at 291,556 km.
+                         * 1979-09-01  16:26:28 Mimas flyby at 104,263 km.
+                         * 1979-09-01  16:29:34 Saturn closest approach at 20,591 km.
+                         * 1979-09-01  16:35:00 Saturn occultation entry.
+                         * 1979-09-01  16:35:57 Saturn shadow entry.
+                         * 1979-09-01  16:51:11 Janus flyby at 228,988 km.
+                         * 1979-09-01  17:53:32 Saturn occultation exit.
+                         * 1979-09-01  17:54:47 Saturn shadow exit.
+                         * 1979-09-01  18:21:59 Ascending ring plane crossing.
+                         * 1979-09-01  18:25:34 Tethys flyby at 329,197 km.
+                         * 1979-09-01  18:30:14 Enceladus flyby at 222,027 km.
+                         * 1979-09-01  20:04:13 Calypso flyby at 109,916 km.
+                         * 1979-09-01  22:15:27 Rhea flyby at 345,303 km.
+                         * 1979-09-02  18:00:33 Titan flyby at 362,962 km.
+                         */
+                        /*
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenIapetus)) {
+                            observedBody = "Iapetus";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenSaturnA)) {
+                            observedBody = "Saturn";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenMimas)) {
+                            observedBody = "Mimas";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenSaturnB)) {
+                            observedBody = "Saturn";
+                        }
+                        */
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenTitan)) {
+                            observedBody = "Titan";
+                        }
+                        if (solarSystem.getSimulationDateTime().after(startPioneerElevenSaturnC)) {
+                            observedBody = "Saturn";
+                        }
+                    }
+                    try {
+                        Vector3D observedBodyPosition = solarSystem.getPosition(observedBody);
+                        minDistance = spacecraftPosition.euclideanDistance(observedBodyPosition);
+                    } catch (SolarSystemException ex) {
+                        showMessage("Error",ex.getMessage());
+                    }
+                }
                 if ("Voyager 1".equals(selectedBody)) {
                     if ("Jupiter".equals(closestBody)) {
                         checkBoxesBodies.get("JupiterMoons").setSelected(true);
@@ -3025,7 +3229,8 @@ public class SolarSystemApplication extends Application {
                         }
                     }
                     else {
-                        if (minDistance < 1.0E09) {
+                        if (minDistance < 1.0E09 ||
+                                (selectedBody.startsWith("Pioneer") && !"Earth".equals(observedBody) && minDistance < 2.5E09)) {
                             checkBoxStepMode.setSelected(true);
                             startSimulationStepModeForward();
                             double value = Math.min(100.0, Math.max(5.0, minDistance / 1.0E07));
@@ -3292,6 +3497,46 @@ public class SolarSystemApplication extends Application {
         shoe.setValueSimulationSpeed(50);
         shoe.setAutomaticView(true);
         events.add(shoe);
+        VisualizationSettings pvnh = new VisualizationSettings();
+        pvnh.setEventName("Spacecraft leaving the Solar System");
+        pvnh.setSimulationStartDateTime(trajectoryStartDate.get("Pioneer 10"));
+        pvnh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
+                "Pluto","Ultima Thule","Pioneer 10","Pioneer 11","Voyager 1","Voyager 2","New Horizons")));
+        pvnh.setSelectedBody("Sun");
+        pvnh.setShowEphemeris(false);
+        pvnh.setShowRuler(true);
+        pvnh.setStepMode(false);
+        pvnh.setValueTopFrontView(40);
+        pvnh.setValueZoomView(9);
+        pvnh.setValueSimulationSpeed(100);
+        events.add(pvnh);
+        VisualizationSettings pio10 = new VisualizationSettings();
+        pio10.setEventName("Launch Pioneer 10 (1972-03-03  01:49)");
+        pio10.setSimulationStartDateTime(trajectoryStartDate.get("Pioneer 10"));
+        pio10.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Pioneer 10")));
+        pio10.setSelectedBody("Pioneer 10");
+        pio10.setShowEphemeris(false);
+        pio10.setShowRuler(true);
+        pio10.setStepMode(false);
+        pio10.setValueZoomView(15);
+        pio10.setValueSimulationSpeed(100);
+        pio10.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        pio10.setAutomaticView(true);
+        events.add(pio10);
+        VisualizationSettings pio11 = new VisualizationSettings();
+        pio11.setEventName("Launch Pioneer 11 (1973-04-06  02:11)");
+        pio11.setSimulationStartDateTime(trajectoryStartDate.get("Pioneer 11"));
+        pio11.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Pioneer 11")));
+        pio11.setSelectedBody("Pioneer 11");
+        pio11.setShowEphemeris(false);
+        pio11.setShowRuler(true);
+        pio11.setStepMode(false);
+        pio11.setValueTopFrontView(10);
+        pio11.setValueZoomView(15);
+        pio11.setValueSimulationSpeed(100);
+        pio11.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        pio11.setAutomaticView(true);
+        events.add(pio11);
         VisualizationSettings voy1 = new VisualizationSettings();
         voy1.setEventName("Launch Voyager 1 (1977-09-05  12:56)");
         voy1.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 1"));
