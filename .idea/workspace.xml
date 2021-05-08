@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Models/Pioneer 10.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Pioneer 10.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Pioneer 11.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Pioneer 11.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/PioneerEleven.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/PioneerTen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Pioneer 10.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Pioneer 10.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Pioneer 11.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Pioneer 11.obj" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -158,8 +148,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Models/Pioneer 10.mtl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="150">
+              <caret line="10" column="10" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -457,7 +447,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1620482268811" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1620483113553" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -619,7 +609,7 @@
       <workItem from="1614521968247" duration="2981000" />
       <workItem from="1618651327479" duration="4454000" />
       <workItem from="1620131818848" duration="1239000" />
-      <workItem from="1620481226672" duration="1522000" />
+      <workItem from="1620481226672" duration="1523000" />
     </task>
     <servers />
   </component>
@@ -656,7 +646,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="248712000" />
+    <option name="totallyTimeSpent" value="248713000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="259" y="463" width="2187" height="977" extended-state="0" />
@@ -1008,8 +998,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Models/Pioneer 10.mtl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="150">
+          <caret line="10" column="10" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
         </state>
       </provider>
     </entry>
