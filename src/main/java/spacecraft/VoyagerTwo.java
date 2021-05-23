@@ -101,6 +101,14 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
      * 2008-02-22		        Planetary radio astronomy experiment power off
      * 2015		                Terminate gyro operations
      * 2017-08-20  14:29:00		40 years of flight
+     *
+     * Final TCM 4 days and 5 million km till Neptune flyby
+     * See page 71 in
+     * Title: The Journeys of Voyager
+     * Author: Robin Kerrod
+     * Publisher: Mallard Press
+     * First published in the USA in 1990
+     * ISBN 0-792-45382-4
      */
 
     // Default serialVersion id
@@ -190,23 +198,25 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
     private static final GregorianCalendar updateNeptuneMoons =
             new GregorianCalendar(1989, 7, 11, 0, 0, 0);
 
+    // Schedule simulated correction on August 22, 1989 prior to Neptune flyby
+    // This is the final TCM mentioned on page 71 of The Journeys of Voyager by Robin Kerrod
+    private static final GregorianCalendar corrUranusToNeptuneD =
+            new GregorianCalendar(1989, 7, 22, 0, 0, 0);
+
     // Neptune fly by August 25, 1989, 03:56:36 UTC (distance 4,951 km)
     private static final GregorianCalendar neptuneFlyBy =
             new GregorianCalendar(1989, 7, 25, 3, 56, 36);
 
-    // Schedule simulated correction on August 25, 1989, 05:00 UTC after Neptune flyby
-    // This date was found by inspection of deviations in velocity of Voyager 2
-    private static final GregorianCalendar corrAfterNeptuneFlybyA =
-            new GregorianCalendar(1989, 7, 25, 5, 0, 0);
-
-    // Schedule simulated correction on August 25, 1989, 06:00 UTC after Neptune flyby
-    // This date was found by inspection of deviations in velocity of Voyager 2
-    private static final GregorianCalendar corrAfterNeptuneFlybyB =
+    // Schedule simulated correction on August 25, 1989, 06:00 UTC after Neptune flyby prior to Triton flyby
+    private static final GregorianCalendar corrNeptuneToTritonA =
             new GregorianCalendar(1989, 7, 25, 6, 0, 0);
 
-    // Schedule simulated correction on October 1, 1989 after Neptune flyby
-    // This date was found by inspection of deviations in velocity of Voyager 2
-    private static final GregorianCalendar corrAfterNeptuneFlybyC =
+    // Schedule simulated correction on August 26, 1989, 00:00 UTC after Triton flyby
+    private static final GregorianCalendar corrAfterTritonFlybyA =
+            new GregorianCalendar(1989, 7, 26, 0, 0, 0);
+
+    // Schedule simulated correction on October 1, 1989 after Neptune and Triton flyby
+    private static final GregorianCalendar corrAfterTritonFlybyB =
             new GregorianCalendar(1989, 9, 1, 0, 0, 0);
 
     // Voyager 2 reached a distance of 100 A.U. from the Sun on November 7, 2012
@@ -408,34 +418,6 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
      * Ephemeris Type [change]    : ELEMENTS
      * Target Body [change]       : Voyager 2 (spacecraft) [-32]
      * Center [change]            : Sun (body center) [500@10]
-     * Time Span [change]         : Start=1981-09-01, Stop=1981-09-02, Step=1 d
-     * Table Settings [change]    : defaults
-     * Display/Output [change]    : default (formatted HTML)
-     *
-     * 2444848.500000000 = A.D. 1981-Sep-01 00:00:00.0000 TDB
-     *  EC= 3.691855201061780E+00 QR= 9.599956720428132E+00 IN= 2.683146360233457E+00
-     *  OM= 7.666759808639857E+01 W = 1.131684596637691E+02 Tp=  2444816.092490546405
-     *  N = 1.463449374869118E-01 MA= 4.742674945110442E+00 TA= 2.325040315317940E+00
-     *  A =-3.566297591579783E+00 AD= 6.684586453809735E+91 PR= 1.157407291666667E+95
-     *
-    private static final double axisVoyagerTwoSUA = -3.566297591579783E+00; // Semi-major axis [au]
-    private static final double eccentricityVoyagerTwoSUA = 3.691855201061780E+00; // Eccentricity [-]
-    private static final double inclinationVoyagerTwoSUA = 2.683146360233457E+00; // Inclination [degrees]
-    private static final double argPeriapsisVoyagerTwoSUA = 1.131684596637691E+02; // Arg perifocus [degrees]
-    private static final double longNodeVoyagerTwoSUA = 7.666759808639857E+01; // Long asc node [degrees]
-    private static final double periapsisPassageVoyagerTwoSUA = 2444816.092490546405;  // Time of periapsis [JD]
-    private static final double meanMotionVoyagerTwoSUA = 1.463449374869118E-01; // Mean motion [degrees/day]
-    private static final double[] ORBITPARSSATURNURANUSA = new double[]
-            {axisVoyagerTwoSUA, eccentricityVoyagerTwoSUA, inclinationVoyagerTwoSUA, argPeriapsisVoyagerTwoSUA,
-                    longNodeVoyagerTwoSUA, periapsisPassageVoyagerTwoSUA, meanMotionVoyagerTwoSUA};
-     */
-
-    /**
-     * https://ssd.jpl.nasa.gov/horizons.cgi#results
-     * Results from HORIZONS
-     * Ephemeris Type [change]    : ELEMENTS
-     * Target Body [change]       : Voyager 2 (spacecraft) [-32]
-     * Center [change]            : Sun (body center) [500@10]
      * Time Span [change]         : Start=1981-10-01, Stop=1981-10-02, Step=1 d
      * Table Settings [change]    : defaults
      * Display/Output [change]    : default (formatted HTML)
@@ -457,42 +439,13 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
             {axisVoyagerTwoSUA, eccentricityVoyagerTwoSUA, inclinationVoyagerTwoSUA, argPeriapsisVoyagerTwoSUA,
                     longNodeVoyagerTwoSUA, periapsisPassageVoyagerTwoSUA, meanMotionVoyagerTwoSUA};
 
-
     /**
      * https://ssd.jpl.nasa.gov/horizons.cgi#results
      * Results from HORIZONS
      * Ephemeris Type [change]    : ELEMENTS
      * Target Body [change]       : Voyager 2 (spacecraft) [-32]
      * Center [change]            : Sun (body center) [500@10]
-     * Time Span [change]         : Start=1986-01-01, Stop=1986-01-02, Step=1 d
-     * Table Settings [change]    : defaults
-     * Display/Output [change]    : default (formatted HTML)
-     *
-     * 2446431.500000000 = A.D. 1986-Jan-01 00:00:00.0000 TDB
-     *  EC= 3.446000639492594E+00 QR= 9.602434951743630E+00 IN= 2.664189491701800E+00
-     *  OM= 7.751073600421475E+01 W = 1.123881067013119E+02 Tp=  2444815.115280401893
-     *  N = 1.267117422701795E-01 MA= 2.048149239991712E+02 TA= 6.861803252885241E+01
-     *  A =-3.925769599854068E+00 AD= 6.684586453809735E+91 PR= 1.157407291666667E+95
-     *
-    private static final double axisVoyagerTwoSUB = -3.925769599854068E+00; // Semi-major axis [au]
-    private static final double eccentricityVoyagerTwoSUB = 3.446000639492594E+00; // Eccentricity [-]
-    private static final double inclinationVoyagerTwoSUB = 2.664189491701800E+00; // Inclination [degrees]
-    private static final double argPeriapsisVoyagerTwoSUB = 1.123881067013119E+02; // Arg perifocus [degrees]
-    private static final double longNodeVoyagerTwoSUB = 7.751073600421475E+01; // Long asc node [degrees]
-    private static final double periapsisPassageVoyagerTwoSUB = 2444815.115280401893;  // Time of periapsis [JD]
-    private static final double meanMotionVoyagerTwoSUB = 1.267117422701795E-01; // Mean motion [degrees/day]
-    private static final double[] ORBITPARSSATURNURANUSB = new double[]
-            {axisVoyagerTwoSUB, eccentricityVoyagerTwoSUB, inclinationVoyagerTwoSUB, argPeriapsisVoyagerTwoSUB,
-                    longNodeVoyagerTwoSUB, periapsisPassageVoyagerTwoSUB, meanMotionVoyagerTwoSUB};
-     */
-
-    /**
-     * https://ssd.jpl.nasa.gov/horizons.cgi#results
-     * Results from HORIZONS
-     * Ephemeris Type [change]    : ELEMENTS
-     * Target Body [change]       : Voyager 2 (spacecraft) [-32]
-     * Center [change]            : Sun (body center) [500@10]
-     * Time Span [change]         : Start=1986-01-01, Stop=1986-01-02, Step=1 d
+     * Time Span [change]         : Start=1984-11-14, Stop=1984-11-15, Step=1 d
      * Table Settings [change]    : defaults
      * Display/Output [change]    : default (formatted HTML)
      *
@@ -599,27 +552,54 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
      * Results from HORIZONS
      * Ephemeris Type [change]    : ELEMENTS
      * Target Body [change]       : Voyager 2 (spacecraft) [-32]
-     * Center [change]            : Sun (body center) [500@10]
+     * Center [change]            : Neptune (body center) [500@899]
+     * Time Span [change]         : Start=1989-08-22, Stop=1989-08-23, Step=1 d
+     * Table Settings [change]    : defaults
+     * Display/Output [change]    : default (formatted HTML)
+     *
+     * 2447760.500000000 = A.D. 1989-Aug-22 00:00:00.0000 TDB
+     *  EC= 2.207911481681228E+00 QR= 1.968548504034854E-04 IN= 1.161450712851590E+02
+     *  OM= 1.151830257384741E+02 W = 1.139060649710839E+02 Tp=  2447763.664474699646
+     *  N = 3.399806315450885E+03 MA=-1.075860106860830E+04 TA= 2.436550936422021E+02
+     *  A =-1.629712552524934E-04 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
+     */
+     private static final double axisVoyagerTwoUND = -1.629712552524934E-04; // Semi-major axis [au]
+     private static final double eccentricityVoyagerTwoUND = 2.207911481681228E+00; // Eccentricity [-]
+     private static final double inclinationVoyagerTwoUND = 1.161450712851590E+02; // Inclination [degrees]
+     private static final double argPeriapsisVoyagerTwoUND = 1.139060649710839E+02; // Arg perifocus [degrees]
+     private static final double longNodeVoyagerTwoUND = 1.151830257384741E+02; // Long asc node [degrees]
+     private static final double periapsisPassageVoyagerTwoUND = 2447763.664474699646;  // Time of periapsis [JD]
+     private static final double meanMotionVoyagerTwoUND = 3.399806315450885E+03; // Mean motion [degrees/day]
+     private static final double[] ORBITPARSURANUSNEPTUNED = new double[]
+            {axisVoyagerTwoUND, eccentricityVoyagerTwoUND, inclinationVoyagerTwoUND, argPeriapsisVoyagerTwoUND,
+                longNodeVoyagerTwoUND, periapsisPassageVoyagerTwoUND, meanMotionVoyagerTwoUND};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons.cgi#results
+     * Results from HORIZONS
+     * Ephemeris Type [change]    : ELEMENTS
+     * Target Body [change]       : Voyager 2 (spacecraft) [-32]
+     * Center [change]            : Neptune (body center) [500@899]
      * Time Span [change]         : Start=1989-08-25, Stop=1989-08-26, Step=1 h
      * Table Settings [change]    : defaults
      * Display/Output [change]    : default (formatted HTML)
      *
-     * 2447763.708333333 = A.D. 1989-Aug-25 05:00:00.0000 TDB
-     *  EC= 9.667516375082462E+00 QR= 2.039999556591870E+01 IN= 8.162224137165070E+01
-     *  OM= 1.015884041436003E+02 W = 1.290066739644763E+02 Tp=  2445874.207541884854
-     *  N = 2.729612325776303E-01 MA= 5.157604649902520E+02 TA= 5.008999765477814E+01
-     *  A =-2.353614886101050E+00 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
+     * 2447763.750000000 = A.D. 1989-Aug-25 06:00:00.0000 TDB
+     *  EC= 2.199442481479008E+00 QR= 1.954617082606833E-04 IN= 1.159360457041324E+02
+     *  OM= 1.152276142724120E+02 W = 1.139612112315788E+02 Tp=  2447763.664301722310
+     *  N = 3.400143895297096E+03 MA= 2.913864754407375E+02 TA= 1.002200038365422E+02
+     *  A =-1.629604681165399E-04 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
      */
-    private static final double axisVoyagerTwoANA = -2.353614886101050E+00; // Semi-major axis [au]
-    private static final double eccentricityVoyagerTwoANA = 9.667516375082462E+00; // Eccentricity [-]
-    private static final double inclinationVoyagerTwoANA = 8.162224137165070E+01; // Inclination [degrees]
-    private static final double argPeriapsisVoyagerTwoANA = 1.290066739644763E+02; // Arg perifocus [degrees]
-    private static final double longNodeVoyagerTwoANA = 1.015884041436003E+02; // Long asc node [degrees]
-    private static final double periapsisPassageVoyagerTwoANA = 2445874.207541884854;  // Time of periapsis [JD]
-    private static final double meanMotionVoyagerTwoANA = 2.729612325776303E-01; // Mean motion [degrees/day]
-    private static final double[] ORBITPARSAFTERNEPTUNEFLYBYA = new double[]
-            {axisVoyagerTwoANA, eccentricityVoyagerTwoANA, inclinationVoyagerTwoANA, argPeriapsisVoyagerTwoANA,
-                    longNodeVoyagerTwoANA, periapsisPassageVoyagerTwoANA, meanMotionVoyagerTwoANA};
+    private static final double axisVoyagerTwoAN = -1.629604681165399E-04; // Semi-major axis [au]
+    private static final double eccentricityVoyagerTwoAN = 2.199442481479008E+00; // Eccentricity [-]
+    private static final double inclinationVoyagerTwoAN = 1.159360457041324E+02; // Inclination [degrees]
+    private static final double argPeriapsisVoyagerTwoAN = 1.139612112315788E+02; // Arg perifocus [degrees]
+    private static final double longNodeVoyagerTwoAN = 1.152276142724120E+02; // Long asc node [degrees]
+    private static final double periapsisPassageVoyagerTwoAN = 2447763.664301722310;  // Time of periapsis [JD]
+    private static final double meanMotionVoyagerTwoAN = 3.400143895297096E+03; // Mean motion [degrees/day]
+    private static final double[] ORBITPARSAFTERNEPTUNEFLYBY = new double[]
+            {axisVoyagerTwoAN, eccentricityVoyagerTwoAN, inclinationVoyagerTwoAN, argPeriapsisVoyagerTwoAN,
+                    longNodeVoyagerTwoAN, periapsisPassageVoyagerTwoAN, meanMotionVoyagerTwoAN};
 
     /**
      * https://ssd.jpl.nasa.gov/horizons.cgi#results
@@ -631,22 +611,22 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
      * Table Settings [change]    : defaults
      * Display/Output [change]    : default (formatted HTML)
      *
-     * 2447763.750000000 = A.D. 1989-Aug-25 06:00:00.0000 TDB
-     *  EC= 8.260261678209153E+00 QR= 2.097882529995662E+01 IN= 8.121659051023452E+01
-     *  OM= 1.015948732034734E+02 W = 1.301927363434895E+02 Tp=  2445740.758011785802
-     *  N = 2.006599664804410E-01 MA= 4.059335045452237E+02 TA= 4.890361295786877E+01
-     *  A =-2.889541207987337E+00 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
+     * 2447764.500000000 = A.D. 1989-Aug-26 00:00:00.0000 TDB
+     *  EC= 6.527970508488925E+00 QR= 2.124982895062976E+01 IN= 7.925414548348580E+01
+     *  OM= 1.016262823978923E+02 W = 1.302271703577704E+02 Tp=  2445499.241146878805
+     *  N = 1.307734231867355E-01 MA= 2.962356546267325E+02 TA= 4.887430606593269E+01
+     *  A =-3.844056135610322E+00 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
      */
-    private static final double axisVoyagerTwoANB = -2.889541207987337E+00; // Semi-major axis [au]
-    private static final double eccentricityVoyagerTwoANB = 8.260261678209153E+00; // Eccentricity [-]
-    private static final double inclinationVoyagerTwoANB = 8.121659051023452E+01; // Inclination [degrees]
-    private static final double argPeriapsisVoyagerTwoANB = 1.301927363434895E+02; // Arg perifocus [degrees]
-    private static final double longNodeVoyagerTwoANB = 1.015948732034734E+02; // Long asc node [degrees]
-    private static final double periapsisPassageVoyagerTwoANB = 2445740.758011785802;  // Time of periapsis [JD]
-    private static final double meanMotionVoyagerTwoANB = 2.006599664804410E-01; // Mean motion [degrees/day]
-    private static final double[] ORBITPARSAFTERNEPTUNEFLYBYB = new double[]
-            {axisVoyagerTwoANB, eccentricityVoyagerTwoANB, inclinationVoyagerTwoANB, argPeriapsisVoyagerTwoANB,
-                    longNodeVoyagerTwoANB, periapsisPassageVoyagerTwoANB, meanMotionVoyagerTwoANB};
+     private static final double axisVoyagerTwoAT = -3.844056135610322E+00; // Semi-major axis [au]
+     private static final double eccentricityVoyagerTwoAT = 6.527970508488925E+00; // Eccentricity [-]
+     private static final double inclinationVoyagerTwoAT = 7.925414548348580E+01; // Inclination [degrees]
+     private static final double argPeriapsisVoyagerTwoAT = 1.302271703577704E+02; // Arg perifocus [degrees]
+     private static final double longNodeVoyagerTwoAT = 1.016262823978923E+02; // Long asc node [degrees]
+     private static final double periapsisPassageVoyagerTwoAT = 2445499.241146878805;  // Time of periapsis [JD]
+     private static final double meanMotionVoyagerTwoAT = 1.307734231867355E-01; // Mean motion [degrees/day]
+     private static final double[] ORBITPARSAFTERTRITONFLYBY = new double[]
+     {axisVoyagerTwoAT, eccentricityVoyagerTwoAT, inclinationVoyagerTwoAT, argPeriapsisVoyagerTwoAT,
+     longNodeVoyagerTwoAT, periapsisPassageVoyagerTwoAT, meanMotionVoyagerTwoAT};
 
     /**
      * https://ssd.jpl.nasa.gov/horizons.cgi#results
@@ -664,16 +644,16 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
      *  N = 1.224169814800377E-01 MA= 2.870656278079912E+02 TA= 4.950808651370028E+01
      *  A =-4.017059565291250E+00 AD= 9.999999999999998E+99 PR= 9.999999999999998E+99
      */
-    private static final double axisVoyagerTwoANC = -4.017059565291250E+00; // Semi-major axis [au]
-    private static final double eccentricityVoyagerTwoANC = 6.288051851213855E+00; // Eccentricity [-]
-    private static final double inclinationVoyagerTwoANC = 7.882258154789083E+01; // Inclination [degrees]
-    private static final double argPeriapsisVoyagerTwoANC = 1.300723487546264E+02; // Arg perifocus [degrees]
-    private static final double longNodeVoyagerTwoANC = 1.016327813436562E+02; // Long asc node [degrees]
-    private static final double periapsisPassageVoyagerTwoANC = 2445455.517920411658;  // Time of periapsis [JD]
-    private static final double meanMotionVoyagerTwoANC = 1.224169814800377E-01; // Mean motion [degrees/day]
-    private static final double[] ORBITPARSAFTERNEPTUNEFLYBYC = new double[]
-            {axisVoyagerTwoANC, eccentricityVoyagerTwoANC, inclinationVoyagerTwoANC, argPeriapsisVoyagerTwoANC,
-                    longNodeVoyagerTwoANC, periapsisPassageVoyagerTwoANC, meanMotionVoyagerTwoANC};
+    private static final double axisVoyagerTwoANT = -4.017059565291250E+00; // Semi-major axis [au]
+    private static final double eccentricityVoyagerTwoANT = 6.288051851213855E+00; // Eccentricity [-]
+    private static final double inclinationVoyagerTwoANT = 7.882258154789083E+01; // Inclination [degrees]
+    private static final double argPeriapsisVoyagerTwoANT = 1.300723487546264E+02; // Arg perifocus [degrees]
+    private static final double longNodeVoyagerTwoANT = 1.016327813436562E+02; // Long asc node [degrees]
+    private static final double periapsisPassageVoyagerTwoANT = 2445455.517920411658;  // Time of periapsis [JD]
+    private static final double meanMotionVoyagerTwoANT = 1.224169814800377E-01; // Mean motion [degrees/day]
+    private static final double[] ORBITPARSAFTERNEPTUNETRITONFLYBY = new double[]
+            {axisVoyagerTwoANT, eccentricityVoyagerTwoANT, inclinationVoyagerTwoANT, argPeriapsisVoyagerTwoANT,
+                    longNodeVoyagerTwoANT, periapsisPassageVoyagerTwoANT, meanMotionVoyagerTwoANT};
 
     /**
      * Constructor.
@@ -728,17 +708,19 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
         trajectories.add(
                 new SpacecraftTrajectory(corrUranusToNeptuneB, corrUranusToNeptuneC,"Sun", ORBITPARSURANUSNEPTUNEB));
         trajectories.add(
-                new SpacecraftTrajectory(corrUranusToNeptuneC, neptuneFlyBy,"Sun", ORBITPARSURANUSNEPTUNEC));
+                new SpacecraftTrajectory(corrUranusToNeptuneC, corrUranusToNeptuneD,"Sun", ORBITPARSURANUSNEPTUNEC));
+        trajectories.add(
+                new SpacecraftTrajectory(corrUranusToNeptuneD, neptuneFlyBy,"Neptune", ORBITPARSURANUSNEPTUNED));
 
         // From Neptune till 100 A.U. from the Sun
         trajectories.add(
-                new SpacecraftTrajectory(neptuneFlyBy, corrAfterNeptuneFlybyA, "Sun", ORBITPARSURANUSNEPTUNEC));
+                new SpacecraftTrajectory(neptuneFlyBy, corrNeptuneToTritonA, "Neptune", ORBITPARSURANUSNEPTUNED));
         trajectories.add(
-                new SpacecraftTrajectory(corrAfterNeptuneFlybyA, corrAfterNeptuneFlybyB, "Sun", ORBITPARSAFTERNEPTUNEFLYBYA));
+                new SpacecraftTrajectory(corrNeptuneToTritonA, corrAfterTritonFlybyA, "Neptune", ORBITPARSAFTERNEPTUNEFLYBY));
         trajectories.add(
-                new SpacecraftTrajectory(corrAfterNeptuneFlybyB, corrAfterNeptuneFlybyC, "Sun", ORBITPARSAFTERNEPTUNEFLYBYB));
+                new SpacecraftTrajectory(corrAfterTritonFlybyA, corrAfterTritonFlybyB, "Sun", ORBITPARSAFTERTRITONFLYBY));
         trajectories.add(
-                new SpacecraftTrajectory(corrAfterNeptuneFlybyC, hundredAU, "Sun", ORBITPARSAFTERNEPTUNEFLYBYC));
+                new SpacecraftTrajectory(corrAfterTritonFlybyB, hundredAU, "Sun", ORBITPARSAFTERNEPTUNETRITONFLYBY));
 
         return trajectories;
     }
@@ -766,8 +748,8 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrUranusToNeptuneB)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrUranusToNeptuneC)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(updateNeptuneMoons), neptuneMoons));
-        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrAfterNeptuneFlybyA)));
-        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrAfterNeptuneFlybyB)));
-        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrAfterNeptuneFlybyC)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrUranusToNeptuneD)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrNeptuneToTritonA)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(corrAfterTritonFlybyB)));
     }
 }

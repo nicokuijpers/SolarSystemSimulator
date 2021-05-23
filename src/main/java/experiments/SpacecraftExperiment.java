@@ -502,15 +502,15 @@ public class SpacecraftExperiment {
         Distance from surface  : 75746.76184686647 km
         Velocity during fly by : 22196.720745041715 m/s
         Fly by Neptune
-        Date and time          : 1989-08-25 04:09
-        Distance from center   : 35510.36307886572 km
-        Distance from surface  : 10746.363078865714 km
-        Velocity during fly by : 26364.311425359 m/s
+        Date and time          : 1989-08-25 03:56:00.000
+        Distance from center   : 29453.315306113403 km
+        Distance from surface  : 4689.3153061134035 km
+        Velocity during fly by : 28076.754905563557 m/s
         Fly by Triton
-        Date and time          : 1989-08-25 09:27
-        Distance from center   : 102693.64590317445 km
-        Distance from surface  : 101341.14590317445 km
-        Velocity during fly by : 17321.45005090662 m/s
+        Date and time          : 1989-08-25 09:11:00.000
+        Distance from center   : 39753.76717583183 km
+        Distance from surface  : 38401.26717583183 km
+        Velocity during fly by : 17769.757054743604 m/s
 
         Spacecraft New Horizons
         Launch 2006-01-19 19:00
@@ -804,15 +804,15 @@ public class SpacecraftExperiment {
         Distance from surface  : 75746.16067278566 km
         Velocity during fly by : 22196.736864859944 m/s
         Fly by Neptune
-        Date and time          : 1989-08-25 04:09:00
-        Distance from center   : 35510.48893080959 km
-        Distance from surface  : 10746.488930809588 km
-        Velocity during fly by : 26364.302956929892 m/s
+        Date and time          : 1989-08-25 03:56:00.000
+        Distance from center   : 29453.315236361315 km
+        Distance from surface  : 4689.3152363613135 km
+        Velocity during fly by : 28076.75476094293 m/s
         Fly by Triton
-        Date and time          : 1989-08-25 09:27:00
-        Distance from center   : 102658.11458930024 km
-        Distance from surface  : 101305.61458930024 km
-        Velocity during fly by : 17321.447816358195 m/s
+        Date and time          : 1989-08-25 09:11:00.000
+        Distance from center   : 39753.77584301235 km
+        Distance from surface  : 38401.27584301235 km
+        Velocity during fly by : 17769.757073697605 m/s
 
         Spacecraft New Horizons
         Launch 2006-01-19 19:00:00
