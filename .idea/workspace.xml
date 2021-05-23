@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,13 +56,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="8006" />
+          <entry key="java" value="8009" />
           <entry key="md" value="138" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="8006" />
+          <entry key="JAVA" value="8009" />
           <entry key="Markdown" value="138" />
         </counts>
       </usages-collector>
@@ -125,8 +127,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-85">
-              <caret line="54" column="39" lean-forward="true" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+            <state relative-caret-position="434">
+              <caret line="111" column="7" selection-start-line="111" selection-start-column="7" selection-end-line="111" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -252,8 +254,8 @@
         <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
       </list>
     </option>
   </component>
@@ -438,7 +440,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1621777962525" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1621778114220" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -602,7 +604,7 @@
       <workItem from="1620131818848" duration="1239000" />
       <workItem from="1620481226672" duration="3320000" />
       <workItem from="1620917205391" duration="2111000" />
-      <workItem from="1621771574784" duration="1664000" />
+      <workItem from="1621771574784" duration="2271000" />
     </task>
     <servers />
   </component>
@@ -639,10 +641,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="254285000" />
+    <option name="totallyTimeSpent" value="254892000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="672" y="143" width="1680" height="977" extended-state="0" />
+    <frame x="1337" y="207" width="1680" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23443224" />
@@ -654,7 +656,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.38418078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -987,8 +989,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-85">
-          <caret line="54" column="39" lean-forward="true" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+        <state relative-caret-position="434">
+          <caret line="111" column="7" selection-start-line="111" selection-start-column="7" selection-end-line="111" selection-end-column="7" />
         </state>
       </provider>
     </entry>
