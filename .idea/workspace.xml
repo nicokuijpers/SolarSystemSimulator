@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -61,12 +59,14 @@
         <counts>
           <entry key="java" value="8078" />
           <entry key="md" value="138" />
+          <entry key="txt" value="87" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="8078" />
           <entry key="Markdown" value="138" />
+          <entry key="PLAIN_TEXT" value="87" />
         </counts>
       </usages-collector>
     </session>
@@ -130,8 +130,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="2054" column="54" lean-forward="true" selection-start-line="2054" selection-start-column="54" selection-end-line="2054" selection-end-column="54" />
+            <state relative-caret-position="316">
+              <caret line="2020" column="50" lean-forward="true" selection-start-line="2020" selection-start-column="50" selection-end-line="2020" selection-end-column="50" />
               <folding>
                 <element signature="e#21269#21270#0" expanded="true" />
                 <element signature="e#21325#21326#0" expanded="true" />
@@ -297,8 +297,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="798" />
-    <option name="y" value="185" />
+    <option name="x" value="685" />
+    <option name="y" value="177" />
     <option name="width" value="1680" />
     <option name="height" value="977" />
   </component>
@@ -463,7 +463,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1625993051214" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1625993118954" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -628,8 +628,16 @@
       <workItem from="1620481226672" duration="3320000" />
       <workItem from="1620917205391" duration="2111000" />
       <workItem from="1621771574784" duration="4002000" />
-      <workItem from="1625991946134" duration="963000" />
+      <workItem from="1625991946134" duration="1213000" />
     </task>
+    <task id="LOCAL-00001" summary="Rotated view when observing from the Earth. Correction speed of light improved">
+      <created>1625993112561</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1625993112561</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -665,13 +673,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="257586000" />
+    <option name="totallyTimeSpent" value="257836000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="798" y="185" width="1680" height="977" extended-state="0" />
+    <frame x="685" y="177" width="1680" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23687424" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23687424" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -680,7 +688,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -710,6 +718,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Rotated view when observing from the Earth. Correction speed of light improved" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rotated view when observing from the Earth. Correction speed of light improved" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java">
@@ -1013,8 +1025,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="2054" column="54" lean-forward="true" selection-start-line="2054" selection-start-column="54" selection-end-line="2054" selection-end-column="54" />
+        <state relative-caret-position="316">
+          <caret line="2020" column="50" lean-forward="true" selection-start-line="2020" selection-start-column="50" selection-end-line="2020" selection-end-column="50" />
           <folding>
             <element signature="e#21269#21270#0" expanded="true" />
             <element signature="e#21325#21326#0" expanded="true" />
