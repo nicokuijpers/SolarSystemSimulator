@@ -1361,20 +1361,60 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
+     * Correction for speed of light when observing from the Earth. The correction is related to
+     * the distance between the Earth and the observed Solar System body. In case of Solar eclipse,
+     * Mercury transit or Venus transit, correction is related to the nearest body.
+     * @return correction [s]
+     */
+    private double correctionSpeedOfLight() {
+        double distance; // m
+        Vector3D positionEarth = this.positionBody("Earth");
+        if ("Sun".equals(selectedBody)) {
+            // Check for Solar eclipse, Venus transit, Mercury transit
+            Vector3D positionSun = this.positionBody("Sun");
+            Vector3D positionMercury = this.positionBody("Mercury");
+            Vector3D positionVenus = this.positionBody("Venus");
+            Vector3D positionMoon = this.positionBody("Moon");
+            Vector3D positionSunEarth = positionSun.minus(positionEarth);
+            distance = positionSun.euclideanDistance(positionEarth);
+            if (positionMercury.minus(positionEarth).angleDeg(positionSunEarth) < 0.5) {
+                distance = positionMercury.euclideanDistance(positionEarth);
+            }
+            if (positionVenus.minus(positionEarth).angleDeg(positionSunEarth) < 1.0) {
+                distance = positionVenus.euclideanDistance(positionEarth);
+            }
+            if (positionMoon.minus(positionEarth).angleDeg(positionSunEarth) < 2.0) {
+                distance = positionMoon.euclideanDistance(positionEarth);
+            }
+        }
+        else {
+            distance = positionSelectedBody().euclideanDistance(positionEarth);
+        }
+        return distance / SolarSystemParameters.SPEEDOFLIGHT; // s
+    }
+
+    /**
+     * Current simulation date/time corrected for speed of light when observing from the Earth.
+     * @return simulation date/time corrected [GC]
+     */
+    private GregorianCalendar currentSimulationDateTimeCorrected() {
+        GregorianCalendar currentSimulationDateTime = solarSystem.getSimulationDateTime();
+        if (observationFromEarth) {
+            // Correction for speed of light
+            double correction = this.correctionSpeedOfLight();
+            currentSimulationDateTime.add(Calendar.SECOND,(int) Math.round(correction));
+        }
+        return currentSimulationDateTime;
+    }
+
+    /**
      * Update current simulation date/time in time selector.
      * When observing from the surface of the Earth, displayed date/time is
-     * corrected speed of light depending on the distance between the Earth
+     * corrected for speed of light depending on the distance between the Earth
      * and the selected Solar System object.
      */
     private void updateDateTimeSelector() {
-        GregorianCalendar currentSimulationDateTime = solarSystem.getSimulationDateTime();
-        if (observationFromEarth) {
-            // Correct for light speed
-            double distance = positionSelectedBody().euclideanDistance(positionEarth()); // m
-            double correction = distance / SolarSystemParameters.SPEEDOFLIGHT; // s
-            currentSimulationDateTime.add(Calendar.SECOND,(int) Math.round(correction));
-        }
-        dateTimeSelector.setDateTime(currentSimulationDateTime);
+        dateTimeSelector.setDateTime(this.currentSimulationDateTimeCorrected());
     }
 
     /**
@@ -1408,7 +1448,13 @@ public class SolarSystemApplication extends Application {
 
         // Initialize simulation
         try {
-            solarSystem.initializeSimulation(dateTimeSelector.getDateTime());
+            GregorianCalendar dateTime = dateTimeSelector.getDateTime();
+            if (observationFromEarth) {
+                double correction = correctionSpeedOfLight();
+                dateTime.add(Calendar.SECOND,(int) Math.round(-correction));
+            }
+            solarSystem.initializeSimulation(dateTime);
+            updateDateTimeSelector();
         }
         catch (SolarSystemException ex) {
             showMessage("Error",ex.getMessage());
@@ -1724,24 +1770,33 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
+     * Determine the position of body with given name.
+     * @return position of selected body [m]
+     */
+    private Vector3D positionBody(String name) {
+        if (showSimulation) {
+            Particle particle = solarSystem.getParticle(name);
+            if (particle != null) {
+                return particle.getPosition();
+            }
+        }
+        else {
+            SolarSystemBody body = solarSystem.getBody(name);
+            if (body != null) {
+                return body.getPosition();
+            }
+        }
+        return new Vector3D();
+    }
+
+    /**
      * Determine the position of the selected body.
      * Return zero vector when no body is selected.
-     * @return position of selected body
+     * @return position of selected body [m]
      */
     private Vector3D positionSelectedBody() {
         if (selectedBody != null) {
-            if (showSimulation) {
-                Particle particle = solarSystem.getParticle(selectedBody);
-                if (particle != null) {
-                    return particle.getPosition();
-                }
-            }
-            else {
-                SolarSystemBody body = solarSystem.getBody(selectedBody);
-                if (body != null) {
-                    return body.getPosition();
-                }
-            }
+            return positionBody(selectedBody);
         }
         selectedBody = null;
         return new Vector3D();
@@ -1749,15 +1804,10 @@ public class SolarSystemApplication extends Application {
 
     /**
      * Determine the position of the Earth.
-     * @return position of the Earth
+     * @return position of the Earth [m]
      */
     private Vector3D positionEarth() {
-        if (showSimulation) {
-            return solarSystem.getParticle("Earth").getPosition();
-        }
-        else {
-            return solarSystem.getBody("Earth").getPosition();
-        }
+        return positionBody("Earth");
     }
 
     /**
@@ -1768,31 +1818,32 @@ public class SolarSystemApplication extends Application {
      */
     private Vector3D observationFromEarthView(Vector3D position) {
 
+        // Correct for speed of light
+        GregorianCalendar currentSimulationDateTimeCorrected = currentSimulationDateTimeCorrected();
+
         // Viewing position of camera is determined by latitude and longitude, height = 0
         Vector3D geocentricPosition =
                 EphemerisUtil.computePositionFromLatitudeLongitudeHeight(latitude, longitude, 0.0,
-                        solarSystem.getSimulationDateTime());
+                        currentSimulationDateTimeCorrected);
         Vector3D viewingPosition = positionEarth().plus(geocentricPosition);
+
 
         // Viewing direction of camera
         Vector3D viewingDirection = positionSelectedBody().minus(viewingPosition);
 
-        // Upward viewing orientation of camera is is along earth's axis
-        // double axialTiltRad = Math.toRadians(SolarSystemParameters.AXIALTILT);
-        // double uvoX = 0.0;
-        // double uvoY = Math.tan(axialTiltRad);
-        // double uvoZ = 1.0;
-        // Upward viewing orientation of camera is towards celestial north pole
-        double uvoX = 0.0;
-        double uvoY = 0.0;
-        double uvoZ = 1.0;
-        Vector3D upwardViewingOrientation = (new Vector3D(uvoX,uvoY,uvoZ)).normalize();
+        // Set up local camera frame
+        Vector3D geocentricPositionHigh =
+                EphemerisUtil.computePositionFromLatitudeLongitudeHeight(latitude, longitude, 10000.0,
+                        currentSimulationDateTimeCorrected);
+        Vector3D normalVector = geocentricPositionHigh.minus(geocentricPosition).normalize();
+        Vector3D sideVector = new Vector3D(viewingDirection.crossProduct(normalVector).normalize());
+        Vector3D cameraUp = new Vector3D(sideVector.crossProduct(viewingDirection).normalize());
 
         // Camera coordinates
         // https://www.ntu.edu.sg/home/ehchua/programming/opengl/cg_basicstheory.html
+        Vector3D xc = sideVector;
+        Vector3D yc = cameraUp;
         Vector3D zc = (viewingDirection.scalarProduct(-1.0)).normalize();
-        Vector3D xc = (upwardViewingOrientation.crossProduct(zc)).normalize();
-        Vector3D yc = zc.crossProduct(xc);
 
         // Translate
         // https://www.ntu.edu.sg/home/ehchua/programming/opengl/cg_basicstheory.html
@@ -1803,10 +1854,10 @@ public class SolarSystemApplication extends Application {
         Vector3D positionRotated = positionTranslated.rotate(xc,yc,zc);
 
         // Take perspective into account
-        // Assume that we are standing on the surface of the Earth
-        double distance = position.euclideanDistance(positionEarth());
-        double radiusEarth = solarSystem.getBody("Earth").getDiameter()/2.0;
-        distance = distance - radiusEarth;
+        // https://www.cse.unr.edu/~bebis/CS791E/Notes/PerspectiveProjection.pdf
+        // positionRotated is defined in camera frame units, with z-axis negative for viewing direction
+        // to be consistent with basic CG theory with focal distance f = 1.
+        double distance = Math.abs(positionRotated.getZ());
         double factor = SolarSystemParameters.ASTRONOMICALUNIT/distance;
         return positionRotated.scalarProduct(factor);
     }
@@ -1994,8 +2045,9 @@ public class SolarSystemApplication extends Application {
         gc.setFill(circle.getFill());
         String label;
         if (observationFromEarth && showRuler) {
+            GregorianCalendar currentSimulationDateTimeCorrected = this.currentSimulationDateTimeCorrected();
             double[] result =
-                    EphemerisUtil.computeAzimuthElevationDistance(position,latitude,longitude,solarSystem.getSimulationDateTime());
+                    EphemerisUtil.computeAzimuthElevationDistance(position,latitude,longitude,currentSimulationDateTimeCorrected);
             double azimuth = result[0];
             double elevation = result[1];
             StringBuilder sb = new StringBuilder(body.getName());

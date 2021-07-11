@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -20,7 +23,7 @@
     <session id="858141413">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="24" />
+          <entry key="project.closed" value="25" />
           <entry key="project.open.time.1" value="13" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.12" value="2" />
@@ -29,16 +32,16 @@
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.28" value="1" />
-          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="28" />
+          <entry key="project.opened" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="249" />
+          <entry key="java" value="251" />
           <entry key="md" value="3" />
           <entry key="mtl" value="6" />
           <entry key="obj" value="11" />
@@ -48,7 +51,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="249" />
+          <entry key="JAVA" value="251" />
           <entry key="Markdown" value="3" />
           <entry key="PLAIN_TEXT" value="20" />
           <entry key="XML" value="4" />
@@ -56,13 +59,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="8009" />
+          <entry key="java" value="8078" />
           <entry key="md" value="138" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="8009" />
+          <entry key="JAVA" value="8078" />
           <entry key="Markdown" value="138" />
         </counts>
       </usages-collector>
@@ -70,15 +73,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3900">
-              <caret line="302" column="69" selection-start-line="302" selection-start-column="69" selection-end-line="302" selection-end-column="69" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -118,26 +112,55 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
+            <state relative-caret-position="7425">
               <caret line="519" column="42" selection-start-line="519" selection-start-column="42" selection-end-line="519" selection-end-column="42" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="434">
-              <caret line="111" column="7" selection-start-line="111" selection-start-column="7" selection-end-line="111" selection-end-column="7" />
+            <state relative-caret-position="457">
+              <caret line="253" column="52" selection-start-line="253" selection-start-column="52" selection-end-line="253" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="2054" column="54" lean-forward="true" selection-start-line="2054" selection-start-column="54" selection-end-line="2054" selection-end-column="54" />
+              <folding>
+                <element signature="e#21269#21270#0" expanded="true" />
+                <element signature="e#21325#21326#0" expanded="true" />
+                <element signature="e#21861#21862#0" expanded="true" />
+                <element signature="e#21913#21914#0" expanded="true" />
+                <element signature="e#24325#24326#0" expanded="true" />
+                <element signature="e#24398#24399#0" expanded="true" />
+                <element signature="e#24659#24660#0" expanded="true" />
+                <element signature="e#24732#24733#0" expanded="true" />
+                <element signature="e#24937#24938#0" expanded="true" />
+                <element signature="e#24994#24995#0" expanded="true" />
+                <element signature="e#28055#28056#0" expanded="true" />
+                <element signature="e#28109#28110#0" expanded="true" />
+                <element signature="e#29962#29963#0" expanded="true" />
+                <element signature="e#30011#30012#0" expanded="true" />
+                <element signature="e#62157#62158#0" expanded="true" />
+                <element signature="e#62239#62240#0" expanded="true" />
+                <element signature="e#75493#75494#0" expanded="true" />
+                <element signature="e#75537#75538#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50040">
-              <caret line="3524" column="26" selection-start-line="3524" selection-start-column="26" selection-end-line="3524" selection-end-column="26" />
+            <state relative-caret-position="285">
+              <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -167,10 +190,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>correctdri</find>
-      <find>Draw name</find>
-      <find>clearScreen</find>
-      <find>Compare</find>
       <find>Visual</find>
       <find>3D</find>
       <find>VISU</find>
@@ -197,6 +216,10 @@
       <find>giotto</find>
       <find>updateVis</find>
       <find>TODO</find>
+      <find>screenY</find>
+      <find>SCREENHEIG</find>
+      <find>initializeSimul</find>
+      <find>showRuler</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -241,7 +264,6 @@
         <option value="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/application/VisualizationSettings.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/Rosetta.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java" />
         <option value="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" />
@@ -251,11 +273,12 @@
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/PioneerEleven.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/PioneerTen.java" />
         <option value="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" />
-        <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" />
         <option value="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" />
       </list>
     </option>
   </component>
@@ -274,8 +297,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1337" />
-    <option name="y" value="207" />
+    <option name="x" value="798" />
+    <option name="y" value="185" />
     <option name="width" value="1680" />
     <option name="height" value="977" />
   </component>
@@ -323,7 +346,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -434,13 +456,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1621778114220" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1625993051214" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -449,22 +472,22 @@
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/EphemerisFiles" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ephemeris" />
+      <recent name="spacecraft" />
+      <recent name="visualization" />
+      <recent name="experiments" />
+      <recent name="solarsystem" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Models" />
       <recent name="$PROJECT_DIR$/Models/ISS" />
       <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/src/main/resources/Trajectories" />
       <recent name="$PROJECT_DIR$" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="spacecraft" />
-      <recent name="visualization" />
-      <recent name="experiments" />
-      <recent name="solarsystem" />
-      <recent name="application" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -604,7 +627,8 @@
       <workItem from="1620131818848" duration="1239000" />
       <workItem from="1620481226672" duration="3320000" />
       <workItem from="1620917205391" duration="2111000" />
-      <workItem from="1621771574784" duration="2271000" />
+      <workItem from="1621771574784" duration="4002000" />
+      <workItem from="1625991946134" duration="963000" />
     </task>
     <servers />
   </component>
@@ -641,13 +665,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="254892000" />
+    <option name="totallyTimeSpent" value="257586000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1337" y="207" width="1680" height="977" extended-state="0" />
+    <frame x="798" y="185" width="1680" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23443224" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23687424" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -656,7 +680,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.38418078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -876,13 +900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2355">
-          <caret line="178" column="5" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="810">
@@ -963,10 +980,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50040">
-          <caret line="3524" column="26" selection-start-line="3524" selection-start-column="26" selection-end-line="3524" selection-end-column="26" />
+        <state relative-caret-position="7425">
+          <caret line="519" column="42" selection-start-line="519" selection-start-column="42" selection-end-line="519" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -980,17 +997,44 @@
     <entry file="file://$PROJECT_DIR$/Models/Pioneer 11.obj">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="519" column="42" selection-start-line="519" selection-start-column="42" selection-end-line="519" selection-end-column="42" />
+        <state relative-caret-position="457">
+          <caret line="253" column="52" selection-start-line="253" selection-start-column="52" selection-end-line="253" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/spacecraft/VoyagerTwo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="111" column="7" selection-start-line="111" selection-start-column="7" selection-end-line="111" selection-end-column="7" />
+        <state relative-caret-position="285">
+          <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="2054" column="54" lean-forward="true" selection-start-line="2054" selection-start-column="54" selection-end-line="2054" selection-end-column="54" />
+          <folding>
+            <element signature="e#21269#21270#0" expanded="true" />
+            <element signature="e#21325#21326#0" expanded="true" />
+            <element signature="e#21861#21862#0" expanded="true" />
+            <element signature="e#21913#21914#0" expanded="true" />
+            <element signature="e#24325#24326#0" expanded="true" />
+            <element signature="e#24398#24399#0" expanded="true" />
+            <element signature="e#24659#24660#0" expanded="true" />
+            <element signature="e#24732#24733#0" expanded="true" />
+            <element signature="e#24937#24938#0" expanded="true" />
+            <element signature="e#24994#24995#0" expanded="true" />
+            <element signature="e#28055#28056#0" expanded="true" />
+            <element signature="e#28109#28110#0" expanded="true" />
+            <element signature="e#29962#29963#0" expanded="true" />
+            <element signature="e#30011#30012#0" expanded="true" />
+            <element signature="e#62157#62158#0" expanded="true" />
+            <element signature="e#62239#62240#0" expanded="true" />
+            <element signature="e#75493#75494#0" expanded="true" />
+            <element signature="e#75537#75538#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

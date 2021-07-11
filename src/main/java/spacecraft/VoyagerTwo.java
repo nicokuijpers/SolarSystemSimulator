@@ -109,7 +109,6 @@ public class VoyagerTwo extends Spacecraft implements Serializable {
      * Publisher: Mallard Press
      * First published in the USA in 1990
      * ISBN 0-792-45382-4
-     * 
      */
 
     // Default serialVersion id

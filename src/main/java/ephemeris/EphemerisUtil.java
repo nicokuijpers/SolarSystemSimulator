@@ -26,7 +26,7 @@ import java.util.GregorianCalendar;
 
 /**
  * Utilities for Ephemeris computation and orbital mechanics.
- * @author Nico Kuijpers
+ * @author Nico Kuijpers and Marco Brassé
  */
 public class EphemerisUtil {
 
@@ -41,7 +41,13 @@ public class EphemerisUtil {
      */
     // https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
     private static final double J2000 = 2451545.0;
-    
+
+    /**
+     * First eccentricity of the Earth, squared
+     */
+    // https://en.wikipedia.org/wiki/World_Geodetic_System#WGS84
+    private static final double ESQUARED = 0.00669437999014;
+
     /**
      * Compute number of centuries past J2000.0.
      *
@@ -1454,12 +1460,12 @@ public class EphemerisUtil {
 
     /**
      * Compute position in geocentric J2000 ecliptic coordinates at a given date/time for
-     * given latitude, longitude, ane height representing a location on Earth.
+     * given latitude, longitude, and height representing a location on Earth.
      * @param latitude latitude of location [degrees]
      * @param longitude longitude of location [degrees]
      * @param height height of location [m]
      * @param dateTime date/time [UTC]
-     * @return position in heliocentric J2000 ecliptic coordinates [m]
+     * @return position in geocentric J2000 ecliptic coordinates [m]
      */
     public static Vector3D computePositionFromLatitudeLongitudeHeight(
             double latitude, double longitude, double height, GregorianCalendar dateTime) {
@@ -1471,22 +1477,16 @@ public class EphemerisUtil {
         double radiusEarth = 0.5* SolarSystemParameters.getInstance().getDiameter("Earth");
 
         // Geocentric equatorial coordinates
-        double r = radiusEarth + height;
+        // https://en.wikipedia.org/wiki/World_Geodetic_System#WGS84
         double alphaRad = Math.toRadians(localSiderealTime);
         double deltaRad = Math.toRadians(latitude);
-        double xq = r * Math.cos(alphaRad) * Math.cos(deltaRad);
-        double yq = r * Math.sin(alphaRad) * Math.cos(deltaRad);
-        double zq = r * Math.sin(deltaRad);
+        double RN = radiusEarth / Math.sqrt(1.0 - ESQUARED*Math.sin(deltaRad)*Math.sin(deltaRad));
+        double xq = (RN + height)*Math.cos(alphaRad)*Math.cos(deltaRad);
+        double yq = (RN + height)*Math.sin(alphaRad)*Math.cos(deltaRad);
+        double zq = ((1.0 - ESQUARED)*RN + height)*Math.sin(deltaRad);
         Vector3D positionEquatorial = new Vector3D(xq,yq,zq);
 
         // Geocentric ecliptic coordinates
-        Vector3D positionEcliptic = inverseTransformJ2000(positionEquatorial);
-
-        // Position of the Earth in ecliptic J2000 coordinates at given date/time
-        Vector3D positionEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth",dateTime);
-
-        // Heliocentric ecliptic coordinates
-        //return positionEcliptic.plus(positionEarth);
-        return positionEcliptic;
+        return inverseTransformJ2000(positionEquatorial);
     }
 }
