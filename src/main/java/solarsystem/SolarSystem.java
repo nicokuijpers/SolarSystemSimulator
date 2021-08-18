@@ -54,25 +54,25 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
     // Planets of the Solar System
     private Map<String, SolarSystemBody> planets;
-    
+
     // Moons of the Solar System
     private Map<String, SolarSystemBody> moons;
 
     // Particles for moons of planet systems
     private Map<String, Particle> moonParticles;
-    
-     // Spacecraft in the Solar System
+
+    // Spacecraft in the Solar System
     private Map<String, Spacecraft> spacecraft;
-    
+
     // Center bodies of moons and spacecraft
     private Map<String,String> centerBodies;
 
     // Planet systems
-    private Map<String, OblatePlanetSystem> planetSystems;
-    
+    private Map<String,OblatePlanetSystem> planetSystems;
+
     // Simulation date/time
     private GregorianCalendar simulationDateTime;
-    
+
     // Simulation time step 60 min
     // General Relativity: Runge-Kutta scheme with time step 60 min
     // Newton Mechanics: Adams-Bashforth-Moulton scheme with time step 30 min
@@ -89,7 +89,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     public SolarSystem() {
         this(new GregorianCalendar());
     }
-        
+
     /**
      * Constructor: create the Solar System and initialize for given date/time.
      * @param dateTime initial simulation date/time
@@ -100,10 +100,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Initialize simulation date/time
         simulationDateTime = new GregorianCalendar();
-        
+
         // https://www.timeanddate.com/time/aboututc.html
-        // Use Coordinated Universal Time (UTC) to avoid 
-        // sudden changes in ephemeris due to changes from 
+        // Use Coordinated Universal Time (UTC) to avoid
+        // sudden changes in ephemeris due to changes from
         // winter time to summer time and vice versa
         simulationDateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
 
@@ -116,14 +116,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.set(Calendar.MINUTE, dateTime.get(Calendar.MINUTE));
         simulationDateTime.set(Calendar.SECOND, dateTime.get(Calendar.SECOND));
         simulationDateTime.set(Calendar.MILLISECOND, 0);
-        
+
         // Initialize hash maps for planets and moons
         planets = new HashMap<>();
         moons = new HashMap<>();
         moonParticles = new HashMap<>();
         spacecraft = new HashMap<>();
         centerBodies = new HashMap<>();
-        
+
         // Create the Sun
         Vector3D positionSun = new Vector3D(); // Origin
         Vector3D velocitySun = new Vector3D(); // Zero velocity
@@ -234,23 +234,26 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (simulationDateTime.after(ephemeris.getLastValidDate())) {
             throw new SolarSystemException("Date not valid after AD 3000 for " + planetName + " System");
         }
-       
-        // Create the planet system
-        OblatePlanetSystem planetSystem = new OblatePlanetSystem(planetName,this);
 
-        // Set flag to indicate whether general relativity
-        // should be applied when computing acceleration
-        planetSystem.setGeneralRelativityFlag(getGeneralRelativityFlag());
-        
-        // Store reference to this planet system
-        planetSystems.put(planetName,planetSystem);
+        // Check whether planet system already exists
+        if (!planetSystems.containsKey(planetName)) {
+            // Create the planet system
+            OblatePlanetSystem planetSystem = new OblatePlanetSystem(planetName, this);
 
-        // Create the moons for this planet system
-        for (String moonName : solarSystemParameters.getMoonsOfPlanet(planetName)) {
-            double mass = solarSystemParameters.getMass(moonName);
-            double mu = solarSystemParameters.getMu(moonName);
-            double diameter = solarSystemParameters.getDiameter(moonName);
-            createMoon(planetName, moonName, mass, mu, diameter, simulationDateTime);
+            // Set flag to indicate whether general relativity
+            // should be applied when computing acceleration
+            planetSystem.setGeneralRelativityFlag(getGeneralRelativityFlag());
+
+            // Store reference to this planet system
+            planetSystems.put(planetName, planetSystem);
+
+            // Create the moons for this planet system
+            for (String moonName : solarSystemParameters.getMoonsOfPlanet(planetName)) {
+                double mass = solarSystemParameters.getMass(moonName);
+                double mu = solarSystemParameters.getMu(moonName);
+                double diameter = solarSystemParameters.getDiameter(moonName);
+                createMoon(planetName, moonName, mass, mu, diameter, simulationDateTime);
+            }
         }
     }
 
@@ -260,6 +263,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      */
     public void removePlanetSystem(String planetName) {
         if (planetSystems.containsKey(planetName)) {
+            // Transfer spacecraft to Solar System
+            for (String spacecraftName : spacecraft.keySet()) {
+                if (centerBodies.containsKey(spacecraftName) &&
+                        planetName.equals(centerBodies.get(spacecraftName))) {
+                    transferSpacecraftToSolarSystem(spacecraftName);
+                }
+            }
+
             // Remove the moons for this planet system
             for (String moonName : solarSystemParameters.getMoonsOfPlanet(planetName)) {
                 removeMoon(moonName);
@@ -313,7 +324,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         // Reset flag to indicate that values stored in cyclic arrays are not valid.
         setValidABM4(false);
     }
-            
+
     /**
      * Advance simulation of planet systems with time steps
      * of at most 10 minutes.
@@ -337,7 +348,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (deltaT < 0.0) {
             while (totalTime > deltaT) {
                 for (OblatePlanetSystem planetSystem : planetSystems.values()) {
-                    planetSystem.advanceRungeKutta(-timeStep);                    
+                    planetSystem.advanceRungeKutta(-timeStep);
                 }
                 totalTime -= timeStep;
             }
@@ -345,7 +356,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         else {
             while (totalTime < deltaT) {
                 for (OblatePlanetSystem planetSystem : planetSystems.values()) {
-                    planetSystem.advanceRungeKutta(timeStep);                    
+                    planetSystem.advanceRungeKutta(timeStep);
                 }
                 totalTime += timeStep;
             }
@@ -379,7 +390,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             checkForSpacecraftEvent();
         }
     }
-    
+
     /**
      * Advance backward in time for given number of simulation time steps.
      * @param nrTimeSteps number of time steps
@@ -420,7 +431,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         simulationDateTime.add(Calendar.MILLISECOND, millisecond);
         checkForSpacecraftEvent();
     }
-    
+
     /**
      * Get body with given name.
      * @param name  Name of the body
@@ -441,7 +452,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         }
         return null;
     }
-    
+
     /**
      * Move all bodies to positions corresponding to simulation date/time.
      * Bodies are moved when the simulation date/time is valid, i.e.,
@@ -452,10 +463,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Check whether simulation date/time is valid for ephemeris
         if (simulationDateTime.before(ephemeris.getFirstValidDate()) ||
-            simulationDateTime.after(ephemeris.getLastValidDate())) {
+                simulationDateTime.after(ephemeris.getLastValidDate())) {
             return;
         }
-        
+
         // Move each planet to position of simulation date/time
         for (String name : planets.keySet()) {
             SolarSystemBody planet = planets.get(name);
@@ -468,7 +479,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             planet.setVelocity(velocity);
             planet.setOrbit(orbit);
         }
-        
+
         // Move each moon to position of simulation date/time
         for (String name : moons.keySet()) {
             // Obtain position and velocity of moon from Ephemeris
@@ -476,13 +487,13 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             Vector3D[] positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(name, simulationDateTime);
             Vector3D positionMoon = positionAndVelocityMoon[0];
             Vector3D velocityMoon = positionAndVelocityMoon[1];
-        
+
             // Obtain position and velocity of planet from Ephemeris
             String planetName = centerBodies.get(name);
             Vector3D[] positionAndVelocityPlanet = ephemeris.getBodyPositionVelocity(planetName, simulationDateTime);
             Vector3D positionPlanet = positionAndVelocityPlanet[0];
             Vector3D velocityPlanet = positionAndVelocityPlanet[1];
-            
+
             // Compute orbit of moon relative to planet
             double muPlanet = this.getParticle(planetName).getMu();
             Vector3D[] orbit;
@@ -491,14 +502,14 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                 Vector3D positionRelativeToPlanet = positionMoon.minus(positionPlanet);
                 Vector3D velocityRelativeToPlanet = velocityMoon.minus(velocityPlanet);
                 orbit = EphemerisUtil.computeOrbit(muPlanet,
-                   positionRelativeToPlanet,velocityRelativeToPlanet);
+                        positionRelativeToPlanet,velocityRelativeToPlanet);
             } else {
                 // Position and velocity of other moons are relative to planet
                 orbit = EphemerisUtil.computeOrbit(muPlanet,positionMoon,velocityMoon);
                 positionMoon.addVector(positionPlanet);
                 velocityMoon.addVector(velocityPlanet);
             }
-            
+
             // Set position and orbit
             moon.setPosition(positionMoon);
             moon.setVelocity(velocityMoon);
@@ -573,10 +584,10 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         craft.updateStatus(simulationDateTime);
         Vector3D position = craft.getPosition();
         Vector3D velocity = craft.getVelocity();
-        Particle particle = getParticle(craft.getName());
-        if (particle != null) {
-            particle.setPosition(position);
-            particle.setVelocity(velocity);
+        try {
+            this.setPositionVelocity(craft.getName(),position,velocity);
+        } catch (SolarSystemException e) {
+            e.printStackTrace();
         }
     }
 
@@ -589,15 +600,15 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Check whether simulation date/time is valid for ephemeris
         if (simulationDateTime.before(ephemeris.getFirstValidDate()) ||
-            simulationDateTime.after(ephemeris.getLastValidDate())) {
+                simulationDateTime.after(ephemeris.getLastValidDate())) {
             return;
         }
-        
+
         // Move each planet particle to position of present date
         for (String planetName : planets.keySet()) {
-           movePlanetParticle(planetName);
+            movePlanetParticle(planetName);
         }
-        
+
         // Move each moon particle to position of present date
         for (String moonName : moons.keySet()) {
             moveMoonParticle(moonName);
@@ -610,7 +621,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     }
 
     /**
-     * Create planet, compute position and velocity, and add the planet 
+     * Create planet, compute position and velocity, and add the planet
      * as well as corresponding particle to the Solar System.
      * It is assumed that the body is orbiting the Sun.
      * @param name      Name of the body
@@ -659,9 +670,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             }
         }
     }
-    
+
     /**
-     * Create moon, compute position and velocity, and add the moon 
+     * Create moon, compute position and velocity, and add the moon
      * as well as corresponding particle to the Solar System.
      * @param planetName  Name of the planet
      * @param moonName    Name of the moon
@@ -670,8 +681,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param diameter    Diameter of the moon in m
      * @param date        Date to determine position of the moon.
      */
-    private void createMoon(String planetName, String moonName, 
-            double mass, double mu, double diameter, GregorianCalendar date) {
+    private void createMoon(String planetName, String moonName,
+                            double mass, double mu, double diameter, GregorianCalendar date) {
 
         Vector3D[] positionAndVelocityMoon;
         if ("Triton".equals(moonName)) {
@@ -690,7 +701,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         Vector3D[] positionAndVelocityPlanet = ephemeris.getBodyPositionVelocity(planetName, date);
         Vector3D positionPlanet = positionAndVelocityPlanet[0];
         Vector3D velocityPlanet = positionAndVelocityPlanet[1];
-        
+
         // Compute orbit of moon relative to planet
         Vector3D positionRelativeToPlanet;
         Vector3D velocityRelativeToPlanet;
@@ -713,9 +724,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
 
         // Add the new moon to the Solar System for computation
         SolarSystemBody planet = this.getBody(planetName);
-        this.moons.put(moonName, 
+        this.moons.put(moonName,
                 new SolarSystemBody(moonName, positionMoon, velocityMoon, orbit, diameter, planet));
-        
+
         // Add the new moon as particle for simulation
         if ("Moon".equals(moonName)) {
             // Earth's moon applies forces to all other particles in the Solar System
@@ -777,6 +788,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             case "New Horizons":
                 craft = new NewHorizons("New Horizons", "Sun", this);
                 break;
+            case "Cassini":
+                craft = new Cassini("Cassini", "Sun", this);
+                break;
             default:
                 System.err.println("ERROR: No spacecraft with name " + spacecraftName);
                 craft = null;
@@ -812,7 +826,11 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             for (SpacecraftEvent event : eventsToBeRemoved) {
                 spacecraftEvents.remove(event);
             }
-            // Remove spacecraft
+            // Remove spacecraft from planet system and/or Solar System
+            if (centerBodies.containsKey(spacecraftName)) {
+                transferSpacecraftToSolarSystem(spacecraftName);
+            }
+            this.removeParticle(spacecraftName);
             spacecraft.remove(spacecraftName);
         }
     }
@@ -867,6 +885,21 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (nextEvent != null && !nextEvent.getDateTime().after(simulationDateTime)) {
             for (String name : nextEvent.getBodyNames()) {
                 if (spacecraft.containsKey(name)) {
+                    // Transfer Cassini to Saturn System at or after Saturn Orbit Insertion (01-Jul-2004 01:12:08)
+                    if ("Cassini".equals(name)) {
+                        if (!simulationDateTime.before(Cassini.getSaturnOrbitInsertion())) {
+                            if (!planetSystems.containsKey("Saturn")) {
+                                try {
+                                    this.createPlanetSystem("Saturn");
+                                } catch (SolarSystemException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (!"Saturn".equals(centerBodies.get(name))) {
+                                transferSpacecraftToPlanetSystem("Cassini", "Saturn");
+                            }
+                        }
+                    }
                     moveSpacecraftParticle(name);
                 } else {
                     if (planets.containsKey(name)) {
@@ -880,6 +913,55 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                 }
             }
             scheduleNextSpacecraftEvent();
+        }
+    }
+
+    /**
+     * Transfer particle for spacecraft from Solar System to planet system of planet
+     * with given name.
+     * @param spacecraftName Name of spacecraft to be transferred
+     * @param planetName     Name of planet in planet system
+     */
+    private void transferSpacecraftToPlanetSystem(String spacecraftName, String planetName) {
+        if (centerBodies.containsKey(spacecraftName)) {
+            if (!centerBodies.get(spacecraftName).equals(planetName)) {
+                transferSpacecraftToSolarSystem(spacecraftName);
+            }
+        }
+        else {
+            Particle spacecraftParticle = getParticle(spacecraftName);
+            Vector3D positionSpacecraft = spacecraftParticle.getPosition();
+            Vector3D velocitySpacecraft = spacecraftParticle.getVelocity();
+            Vector3D positionPlanet = getParticle(planetName).getPosition();
+            Vector3D velocityPlanet = getParticle(planetName).getVelocity();
+            Vector3D positionRelativeToPlanet = positionSpacecraft.minus(positionPlanet);
+            Vector3D velocityRelativeToPlanet = velocitySpacecraft.minus(velocityPlanet);
+            OblatePlanetSystem planetSystem = planetSystems.get(planetName);
+            Particle particle = new Particle(DEFAULTMASS, positionRelativeToPlanet, velocityRelativeToPlanet);
+            planetSystem.addParticle(spacecraftName, particle);
+            this.removeParticle(spacecraftName);
+            moonParticles.put(spacecraftName, new Particle(DEFAULTMASS, positionSpacecraft, velocitySpacecraft));
+            centerBodies.put(spacecraftName, planetName);
+        }
+    }
+
+    /**
+     * Transfer particle for spacecraft from planet system of planet with given name
+     * to Solar System.
+     * @param spacecraftName Name of spacecraft to be transferred
+     */
+    private void transferSpacecraftToSolarSystem(String spacecraftName) {
+        if (centerBodies.containsKey(spacecraftName)) {
+            Particle spacecraftParticle = getParticle(spacecraftName);
+            Vector3D position = spacecraftParticle.getPosition();
+            Vector3D velocity = spacecraftParticle.getVelocity();
+            Particle particle = new Particle(DEFAULTMASS, position, velocity);
+            this.addParticleWithoutMass(spacecraftName, particle);
+            String planetName = centerBodies.get(spacecraftName);
+            OblatePlanetSystem planetSystem = planetSystems.get(planetName);
+            planetSystem.removeParticle(spacecraftName);
+            moonParticles.remove(spacecraftName);
+            centerBodies.remove(spacecraftName);
         }
     }
 

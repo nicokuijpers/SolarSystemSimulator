@@ -121,6 +121,15 @@ public class ParticleSystem implements Serializable {
     }
 
     /**
+     * Remove particle with given name from particle system.
+     * @param name Name of particle
+     */
+    public final void removeParticle(String name) {
+        particles.remove(name);
+        particlesWithMass.remove(name);
+    }
+
+    /**
      * Get reference to particle with given name.
      * @param name    Name of particle
      * @return particle with given name
