@@ -92,6 +92,7 @@ public class SolarSystemVisualization extends Stage {
     // View mode for 3D visualization
     // 1. View selected object from the Earth
     // 2. View nearest object from position of spacecraft
+    //
     private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
 
     //https://www.genuinecoder.com/javafx-3d-tutorial-object-transform-rotation-with-mouse/
