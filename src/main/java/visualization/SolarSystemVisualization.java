@@ -42,7 +42,6 @@ import solarsystem.SolarSystem;
 import util.Vector3D;
 import util.VectorUtil;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -57,6 +56,9 @@ public class SolarSystemVisualization extends Stage {
     private static final double SCREENSCALE = 3.0 * SolarSystemParameters.ASTRONOMICALUNIT;
     private static final double FIELDOFVIEWFACTORTELESCOPE  = 1.0E9;
     private static final double FIELDOFVIEWFACTORSPACECRAFT = 1.0E7;
+
+    // Rotate along Z-axis (theta) and Y-axis (phi) by mouse dragging
+    private static final double ROTATEFACTOR = 0.5;
 
     // Zoom can be adjusted by mouse scroll
     private static final double MINZOOM = 0.0;
@@ -77,15 +79,15 @@ public class SolarSystemVisualization extends Stage {
     // Spacecraft are visualized much larger than they are in reality
     private static final double DIAMETERPIONEER     = 5.0E6; // 5000 km
     private static final double DIAMETERVOYAGER     = 5.0E6; // 5000 km
+    private static final double DIAMETERCASSINI     = 2.5E6; // 2500 km
     private static final double DIAMETERNEWHORIZONS = 8.0E5; //  800 km
-    private static final double DIAMETERGIOTTO      = 2.5E5; //  250 km
     private static final double DIAMETERROSETTA     = 2.5E5; //  250 km
     private static final double DIAMETERISS         = 2.0E5; //  200 km
     private static final double DIAMETERAPOLLO      = 2.0E5; //  200 km
 
-    // Decimal format
-    private static final DecimalFormat DF_ONEDECIMAL = new DecimalFormat("0.0");
-    private static final DecimalFormat DF_MAXTWODECIMALS = new DecimalFormat("0.0#");
+    // Factor to determine the length of the shadows of Jupiter and Saturn
+    private static final double SHADOWJUPITERFACTOR = 30.0; // 30 times radius of Jupiter
+    private static final double SHADOWSATURNFACTOR = 8.0;   // 8 times radius of Saturn
 
     // View mode for 3D visualization
     // 1. View selected object from the Earth
@@ -94,14 +96,12 @@ public class SolarSystemVisualization extends Stage {
     private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
 
     //https://www.genuinecoder.com/javafx-3d-tutorial-object-transform-rotation-with-mouse/
-    //Tracks drag starting point for x and y
+    // Tracks drag starting point for x and y
     private double anchorX, anchorY;
-
-    //Keep track of current angle for x and y
+    // Keep track of current angle for x and y
     private double anchorAngleX = 0.0;
     private double anchorAngleY = 0.0;
-
-    // View can be adjusted by mouse drag
+    // Update angle for x and y after drag
     private double angleX = 0.0;
     private double angleY = 0.0;
 
@@ -113,7 +113,7 @@ public class SolarSystemVisualization extends Stage {
     private PhongMaterial materialShadowEarth;
 
     // Scene
-    private SmartGroup solarSystemSmartGroup;
+    private Group solarSystemGroup;
     private SubScene subScene;
     private Text displayObservedBody;
     private Text displayDateTime;
@@ -129,13 +129,17 @@ public class SolarSystemVisualization extends Stage {
     private Cylinder ringSaturn, ringUranus;
     private Cylinder coronaSun;
     private Cylinder shadowEarth;
+    private Cylinder shadowJupiter;
+    private Cylinder shadowSaturn;
     private Shape3D pallas, juno, vesta, eros, bennu;
     private Shape3D halley, churyumov, ultimaThule;
-    private Shape3D pioneer10, pioneer11, voyager1, voyager2, newhorizons, rosetta, apollo8;
+    private Shape3D pioneer10, pioneer11, voyager1, voyager2, newhorizons, rosetta, cassini, apollo8;
     private Map<String,Node> bodies;
     private Map<String,Rotate> bodyRotationsX;
     private Map<String,Rotate> bodyRotationsY;
     private Map<String,Rotate> bodyRotationsZ;
+    private Map<String,Rotate> bodyRotationsObliquity;
+    private Map<String,Rotate> bodyRotationsRevolution;
     private PerspectiveCamera camera;
     private PointLight pointLight;
     private Sphere locationOnEarth;
@@ -196,6 +200,8 @@ public class SolarSystemVisualization extends Stage {
         bodyRotationsX = new HashMap<>();
         bodyRotationsY = new HashMap<>();
         bodyRotationsZ = new HashMap<>();
+        bodyRotationsRevolution = new HashMap<>();
+        bodyRotationsObliquity = new HashMap<>();
         sun = factory.createSphere("Sun", Color.BLANCHEDALMOND);
         mercury = factory.createSphere("Mercury", Color.ORANGE);
         venus = factory.createSphere("Venus", Color.PEACHPUFF);
@@ -251,6 +257,20 @@ public class SolarSystemVisualization extends Stage {
         // Shadow of the Earth to visualize Lunar eclipse
         shadowEarth = new Cylinder();
 
+        // Shadow of Jupiter to cast shadow over the Galilean moons
+        double radiusJup = 0.5*this.screenDiameter("Jupiter");
+        double flatteningJup = solarSystemParameters.getFlattening("Jupiter");
+        shadowJupiter = new Cylinder((1.0 - flatteningJup)*radiusJup, SHADOWJUPITERFACTOR*radiusJup);
+        shadowJupiter.setMaterial(new PhongMaterial(Color.BLACK));
+        setBodyRotations("shadowJupiter",shadowJupiter);
+
+        // Shadow of Saturn to cast shadow over the rings and the moons Mimas through Rhea
+        double radiusSat = 0.5*this.screenDiameter("Saturn");
+        double flatteningSat = solarSystemParameters.getFlattening("Saturn");
+        shadowSaturn = new Cylinder((1.0 - flatteningSat)*radiusSat, SHADOWSATURNFACTOR*radiusSat);
+        shadowSaturn.setMaterial(new PhongMaterial(Color.BLACK));
+        setBodyRotations("shadowSaturn",shadowSaturn);
+
         // Small Solar System bodies
         pallas = factory.createSmallBody("Pallas",Color.LIGHTGRAY);
         juno = factory.createSmallBody("Juno",Color.LIGHTGRAY);
@@ -269,6 +289,7 @@ public class SolarSystemVisualization extends Stage {
         voyager2 = factory.createSpacecraft("Voyager 2", Color.LIGHTYELLOW);
         newhorizons = factory.createSpacecraft("New Horizons", Color.LIGHTYELLOW);
         rosetta = factory.createSpacecraft("Rosetta", Color.LIGHTYELLOW);
+        cassini = factory.createSpacecraft("Cassini", Color.LIGHTYELLOW);
         apollo8 = factory.createSpacecraft("Apollo 8", Color.LIGHTYELLOW);
 
         // International Space Station
@@ -281,8 +302,8 @@ public class SolarSystemVisualization extends Stage {
         spacecraftNames.add("Voyager 1");
         spacecraftNames.add("Voyager 2");
         spacecraftNames.add("New Horizons");
-        spacecraftNames.add("Giotto");
         spacecraftNames.add("Rosetta");
+        spacecraftNames.add("Cassini");
         spacecraftNames.add("Apollo 8");
         spacecraftNames.add("ISS");
 
@@ -292,16 +313,18 @@ public class SolarSystemVisualization extends Stage {
         // Set body rotations for all shapes
         for (String name : bodies.keySet()) {
             Node node = bodies.get(name);
-            setBodyRations(name,node);
+            setBodyRotations(name,node);
         }
 
         // Rotate the rings of Saturn and Uranus with the planet
         ringSaturn.getTransforms().add(bodyRotationsX.get("Saturn"));
         ringSaturn.getTransforms().add(bodyRotationsZ.get("Saturn"));
         ringSaturn.getTransforms().add(bodyRotationsY.get("Saturn"));
+        ringSaturn.getTransforms().add(bodyRotationsObliquity.get("Saturn"));
         ringUranus.getTransforms().add(bodyRotationsX.get("Uranus"));
         ringUranus.getTransforms().add(bodyRotationsZ.get("Uranus"));
         ringUranus.getTransforms().add(bodyRotationsY.get("Uranus"));
+        ringUranus.getTransforms().add(bodyRotationsObliquity.get("Uranus"));
 
         // Light coming from the Sun
         pointLight = new PointLight();
@@ -335,21 +358,23 @@ public class SolarSystemVisualization extends Stage {
                 zRotateCamera,
                 positionCamera
         );
-        setCameraSettings(50.0);
+        setCameraSettings(50.0, 1.E06, 40.0* SolarSystemParameters.ASTRONOMICALUNIT);
 
         // Define the scene using a subscene
-        solarSystemSmartGroup = new SmartGroup();
+        solarSystemGroup = new Group();
         for (Node node : bodies.values()) {
-            solarSystemSmartGroup.getChildren().add(node);
+            solarSystemGroup.getChildren().add(node);
         }
-        solarSystemSmartGroup.getChildren().add(ringSaturn);
-        solarSystemSmartGroup.getChildren().add(ringUranus);
-        solarSystemSmartGroup.getChildren().add(coronaSun);
-        solarSystemSmartGroup.getChildren().add(shadowEarth);
-        solarSystemSmartGroup.getChildren().add(pointLight);
-        solarSystemSmartGroup.getChildren().add(locationOnEarth);
+        solarSystemGroup.getChildren().add(ringSaturn);
+        solarSystemGroup.getChildren().add(ringUranus);
+        solarSystemGroup.getChildren().add(coronaSun);
+        solarSystemGroup.getChildren().add(shadowEarth);
+        solarSystemGroup.getChildren().add(shadowJupiter);
+        solarSystemGroup.getChildren().add(shadowSaturn);
+        solarSystemGroup.getChildren().add(pointLight);
+        solarSystemGroup.getChildren().add(locationOnEarth);
         subScene = new SubScene(
-                solarSystemSmartGroup,
+                solarSystemGroup,
                 SCREENWIDTH, SCREENHEIGHT,
                 true,
                 SceneAntialiasing.BALANCED
@@ -417,8 +442,10 @@ public class SolarSystemVisualization extends Stage {
 
         // Mouse dragged
         scene.setOnMouseDragged(event -> {
-            angleX = anchorAngleX - (anchorY - event.getSceneY());
-            angleY = anchorAngleY + anchorX - event.getSceneX();
+            angleX = anchorAngleX + ROTATEFACTOR*(anchorX - event.getSceneX());
+            angleY = anchorAngleY - ROTATEFACTOR*(anchorY - event.getSceneY());
+            angleX %= 360.0;
+            angleY = Math.min(180.0,Math.max(-180.0,angleY));
         });
 
         // Mouse scroll
@@ -435,40 +462,13 @@ public class SolarSystemVisualization extends Stage {
      * Update display with name of body that is currently observed.
      */
     private void refreshDisplayObservedBody() {
+        StringBuilder sb = new StringBuilder();
         if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
-            if ("Earth".equals(selectedBody) || "E-M Barycenter".equals(selectedBody)) {
-                displayObservedBody.setText("Earth observed from the Sun");
+            if ("Earth".equals(selectedBody) || "EarthMoonBarycenter".equals(selectedBody)) {
+                sb.append("Earth observed from the Sun");
             }
             else {
-                Vector3D position;
-                try {
-                    position = solarSystem.getPosition(selectedBody);
-                } catch (SolarSystemException e) {
-                    selectedBody = "Sun";
-                    position = solarSystem.getParticle("Sun").getPosition();
-                }
-                double[] result =
-                        EphemerisUtil.computeAzimuthElevationDistance(position,latitude,longitude,solarSystem.getSimulationDateTime());
-                double azimuth = result[0];
-                double elevation = result[1];
-                double distance = result[2];
-                StringBuilder sb = new StringBuilder(selectedBody);
-                sb.append(" observed from the Earth");
-                sb.append(" (lat ");
-                sb.append(DF_MAXTWODECIMALS.format(latitude));
-                sb.append(" lon ");
-                sb.append(DF_MAXTWODECIMALS.format(longitude));
-                sb.append(")\n");
-                sb.append("Azimuth ");
-                sb.append(DF_ONEDECIMAL.format(azimuth));
-                sb.append("\u00B0\n");
-                sb.append("Elevation ");
-                sb.append(DF_ONEDECIMAL.format(elevation));
-                sb.append("\u00B0\n");
-                sb.append("Distance ");
-                sb.append(DF_MAXTWODECIMALS.format(distance));
-                sb.append(" a.u.\n");
-                displayObservedBody.setText(sb.toString());
+                sb.append(selectedBody + " observed from the Earth");
             }
         }
         else {
@@ -496,8 +496,7 @@ public class SolarSystemVisualization extends Stage {
                 relativeVelocity = velocitySelectedBody;
             }
             long velocity = Math.round(relativeVelocity.magnitude());
-            StringBuilder sb = new StringBuilder(observedBody);
-            sb.append(" observed from ");
+            sb.append(observedBody + " observed from ");
             sb.append(selectedBody);
             sb.append("\n");
             sb.append("Distance ");
@@ -506,8 +505,8 @@ public class SolarSystemVisualization extends Stage {
             sb.append("Velocity ");
             sb.append(velocity);
             sb.append(" m/s");
-            displayObservedBody.setText(sb.toString());
         }
+        displayObservedBody.setText(sb.toString());
     }
 
     /**
@@ -527,8 +526,10 @@ public class SolarSystemVisualization extends Stage {
      * Set camera settings depending on visualization view mode.
      * Field of view will be adjusted for zoom.
      * @param fieldOfView field of view
+     * @param nearDistance distance to nearest object to be rendered [m]
+     * @param farDistance distance to farthest object to be rendered [m]
      */
-    private void setCameraSettings(double fieldOfView) {
+    private void setCameraSettings(double fieldOfView, double nearDistance, double farDistance) {
         double fieldOfViewZoom = Math.min(90.0, Math.max(0.0, (10.0 - 0.1 * zoom) * fieldOfView));
         camera.setFieldOfView(fieldOfViewZoom);
         zRotateCamera.setAngle(0.0);
@@ -539,12 +540,10 @@ public class SolarSystemVisualization extends Stage {
             // Use 3 * SCREENDEPTH to see Saturn when observing Jupiter during
             // the great conjunction on Dec 19, 2020
             camera.setFarClip(3.0 * SCREENDEPTH);
-            positionCamera.setZ(0.0);
         } else {
             // View observed object from position of spacecraft
-            camera.setNearClip(0.0000001 * SCREENDEPTH);
-            camera.setFarClip(0.5 * SCREENDEPTH);
-            positionCamera.setZ(0.0);
+            camera.setNearClip(SCREENDEPTH*(nearDistance/SCREENSCALE));
+            camera.setFarClip(SCREENDEPTH*(farDistance/SCREENSCALE));
         }
     }
 
@@ -553,16 +552,22 @@ public class SolarSystemVisualization extends Stage {
      * @param name Name of the body
      * @param node 3D geometry representing the body
      */
-    private void setBodyRations(String name, Node node) {
+    private void setBodyRotations(String name, Node node) {
         Rotate bodyRotationX = new Rotate(0.0,Rotate.X_AXIS);
         Rotate bodyRotationY = new Rotate(0.0,Rotate.Y_AXIS);
         Rotate bodyRotationZ = new Rotate(0.0,Rotate.Z_AXIS);
+        Rotate bodyRotationObliquity = new Rotate();
+        Rotate bodyRotationRevolution = new Rotate(0.0, Rotate.Y_AXIS);
         node.getTransforms().add(bodyRotationX);
         node.getTransforms().add(bodyRotationZ); // Note the order
         node.getTransforms().add(bodyRotationY);
+        node.getTransforms().add(bodyRotationObliquity);
+        node.getTransforms().add(bodyRotationRevolution);
         bodyRotationsX.put(name,bodyRotationX);
         bodyRotationsY.put(name,bodyRotationY);
         bodyRotationsZ.put(name,bodyRotationZ);
+        bodyRotationsObliquity.put(name,bodyRotationObliquity);
+        bodyRotationsRevolution.put(name,bodyRotationRevolution);
     }
 
     /**
@@ -584,11 +589,11 @@ public class SolarSystemVisualization extends Stage {
             case "New Horizons":
                 diameter = DIAMETERNEWHORIZONS;
                 break;
-            case "Giotto":
-                diameter = DIAMETERGIOTTO;
-                break;
             case "Rosetta":
                 diameter = DIAMETERROSETTA;
+                break;
+            case "Cassini":
+                diameter = DIAMETERCASSINI;
                 break;
             case "ISS":
                 diameter = DIAMETERISS;
@@ -647,8 +652,8 @@ public class SolarSystemVisualization extends Stage {
     }
 
     /**
-     * Update y-rotation of all visible objects on the basis of sidereal rotation period.
-     * Take the direction of the camera into account
+     * Update rotation of all visible objects to simulate revolution and obliquity.
+     * The direction of the camera with respect to the object is taken into account.
      * @param cameraDirection direction of camera
      */
     private void updateBodyRotations(Vector3D cameraDirection) {
@@ -657,22 +662,25 @@ public class SolarSystemVisualization extends Stage {
         double camX = cameraDirection.getX();
         double camY = cameraDirection.getY();
         double camZ = cameraDirection.getZ();
-        double camRho = cameraDirection.magnitude();
         double camThetaRad = Math.atan2(camY,camX);
         double camThetaDeg = Math.toDegrees(camThetaRad);
-        double camPhiRad = Math.acos(camZ/camRho);
+        double camPhiRad = Math.asin(camZ);
         double camPhiDeg = Math.toDegrees(camPhiRad);
 
-        // Rotate along Y-axis to simulate rotation of the body
+        // Position of the Earth in the Solar System
+        Vector3D positionEarth = solarSystem.getParticle("Earth").getPosition();
+
+        // Number of days past J2000 to simulate revolution
         GregorianCalendar dateTime = solarSystem.getSimulationDateTime();
         double nrDaysPastJ2000 = EphemerisUtil.computeNrDaysPastJ2000(dateTime);
+
+        // Update rotations of all visible objects
         for (String name : bodies.keySet()) {
             Node node = bodies.get(name);
             if (node.isVisible()) {
                 if (spacecraftNames.contains(name)) {
                     if ("Apollo 8".equals(name)) {
                         // Rotate spacecraft such that it is directed in the direction of movement
-                        Vector3D positionEarth = solarSystem.getParticle("Earth").getPosition();
                         Vector3D positionApollo = solarSystem.getParticle("Apollo 8").getPosition();
                         double distanceToEarthKm = positionApollo.euclideanDistance(positionEarth)/1.0E3;
                         Vector3D referenceVelocity;
@@ -689,28 +697,27 @@ public class SolarSystemVisualization extends Stage {
                         bodyRotationsY.get(name).setAngle(camThetaDeg - angleXYdeg);
                         double angleZrad = Math.acos(spacecraftDirection.getZ());
                         double angleZdeg = Math.toDegrees(angleZrad);
-                        bodyRotationsX.get(name).setAngle(camPhiDeg - angleZdeg);
+                        bodyRotationsX.get(name).setAngle(90.0 - camPhiDeg - angleZdeg);
                     }
                     else {
                         // Rotate spacecraft such that parabolic antenna is directed towards the Earth
                         // The models of the spacecraft are constructed such that the parabolic antenna is
                         // directed towards the camera when not rotated
-                        Vector3D spacecraftPosition = solarSystem.getParticle(name).getPosition();
-                        Vector3D earthPosition = solarSystem.getParticle("Earth").getPosition();
-                        Vector3D directionToEarth = spacecraftPosition.direction(earthPosition);
+                        Vector3D positionSpacecraft = solarSystem.getParticle(name).getPosition();
+                        Vector3D directionToEarth = positionSpacecraft.direction(positionEarth);
                         double angleXYrad = Math.atan2(directionToEarth.getY(), directionToEarth.getX());
                         double angleXYdeg = Math.toDegrees(angleXYrad);
                         bodyRotationsY.get(name).setAngle(camThetaDeg - angleXYdeg);
                         double angleZrad = Math.acos(directionToEarth.getZ());
                         double angleZdeg = Math.toDegrees(angleZrad);
-                        bodyRotationsX.get(name).setAngle(camPhiDeg - angleZdeg);
+                        bodyRotationsX.get(name).setAngle(90.0 - camPhiDeg - angleZdeg);
                     }
                 } else {
-                    // Rotate along y-axis to visualize rotation
+                    // Rotate around y-axis to visualize revolution
                     double siderealRotationPeriodHours = solarSystemParameters.getSiderealRotationalPeriod(name);
                     double siderealRotationPeriodDays = siderealRotationPeriodHours / 24.0;
-                    double nrRotations = nrDaysPastJ2000 / siderealRotationPeriodDays;
-                    double rotationAngleDegY = camThetaDeg - (nrRotations % 1.0) * 360.0;
+                    double nrRevolutions = nrDaysPastJ2000 / siderealRotationPeriodDays;
+                    double revolutionAngleDeg = -(nrRevolutions % 1.0) * 360.0;
                     if ("Earth".equals(name)) {
                         // When the Earth is observed from the Sun, the Greenwich meridian
                         // should be in the center at noon (12:00:00) UTC.
@@ -719,44 +726,62 @@ public class SolarSystemVisualization extends Stage {
                         // rarely the exact moment the Sun crosses the Greenwich meridian and
                         // reaches its highest point in the sky there.
                         // https://en.wikipedia.org/wiki/Greenwich_Mean_Time
-                        rotationAngleDegY += 81.0;
+                        revolutionAngleDeg += 81.0;
                     }
                     if ("Moon".equals(name)) {
                         // Correction to see the front side of the Moon when viewing the full Moon
-                        rotationAngleDegY -= 30.0;
+                        revolutionAngleDeg -= 30.0;
                     }
                     if ("Jupiter".equals(name)) {
                         // Correction to see Red Spot at the right position
                         // https://skyandtelescope.org/observing/celestial-objects-to-watch/jupiters-moons-javascript-utility/#
-                        rotationAngleDegY += 150.0;
+                        revolutionAngleDeg += 150.0;
                     }
                     if ("Pluto".equals(name)) {
                         // Correction to see Pluto's Big Heart from New Horizons July 13, 20.00
                         // https://www.nasa.gov/feature/new-horizons-spacecraft-displays-pluto-s-big-heart-0
-                        rotationAngleDegY += 180.0;
+                        revolutionAngleDeg += 180.0;
                     }
-                    bodyRotationsY.get(name).setAngle(rotationAngleDegY);
+                    // Rotate around y-axis
+                    bodyRotationsRevolution.get(name).setAngle(revolutionAngleDeg);
 
-                    // Rotate along x-axis and z-axis to visualize obliquity
+                    // Rotate to visualize obliquity
                     double[] rotationPoleEquatorial = solarSystemParameters.getRotationPole(name);
                     double[] rotationPoleEcliptic = EphemerisUtil.equatorialToEcliptic(rotationPoleEquatorial);
                     double lambda = rotationPoleEcliptic[0];
                     double beta = rotationPoleEcliptic[1];
-                    double thetaDeg = lambda - camThetaDeg;
-                    double phiDeg = (90.0 - beta) + (90.0 - camPhiDeg);
+                    double thetaDeg = lambda;
+                    double phiDeg = (90.0 - beta);
                     double thetaRad = Math.toRadians(thetaDeg);
                     double sinTheta = Math.sin(thetaRad);
                     double cosTheta = Math.cos(thetaRad);
-                    Point3D rotationAxis = new Point3D(cosTheta, 0.0, sinTheta);
-                    bodies.get(name).setRotationAxis(rotationAxis);
-                    bodies.get(name).setRotate(phiDeg);
-                    if ("Saturn".equals(name)) {
-                        ringSaturn.setRotationAxis(rotationAxis);
-                        ringSaturn.setRotate(phiDeg);
-                    }
-                    if ("Uranus".equals(name)) {
-                        ringUranus.setRotationAxis(rotationAxis);
-                        ringUranus.setRotate(phiDeg);
+                    Point3D rotationAxisObliquity = new Point3D(cosTheta, 0.0, sinTheta);
+                    bodyRotationsObliquity.get(name).setAxis(rotationAxisObliquity);
+                    bodyRotationsObliquity.get(name).setAngle(phiDeg);
+
+                    // Rotate around y-axis and x-axis to take direction of camera into account
+                    bodyRotationsY.get(name).setAngle(camThetaDeg);
+                    bodyRotationsX.get(name).setAngle(camPhiDeg);
+
+                    // Shadow of Jupiter and Saturn
+                    if ("Jupiter".equals(name) || "Saturn".equals(name)) {
+                        String shadowName = "shadow" + name;
+                        Vector3D positionSun = solarSystem.getParticle("Sun").getPosition();
+                        Vector3D positionPlanet = solarSystem.getParticle(name).getPosition();
+                        Vector3D directionToSun = positionPlanet.direction(positionSun);
+                        double dirX = directionToSun.getX();
+                        double dirY = directionToSun.getY();
+                        double dirZ = directionToSun.getZ();
+                        double thetaDegShadow = Math.toDegrees(Math.atan2(dirY,dirX));
+                        double phiDegShadow   = Math.toDegrees(Math.acos(dirZ));
+                        double thetaRadShadow = Math.toRadians(thetaDegShadow);
+                        double sinThetaShadow = Math.sin(thetaRadShadow);
+                        double cosThetaShadow = Math.cos(thetaRadShadow);
+                        Point3D rotationAxisShadow = new Point3D(cosThetaShadow, 0.0, sinThetaShadow);
+                        bodyRotationsObliquity.get(shadowName).setAxis(rotationAxisShadow);
+                        bodyRotationsObliquity.get(shadowName).setAngle(phiDegShadow);
+                        bodyRotationsY.get(shadowName).setAngle(camThetaDeg);
+                        bodyRotationsX.get(shadowName).setAngle(camPhiDeg);
                     }
                 }
             }
@@ -765,8 +790,8 @@ public class SolarSystemVisualization extends Stage {
 
     /**
      * Translate and rotate position for observation from camera position and
-     * camera direction
-     * Perspective is taken into account.
+     * camera direction. It is assumed that the camera is located in the origin (0,0,0)
+     * and viewing in the direction of the positive z-axis.
      * @param position 3D position in m
      * @return translated and rotated position
      */
@@ -791,7 +816,6 @@ public class SolarSystemVisualization extends Stage {
         // Rotate
         // https://www.ntu.edu.sg/home/ehchua/programming/opengl/cg_basicstheory.html
         Vector3D positionRotated = positionTranslated.rotate(xc,yc,zc);
-
         return positionRotated;
     }
 
@@ -799,7 +823,7 @@ public class SolarSystemVisualization extends Stage {
     /**
      * Update positions of the objects representing the Solar System bodies.
      */
-    private void updateObjectPositions(Vector3D cameraPosition, Vector3D cameraDirection) {
+    private void updateObjectPositions(Vector3D cameraPosition, Vector3D cameraDirection, Vector3D lookAtPosition) {
 
         Vector3D positionSun = solarSystem.getParticle("Sun").getPosition();
         Vector3D positionEarth = solarSystem.getParticle("Earth").getPosition();
@@ -831,13 +855,14 @@ public class SolarSystemVisualization extends Stage {
                     // Not a shadow
                     positionBody = solarSystem.getParticle(name).getPosition();
                 }
+
                 // Translate and rotate
-                positionBody = translateRotatePosition(cameraPosition, cameraDirection, positionBody);
+                Vector3D positionBodyTranslated = translateRotatePosition(cameraPosition, cameraDirection, positionBody);
 
                 // Set position
-                node.setTranslateX(screenX(positionBody));
-                node.setTranslateY(screenY(positionBody));
-                node.setTranslateZ(screenZ(positionBody));
+                node.setTranslateX(screenX(positionBodyTranslated));
+                node.setTranslateY(screenY(positionBodyTranslated));
+                node.setTranslateZ(screenZ(positionBodyTranslated));
             }
         }
 
@@ -850,6 +875,25 @@ public class SolarSystemVisualization extends Stage {
         ringUranus.setTranslateX(uranus.getTranslateX());
         ringUranus.setTranslateY(uranus.getTranslateY());
         ringUranus.setTranslateZ(uranus.getTranslateZ());
+
+        // Shadow of Jupiter
+        double radiusJupiter = 0.5*solarSystemParameters.getDiameter("Jupiter");
+        double lengthShadowJupiter = SHADOWJUPITERFACTOR*radiusJupiter;
+        Vector3D positionShadowJupiter = positionJupiter.plus(positionJupiter.normalize().scalarProduct(0.5*lengthShadowJupiter));
+        Vector3D positionShadowJupiterTranslated = translateRotatePosition(cameraPosition, cameraDirection, positionShadowJupiter);
+        shadowJupiter.setTranslateX(screenX(positionShadowJupiterTranslated));
+        shadowJupiter.setTranslateY(screenY(positionShadowJupiterTranslated));
+        shadowJupiter.setTranslateZ(screenZ(positionShadowJupiterTranslated));
+
+        // Shadow of Saturn
+        Vector3D positionSaturn = solarSystem.getParticle("Saturn").getPosition();
+        double radiusSaturn = 0.5*solarSystemParameters.getDiameter("Saturn");
+        double lengthShadowSaturn = SHADOWSATURNFACTOR*radiusSaturn;
+        Vector3D positionShadowSaturn = positionSaturn.plus(positionSaturn.normalize().scalarProduct(0.5*lengthShadowSaturn));
+        Vector3D positionShadowSaturnTranslated = translateRotatePosition(cameraPosition, cameraDirection, positionShadowSaturn);
+        shadowSaturn.setTranslateX(screenX(positionShadowSaturnTranslated));
+        shadowSaturn.setTranslateY(screenY(positionShadowSaturnTranslated));
+        shadowSaturn.setTranslateZ(screenZ(positionShadowSaturnTranslated));
 
         // Small red sphere representing location on Earth
         if (locationOnEarth.isVisible()) {
@@ -870,13 +914,20 @@ public class SolarSystemVisualization extends Stage {
                     positionSun.direction(cameraPosition).
                             scalarProduct(0.05 * SolarSystemParameters.ASTRONOMICALUNIT)));
         }
-        positionPointLight =
+        Vector3D positionPointLightTranslated =
                 translateRotatePosition(cameraPosition,cameraDirection,positionPointLight);
-        pointLight.setTranslateX(screenX(positionPointLight));
-        pointLight.setTranslateY(screenY(positionPointLight));
-        pointLight.setTranslateZ(screenZ(positionPointLight));
+        pointLight.setTranslateX(screenX(positionPointLightTranslated));
+        pointLight.setTranslateY(screenY(positionPointLightTranslated));
+        pointLight.setTranslateZ(screenZ(positionPointLightTranslated));
+        pointLight.setColor(Color.WHITE); // Color of point light may change during lunar eclipse
 
         // Check for Solar Eclipse
+        coronaSun.setTranslateX(sun.getTranslateX());
+        coronaSun.setTranslateY(sun.getTranslateY());
+        coronaSun.setTranslateZ(sun.getTranslateZ());
+        // Rotate the corona such that it is facing the camera
+        coronaSun.setRotationAxis(Rotate.X_AXIS);
+        coronaSun.setRotate(90.0);
         if ("Sun".equals(selectedBody)) {
             Vector3D positionObservation = EphemerisUtil.computePositionFromLatitudeLongitudeHeight(
                     latitude,longitude,0.0, solarSystem.getSimulationDateTime());
@@ -899,12 +950,6 @@ public class SolarSystemVisualization extends Stage {
             }
             if (solarEclipse) {
                 sun.setVisible(false);
-                coronaSun.setRadius(2.04*sun.getRadius());
-                coronaSun.setTranslateX(sun.getTranslateX());
-                coronaSun.setTranslateY(sun.getTranslateY());
-                coronaSun.setTranslateZ(sun.getTranslateZ());
-                coronaSun.setRotationAxis(Rotate.X_AXIS);
-                coronaSun.setRotate(90.0);
                 coronaSun.setVisible(true);
             }
             else {
@@ -960,43 +1005,52 @@ public class SolarSystemVisualization extends Stage {
 
     /**
      * Set camera position and direction.
+     * Adjust position and direction of camera for mouse input.
      * @param cameraPosition position of the camera within Solar System
-     * @param lookAtPos position to look at within Solor System
+     * @param lookAtPosition position to look at within Solar System
      */
-    private void lookAt(Vector3D cameraPosition, Vector3D lookAtPos) {
+    private void lookAt(Vector3D cameraPosition, Vector3D lookAtPosition) {
 
         // Position (px, py, pz) is camera position relative to look-at position
-        double px = cameraPosition.getX() - lookAtPos.getX();
-        double py = cameraPosition.getY() - lookAtPos.getY();
-        double pz = cameraPosition.getZ() - lookAtPos.getZ();
+        Vector3D relativePosition = cameraPosition.minus(lookAtPosition);
+        double px = relativePosition.getX();
+        double py = relativePosition.getY();
+        double pz = relativePosition.getZ();
 
         // Convert (px, py, pz) to spherical coordinates (rho, theta, phi)
-        double rho = Math.sqrt(px*px + py*py + pz*pz);
-        double theta = Math.atan2(py,px); // radians
-        double phi = Math.acos(pz/rho); // radians
+        double rho = Math.sqrt(px*px + py*py + pz*pz); // rho >= 0 [m]
+        double thetaRad = Math.atan2(py,px);           // -pi <= theta <= pi [rad]
+        double phiRad = Math.acos(pz/rho);             // 0 <= phi <= pi [rad]
 
         // Adjust theta and phi for mouse input
-        theta += Math.toRadians(angleY);
+        double mouseThetaRad = Math.toRadians(angleX);
+        double mousePhiRad = Math.toRadians(angleY);
+        thetaRad += mouseThetaRad;
+        phiRad -= mousePhiRad;
+        phiRad = Math.max(0.01, Math.min(Math.PI-0.01,phiRad));
 
-        // Convert (rho, theta, phi) to rectangular coordinates (qx, qy, qz)
-        double sinTheta = Math.sin(theta);
-        double cosTheta = Math.cos(theta);
-        double sinPhi = Math.sin(phi);
-        double cosPhi = Math.cos(phi);
-        double qx = rho * sinPhi * cosTheta;
-        double qy = rho * sinPhi * sinTheta;
+        // Convert (rho, theta, phi) to cartesian coordinates (qx, qy, qz)
+        double sinTheta = Math.sin(thetaRad);
+        double cosTheta = Math.cos(thetaRad);
+        double sinPhi = Math.sin(phiRad);
+        double cosPhi = Math.cos(phiRad);
+        double qx = rho * cosTheta * sinPhi;
+        double qy = rho * sinTheta * sinPhi;
         double qz = rho * cosPhi;
 
         // Camera position adjusted for mouse input
-        cameraPosition = lookAtPos.plus(new Vector3D(qx,qy,qz));
+        cameraPosition = lookAtPosition.plus(new Vector3D(qx,qy,qz));
 
-        // Camera direction
-        Vector3D cameraDirection = lookAtPos.minus(cameraPosition);
-        cameraDirection = cameraDirection.normalize().scalarProduct(-1.0);
+        // Direction of camera from position to look at
+        Vector3D cameraDirection = lookAtPosition.direction(cameraPosition);
         if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
-            cameraPosition = lookAtPos.plus(cameraDirection.scalarProduct(0.5 * SCREENSCALE));
+            cameraPosition = lookAtPosition.plus(cameraDirection.scalarProduct(0.5 * SCREENSCALE));
         }
-        updateObjectPositions(cameraPosition,cameraDirection);
+
+        // Update the positions of all visible objects
+        updateObjectPositions(cameraPosition, cameraDirection, lookAtPosition);
+
+        // Update the rotations of all visible bodies
         updateBodyRotations(cameraDirection);
     }
 
@@ -1015,19 +1069,22 @@ public class SolarSystemVisualization extends Stage {
         // Position of the camera
         Vector3D cameraPosition = new Vector3D(sunPosition);
 
+        // Distance between the camera and the Earth
+        double distance = cameraPosition.euclideanDistance(earthPosition);
+
         // Let camera look in the direction of the Earth
         Vector3D lookAtPosition = new Vector3D(earthPosition);
-        lookAt(cameraPosition,lookAtPosition);
+        lookAt(cameraPosition, lookAtPosition);
 
         // Set field of view of camera
         double diameterEarth = diameterBody("Earth");
         double fieldOfView = diameterEarth / FIELDOFVIEWFACTORTELESCOPE;
-        setCameraSettings(fieldOfView);
+        setCameraSettings(fieldOfView, distance - 1.0E09, distance + 1.0E09);
     }
 
 
     /**
-     * View the Earth-Moon system from space.
+     * View the Earth-Moon system from the position of the Sun.
      * @throws SolarSystemException
      */
     private void viewEarthMoonSystem() throws SolarSystemException {
@@ -1044,6 +1101,9 @@ public class SolarSystemVisualization extends Stage {
         // Position of the camera
         Vector3D cameraPosition = new Vector3D(sunPosition);
 
+        // Distance between the camera and the Earth
+        double distance = cameraPosition.euclideanDistance(earthPosition);
+
         // Let camera look in the direction of the Earth
         Vector3D lookAtPosition = new Vector3D(earthPosition);
         lookAt(cameraPosition,lookAtPosition);
@@ -1051,14 +1111,14 @@ public class SolarSystemVisualization extends Stage {
         // Set field of view of camera
         double diameterEarthMoonSystem = earthPosition.euclideanDistance(moonPosition);
         double fieldOfView = 0.6 * (diameterEarthMoonSystem / FIELDOFVIEWFACTORTELESCOPE);
-        setCameraSettings(fieldOfView);
+        setCameraSettings(fieldOfView, distance - 1.0E09, distance + 1.0E09);
     }
 
     /**
-     * View from the Earth towards the Sun.
+     * View from the surface of the Earth towards the Sun.
      * @throws SolarSystemException
      */
-    private void viewFromEarthToSun() throws SolarSystemException {
+    private void viewFromEarthSurfaceToSun() throws SolarSystemException {
 
         // Set camera on the surface of the Earth
         Vector3D geocentricPosition =
@@ -1072,12 +1132,15 @@ public class SolarSystemVisualization extends Stage {
         Vector3D sunPosition = solarSystem.getPosition("Sun");
         Vector3D sunDirection = cameraPosition.direction(sunPosition);
         double sunDistance = cameraPosition.euclideanDistance(sunPosition);
+        double nearDistance = 0.9*sunDistance;
+        double farDistance = sunDistance;
         double sunRadiusFactor = 1.0;
         if (moon.isVisible()) {
             // Correction of Sun radius for Solar eclipse
             Vector3D moonPosition = solarSystem.getPosition("Moon");
             double moonDistance = cameraPosition.euclideanDistance(moonPosition);
             sunRadiusFactor = CORRECTIONSUNRADIUSSOLARECLIPSE*(moonDistance/sunDistance);
+            nearDistance = moonDistance;
         }
         if (mercury.isVisible()) {
             Vector3D mercuryPosition = solarSystem.getPosition("Mercury");
@@ -1087,6 +1150,7 @@ public class SolarSystemVisualization extends Stage {
                 // Correction of Sun radius for Mercury transit
                 double mercuryDistance = cameraPosition.euclideanDistance(mercuryPosition);
                 sunRadiusFactor = CORRECTIONSUNRADIUSMERCURYTRANSIT*(mercuryDistance/sunDistance);
+                nearDistance = mercuryDistance;
             }
         }
         if (venus.isVisible()) {
@@ -1097,25 +1161,27 @@ public class SolarSystemVisualization extends Stage {
                 // Correction of Sun radius for Venus transit
                 double venusDistance = cameraPosition.euclideanDistance(venusPosition);
                 sunRadiusFactor = CORRECTIONSUNRADIUSVENUSTRANSIT*(venusDistance/sunDistance);
+                nearDistance = venusDistance;
             }
         }
         sun.setRadius(sunRadiusFactor * 0.5*screenDiameter("Sun"));
+        coronaSun.setRadius(2.04*sun.getRadius());
 
         // Let camera look in the direction of the Sun
         Vector3D lookAtPosition = new Vector3D(sunPosition);
-        lookAt(cameraPosition,lookAtPosition);
+        lookAt(cameraPosition, lookAtPosition);
 
         // Set field of view of camera
         double diameterSun = diameterBody("Sun");
         double fieldOfView = sunRadiusFactor * diameterSun / FIELDOFVIEWFACTORTELESCOPE;
-        setCameraSettings(fieldOfView);
+        setCameraSettings(fieldOfView, nearDistance, farDistance);
     }
 
     /**
-     * View from the Earth towards the selected body
+     * View from the surface of the Earth towards the selected body
      * @throws SolarSystemException
      */
-    private void viewFromEarthToSelectedBody() throws SolarSystemException {
+    private void viewFromEarthSurfaceToSelectedBody() throws SolarSystemException {
 
         // Set camera on the surface of the Earth
         Vector3D geocentricPosition =
@@ -1124,7 +1190,7 @@ public class SolarSystemVisualization extends Stage {
         Vector3D earthPosition = solarSystem.getPosition("Earth");
         Vector3D cameraPosition = earthPosition.plus(geocentricPosition);
 
-        // Let camera look in the direction of the selected body
+        // Determine position of the body to look at
         Vector3D bodyPosition;
         try {
             bodyPosition = solarSystem.getPosition(selectedBody);
@@ -1135,20 +1201,25 @@ public class SolarSystemVisualization extends Stage {
             this.selectedBody = "Sun";
             bodyPosition = solarSystem.getPosition(selectedBody);
         }
+
+        // Let camera look in the direction of the selected body
         Vector3D lookAtPosition = new Vector3D(bodyPosition);
         lookAt(cameraPosition,lookAtPosition);
+
+        // Distance between the camera and the selected body
+        double distance = cameraPosition.euclideanDistance(bodyPosition);
 
         // Set field of view of the camera
         double diameter = diameterBody(selectedBody);
         double fieldOfView = diameter / FIELDOFVIEWFACTORTELESCOPE;
-        setCameraSettings(fieldOfView);
+        setCameraSettings(fieldOfView, distance - 5.0E9, distance + 5.0E9);
     }
 
     /**
-     * View from the Earth towards the observed body
+     * View from the surface of the Earth towards the observed body
      * @throws SolarSystemException
      */
-    private void viewFromEarthToObservedBody() throws SolarSystemException {
+    private void viewFromEarthSurfaceToObservedBody() throws SolarSystemException {
 
         // Set camera on the surface of the Earth
         Vector3D geocentricPosition =
@@ -1171,17 +1242,20 @@ public class SolarSystemVisualization extends Stage {
         Vector3D lookAtPosition = new Vector3D(bodyPosition);
         lookAt(cameraPosition,lookAtPosition);
 
+        // Distance between the camera and the observed body
+        double distance = cameraPosition.euclideanDistance(bodyPosition);
+
         // Set field of view of the camera
         double diameter = diameterBody(observedBody);
         double fieldOfView = diameter / FIELDOFVIEWFACTORTELESCOPE;
-        setCameraSettings(fieldOfView);
+        setCameraSettings(fieldOfView, distance - 5.0E9, distance + 5.0E9);
     }
 
     /**
      * View from the surface of the Earth towards the Moon
      * @throws SolarSystemException
      */
-    private void viewFromEarthToMoon() throws SolarSystemException {
+    private void viewFromEarthSurfaceToMoon() throws SolarSystemException {
 
         // Set camera on the surface of the Earth
         Vector3D geocentricPosition =
@@ -1192,13 +1266,49 @@ public class SolarSystemVisualization extends Stage {
 
         // Let camera look in direction of the Moon
         Vector3D moonPosition = solarSystem.getPosition("Moon");
-        Vector3D lookatPosition = new Vector3D(moonPosition);
-        lookAt(cameraPosition,lookatPosition);
+        Vector3D lookAtPosition = new Vector3D(moonPosition);
+        lookAt(cameraPosition, lookAtPosition);
+
+        // Distance from camera position to the Moon
+        double distance = cameraPosition.euclideanDistance(moonPosition);
 
         // Set field of view of the camera
         double diameter = diameterBody(selectedBody);
         double fieldOfView = diameter / FIELDOFVIEWFACTORTELESCOPE;
-        setCameraSettings(fieldOfView);
+        setCameraSettings(fieldOfView, distance - 1.0E7, distance + 1.0E7);
+    }
+
+    /**
+     * View from the center of the Earth towards the observed body
+     * @throws SolarSystemException
+     */
+    private void viewFromEarthCenterToObservedBody() throws SolarSystemException {
+
+        // Set camera at position of the Earth
+        Vector3D earthPosition = solarSystem.getPosition("Earth");
+        Vector3D cameraPosition = new Vector3D(earthPosition);
+
+        // Let camera look in the direction of the observed body
+        Vector3D bodyPosition;
+        try {
+            bodyPosition = solarSystem.getPosition(observedBody);
+        }
+        catch (SolarSystemException e) {
+            // A SolarSystemException 'Particle with name ... does not exist' may be thrown
+            // This may occur when the user deselects the planet system in the main application
+            this.observedBody = "Sun";
+            bodyPosition = solarSystem.getPosition(observedBody);
+        }
+        Vector3D lookAtPosition = new Vector3D(bodyPosition);
+        lookAt(cameraPosition,lookAtPosition);
+
+        // Distance between the camera and the observed body
+        double distance = cameraPosition.euclideanDistance(bodyPosition);
+
+        // Set field of view of the camera
+        double diameter = diameterBody(observedBody);
+        double fieldOfView = diameter / FIELDOFVIEWFACTORTELESCOPE;
+        setCameraSettings(fieldOfView, distance, distance);
     }
 
     /**
@@ -1233,7 +1343,7 @@ public class SolarSystemVisualization extends Stage {
         // Set field of view of the camera
         double diameter = diameterBody(observedBody);
         double fieldOfView = diameter / FIELDOFVIEWFACTORSPACECRAFT;
-        double distanceFromCenter = spacecraftPosition.euclideanDistance(bodyPosition);
+        double distanceFromCenter = cameraPosition.euclideanDistance(bodyPosition);
         double distanceFromSurface = distanceFromCenter - 0.5*diameter;
         if ("Rosetta".equals(selectedBody) && distanceFromSurface < 1.0E11) {
             // Rosetta comes close to the surface of the Earth and Mars
@@ -1241,7 +1351,12 @@ public class SolarSystemVisualization extends Stage {
             fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
         }
         fieldOfView = Math.min(Math.max(fieldOfView,4.0),90.0);
-        setCameraSettings(fieldOfView);
+        double nearDistance = Math.max(1.0E07,distanceFromSurface - 5.0E09);
+        if (distanceFromSurface < 1.0E09) {
+            nearDistance = Math.max(1.0E05,distanceFromSurface - 5.0E09);
+        }
+        double farDistance = distanceFromCenter + 5.0E09;
+        setCameraSettings(fieldOfView, nearDistance, farDistance);
     }
 
     /**
@@ -1260,7 +1375,10 @@ public class SolarSystemVisualization extends Stage {
         lookAt(cameraPosition,lookAtPosition);
 
         // Set field of view of the camera
-        setCameraSettings(40.0);
+        double fieldOfView = 40.0;   // 40 degrees
+        double nearDistance = 1.E05; // 100 km
+        double farDistance = 1.E07;  // 10000 km
+        setCameraSettings(fieldOfView, nearDistance, farDistance);
     }
 
     /**
@@ -1286,7 +1404,10 @@ public class SolarSystemVisualization extends Stage {
             lookAt(cameraPosition,lookAtPosition);
 
             // Set field of view of the camera for Earthrise
-            setCameraSettings(30.0);
+            double fieldOfView = 30.0;   // 30 degrees
+            double nearDistance = 1.E05; // 100 km
+            double farDistance = distanceToEarthKm*1.0E03; // distance to Earth in m
+            setCameraSettings(fieldOfView, nearDistance, farDistance);
             zRotateCamera.setAngle(-100.0);
             yRotateCamera.setAngle(25.0);
             xRotateCamera.setAngle(0.0);
@@ -1301,22 +1422,27 @@ public class SolarSystemVisualization extends Stage {
             lookAt(cameraPosition,lookAtPosition);
             if (distanceToEarthKm < 8000.0) {
                 double fieldOfView = Math.max(30.0,30.0 + 0.01*(8000.0 - distanceToEarthKm));
-                setCameraSettings(fieldOfView);
+                double nearDistance = 1.0E05; // 100 km
+                double farDistance = distanceToEarthKm*1.0E03; // distance to Earth in m
+                setCameraSettings(fieldOfView, nearDistance, farDistance);
             }
             else {
-                setCameraSettings(30.0);
+                double fieldOfView = 30.0;
+                double nearDistance = 1.0E06; // 1000 km
+                double farDistance = distanceToEarthKm*1.0E03; // distance to Earth in m
+                setCameraSettings(30.0, nearDistance, farDistance);
             }
         }
     }
 
     /**
-     * Update the 3D scene
+     * Update the 3D scene.
      * @param bodiesShown   Names of bodies to be shown
      * @param selectedBody  Selected body
      * @param observedBody  Body that is being observed
      * @param viewMode      Selected view mode
      * @param latitude      latitude of location on the Earth [degrees]
-     * @param longitude     longitude of lociation on the Earth [degrees]
+     * @param longitude     longitude of location on the Earth [degrees]
      */
     public void update(Set<String> bodiesShown, String selectedBody, String observedBody,
                        SolarSystemViewMode viewMode, double latitude, double longitude) {
@@ -1344,8 +1470,14 @@ public class SolarSystemVisualization extends Stage {
         ringSaturn.setVisible(saturn.isVisible());
         ringUranus.setVisible(uranus.isVisible());
 
-        // To visualize a blood moon
+        // Shadow of Saturn
+        shadowSaturn.setVisible(saturn.isVisible());
+
+        // Shadow of the Earth to visualize a blood moon
         shadowEarth.setVisible("Moon".equals(selectedBody));
+
+        // Corona of the Sun to visualize total Solar eclipse
+        coronaSun.setVisible(false);
 
         // Reset zoom parameter when another body is selected in the main app
         if (!this.selectedBody.equals(selectedBody)) {
@@ -1398,6 +1530,13 @@ public class SolarSystemVisualization extends Stage {
             }
         }
 
+        // Set radius of Earth and Moon to their normal values
+        // The sizes of the Earth and the Moon are changed when viewing the Earth-Moon system
+        if (!"EarthMoonBarycenter".equals(selectedBody)) {
+            earth.setRadius(0.5*screenDiameter("Earth"));
+            moon.setRadius(0.5*screenDiameter("Moon"));
+        }
+
         // Display name of observed body
         refreshDisplayObservedBody();
 
@@ -1433,7 +1572,7 @@ public class SolarSystemVisualization extends Stage {
                         earth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
-                        viewFromEarthToSun();
+                        viewFromEarthSurfaceToSun();
                         break;
                     case "Earth":
                         sun.setVisible(false);
@@ -1443,9 +1582,11 @@ public class SolarSystemVisualization extends Stage {
                         earth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(true);
-                        viewFromEarthToMoon();
+                        viewFromEarthSurfaceToMoon();
                         break;
-                    case "E-M Barycenter":
+                    case "EarthMoonBarycenter":
+                        earth.setRadius(6.0 * screenDiameter("Earth"));
+                        moon.setRadius(6.0 * screenDiameter("Moon"));
                         earth.setVisible(true);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
@@ -1457,19 +1598,22 @@ public class SolarSystemVisualization extends Stage {
                     case "Voyager 2":
                     case "New Horizons":
                     case "Rosetta":
+                    case "Cassini":
                         if ("Earth".equals(observedBody)) {
                             sun.setVisible(false);
                             viewFromSunToEarth();
                         }
                         else {
-                            viewFromEarthToObservedBody();
+                            earth.setVisible(false);
+                            //viewFromEarthCenterToObservedBody(); // LET OP
+                            viewFromEarthSurfaceToSelectedBody();
                         }
                         break;
                     default:
                         if (bodies.keySet().contains(this.selectedBody)) {
                             earth.setVisible(false);
                             shadowEarth.setVisible(false);
-                            viewFromEarthToSelectedBody();
+                            viewFromEarthSurfaceToSelectedBody();
                         } else {
                             sun.setVisible(false);
                             earth.setVisible(true);
