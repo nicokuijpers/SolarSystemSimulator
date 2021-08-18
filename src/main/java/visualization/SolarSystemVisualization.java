@@ -24,7 +24,6 @@ import ephemeris.CalendarUtil;
 import ephemeris.EphemerisUtil;
 import ephemeris.SolarSystemParameters;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.input.ScrollEvent;
@@ -406,14 +405,11 @@ public class SolarSystemVisualization extends Stage {
         // Resize the scene when the window (or stage) is resized
         // https://stackoverflow.com/questions/38216268/how-to-listen-resize-event-of-stage-in-javafx
         final Stage stage = this;
-        ChangeListener<Number> stageSizeListener = new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                subScene.setWidth(stage.getWidth());
-                subScene.setHeight(stage.getHeight());
-                displayDateTime.setX(Math.max(stage.getWidth() - 300.0,0.0));
-                displayDateTime.setY(Math.max(stage.getHeight() - 40.0,20.0));
-            }
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            subScene.setWidth(stage.getWidth());
+            subScene.setHeight(stage.getHeight());
+            displayDateTime.setX(Math.max(stage.getWidth() - 300.0,0.0));
+            displayDateTime.setY(Math.max(stage.getHeight() - 40.0,20.0));
         };
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
@@ -467,7 +463,7 @@ public class SolarSystemVisualization extends Stage {
                 sb.append("Earth observed from the Sun");
             }
             else {
-                sb.append(selectedBody + " observed from the Earth");
+                sb.append(selectedBody).append(" observed from the Earth");
             }
         }
         else {
@@ -571,7 +567,7 @@ public class SolarSystemVisualization extends Stage {
 
     /**
      * Determine diameter for given Solar System body
-     * @param bodyName
+     * @param bodyName Name of the body
      * @return diameter [m]
      */
     private double diameterBody(String bodyName) {
@@ -1452,11 +1448,7 @@ public class SolarSystemVisualization extends Stage {
         shadowGanymede.setVisible(false);
         shadowCallisto.setVisible(false);
         for (String bodyName : bodies.keySet()) {
-            if (bodiesShown.contains(bodyName)) {
-                bodies.get(bodyName).setVisible(true);
-            } else {
-                bodies.get(bodyName).setVisible(false);
-            }
+            bodies.get(bodyName).setVisible(bodiesShown.contains(bodyName));
         }
 
         // Shadows of the Galilean Moons

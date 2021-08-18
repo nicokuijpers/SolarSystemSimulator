@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13_1.xml" beforeDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="3D visualization SmartGroup removed.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SolarSystemSimulator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SmartGroup.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -613,7 +605,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629292582488</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="3D visualization SmartGroup removed.">
+      <created>1629293934841</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1629293934841</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -717,7 +716,8 @@
     <MESSAGE value="Rotated view when observing from the Earth. Correction speed of light improved" />
     <MESSAGE value="Rotated view when observing from the Earth." />
     <MESSAGE value="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn." />
-    <option name="LAST_COMMIT_MESSAGE" value="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn." />
+    <MESSAGE value="3D visualization SmartGroup removed." />
+    <option name="LAST_COMMIT_MESSAGE" value="3D visualization SmartGroup removed." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
