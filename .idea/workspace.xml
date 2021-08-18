@@ -56,14 +56,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="8085" />
+          <entry key="java" value="8086" />
           <entry key="md" value="138" />
           <entry key="txt" value="244" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="8085" />
+          <entry key="JAVA" value="8086" />
           <entry key="Markdown" value="138" />
           <entry key="PLAIN_TEXT" value="244" />
         </counts>
@@ -84,8 +84,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3">
-              <caret line="79" column="71" lean-forward="true" selection-start-line="79" selection-start-column="71" selection-end-line="79" selection-end-column="71" />
+            <state relative-caret-position="228">
+              <caret line="94" column="78" lean-forward="true" selection-start-line="94" selection-start-column="3" selection-end-line="94" selection-end-column="78" />
             </state>
           </provider>
         </entry>
@@ -231,8 +231,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="332" />
-    <option name="y" value="325" />
+    <option name="x" value="349" />
+    <option name="y" value="173" />
     <option name="width" value="1680" />
     <option name="height" value="977" />
   </component>
@@ -404,7 +404,7 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="application.passwordSafe" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -526,7 +526,7 @@
     </recent_temporary>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>$USER_HOME$/.subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -568,7 +568,7 @@
       <workItem from="1628506761221" duration="1012000" />
       <workItem from="1628697571644" duration="23865000" />
       <workItem from="1629281852894" duration="1511000" />
-      <workItem from="1629283443024" duration="2257000" />
+      <workItem from="1629283443024" duration="3008000" />
     </task>
     <task id="LOCAL-00001" summary="Rotated view when observing from the Earth. Correction speed of light improved">
       <created>1625993112561</created>
@@ -640,7 +640,28 @@
       <option name="project" value="LOCAL" />
       <updated>1629290619700</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
+      <created>1629291066071</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1629291066071</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
+      <created>1629291191228</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1629291191228</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
+      <created>1629291323091</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1629291323091</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -676,7 +697,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="287703000" />
+    <option name="totallyTimeSpent" value="288454000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -688,9 +709,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="332" y="325" width="1680" height="977" extended-state="0" />
+    <frame x="349" y="173" width="1680" height="977" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25152627" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25152627" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -706,7 +727,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3299435" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4993895" weight="0.3299435" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3299435" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4993895" visible="true" weight="0.3299435" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50061053" side_tool="true" weight="0.3299435" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.32881355" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -1038,8 +1059,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3">
-          <caret line="79" column="71" lean-forward="true" selection-start-line="79" selection-start-column="71" selection-end-line="79" selection-end-column="71" />
+        <state relative-caret-position="228">
+          <caret line="94" column="78" lean-forward="true" selection-start-line="94" selection-start-column="3" selection-end-line="94" selection-end-column="78" />
         </state>
       </provider>
     </entry>
