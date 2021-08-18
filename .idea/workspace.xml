@@ -32,9 +32,9 @@
           <entry key="project.open.time.3" value="4" />
           <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.open.time.6" value="2" />
+          <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="35" />
+          <entry key="project.opened" value="36" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -232,8 +232,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="349" />
-    <option name="y" value="173" />
+    <option name="x" value="337" />
+    <option name="y" value="152" />
     <option name="width" value="1680" />
     <option name="height" value="977" />
   </component>
@@ -243,7 +243,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="Scope">
         <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
           <expand>
@@ -282,6 +281,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -405,7 +405,7 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="application.passwordSafe" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -571,6 +571,7 @@
       <workItem from="1629281852894" duration="1511000" />
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
+      <workItem from="1629292168460" duration="403000" />
     </task>
     <task id="LOCAL-00001" summary="Rotated view when observing from the Earth. Correction speed of light improved">
       <created>1625993112561</created>
@@ -684,7 +685,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629292088005</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
+      <created>1629292180221</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1629292180221</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -720,7 +728,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="288743000" />
+    <option name="totallyTimeSpent" value="289146000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -732,10 +740,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="349" y="173" width="1680" height="977" extended-state="0" />
-    <editor active="true" />
+    <frame x="788" y="130" width="1680" height="977" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25457877" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25763127" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -751,8 +758,8 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3299435" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4993895" weight="0.3299435" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.498779" visible="true" weight="0.3299435" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501221" side_tool="true" visible="true" weight="0.3299435" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4981685" visible="true" weight="0.3299435" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="10" sideWeight="0.50183153" side_tool="true" visible="true" weight="0.3299435" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.32881355" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
