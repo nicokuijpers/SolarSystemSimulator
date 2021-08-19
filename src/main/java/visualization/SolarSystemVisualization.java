@@ -256,17 +256,11 @@ public class SolarSystemVisualization extends Stage {
         shadowEarth = new Cylinder();
 
         // Shadow of Jupiter to cast shadow over the Galilean moons
-        double radiusJup = 0.5*this.screenDiameter("Jupiter");
-        double flatteningJup = solarSystemParameters.getFlattening("Jupiter");
-        shadowJupiter = new Cylinder((1.0 - flatteningJup)*radiusJup, SHADOWJUPITERFACTOR*radiusJup);
-        shadowJupiter.setMaterial(new PhongMaterial(Color.BLACK));
+        shadowJupiter = factory.createShadow("Jupiter",SHADOWJUPITERFACTOR, Color.BLACK);
         setBodyRotations("shadowJupiter",shadowJupiter);
 
         // Shadow of Saturn to cast shadow over the rings and the moons Mimas through Rhea
-        double radiusSat = 0.5*this.screenDiameter("Saturn");
-        double flatteningSat = solarSystemParameters.getFlattening("Saturn");
-        shadowSaturn = new Cylinder((1.0 - flatteningSat)*radiusSat, SHADOWSATURNFACTOR*radiusSat);
-        shadowSaturn.setMaterial(new PhongMaterial(Color.BLACK));
+        shadowSaturn = factory.createShadow("Saturn", SHADOWSATURNFACTOR, Color.BLACK);
         setBodyRotations("shadowSaturn",shadowSaturn);
 
         // Small Solar System bodies

@@ -560,6 +560,21 @@ public class SolarSystemShapeFactory {
     }
 
     /**
+     * Create the shadow for a planet of the Solar System.
+     * @param planetName name of the planet
+     * @param shadowFactor factor to determine length of the shadow
+     * @param color  color for the shadow
+     * @return shadow (cylinder)
+     */
+    public Cylinder createShadow(String planetName, double shadowFactor, Color color) {
+        double radiusPlanet = 0.5*visualization.screenDiameter(planetName);
+        double flattening = solarSystemParameters.getFlattening(planetName);
+        Cylinder shadow = new Cylinder((1.0 - flattening)*radiusPlanet, shadowFactor*radiusPlanet);
+        shadow.setMaterial(new PhongMaterial(color));
+        return shadow;
+    }
+
+    /**
      * Create a 3D shape for small Solar System body with given name.
      * @param bodyName name of the small body
      * @param color color for the small body
