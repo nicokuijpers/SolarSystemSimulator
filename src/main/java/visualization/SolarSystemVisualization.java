@@ -84,13 +84,13 @@ public class SolarSystemVisualization extends Stage {
     private static final double DIAMETERISS         = 2.0E5; //  200 km
     private static final double DIAMETERAPOLLO      = 2.0E5; //  200 km
 
-    // Factor to determine the length of the shadows of Jupiter and Saturn
-    private static final double SHADOWJUPITERFACTOR = 30.0; // 30 times radius of Jupiter
-    private static final double SHADOWSATURNFACTOR = 8.0;   // 8 times radius of Saturn
+    // Factor to determine the length of the shadows of Jupiter, Saturn, Uranus, and Neptune
+    private static final double SHADOWFACTOR = 30.0; // 30 times radius of planet
 
     // View mode for 3D visualization
     // 1. View selected object from the Earth
     // 2. View nearest object from position of spacecraft
+    // 3. View nearest object such that both object and spacecraft are in view
     private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
 
     //https://www.genuinecoder.com/javafx-3d-tutorial-object-transform-rotation-with-mouse/
@@ -127,8 +127,7 @@ public class SolarSystemVisualization extends Stage {
     private Cylinder ringSaturn, ringUranus;
     private Cylinder coronaSun;
     private Cylinder shadowEarth;
-    private Cylinder shadowJupiter;
-    private Cylinder shadowSaturn;
+    private Cylinder shadowJupiter, shadowSaturn, shadowUranus, shadowNeptune;
     private Shape3D pallas, juno, vesta, eros, bennu;
     private Shape3D halley, churyumov, ultimaThule;
     private Shape3D pioneer10, pioneer11, voyager1, voyager2, newhorizons, rosetta, cassini, apollo8;
@@ -256,12 +255,20 @@ public class SolarSystemVisualization extends Stage {
         shadowEarth = new Cylinder();
 
         // Shadow of Jupiter to cast shadow over the Galilean moons
-        shadowJupiter = factory.createShadow("Jupiter",SHADOWJUPITERFACTOR, Color.BLACK);
+        shadowJupiter = factory.createShadow("Jupiter",SHADOWFACTOR, Color.BLACK);
         setBodyRotations("shadowJupiter",shadowJupiter);
 
         // Shadow of Saturn to cast shadow over the rings and the moons Mimas through Rhea
-        shadowSaturn = factory.createShadow("Saturn", SHADOWSATURNFACTOR, Color.BLACK);
+        shadowSaturn = factory.createShadow("Saturn", SHADOWFACTOR, Color.BLACK);
         setBodyRotations("shadowSaturn",shadowSaturn);
+
+        // Shadow of Uranus to cast shadow over the rings and the moons
+        shadowUranus = factory.createShadow("Uranus", SHADOWFACTOR, Color.BLACK);
+        setBodyRotations("shadowUranus",shadowUranus);
+
+        // Shadow of Neptune to cast shadow over Triton
+        shadowNeptune = factory.createShadow("Neptune", SHADOWFACTOR, Color.BLACK);
+        setBodyRotations("shadowNeptune",shadowNeptune);
 
         // Small Solar System bodies
         pallas = factory.createSmallBody("Pallas",Color.LIGHTGRAY);
@@ -350,7 +357,7 @@ public class SolarSystemVisualization extends Stage {
                 zRotateCamera,
                 positionCamera
         );
-        setCameraSettings(50.0, 1.E06, 40.0* SolarSystemParameters.ASTRONOMICALUNIT);
+        setCameraSettings(50.0, 1.E06, 40.0*SolarSystemParameters.ASTRONOMICALUNIT);
 
         // Define the scene using a subscene
         solarSystemGroup = new Group();
@@ -363,6 +370,8 @@ public class SolarSystemVisualization extends Stage {
         solarSystemGroup.getChildren().add(shadowEarth);
         solarSystemGroup.getChildren().add(shadowJupiter);
         solarSystemGroup.getChildren().add(shadowSaturn);
+        solarSystemGroup.getChildren().add(shadowUranus);
+        solarSystemGroup.getChildren().add(shadowNeptune);
         solarSystemGroup.getChildren().add(pointLight);
         solarSystemGroup.getChildren().add(locationOnEarth);
         subScene = new SubScene(
@@ -752,8 +761,9 @@ public class SolarSystemVisualization extends Stage {
                     bodyRotationsY.get(name).setAngle(camThetaDeg);
                     bodyRotationsX.get(name).setAngle(camPhiDeg);
 
-                    // Shadow of Jupiter and Saturn
-                    if ("Jupiter".equals(name) || "Saturn".equals(name)) {
+                    // Shadows of Jupiter, Saturn, Uranus, and Neptune
+                    if ("Jupiter".equals(name) || "Saturn".equals(name) ||
+                            "Uranus".equals(name) || "Neptune".equals(name)) {
                         String shadowName = "shadow" + name;
                         Vector3D positionSun = solarSystem.getParticle("Sun").getPosition();
                         Vector3D positionPlanet = solarSystem.getParticle(name).getPosition();
@@ -807,7 +817,6 @@ public class SolarSystemVisualization extends Stage {
         Vector3D positionRotated = positionTranslated.rotate(xc,yc,zc);
         return positionRotated;
     }
-
 
     /**
      * Update positions of the objects representing the Solar System bodies.
@@ -867,7 +876,7 @@ public class SolarSystemVisualization extends Stage {
 
         // Shadow of Jupiter
         double radiusJupiter = 0.5*solarSystemParameters.getDiameter("Jupiter");
-        double lengthShadowJupiter = SHADOWJUPITERFACTOR*radiusJupiter;
+        double lengthShadowJupiter = SHADOWFACTOR*radiusJupiter;
         Vector3D positionShadowJupiter = positionJupiter.plus(positionJupiter.normalize().scalarProduct(0.5*lengthShadowJupiter));
         Vector3D positionShadowJupiterTranslated = translateRotatePosition(cameraPosition, cameraDirection, positionShadowJupiter);
         shadowJupiter.setTranslateX(screenX(positionShadowJupiterTranslated));
@@ -877,12 +886,32 @@ public class SolarSystemVisualization extends Stage {
         // Shadow of Saturn
         Vector3D positionSaturn = solarSystem.getParticle("Saturn").getPosition();
         double radiusSaturn = 0.5*solarSystemParameters.getDiameter("Saturn");
-        double lengthShadowSaturn = SHADOWSATURNFACTOR*radiusSaturn;
+        double lengthShadowSaturn = SHADOWFACTOR*radiusSaturn;
         Vector3D positionShadowSaturn = positionSaturn.plus(positionSaturn.normalize().scalarProduct(0.5*lengthShadowSaturn));
         Vector3D positionShadowSaturnTranslated = translateRotatePosition(cameraPosition, cameraDirection, positionShadowSaturn);
         shadowSaturn.setTranslateX(screenX(positionShadowSaturnTranslated));
         shadowSaturn.setTranslateY(screenY(positionShadowSaturnTranslated));
         shadowSaturn.setTranslateZ(screenZ(positionShadowSaturnTranslated));
+
+        // Shadow of Uranus
+        Vector3D positionUranus = solarSystem.getParticle("Uranus").getPosition();
+        double radiusUranus = 0.5*solarSystemParameters.getDiameter("Uranus");
+        double lengthShadowUranus = SHADOWFACTOR*radiusUranus;
+        Vector3D positionShadowUranus = positionUranus.plus(positionUranus.normalize().scalarProduct(0.5*lengthShadowUranus));
+        Vector3D positionShadowUranusTranslated = translateRotatePosition(cameraPosition, cameraDirection, positionShadowUranus);
+        shadowUranus.setTranslateX(screenX(positionShadowUranusTranslated));
+        shadowUranus.setTranslateY(screenY(positionShadowUranusTranslated));
+        shadowUranus.setTranslateZ(screenZ(positionShadowUranusTranslated));
+
+        // Shadow of Neptune
+        Vector3D positionNeptune = solarSystem.getParticle("Neptune").getPosition();
+        double radiusNeptune = 0.5*solarSystemParameters.getDiameter("Neptune");
+        double lengthShadowNeptune = SHADOWFACTOR*radiusNeptune;
+        Vector3D positionShadowNeptune = positionNeptune.plus(positionNeptune.normalize().scalarProduct(0.5*lengthShadowNeptune));
+        Vector3D positionShadowNeptuneTranslated = translateRotatePosition(cameraPosition, cameraDirection, positionShadowNeptune);
+        shadowNeptune.setTranslateX(screenX(positionShadowNeptuneTranslated));
+        shadowNeptune.setTranslateY(screenY(positionShadowNeptuneTranslated));
+        shadowNeptune.setTranslateZ(screenZ(positionShadowNeptuneTranslated));
 
         // Small red sphere representing location on Earth
         if (locationOnEarth.isVisible()) {
@@ -1455,8 +1484,11 @@ public class SolarSystemVisualization extends Stage {
         ringSaturn.setVisible(saturn.isVisible());
         ringUranus.setVisible(uranus.isVisible());
 
-        // Shadow of Saturn
+        // Shadows of Jupiter, Saturn, Uranus, and Neptune
+        shadowJupiter.setVisible(jupiter.isVisible());
         shadowSaturn.setVisible(saturn.isVisible());
+        shadowUranus.setVisible(uranus.isVisible());
+        shadowNeptune.setVisible(neptune.isVisible());
 
         // Shadow of the Earth to visualize a blood moon
         shadowEarth.setVisible("Moon".equals(selectedBody));
