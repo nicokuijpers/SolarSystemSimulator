@@ -45,6 +45,7 @@ import java.util.*;
 
 /**
  * Visualization of the Solar System using JavaFX 3D.
+ * @author Nico Kuijpers
  */
 public class SolarSystemVisualization extends Stage {
 
@@ -66,9 +67,9 @@ public class SolarSystemVisualization extends Stage {
     private static final double DELTAZOOMFACTOR = 0.01;
 
     // Correction for radius of sphere representing the Sun
-    private static final double CORRECTIONSUNRADIUSSOLARECLIPSE   = 3.0;  // Correction for Solar eclipse
-    private static final double CORRECTIONSUNRADIUSMERCURYTRANSIT = 1.45; // Correction for Mercury transit
-    private static final double CORRECTIONSUNRADIUSVENUSTRANSIT   = 1.96; // Correction for Venus transit
+    private static final double CORRECTIONSUNRADIUSSOLARECLIPSE   = 3.04; // Correction for Solar eclipse
+    private static final double CORRECTIONSUNRADIUSMERCURYTRANSIT = 1.43; // Correction for Mercury transit
+    private static final double CORRECTIONSUNRADIUSVENUSTRANSIT   = 1.94; // Correction for Venus transit
 
     // Solar System bodies with diameter at most 100 km are considered small bodies
     // Also Juno and Pallas are considered small bodies
@@ -84,6 +85,9 @@ public class SolarSystemVisualization extends Stage {
     private static final double DIAMETERISS         = 2.0E5; //  200 km
     private static final double DIAMETERAPOLLO      = 2.0E5; //  200 km
 
+    // Factor ot determine the radius of the sphere representing the clouds of the Earth
+    private static final double CLOUDFACTOR = 1.02; // 2 per cent larger than the Earth
+
     // Factor to determine the length of the shadows of Jupiter, Saturn, Uranus, and Neptune
     private static final double SHADOWFACTOR = 30.0; // 30 times radius of planet
 
@@ -92,6 +96,9 @@ public class SolarSystemVisualization extends Stage {
     // 2. View nearest object from position of spacecraft
     // 3. View nearest object such that both object and spacecraft are in view
     private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
+
+    // Flag to indicate whether high-resolution texture images should be used for the Earth
+    private static final boolean HIGHRESEARTH = true;
 
     //https://www.genuinecoder.com/javafx-3d-tutorial-object-transform-rotation-with-mouse/
     // Tracks drag starting point for x and y
@@ -124,6 +131,7 @@ public class SolarSystemVisualization extends Stage {
     private Sphere miranda, ariel, umbriel, titania, oberon;
     private Sphere triton;
     private Sphere shadowIo, shadowEuropa, shadowGanymede, shadowCallisto;
+    private Sphere cloudsEarth;
     private Cylinder ringSaturn, ringUranus;
     private Cylinder coronaSun;
     private Cylinder shadowEarth;
@@ -137,6 +145,7 @@ public class SolarSystemVisualization extends Stage {
     private Map<String,Rotate> bodyRotationsZ;
     private Map<String,Rotate> bodyRotationsObliquity;
     private Map<String,Rotate> bodyRotationsRevolution;
+    private Map<String,Double> offsetRevolution;
     private PerspectiveCamera camera;
     private PointLight pointLight;
     private Sphere locationOnEarth;
@@ -165,6 +174,9 @@ public class SolarSystemVisualization extends Stage {
     // Solar System parameters
     private SolarSystemParameters solarSystemParameters;
 
+    // Factory for 3D shapes for visualization
+    SolarSystemShapeFactory shapeFactory;
+
     // Selected body
     private String selectedBody = "Sun";
 
@@ -184,7 +196,7 @@ public class SolarSystemVisualization extends Stage {
         this.solarSystemParameters = SolarSystemParameters.getInstance();
 
         // Factory for 3D shapes for visualization
-        SolarSystemShapeFactory factory = new SolarSystemShapeFactory(this);
+        this.shapeFactory = new SolarSystemShapeFactory(this);
 
         // Define material for sphere representing shadow of the Earth
         materialTransparent = new PhongMaterial();
@@ -194,128 +206,222 @@ public class SolarSystemVisualization extends Stage {
         materialShadowEarth.setDiffuseColor(colorShadowEarth);
 
         // Sun, planets, and moons
+        bodies = new HashMap<>();
         bodyRotationsX = new HashMap<>();
         bodyRotationsY = new HashMap<>();
         bodyRotationsZ = new HashMap<>();
         bodyRotationsRevolution = new HashMap<>();
         bodyRotationsObliquity = new HashMap<>();
-        sun = factory.createSphere("Sun", Color.BLANCHEDALMOND);
-        mercury = factory.createSphere("Mercury", Color.ORANGE);
-        venus = factory.createSphere("Venus", Color.PEACHPUFF);
-        earth = factory.createSphere("Earth", Color.AQUAMARINE);
-        moon = factory.createSphere("Moon", Color.LIGHTGRAY);
-        mars = factory.createSphere("Mars", Color.RED);
-        jupiter = factory.createSphere("Jupiter", Color.ROSYBROWN);
-        saturn = factory.createSphere("Saturn", Color.ORANGE);
-        uranus = factory.createSphere("Uranus", Color.LIGHTBLUE);
-        neptune = factory.createSphere("Neptune", Color.CADETBLUE);
-        pluto = factory.createSphere("Pluto", Color.LIGHTBLUE);
-        eris = factory.createSphere("Eris", Color.LIGHTSALMON);
-        chiron = factory.createSphere("Chiron", Color.CRIMSON);
-        ceres = factory.createSphere("Ceres", Color.ORANGE);
-        pallas = factory.createSphere("Pallas", Color.LIGHTGREEN);
-        eros = factory.createSphere("Eros", Color.LIGHTBLUE);
-        halley = factory.createSphere("Halley", Color.YELLOW);
-        encke = factory.createSphere("Encke", Color.LIGHTGREEN);
-        halebopp = factory.createSphere("Hale-Bopp", Color.LIGHTBLUE);
+        offsetRevolution = new HashMap<>();
+        sun = shapeFactory.createSphere("Sun", Color.BLANCHEDALMOND);
+        bodies.put("Sun",sun);
+        mercury = shapeFactory.createSphere("Mercury", Color.ORANGE);
+        bodies.put("Mercury",mercury);
+        venus = shapeFactory.createSphere("Venus", Color.PEACHPUFF);
+        bodies.put("Venus",venus);
+        if (HIGHRESEARTH) {
+            earth = shapeFactory.createSphereHighRes("Earth", Color.AQUAMARINE);
+        }
+        else {
+            earth = shapeFactory.createSphere("Earth", Color.AQUAMARINE);
+        }
+        bodies.put("Earth",earth);
+        moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
+        bodies.put("Moon",moon);
+        mars = shapeFactory.createSphere("Mars", Color.RED);
+        bodies.put("Mars",mars);
+        jupiter = shapeFactory.createSphere("Jupiter", Color.ROSYBROWN);
+        bodies.put("Jupiter",jupiter);
+        saturn = shapeFactory.createSphere("Saturn", Color.ORANGE);
+        bodies.put("Saturn",saturn);
+        uranus = shapeFactory.createSphere("Uranus", Color.LIGHTBLUE);
+        bodies.put("Uranus",uranus);
+        neptune = shapeFactory.createSphere("Neptune", Color.CADETBLUE);
+        bodies.put("Neptune",neptune);
+        pluto = shapeFactory.createSphere("Pluto", Color.LIGHTBLUE);
+        bodies.put("Pluto",pluto);
+        eris = shapeFactory.createSphere("Eris", Color.LIGHTSALMON);
+        bodies.put("Eris",eris);
+        chiron = shapeFactory.createSphere("Chiron", Color.CRIMSON);
+        bodies.put("Chiron",chiron);
+        ceres = shapeFactory.createSphere("Ceres", Color.ORANGE);
+        bodies.put("Ceres",ceres);
+        pallas = shapeFactory.createSphere("Pallas", Color.LIGHTGREEN);
+        bodies.put("Pallas",pallas);
+        eros = shapeFactory.createSphere("Eros", Color.LIGHTBLUE);
+        bodies.put("Eros",eros);
+        halley = shapeFactory.createSphere("Halley", Color.YELLOW);
+        bodies.put("Halley",halley);
+        encke = shapeFactory.createSphere("Encke", Color.LIGHTGREEN);
+        bodies.put("Encke",encke);
+        halebopp = shapeFactory.createSphere("Hale-Bopp", Color.LIGHTBLUE);
+        bodies.put("Hale-Bopp",halebopp);
         Color colorShoemaker = new Color(254.0/255,216.0/255,177.0/255, 1.0);
-        shoemaker = factory.createSphere("Shoemaker-Levy 9", colorShoemaker);
-        florence = factory.createSphere("Florence", Color.LIGHTGREEN);
-        io = factory.createSphere("Io",Color.YELLOW);
-        europa = factory.createSphere("Europa",Color.LIGHTBLUE);
-        ganymede = factory.createSphere("Ganymede",Color.LIGHTGRAY);
-        callisto = factory.createSphere("Callisto",Color.ORANGE);
-        mimas = factory.createSphere("Mimas", Color.LIGHTGRAY);
-        enceladus = factory.createSphere("Enceladus", Color.ALICEBLUE);
-        tethys = factory.createSphere("Tethys", Color.DARKGOLDENROD);
-        dione = factory.createSphere("Dione", Color.BISQUE);
-        rhea = factory.createSphere("Rhea", Color.ORANGE);
-        titan = factory.createSphere("Titan", Color.PEACHPUFF);
-        hyperion = factory.createSphere("Hyperion", Color.LIGHTCORAL);
-        iapetus = factory.createSphere("Iapetus", Color.ALICEBLUE);
-        miranda = factory.createSphere("Miranda", Color.LIGHTGRAY);
-        ariel = factory.createSphere("Ariel", Color.ALICEBLUE);
-        umbriel = factory.createSphere("Umbriel", Color.PEACHPUFF);
-        titania = factory.createSphere("Titania", Color.LIGHTSALMON);
-        oberon = factory.createSphere("Oberon", Color.BISQUE);
-        triton = factory.createSphere("Triton", Color.LIGHTGRAY);
-        shadowIo = factory.createSphere("shadowIo",Color.BLACK);
-        shadowEuropa = factory.createSphere("shadowEuropa",Color.BLACK);
-        shadowGanymede = factory.createSphere("shadowGanymede",Color.BLACK);
-        shadowCallisto = factory.createSphere("shadowCallisto",Color.BLACK);
+        shoemaker = shapeFactory.createSphere("Shoemaker-Levy 9", colorShoemaker);
+        bodies.put("Shoemaker-Levy 9",shoemaker);
+        florence = shapeFactory.createSphere("Florence", Color.LIGHTGREEN);
+        bodies.put("Florence",florence);
+        io = shapeFactory.createSphere("Io",Color.YELLOW);
+        bodies.put("Io",io);
+        europa = shapeFactory.createSphere("Europa",Color.LIGHTBLUE);
+        bodies.put("Europa",europa);
+        ganymede = shapeFactory.createSphere("Ganymede",Color.LIGHTGRAY);
+        bodies.put("Ganymede",ganymede);
+        callisto = shapeFactory.createSphere("Callisto",Color.ORANGE);
+        bodies.put("Callisto",callisto);
+        mimas = shapeFactory.createSphere("Mimas", Color.LIGHTGRAY);
+        bodies.put("Mimas",mimas);
+        enceladus = shapeFactory.createSphere("Enceladus", Color.ALICEBLUE);
+        bodies.put("Enceladus",enceladus);
+        tethys = shapeFactory.createSphere("Tethys", Color.DARKGOLDENROD);
+        bodies.put("Tethys",tethys);
+        dione = shapeFactory.createSphere("Dione", Color.BISQUE);
+        bodies.put("Dione",dione);
+        rhea = shapeFactory.createSphere("Rhea", Color.ORANGE);
+        bodies.put("Rhea",rhea);
+        titan = shapeFactory.createSphere("Titan", Color.PEACHPUFF);
+        bodies.put("Titan",titan);
+        hyperion = shapeFactory.createSphere("Hyperion", Color.LIGHTCORAL);
+        bodies.put("Hyperion",hyperion);
+        iapetus = shapeFactory.createSphere("Iapetus", Color.ALICEBLUE);
+        bodies.put("Iapetus",iapetus);
+        miranda = shapeFactory.createSphere("Miranda", Color.LIGHTGRAY);
+        bodies.put("Miranda",miranda);
+        ariel = shapeFactory.createSphere("Ariel", Color.ALICEBLUE);
+        bodies.put("Ariel",ariel);
+        umbriel = shapeFactory.createSphere("Umbriel", Color.PEACHPUFF);
+        bodies.put("Umbriel",umbriel);
+        titania = shapeFactory.createSphere("Titania", Color.LIGHTSALMON);
+        bodies.put("Titania",titania);
+        oberon = shapeFactory.createSphere("Oberon", Color.BISQUE);
+        bodies.put("Oberon",oberon);
+        triton = shapeFactory.createSphere("Triton", Color.LIGHTGRAY);
+        bodies.put("Triton",triton);
+        shadowIo = shapeFactory.createSphere("shadowIo",Color.BLACK);
+        bodies.put("shadowIo",shadowIo);
+        shadowEuropa = shapeFactory.createSphere("shadowEuropa",Color.BLACK);
+        bodies.put("shadowEuropa",shadowEuropa);
+        shadowGanymede = shapeFactory.createSphere("shadowGanymede",Color.BLACK);
+        bodies.put("shadowGanymede",shadowGanymede);
+        shadowCallisto = shapeFactory.createSphere("shadowCallisto",Color.BLACK);
+        bodies.put("shadowCallisto",shadowCallisto);
+
+        // Clouds for the Earth
+        if (HIGHRESEARTH) {
+            cloudsEarth = shapeFactory.createCloudsEarthHighRes(CLOUDFACTOR);
+        }
+        else {
+            cloudsEarth = shapeFactory.createCloudsEarth(CLOUDFACTOR);
+        }
 
         // Rings of Saturn and Uranus
-        ringSaturn = factory.createRing("Saturn",Color.ORANGE);
-        ringUranus = factory.createRing("Uranus",Color.LIGHTBLUE);
+        ringSaturn = shapeFactory.createRing("Saturn",Color.ORANGE);
+        ringUranus = shapeFactory.createRing("Uranus",Color.LIGHTBLUE);
 
         // Corona for Solar Eclipse
-        coronaSun = factory.createRing("Sun",Color.ORANGE);
+        coronaSun = shapeFactory.createRing("Sun",Color.ORANGE);
 
         // Shadow of the Earth to visualize Lunar eclipse
         shadowEarth = new Cylinder();
 
         // Shadow of Jupiter to cast shadow over the Galilean moons
-        shadowJupiter = factory.createShadow("Jupiter",SHADOWFACTOR, Color.BLACK);
+        shadowJupiter = shapeFactory.createShadow("Jupiter",SHADOWFACTOR, Color.BLACK);
         setBodyRotations("shadowJupiter",shadowJupiter);
 
         // Shadow of Saturn to cast shadow over the rings and the moons Mimas through Rhea
-        shadowSaturn = factory.createShadow("Saturn", SHADOWFACTOR, Color.BLACK);
+        shadowSaturn = shapeFactory.createShadow("Saturn", SHADOWFACTOR, Color.BLACK);
         setBodyRotations("shadowSaturn",shadowSaturn);
 
         // Shadow of Uranus to cast shadow over the rings and the moons
-        shadowUranus = factory.createShadow("Uranus", SHADOWFACTOR, Color.BLACK);
+        shadowUranus = shapeFactory.createShadow("Uranus", SHADOWFACTOR, Color.BLACK);
         setBodyRotations("shadowUranus",shadowUranus);
 
         // Shadow of Neptune to cast shadow over Triton
-        shadowNeptune = factory.createShadow("Neptune", SHADOWFACTOR, Color.BLACK);
+        shadowNeptune = shapeFactory.createShadow("Neptune", SHADOWFACTOR, Color.BLACK);
         setBodyRotations("shadowNeptune",shadowNeptune);
 
         // Small Solar System bodies
-        pallas = factory.createSmallBody("Pallas",Color.LIGHTGRAY);
-        juno = factory.createSmallBody("Juno",Color.LIGHTGRAY);
-        vesta = factory.createSmallBody("Vesta",Color.YELLOW);
+        pallas = shapeFactory.createSmallBody("Pallas",Color.LIGHTGRAY);
+        bodies.put("Pallas",pallas);
+        juno = shapeFactory.createSmallBody("Juno",Color.LIGHTGRAY);
+        bodies.put("Juno",juno);
+        vesta = shapeFactory.createSmallBody("Vesta",Color.YELLOW);
+        bodies.put("Vesta",vesta);
         Color colorEros = new Color(164.0/255,152.0/255,138.0/255, 1.0);
-        eros = factory.createSmallBody("Eros",colorEros);
-        bennu = factory.createSmallBody("Bennu",Color.LIGHTGRAY);
-        halley = factory.createSmallBody("Halley",Color.GRAY);
-        churyumov = factory.createSmallBody("67P/Churyumov-Gerasimenko", Color.SNOW);
-        ultimaThule = factory.createSmallBody("Ultima Thule", Color.LIGHTGRAY);
+        eros = shapeFactory.createSmallBody("Eros",colorEros);
+        bodies.put("Eros",eros);
+        bennu = shapeFactory.createSmallBody("Bennu",Color.LIGHTGRAY);
+        bodies.put("Bennu",bennu);
+        halley = shapeFactory.createSmallBody("Halley",Color.GRAY);
+        bodies.put("Halley",halley);
+        churyumov = shapeFactory.createSmallBody("67P/Churyumov-Gerasimenko", Color.SNOW);
+        bodies.put("67P/Churyumov-Gerasimenko",churyumov);
+        ultimaThule = shapeFactory.createSmallBody("Ultima Thule", Color.LIGHTGRAY);
+        bodies.put("Ultima Thule",ultimaThule);
 
         // Spacecraft
-        pioneer10 = factory.createSpacecraft("Pioneer 10", Color.LIGHTYELLOW);
-        pioneer11 = factory.createSpacecraft("Pioneer 11", Color.LIGHTYELLOW);
-        voyager1 = factory.createSpacecraft("Voyager 1", Color.LIGHTYELLOW);
-        voyager2 = factory.createSpacecraft("Voyager 2", Color.LIGHTYELLOW);
-        newhorizons = factory.createSpacecraft("New Horizons", Color.LIGHTYELLOW);
-        rosetta = factory.createSpacecraft("Rosetta", Color.LIGHTYELLOW);
-        cassini = factory.createSpacecraft("Cassini", Color.LIGHTYELLOW);
-        apollo8 = factory.createSpacecraft("Apollo 8", Color.LIGHTYELLOW);
+        spacecraftNames = new ArrayList<>();
+        pioneer10 = shapeFactory.createSpacecraft("Pioneer 10", Color.LIGHTYELLOW);
+        bodies.put("Pioneer 10",pioneer10);
+        spacecraftNames.add("Pioneer 10");
+        pioneer11 = shapeFactory.createSpacecraft("Pioneer 11", Color.LIGHTYELLOW);
+        bodies.put("Pioneer 11",pioneer11);
+        spacecraftNames.add("Pioneer 11");
+        voyager1 = shapeFactory.createSpacecraft("Voyager 1", Color.LIGHTYELLOW);
+        bodies.put("Voyager 1",voyager1);
+        spacecraftNames.add("Voyager 1");
+        voyager2 = shapeFactory.createSpacecraft("Voyager 2", Color.LIGHTYELLOW);
+        bodies.put("Voyager 2",voyager2);
+        spacecraftNames.add("Voyager 2");
+        newhorizons = shapeFactory.createSpacecraft("New Horizons", Color.LIGHTYELLOW);
+        bodies.put("New Horizons",newhorizons);
+        spacecraftNames.add("New Horizons");
+        rosetta = shapeFactory.createSpacecraft("Rosetta", Color.LIGHTYELLOW);
+        bodies.put("Rosetta",rosetta);
+        spacecraftNames.add("Rosetta");
+        cassini = shapeFactory.createSpacecraft("Cassini", Color.LIGHTYELLOW);
+        bodies.put("Cassini",cassini);
+        spacecraftNames.add("Cassini");
+        apollo8 = shapeFactory.createSpacecraft("Apollo 8", Color.LIGHTYELLOW);
+        bodies.put("Apollo 8", apollo8);
+        spacecraftNames.add("Apollo 8");
 
         // International Space Station
-        iss = factory.createISS("ISS");
-
-        // Names of spacecraft
-        spacecraftNames = new ArrayList<>();
-        spacecraftNames.add("Pioneer 10");
-        spacecraftNames.add("Pioneer 11");
-        spacecraftNames.add("Voyager 1");
-        spacecraftNames.add("Voyager 2");
-        spacecraftNames.add("New Horizons");
-        spacecraftNames.add("Rosetta");
-        spacecraftNames.add("Cassini");
-        spacecraftNames.add("Apollo 8");
+        iss = shapeFactory.createISS("ISS");
+        bodies.put("ISS",iss);
         spacecraftNames.add("ISS");
 
-        // Obtain all shapes created by the factory
-        bodies = factory.getShapes();
-
-        // Set body rotations for all shapes
+        // Set body rotations and offset for revolution for all shapes
         for (String name : bodies.keySet()) {
             Node node = bodies.get(name);
             setBodyRotations(name,node);
+            offsetRevolution.put(name,0.0);
         }
+        // When the Earth is observed from the Sun, the Greenwich meridian
+        // should be in the center at noon (12:00:00) UTC.
+        // However, because of Earth's uneven angular velocity in its
+        // elliptical orbit and its axial tilt, noon (12:00:00) GMT is
+        // rarely the exact moment the Sun crosses the Greenwich meridian and
+        // reaches its highest point in the sky there.
+        // https://en.wikipedia.org/wiki/Greenwich_Mean_Time
+        offsetRevolution.put("Earth",81.0);
+        // Correction to see the front side of the Moon when viewing the full Moon
+        offsetRevolution.put("Moon",-30.0);
+        // Correction to see Red Spot at the right position
+        // https://skyandtelescope.org/observing/celestial-objects-to-watch/jupiters-moons-javascript-utility/#
+        offsetRevolution.put("Jupiter",150.0);
+        // Correction to see Pluto's Big Heart from New Horizons July 13, 20.00
+        // https://www.nasa.gov/feature/new-horizons-spacecraft-displays-pluto-s-big-heart-0
+        offsetRevolution.put("Pluto",180.0);
 
-        // Rotate the rings of Saturn and Uranus with the planet
+        // Rotate the clouds of the Earth with the Earth itself
+        cloudsEarth.getTransforms().add(bodyRotationsX.get("Earth"));
+        cloudsEarth.getTransforms().add(bodyRotationsZ.get("Earth"));
+        cloudsEarth.getTransforms().add(bodyRotationsY.get("Earth"));
+        cloudsEarth.getTransforms().add(bodyRotationsObliquity.get("Earth"));
+        cloudsEarth.getTransforms().add(bodyRotationsRevolution.get("Earth"));
+
+        // Rotate the rings of Saturn and Uranus with the planet (except revolution)
         ringSaturn.getTransforms().add(bodyRotationsX.get("Saturn"));
         ringSaturn.getTransforms().add(bodyRotationsZ.get("Saturn"));
         ringSaturn.getTransforms().add(bodyRotationsY.get("Saturn"));
@@ -366,6 +472,7 @@ public class SolarSystemVisualization extends Stage {
         }
         solarSystemGroup.getChildren().add(ringSaturn);
         solarSystemGroup.getChildren().add(ringUranus);
+        solarSystemGroup.getChildren().add(cloudsEarth);
         solarSystemGroup.getChildren().add(coronaSun);
         solarSystemGroup.getChildren().add(shadowEarth);
         solarSystemGroup.getChildren().add(shadowJupiter);
@@ -470,10 +577,10 @@ public class SolarSystemVisualization extends Stage {
             }
         }
         else {
-            Vector3D positionSelectedBody = null;
-            Vector3D positionObservedBody = null;
-            Vector3D velocitySelectedBody = null;
-            Vector3D velocityObservedBody = null;
+            Vector3D positionSelectedBody = new Vector3D();
+            Vector3D positionObservedBody = new Vector3D();
+            Vector3D velocitySelectedBody = new Vector3D();
+            Vector3D velocityObservedBody = new Vector3D();
             try {
                 positionSelectedBody = solarSystem.getPosition(selectedBody);
                 velocitySelectedBody = solarSystem.getVelocity(selectedBody);
@@ -534,6 +641,7 @@ public class SolarSystemVisualization extends Stage {
         yRotateCamera.setAngle(0.0);
         xRotateCamera.setAngle(0.0);
         if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
+            // Ignore given values for near/far distance
             camera.setNearClip(0.1 * SCREENDEPTH);
             // Use 3 * SCREENDEPTH to see Saturn when observing Jupiter during
             // the great conjunction on Dec 19, 2020
@@ -716,31 +824,7 @@ public class SolarSystemVisualization extends Stage {
                     double siderealRotationPeriodDays = siderealRotationPeriodHours / 24.0;
                     double nrRevolutions = nrDaysPastJ2000 / siderealRotationPeriodDays;
                     double revolutionAngleDeg = -(nrRevolutions % 1.0) * 360.0;
-                    if ("Earth".equals(name)) {
-                        // When the Earth is observed from the Sun, the Greenwich meridian
-                        // should be in the center at noon (12:00:00) UTC.
-                        // However, because of Earth's uneven angular velocity in its
-                        // elliptical orbit and its axial tilt, noon (12:00:00) GMT is
-                        // rarely the exact moment the Sun crosses the Greenwich meridian and
-                        // reaches its highest point in the sky there.
-                        // https://en.wikipedia.org/wiki/Greenwich_Mean_Time
-                        revolutionAngleDeg += 81.0;
-                    }
-                    if ("Moon".equals(name)) {
-                        // Correction to see the front side of the Moon when viewing the full Moon
-                        revolutionAngleDeg -= 30.0;
-                    }
-                    if ("Jupiter".equals(name)) {
-                        // Correction to see Red Spot at the right position
-                        // https://skyandtelescope.org/observing/celestial-objects-to-watch/jupiters-moons-javascript-utility/#
-                        revolutionAngleDeg += 150.0;
-                    }
-                    if ("Pluto".equals(name)) {
-                        // Correction to see Pluto's Big Heart from New Horizons July 13, 20.00
-                        // https://www.nasa.gov/feature/new-horizons-spacecraft-displays-pluto-s-big-heart-0
-                        revolutionAngleDeg += 180.0;
-                    }
-                    // Rotate around y-axis
+                    revolutionAngleDeg += offsetRevolution.get(name);
                     bodyRotationsRevolution.get(name).setAngle(revolutionAngleDeg);
 
                     // Rotate to visualize obliquity
@@ -864,6 +948,11 @@ public class SolarSystemVisualization extends Stage {
             }
         }
 
+        // Clouds of the Earth
+        cloudsEarth.setTranslateX(earth.getTranslateX());
+        cloudsEarth.setTranslateY(earth.getTranslateY());
+        cloudsEarth.setTranslateZ(earth.getTranslateZ());
+
         // Rings of Saturn
         ringSaturn.setTranslateX(saturn.getTranslateX());
         ringSaturn.setTranslateY(saturn.getTranslateY());
@@ -928,6 +1017,7 @@ public class SolarSystemVisualization extends Stage {
         Vector3D positionPointLight = new Vector3D(positionSun);
         if ("Sun".equals(selectedBody)) {
             // Place point light in between the Sun and the camera, but close to the Sun
+            // This position is needed to see the corona of the Sun during a solar eclipse
             positionPointLight.addVector((
                     positionSun.direction(cameraPosition).
                             scalarProduct(0.05 * SolarSystemParameters.ASTRONOMICALUNIT)));
@@ -1438,18 +1528,18 @@ public class SolarSystemVisualization extends Stage {
                 cameraPosition.addVector(spacecraftDirection.scalarProduct(1000.0*(8000.0 - distanceToEarthKm)));
             }
             lookAt(cameraPosition,lookAtPosition);
+            double fieldOfView;
+            double nearDistance;
+            double farDistance = distanceToEarthKm*1.0E03; // Distance to Earth in m
             if (distanceToEarthKm < 8000.0) {
-                double fieldOfView = Math.max(30.0,30.0 + 0.01*(8000.0 - distanceToEarthKm));
-                double nearDistance = 1.0E05; // 100 km
-                double farDistance = distanceToEarthKm*1.0E03; // distance to Earth in m
-                setCameraSettings(fieldOfView, nearDistance, farDistance);
+                fieldOfView = Math.max(30.0, 30.0 + 0.01 * (8000.0 - distanceToEarthKm));
+                nearDistance = 1.0E05;
             }
             else {
-                double fieldOfView = 30.0;
-                double nearDistance = 1.0E06; // 1000 km
-                double farDistance = distanceToEarthKm*1.0E03; // distance to Earth in m
-                setCameraSettings(30.0, nearDistance, farDistance);
+                fieldOfView = 30.0;
+                nearDistance = 1.0E06;
             }
+            setCameraSettings(fieldOfView, nearDistance, farDistance);
         }
     }
 
@@ -1480,6 +1570,9 @@ public class SolarSystemVisualization extends Stage {
         shadowGanymede.setVisible(ganymede.isVisible());
         shadowCallisto.setVisible(callisto.isVisible());
 
+        // Clouds of the Earth
+        cloudsEarth.setVisible(earth.isVisible());
+
         // Rings of Saturn and Uranus
         ringSaturn.setVisible(saturn.isVisible());
         ringUranus.setVisible(uranus.isVisible());
@@ -1495,6 +1588,9 @@ public class SolarSystemVisualization extends Stage {
 
         // Corona of the Sun to visualize total Solar eclipse
         coronaSun.setVisible(false);
+
+        // Light coming from the Sun
+        pointLight.setVisible(true);
 
         // Reset zoom parameter when another body is selected in the main app
         if (!this.selectedBody.equals(selectedBody)) {
@@ -1551,6 +1647,7 @@ public class SolarSystemVisualization extends Stage {
         // The sizes of the Earth and the Moon are changed when viewing the Earth-Moon system
         if (!"EarthMoonBarycenter".equals(selectedBody)) {
             earth.setRadius(0.5*screenDiameter("Earth"));
+            cloudsEarth.setRadius(CLOUDFACTOR*0.5*screenDiameter("Earth"));
             moon.setRadius(0.5*screenDiameter("Moon"));
         }
 
@@ -1569,11 +1666,13 @@ public class SolarSystemVisualization extends Stage {
                 switch (this.selectedBody) {
                     case "ISS":
                         earth.setVisible(true);
+                        cloudsEarth.setVisible(true);
                         iss.setVisible(true);
                         viewFromISS();
                         break;
                     case "Apollo 8":
                         earth.setVisible(true);
+                        cloudsEarth.setVisible(true);
                         moon.setVisible(true);
                         viewFromApollo();
                         break;
@@ -1587,8 +1686,10 @@ public class SolarSystemVisualization extends Stage {
                 switch (this.selectedBody) {
                     case "Sun":
                         earth.setVisible(false);
+                        cloudsEarth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
+                        pointLight.setVisible(false);
                         viewFromEarthSurfaceToSun();
                         break;
                     case "Earth":
@@ -1597,14 +1698,17 @@ public class SolarSystemVisualization extends Stage {
                         break;
                     case "Moon":
                         earth.setVisible(false);
+                        cloudsEarth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(true);
                         viewFromEarthSurfaceToMoon();
                         break;
                     case "EarthMoonBarycenter":
                         earth.setRadius(6.0 * screenDiameter("Earth"));
+                        cloudsEarth.setRadius(CLOUDFACTOR * 6.0 * screenDiameter("Earth"));
                         moon.setRadius(6.0 * screenDiameter("Moon"));
                         earth.setVisible(true);
+                        cloudsEarth.setVisible(true);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
                         viewEarthMoonSystem();
@@ -1622,18 +1726,20 @@ public class SolarSystemVisualization extends Stage {
                         }
                         else {
                             earth.setVisible(false);
-                            //viewFromEarthCenterToObservedBody(); // LET OP
+                            cloudsEarth.setVisible(false);
                             viewFromEarthSurfaceToSelectedBody();
                         }
                         break;
                     default:
                         if (bodies.keySet().contains(this.selectedBody)) {
                             earth.setVisible(false);
+                            cloudsEarth.setVisible(false);
                             shadowEarth.setVisible(false);
                             viewFromEarthSurfaceToSelectedBody();
                         } else {
                             sun.setVisible(false);
                             earth.setVisible(true);
+                            cloudsEarth.setVisible(true);
                             moon.setVisible(true);
                             viewFromSunToEarth();
                         }

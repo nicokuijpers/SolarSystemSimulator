@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Method to create shadow for Jupiter and Saturn">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Shadows of Uranus of Neptune added">
+      <change afterPath="$PROJECT_DIR$/Images/8k_earth_clouds.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/8k_earth_daymap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/8k_earth_nightmap.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -312,7 +318,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EphemerisFiles" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Images" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -639,7 +645,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629366578571</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Shadows of Uranus of Neptune added">
+      <created>1629376518022</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1629376518023</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -748,7 +761,8 @@
     <MESSAGE value="Spacecraft Cassini and transfer of spacecraft to/from planet system" />
     <MESSAGE value="Launch Cassini added to selection menu" />
     <MESSAGE value="Method to create shadow for Jupiter and Saturn" />
-    <option name="LAST_COMMIT_MESSAGE" value="Method to create shadow for Jupiter and Saturn" />
+    <MESSAGE value="Shadows of Uranus of Neptune added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Shadows of Uranus of Neptune added" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

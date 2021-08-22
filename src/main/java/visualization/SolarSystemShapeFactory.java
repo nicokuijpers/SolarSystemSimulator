@@ -25,6 +25,9 @@ import ephemeris.SolarSystemParameters;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
@@ -32,8 +35,6 @@ import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Factory for 3D shapes for visualization in JavaFX 3D.
@@ -54,9 +55,6 @@ public class SolarSystemShapeFactory {
     // Solar System parameters
     private SolarSystemParameters solarSystemParameters;
 
-    // Shapes created by the factory
-    private Map<String,Node> shapes;
-
     /**
      * Constructor.
      * @param visualization reference to Solar System visualization
@@ -64,15 +62,6 @@ public class SolarSystemShapeFactory {
     public SolarSystemShapeFactory(SolarSystemVisualization visualization) {
         this.visualization = visualization;
         this.solarSystemParameters = SolarSystemParameters.getInstance();
-        this.shapes = new HashMap<>();
-    }
-
-    /**
-     * Get hash map of all shapes created by this factory.
-     * @return
-     */
-    public Map<String, Node> getShapes() {
-        return shapes;
     }
 
     /**
@@ -82,6 +71,28 @@ public class SolarSystemShapeFactory {
      * @return sphere
      */
     public Sphere createSphere(String sphereName, Color color) {
+        return createSphere(sphereName, color, false);
+    }
+
+    /**
+     * Create a sphere representing body of the Solar System.
+     * Use a high-resolation image texture when available.
+     * @param sphereName name of the sphere
+     * @param color  color for the sphere
+     * @return sphere
+     */
+    public Sphere createSphereHighRes(String sphereName, Color color) {
+        return createSphere(sphereName, color, true);
+    }
+
+    /**
+     * Create a sphere representing body of the Solar System.
+     * @param sphereName name of the sphere
+     * @param color  color for the sphere
+     * @param highres use high resolution texture image when available
+     * @return sphere
+     */
+    private Sphere createSphere(String sphereName, Color color, boolean highres) {
         String name = sphereName;
         if (sphereName.startsWith("shadow")) {
             name = sphereName.replaceFirst("shadow","");
@@ -107,14 +118,22 @@ public class SolarSystemShapeFactory {
                 // Texture image 640 x 320 pixels
                 //file = new File("Images/planvis_sun.jpg");
                 image = new Image(file.toURI().toString());
-                material.setDiffuseMap(image);
+                material.setDiffuseColor(Color.BLACK);
+                material.setSelfIlluminationMap(image);
                 break;
             case "Moon":
                 // http://planetpixelemporium.com/planets.html
-                // file = new File("Images/moonmap1k.jpg");
-                // https://www.solarsystemscope.com/textures/
-                file = new File("Images/2k_moon.jpg"); // 1.1 MB
-                // file = new File("Images/8k_moon.jpg"); // 15 MB
+                //file = new File("Images/moonmap1k.jpg");
+                if (highres) {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 8192 x 4096 pixels (15 MB)
+                    file = new File("Images/8k_moon.jpg"); // 15 MB
+                }
+                else {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 2048 x 1024 pixels (1.1 MB)
+                    file = new File("Images/2k_moon.jpg");
+                }
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
@@ -147,24 +166,45 @@ public class SolarSystemShapeFactory {
                 // https://www.solarsystemscope.com/textures/
                 //file = new File("Images/2k_earth_daymap.jpg");
                 //file = new File("Images/2k_earth_nightmap.jpg");
-                file = new File("Images/2k_earth_daycloud3.jpg");
-                image = new Image(file.toURI().toString());
-                material.setDiffuseMap(image);
-                break;
-            case "cloudsEarth":
-                // https://www.solarsystemscope.com/textures/
-                file = new File("Images/2k_earth_clouds.jpg");
-                image = new Image(file.toURI().toString());
-                material.setDiffuseMap(image);
+                //file = new File("Images/2k_earth_daycloud3.jpg");
+                //image = new Image(file.toURI().toString());
+                //material.setDiffuseMap(image);
+                File fileSurfaceEarthDay, fileSurfaceEarthNight;
+                if (highres) {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 8192 x 4096 pixels (4.6 MB)
+                    fileSurfaceEarthDay = new File("Images/8k_earth_daymap.jpg");
+                    // Texture image 8192 x 4096 pixels (3.1 MB)
+                    fileSurfaceEarthNight = new File("Images/8k_earth_nightmap.jpg");
+                }
+                else {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 2048 x 1024 pixels (464 KB)
+                    fileSurfaceEarthDay = new File("Images/2k_earth_daymap.jpg");
+                    // Texture image 2048 x 1024 pixels (255 KB)
+                    fileSurfaceEarthNight = new File("Images/2k_earth_nightmap.jpg");
+                }
+                Image imageSurfaceEarthDay = new Image(fileSurfaceEarthDay.toURI().toString());
+                material.setDiffuseMap(imageSurfaceEarthDay);
+                Image imageSurfaceEarthNight = new Image(fileSurfaceEarthNight.toURI().toString());
+                material.setSelfIlluminationMap(imageSurfaceEarthNight);
                 break;
             case "Mars":
                 // http://planetpixelemporium.com/planets.html
                 //file = new File("Images/marsmap1k.jpg");
-                // https://www.solarsystemscope.com/textures/
-                file = new File("Images/2k_mars.jpg");
                 // http://www.planetaryvisions.com/images_new/33.jpg
                 // Texture image 640 x 320 pixels
                 //file = new File("Images/planvis_mars.jpg");
+                if (highres) {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 8192 x 4096 pixels (8.4 MB)
+                    file = new File("Images/8k_mars.jpg");
+                }
+                else {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 2048 x 1024 pixels (751 KB)
+                    file = new File("Images/2k_mars.jpg");
+                }
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
@@ -172,22 +212,31 @@ public class SolarSystemShapeFactory {
                 // http://planetpixelemporium.com/planets.html
                 // Texture image 1000 x 500 pixels
                 //file = new File("Images/jupiter2_1k.jpg");
-                // https://www.solarsystemscope.com/textures/
-                // Texture image 2048 x 1024 pixels
-                file = new File("Images/2k_jupiter.jpg");
                 // http://www.planetaryvisions.com/images_new/34.jpg
                 // Texture image 640 x 320 pixels
                 //file = new File("Images/planvis_jupiter.jpg");
+                if (highres) {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 4096 x 2048 pixels (3.1 MB)
+                    file = new File("Images/8k_jupiter.jpg");
+                }
+                else {
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 2048 x 1024 pixels (499 KB)
+                    file = new File("Images/2k_jupiter.jpg");
+                }
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
             case "Saturn":
                 // http://planetpixelemporium.com/planets.html
-                // Texture image 1800 x 900 pixels
+                // Texture image 1800 x 900 pixels (71 KB)
                 file = new File("Images/saturnmap.jpg");
                 // https://www.solarsystemscope.com/textures/
-                // Texture image 2048 x 1024 pixels
+                // Texture image 2048 x 1024 pixels (200 KB)
                 //file = new File("Images/2k_saturn.jpg");
+                // Texture image 4096 x 2048 pixels (1.1 MB)
+                //file = new File("Images/8k_saturn.jpg");
                 // http://www.planetaryvisions.com/images_new/35.jpg
                 // Texture image 640 x 320 pixels
                 //file = new File("Images/planvis_saturn.jpg");
@@ -196,24 +245,26 @@ public class SolarSystemShapeFactory {
                 break;
             case "Uranus":
                 // http://planetpixelemporium.com/planets.html
-                // Texture image 1024 x 512 pixels
+                // Texture image 1024 x 512 pixels (9 KB)
                 file = new File("Images/uranusmap.jpg");
                 // https://www.solarsystemscope.com/textures/
+                // Texture image 2048 x 1024 pixels (78 KB)
                 //file = new File("Images/2k_uranus.jpg");
                 // http://www.planetaryvisions.com/images_new/36.jpg
-                // Texture image 640 x 320 pixels
+                // Texture image 640 x 320 pixels (33 KB)
                 //file = new File("Images/planvis_uranus.jpg");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
             case "Neptune":
                 // http://planetpixelemporium.com/planets.html
-                // Texture image 1024 x 512 pixels
+                // Texture image 1024 x 512 pixels (48 KB)
                 file = new File("Images/neptunemap.jpg");
                 // https://www.solarsystemscope.com/textures/
-                //file = new File("Images/2k_neptune.jpg");
+                // Texture image 2048 x 1024 pixels (242 KB)
+                //file = new File("Images/2k_neptune.jpg"); // 242 KB
                 // http://www.planetaryvisions.com/images_new/37.jpg
-                // Texture image 640 x 320 pixels
+                // Texture image 640 x 320 pixels (34 KB)
                 //file = new File("Images/planvis_neptune.jpg");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
@@ -227,11 +278,11 @@ public class SolarSystemShapeFactory {
                 // Resembles somewhat pictures from New Horizons
                 // file = new File("Images/planvis_pluto.jpg");
                 // https://3d-asteroids.space/dwarf/134340-Pluto
-                // Texture image color 5926 x 2963 pixels, 2.3 MB
+                // Texture image color 5926 x 2963 pixels (2.3 MB)
                 // Resembles pictures New Horizons, not entire sphere
                 // file = new File("Images/PlutoColor2017.jpg");
                 // PlutoColor2017.jpg adapted using PhotoShop
-                // Texture image 2048 x 1024 pixels
+                // Texture image 2048 x 1024 pixels (1.5 MB)
                 file = new File("Images/PlutoAdapted.jpg");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
@@ -456,7 +507,7 @@ public class SolarSystemShapeFactory {
                 break;
         }
         sphere.setMaterial(material);
-        shapes.put(sphereName,sphere);
+        //shapes.put(sphereName,sphere);
         return sphere;
     }
 
@@ -560,6 +611,77 @@ public class SolarSystemShapeFactory {
     }
 
     /**
+     * Create a sphere with clouds for the earth.
+     * The sphere is transparent except for the clouds.
+     * @param cloudFactor factor to determine radius of the sphere
+     * @return sphere with clouds
+     */
+    public Sphere createCloudsEarth(double cloudFactor) {
+        return createCloudsEarth(cloudFactor, false);
+    }
+
+    /**
+     * Create a sphere with clouds for the earth.
+     * The sphere is transparent except for the clouds.
+     * Use a high-resolation texture image when available.
+     * @param cloudFactor factor to determine radius of the sphere
+     * @return sphere with clouds
+     */
+    public Sphere createCloudsEarthHighRes(double cloudFactor) {
+        return createCloudsEarth(cloudFactor, true);
+    }
+
+    /**
+     * Create a sphere with clouds for the earth.
+     * The sphere is transparent except for the clouds.
+     * @param cloudFactor factor to determine radius of the sphere
+     * @param highres use high resolution texture image when true
+     * @return sphere with clouds
+     */
+    private Sphere createCloudsEarth(double cloudFactor, boolean highres) {
+        double radius = cloudFactor * 0.5 * visualization.screenDiameter("Earth");
+        double flattening = solarSystemParameters.getFlattening("Earth");
+        Sphere sphere = new Sphere();
+        sphere.setRadius(radius);
+        sphere.scaleYProperty().setValue(1.0 - flattening);
+        PhongMaterial material = new PhongMaterial();
+        File fileCloudsEarth;
+        if (highres) {
+            // https://www.solarsystemscope.com/textures/
+            // Texture image 8192 x 4096 pixels (11.6 MB)
+            fileCloudsEarth = new File("Images/8k_earth_clouds.jpg");
+        }
+        else {
+            // https://www.solarsystemscope.com/textures/
+            // Texture image 2048 x 1024 pixels (966 KB)
+            fileCloudsEarth = new File("Images/2k_earth_clouds.jpg");
+        }
+        Image imageCloudsEarth = new Image(fileCloudsEarth.toURI().toString());
+        PixelReader pixelReader = imageCloudsEarth.getPixelReader();
+        int width = (int) imageCloudsEarth.getWidth();
+        int height = (int) imageCloudsEarth.getHeight();
+        WritableImage imageCloudsEarthTransparent = new WritableImage(width, height);
+        PixelWriter pixelWriter = imageCloudsEarthTransparent.getPixelWriter();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int argb = pixelReader.getArgb(x,y);
+                int red = (argb>>16) & 0xff;
+                int green = (argb>>8) & 0xff;
+                int blue = argb & 0xff;
+                int alpha = (int) ((red + green + blue)/3.0);
+                red = (int) Math.min(255.0,3*red);
+                green = (int) Math.min(255.0,3*green);
+                blue = (int) Math.min(255.0,3*blue);
+                int val = (alpha<<24) | (red<<16) | (green<<8) | blue;
+                pixelWriter.setArgb(x,y,val);
+            }
+        }
+        material.setDiffuseMap(imageCloudsEarthTransparent);
+        sphere.setMaterial(material);
+        return sphere;
+    }
+
+    /**
      * Create the shadow for a planet of the Solar System.
      * @param planetName name of the planet
      * @param shadowFactor factor to determine length of the shadow
@@ -628,6 +750,7 @@ public class SolarSystemShapeFactory {
                 shape.scaleXProperty().setValue(572.6/meanDiameter);
                 shape.scaleYProperty().setValue(557.2/meanDiameter);
                 shape.scaleZProperty().setValue(446.4/meanDiameter);
+
                 // https://3d-asteroids.space/asteroids/4-Vesta
                 // Texture image color 8192 x 4096 pixels, 5.5 MB
                 // File fileDiffuseMap = new File("Images/VestaColor.jpg");
@@ -712,9 +835,6 @@ public class SolarSystemShapeFactory {
                 shape = new Sphere();
                 break;
         }
-
-        // Add rotation axes
-        shapes.put(bodyName,shape);
         return shape;
     }
 
@@ -764,6 +884,9 @@ public class SolarSystemShapeFactory {
          * https://nasa3d.arc.nasa.gov/detail/eoss-rosetta
          * Geometry is scaled such that it is 5 times smaller than 67P
          *
+         * Model of Cassini is adapted from
+         * https://nasa3d.arc.nasa.gov/detail/jpl-vtad-cassini
+         * Geometry was scaled with factor 0.0002 and 90 degrees rotated along X-axis
          */
         String fileName = DIRECTORYMODELS + spacecraftName + EXTENSIONMODEL;
         Shape3D shape;
@@ -775,7 +898,6 @@ public class SolarSystemShapeFactory {
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(color);
         shape.setMaterial(material);
-        shapes.put(spacecraftName, shape);
         return shape;
     }
 
@@ -824,7 +946,6 @@ public class SolarSystemShapeFactory {
         ISS.getChildren().add(ISS_E);
         ISS.getChildren().add(ISS_F);
 
-        shapes.put(spacecraftName, ISS);
         return ISS;
     }
 }

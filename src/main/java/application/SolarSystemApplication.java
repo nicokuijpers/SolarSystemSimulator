@@ -450,19 +450,6 @@ public class SolarSystemApplication extends Application {
             CalendarUtil.createGregorianCalendar(2015, 7, 14, 12, 0, 0);
 
     /*
-     * Date/times in UTC to control 3D visualization from Giotto during encounter with
-     * Halley's Comet.
-     * January = 1, February = 2, etc
-     *
-     * https://en.wikipedia.org/wiki/Giotto_(spacecraft)
-     * Flyby of Comet Halley
-     * Closest approach	14 March 1986
-     * Distance	596 km (370 mi)
-     */
-    private GregorianCalendar startGiottoHalley =
-            CalendarUtil.createGregorianCalendar(1986, 3, 11, 0, 0, 0);
-
-    /*
      * Date/times in UTC to control 3D visualization from Rosetta during encounter with 67P
      * January = 1, February = 2, etc
      *
@@ -472,7 +459,6 @@ public class SolarSystemApplication extends Application {
      */
     private GregorianCalendar startRosetta67P =
             CalendarUtil.createGregorianCalendar(2014, 7, 11, 0, 0, 0);
-
 
     // Flag to indicate whether ephemeris is shown on screen
     private boolean showEphemeris = true;
@@ -643,11 +629,10 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate.put("Voyager 1", CalendarUtil.createGregorianCalendar(1977,9,5,12,56,0));
         trajectoryStartDate.put("Voyager 2", CalendarUtil.createGregorianCalendar(1977,8,20,14,29,0));
         trajectoryStartDate.put("New Horizons", CalendarUtil.createGregorianCalendar(2006,1,19,19,0,0));
-        //trajectoryStartDate.put("Giotto", CalendarUtil.createGregorianCalendar(1985, 6, 2, 11, 23, 0));
         trajectoryStartDate.put("Rosetta", CalendarUtil.createGregorianCalendar(2004, 3, 2, 7, 17, 0));
         trajectoryStartDate.put("Apollo 8", CalendarUtil.createGregorianCalendar(1968, 12, 21, 12, 51, 0));
         trajectoryStartDate.put("ISS", CalendarUtil.createGregorianCalendar(1998, 11, 21, 0, 0, 0));
-        trajectoryStartDate.put("Cassini", CalendarUtil.createGregorianCalendar(1997, 10, 15, 9, 28, 0));
+        trajectoryStartDate.put("Cassini", CalendarUtil.createGregorianCalendar(1997, 10, 15, 11, 30, 0));
 
         // Define spacecraft names
         spacecraftNames = new ArrayList<>();
@@ -3498,6 +3483,8 @@ public class SolarSystemApplication extends Application {
         List<VisualizationSettings> events = new ArrayList<>();
         VisualizationSettings init = new VisualizationSettings();
         init.setEventName("Initial settings (current time)");
+        init.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth")));
+        init.setSelectedBody("Sun");
         events.add(init);
         VisualizationSettings inner = new VisualizationSettings();
         inner.setEventName("Inner planets (current time)");
