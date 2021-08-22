@@ -97,8 +97,8 @@ public class SolarSystemVisualization extends Stage {
     // 3. View nearest object such that both object and spacecraft are in view
     private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
 
-    // Flag to indicate whether high-resolution texture images should be used for the Earth
-    private static final boolean HIGHRESEARTH = true;
+    // Maximum distance to use high-resolution version of the Earth and Earth's clouds
+    private static final double HIGHRESMAXDISTANCE = 3.0E08; // 300 000 km
 
     //https://www.genuinecoder.com/javafx-3d-tutorial-object-transform-rotation-with-mouse/
     // Tracks drag starting point for x and y
@@ -131,7 +131,7 @@ public class SolarSystemVisualization extends Stage {
     private Sphere miranda, ariel, umbriel, titania, oberon;
     private Sphere triton;
     private Sphere shadowIo, shadowEuropa, shadowGanymede, shadowCallisto;
-    private Sphere cloudsEarth;
+    private Sphere earthLowRes, earthHighRes, cloudsEarthHighRes;
     private Cylinder ringSaturn, ringUranus;
     private Cylinder coronaSun;
     private Cylinder shadowEarth;
@@ -219,12 +219,7 @@ public class SolarSystemVisualization extends Stage {
         bodies.put("Mercury",mercury);
         venus = shapeFactory.createSphere("Venus", Color.PEACHPUFF);
         bodies.put("Venus",venus);
-        if (HIGHRESEARTH) {
-            earth = shapeFactory.createSphereHighRes("Earth", Color.AQUAMARINE);
-        }
-        else {
-            earth = shapeFactory.createSphere("Earth", Color.AQUAMARINE);
-        }
+        earth = new Sphere(0.05*screenDiameter("Earth"));
         bodies.put("Earth",earth);
         moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
         bodies.put("Moon",moon);
@@ -306,13 +301,10 @@ public class SolarSystemVisualization extends Stage {
         shadowCallisto = shapeFactory.createSphere("shadowCallisto",Color.BLACK);
         bodies.put("shadowCallisto",shadowCallisto);
 
-        // Clouds for the Earth
-        if (HIGHRESEARTH) {
-            cloudsEarth = shapeFactory.createCloudsEarthHighRes(CLOUDFACTOR);
-        }
-        else {
-            cloudsEarth = shapeFactory.createCloudsEarth(CLOUDFACTOR);
-        }
+        // High resolution and low resolution Earth and clouds for the Earth
+        earthLowRes = shapeFactory.createSphere("Earth", Color.AQUAMARINE);
+        earthHighRes = shapeFactory.createSphereHighRes("Earth", Color.AQUAMARINE);
+        cloudsEarthHighRes = shapeFactory.createCloudsEarthHighRes(CLOUDFACTOR);
 
         // Rings of Saturn and Uranus
         ringSaturn = shapeFactory.createRing("Saturn",Color.ORANGE);
@@ -415,11 +407,20 @@ public class SolarSystemVisualization extends Stage {
         offsetRevolution.put("Pluto",180.0);
 
         // Rotate the clouds of the Earth with the Earth itself
+        /*
         cloudsEarth.getTransforms().add(bodyRotationsX.get("Earth"));
         cloudsEarth.getTransforms().add(bodyRotationsZ.get("Earth"));
         cloudsEarth.getTransforms().add(bodyRotationsY.get("Earth"));
         cloudsEarth.getTransforms().add(bodyRotationsObliquity.get("Earth"));
         cloudsEarth.getTransforms().add(bodyRotationsRevolution.get("Earth"));
+         */
+
+        // High and low resolution version of the Earth and Earth's clouds have
+        // the same transformations (translations and rotations) as the small
+        // sphere representing the position and orientation of the Earth
+        earthLowRes.getTransforms().setAll(earth.getTransforms());
+        earthHighRes.getTransforms().setAll(earth.getTransforms());
+        cloudsEarthHighRes.getTransforms().setAll(earth.getTransforms());
 
         // Rotate the rings of Saturn and Uranus with the planet (except revolution)
         ringSaturn.getTransforms().add(bodyRotationsX.get("Saturn"));
@@ -472,7 +473,6 @@ public class SolarSystemVisualization extends Stage {
         }
         solarSystemGroup.getChildren().add(ringSaturn);
         solarSystemGroup.getChildren().add(ringUranus);
-        solarSystemGroup.getChildren().add(cloudsEarth);
         solarSystemGroup.getChildren().add(coronaSun);
         solarSystemGroup.getChildren().add(shadowEarth);
         solarSystemGroup.getChildren().add(shadowJupiter);
@@ -481,6 +481,9 @@ public class SolarSystemVisualization extends Stage {
         solarSystemGroup.getChildren().add(shadowNeptune);
         solarSystemGroup.getChildren().add(pointLight);
         solarSystemGroup.getChildren().add(locationOnEarth);
+        solarSystemGroup.getChildren().add(earthLowRes);
+        solarSystemGroup.getChildren().add(earthHighRes);
+        solarSystemGroup.getChildren().add(cloudsEarthHighRes);
         subScene = new SubScene(
                 solarSystemGroup,
                 SCREENWIDTH, SCREENHEIGHT,
@@ -948,10 +951,16 @@ public class SolarSystemVisualization extends Stage {
             }
         }
 
-        // Clouds of the Earth
-        cloudsEarth.setTranslateX(earth.getTranslateX());
-        cloudsEarth.setTranslateY(earth.getTranslateY());
-        cloudsEarth.setTranslateZ(earth.getTranslateZ());
+        // High and low resolution versions of Earth and Earth's clouds
+        earthLowRes.setTranslateX(earth.getTranslateX());
+        earthLowRes.setTranslateY(earth.getTranslateY());
+        earthLowRes.setTranslateZ(earth.getTranslateZ());
+        earthHighRes.setTranslateX(earth.getTranslateX());
+        earthHighRes.setTranslateY(earth.getTranslateY());
+        earthHighRes.setTranslateZ(earth.getTranslateZ());
+        cloudsEarthHighRes.setTranslateX(earth.getTranslateX());
+        cloudsEarthHighRes.setTranslateY(earth.getTranslateY());
+        cloudsEarthHighRes.setTranslateZ(earth.getTranslateZ());
 
         // Rings of Saturn
         ringSaturn.setTranslateX(saturn.getTranslateX());
@@ -1117,7 +1126,7 @@ public class SolarSystemVisualization extends Stage {
      * @param cameraPosition position of the camera within Solar System
      * @param lookAtPosition position to look at within Solar System
      */
-    private void lookAt(Vector3D cameraPosition, Vector3D lookAtPosition) {
+    private void lookAt(Vector3D cameraPosition, Vector3D lookAtPosition) throws SolarSystemException {
 
         // Position (px, py, pz) is camera position relative to look-at position
         Vector3D relativePosition = cameraPosition.minus(lookAtPosition);
@@ -1160,6 +1169,24 @@ public class SolarSystemVisualization extends Stage {
 
         // Update the rotations of all visible bodies
         updateBodyRotations(cameraDirection);
+
+        // Choose between high resolution and low resolution version of the Earth and Earth's clouds
+        boolean highres = viewMode.equals(SolarSystemViewMode.TELESCOPE) && "Earth".equals(selectedBody);
+        if (viewMode.equals(SolarSystemViewMode.FROMSPACECRAFT) && earth.isVisible()) {
+            Vector3D earthPosition = solarSystem.getPosition("Earth");
+            double distance = cameraPosition.euclideanDistance(earthPosition);
+            highres = distance < HIGHRESMAXDISTANCE; // 300 000 km
+        }
+        if (highres) {
+            earthLowRes.setVisible(false);
+            earthHighRes.setVisible(earth.isVisible());
+            cloudsEarthHighRes.setVisible(earth.isVisible());
+        }
+        else {
+            earthLowRes.setVisible(earth.isVisible());
+            earthHighRes.setVisible(false);
+            cloudsEarthHighRes.setVisible(false);
+        }
     }
 
     /**
@@ -1570,9 +1597,6 @@ public class SolarSystemVisualization extends Stage {
         shadowGanymede.setVisible(ganymede.isVisible());
         shadowCallisto.setVisible(callisto.isVisible());
 
-        // Clouds of the Earth
-        cloudsEarth.setVisible(earth.isVisible());
-
         // Rings of Saturn and Uranus
         ringSaturn.setVisible(saturn.isVisible());
         ringUranus.setVisible(uranus.isVisible());
@@ -1646,8 +1670,9 @@ public class SolarSystemVisualization extends Stage {
         // Set radius of Earth and Moon to their normal values
         // The sizes of the Earth and the Moon are changed when viewing the Earth-Moon system
         if (!"EarthMoonBarycenter".equals(selectedBody)) {
-            earth.setRadius(0.5*screenDiameter("Earth"));
-            cloudsEarth.setRadius(CLOUDFACTOR*0.5*screenDiameter("Earth"));
+            earthLowRes.setRadius(0.5*screenDiameter("Earth"));
+            earthHighRes.setRadius(0.5*screenDiameter("Earth"));
+            cloudsEarthHighRes.setRadius(CLOUDFACTOR*0.5*screenDiameter("Earth"));
             moon.setRadius(0.5*screenDiameter("Moon"));
         }
 
@@ -1666,13 +1691,11 @@ public class SolarSystemVisualization extends Stage {
                 switch (this.selectedBody) {
                     case "ISS":
                         earth.setVisible(true);
-                        cloudsEarth.setVisible(true);
                         iss.setVisible(true);
                         viewFromISS();
                         break;
                     case "Apollo 8":
                         earth.setVisible(true);
-                        cloudsEarth.setVisible(true);
                         moon.setVisible(true);
                         viewFromApollo();
                         break;
@@ -1686,7 +1709,6 @@ public class SolarSystemVisualization extends Stage {
                 switch (this.selectedBody) {
                     case "Sun":
                         earth.setVisible(false);
-                        cloudsEarth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
                         pointLight.setVisible(false);
@@ -1698,17 +1720,16 @@ public class SolarSystemVisualization extends Stage {
                         break;
                     case "Moon":
                         earth.setVisible(false);
-                        cloudsEarth.setVisible(false);
                         moon.setVisible(true);
                         shadowEarth.setVisible(true);
                         viewFromEarthSurfaceToMoon();
                         break;
                     case "EarthMoonBarycenter":
-                        earth.setRadius(6.0 * screenDiameter("Earth"));
-                        cloudsEarth.setRadius(CLOUDFACTOR * 6.0 * screenDiameter("Earth"));
+                        earthLowRes.setRadius(6.0 * screenDiameter("Earth"));
+                        earthHighRes.setRadius(6.0 * screenDiameter("Earth"));
+                        cloudsEarthHighRes.setRadius(CLOUDFACTOR * 6.0 * screenDiameter("Earth"));
                         moon.setRadius(6.0 * screenDiameter("Moon"));
                         earth.setVisible(true);
-                        cloudsEarth.setVisible(true);
                         moon.setVisible(true);
                         shadowEarth.setVisible(false);
                         viewEarthMoonSystem();
@@ -1726,20 +1747,17 @@ public class SolarSystemVisualization extends Stage {
                         }
                         else {
                             earth.setVisible(false);
-                            cloudsEarth.setVisible(false);
                             viewFromEarthSurfaceToSelectedBody();
                         }
                         break;
                     default:
                         if (bodies.keySet().contains(this.selectedBody)) {
                             earth.setVisible(false);
-                            cloudsEarth.setVisible(false);
                             shadowEarth.setVisible(false);
                             viewFromEarthSurfaceToSelectedBody();
                         } else {
                             sun.setVisible(false);
                             earth.setVisible(true);
-                            cloudsEarth.setVisible(true);
                             moon.setVisible(true);
                             viewFromSunToEarth();
                         }

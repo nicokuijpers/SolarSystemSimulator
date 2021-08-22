@@ -174,20 +174,53 @@ public class SolarSystemShapeFactory {
                     // https://www.solarsystemscope.com/textures/
                     // Texture image 8192 x 4096 pixels (4.6 MB)
                     fileSurfaceEarthDay = new File("Images/8k_earth_daymap.jpg");
+                    Image imageSurfaceEarthDay = new Image(fileSurfaceEarthDay.toURI().toString());
+                    material.setDiffuseMap(imageSurfaceEarthDay);
                     // Texture image 8192 x 4096 pixels (3.1 MB)
                     fileSurfaceEarthNight = new File("Images/8k_earth_nightmap.jpg");
+                    Image imageSurfaceEarthNight = new Image(fileSurfaceEarthNight.toURI().toString());
+                    material.setSelfIlluminationMap(imageSurfaceEarthNight);
                 }
                 else {
                     // https://www.solarsystemscope.com/textures/
                     // Texture image 2048 x 1024 pixels (464 KB)
                     fileSurfaceEarthDay = new File("Images/2k_earth_daymap.jpg");
-                    // Texture image 2048 x 1024 pixels (255 KB)
-                    fileSurfaceEarthNight = new File("Images/2k_earth_nightmap.jpg");
+                    Image imageSurfaceEarthDay = new Image(fileSurfaceEarthDay.toURI().toString());
+                    // https://www.solarsystemscope.com/textures/
+                    // Texture image 2048 x 1024 pixels (966 KB)
+                    File fileCloudsEarth = new File("Images/2k_earth_clouds.jpg");
+                    Image imageCloudsEarth = new Image(fileCloudsEarth.toURI().toString());
+                    PixelReader pixelReaderSurface = imageSurfaceEarthDay.getPixelReader();
+                    PixelReader pixelReaderClouds = imageCloudsEarth.getPixelReader();
+                    int width = (int) imageCloudsEarth.getWidth();
+                    int height = (int) imageCloudsEarth.getHeight();
+                    WritableImage imageLowResEarth = new WritableImage(width, height);
+                    PixelWriter pixelWriter = imageLowResEarth.getPixelWriter();
+                    for (int x = 0; x < width; x++) {
+                        for (int y = 0; y < height; y++) {
+                            int argbClouds = pixelReaderClouds.getArgb(x, y);
+                            int redClouds = (argbClouds >> 16) & 0xff;
+                            int greenClouds = (argbClouds >> 8) & 0xff;
+                            int blueClouds = argbClouds & 0xff;
+                            int alphaClouds = (int) ((redClouds + greenClouds + blueClouds) / 3.0);
+                            redClouds = (int) Math.min(255.0, 3 * redClouds);
+                            greenClouds = (int) Math.min(255.0, 3 * greenClouds);
+                            blueClouds = (int) Math.min(255.0, 3 * blueClouds);
+                            int argbSurface = pixelReaderSurface.getArgb(x, y);
+                            int redSurface = (argbSurface >> 16) & 0xff;
+                            int greenSurface = (argbSurface >> 8) & 0xff;
+                            int blueSurface = argbSurface & 0xff;
+                            int alpha = 255;
+                            double factor = alphaClouds/255.0;
+                            int red = (int) Math.round(factor*redClouds + (1.0 - factor)*redSurface);
+                            int green = (int) Math.round(factor*greenClouds + (1.0 - factor)*greenSurface);
+                            int blue = (int) Math.round(factor*blueClouds + (1.0 - factor)*blueSurface);
+                            int val = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                            pixelWriter.setArgb(x, y, val);
+                        }
+                    }
+                    material.setDiffuseMap(imageLowResEarth);
                 }
-                Image imageSurfaceEarthDay = new Image(fileSurfaceEarthDay.toURI().toString());
-                material.setDiffuseMap(imageSurfaceEarthDay);
-                Image imageSurfaceEarthNight = new Image(fileSurfaceEarthNight.toURI().toString());
-                material.setSelfIlluminationMap(imageSurfaceEarthNight);
                 break;
             case "Mars":
                 // http://planetpixelemporium.com/planets.html

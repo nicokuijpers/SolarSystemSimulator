@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Shadows of Uranus of Neptune added">
-      <change afterPath="$PROJECT_DIR$/Images/8k_earth_clouds.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/8k_earth_daymap.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/8k_earth_nightmap.jpg" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds.">
+      <change afterPath="$PROJECT_DIR$/Images/2k_earth_daymap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/2k_earth_nightmap.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
     </list>
@@ -328,10 +326,10 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
       <recent name="$PROJECT_DIR$/Models" />
       <recent name="$PROJECT_DIR$/Models/ISS" />
-      <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/src/main/resources/Trajectories" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -652,7 +650,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629376518023</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds.">
+      <created>1629623989525</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1629623989525</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -762,7 +767,8 @@
     <MESSAGE value="Launch Cassini added to selection menu" />
     <MESSAGE value="Method to create shadow for Jupiter and Saturn" />
     <MESSAGE value="Shadows of Uranus of Neptune added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Shadows of Uranus of Neptune added" />
+    <MESSAGE value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
+    <option name="LAST_COMMIT_MESSAGE" value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
