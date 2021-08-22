@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds.">
-      <change afterPath="$PROJECT_DIR$/Images/2k_earth_daymap.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/2k_earth_nightmap.jpg" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Change between high-res and low-res Earth during run-time">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -657,7 +653,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629623989525</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Change between high-res and low-res Earth during run-time">
+      <created>1629646456840</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1629646456840</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -768,7 +771,8 @@
     <MESSAGE value="Method to create shadow for Jupiter and Saturn" />
     <MESSAGE value="Shadows of Uranus of Neptune added" />
     <MESSAGE value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
-    <option name="LAST_COMMIT_MESSAGE" value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
+    <MESSAGE value="Change between high-res and low-res Earth during run-time" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change between high-res and low-res Earth during run-time" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
