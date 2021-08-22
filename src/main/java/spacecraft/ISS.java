@@ -78,6 +78,7 @@ public class ISS extends Spacecraft implements Serializable {
         Scanner scanner;
         try {
             scanner = new Scanner(file);
+            scanner.useLocale(Locale.US);
             while (scanner.hasNext("%")) {
                 scanner.nextLine();
             }
