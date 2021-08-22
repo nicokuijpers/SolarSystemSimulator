@@ -375,8 +375,7 @@ public class Rosetta extends Spacecraft implements Serializable {
         Scanner scanner;
         try {
             scanner = new Scanner(file);
-            Locale locale = Locale.US;
-            scanner.useLocale(locale);
+            scanner.useLocale(Locale.US);
             while (scanner.hasNext("%")) {
                 scanner.nextLine();
             }
