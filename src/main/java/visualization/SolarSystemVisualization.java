@@ -806,7 +806,7 @@ public class SolarSystemVisualization extends Stage {
                         bodyRotationsY.get(name).setAngle(camThetaDeg - angleXYdeg);
                         double angleZrad = Math.acos(spacecraftDirection.getZ());
                         double angleZdeg = Math.toDegrees(angleZrad);
-                        bodyRotationsX.get(name).setAngle(90.0 - camPhiDeg - angleZdeg);
+                        bodyRotationsX.get(name).setAngle(90.0 + camPhiDeg - angleZdeg);
                     }
                     else {
                         // Rotate spacecraft such that parabolic antenna is directed towards the Earth
@@ -819,7 +819,7 @@ public class SolarSystemVisualization extends Stage {
                         bodyRotationsY.get(name).setAngle(camThetaDeg - angleXYdeg);
                         double angleZrad = Math.acos(directionToEarth.getZ());
                         double angleZdeg = Math.toDegrees(angleZrad);
-                        bodyRotationsX.get(name).setAngle(90.0 - camPhiDeg - angleZdeg);
+                        bodyRotationsX.get(name).setAngle(90.0 + camPhiDeg - angleZdeg);
                     }
                 } else {
                     // Rotate around y-axis to visualize revolution
