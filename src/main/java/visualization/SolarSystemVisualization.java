@@ -405,15 +405,45 @@ public class SolarSystemVisualization extends Stage {
         // Correction to see Pluto's Big Heart from New Horizons July 13, 20.00
         // https://www.nasa.gov/feature/new-horizons-spacecraft-displays-pluto-s-big-heart-0
         offsetRevolution.put("Pluto",180.0);
-
-        // Rotate the clouds of the Earth with the Earth itself
-        /*
-        cloudsEarth.getTransforms().add(bodyRotationsX.get("Earth"));
-        cloudsEarth.getTransforms().add(bodyRotationsZ.get("Earth"));
-        cloudsEarth.getTransforms().add(bodyRotationsY.get("Earth"));
-        cloudsEarth.getTransforms().add(bodyRotationsObliquity.get("Earth"));
-        cloudsEarth.getTransforms().add(bodyRotationsRevolution.get("Earth"));
-         */
+        // Correction for Io as seen from Voyager 1 at AD 1979-03-04 19:29 (UTC)
+        // Distance 800,000 km
+        // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg1_1636836.html
+        offsetRevolution.put("Io",158.0);
+        // Correction for Europa as seen from Voyager 2 at AD 1979-07-09 15:13 (UTC)
+        // Distance 225,000 km
+        // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg2_2060811.html
+        offsetRevolution.put("Europa",90.0);
+        // Correction for Ganymede as seen from Voyager 2 at AD 1979-07-08 05:30 (UTC)
+        // Distance 1,230,000 km
+        // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg2_2060811.html
+        offsetRevolution.put("Ganymede",-33.0);
+        // Correction for Callisto as seen from Voyager 2 at AD 1979-07-06 07:24 (UTC)
+        // Distance 2,3 million km
+        // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg2_p21740.html
+        offsetRevolution.put("Callisto",39.0);
+        // Correction for Miranda as seen from Voyager 2 at 1986-01-24 14:50 (UTC)
+        // Distance 147,000 km
+        offsetRevolution.put("Miranda",-75.0);
+        // Correction for Ariel as seen from Voyager 2 at 1986-01-24 14:16 (UTC)
+        // Distance 170,000 km
+        // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg2_p29523c.html
+        offsetRevolution.put("Ariel",46.0);
+        // Correction for Umbriel as seen from Voyager 2 at 1986-01-24 10:22 (UTC)
+        // Distance 557,000 km
+        // https://solarsystem.nasa.gov/moons/uranus-moons/umbriel/in-depth/
+        offsetRevolution.put("Umbriel",-288.0);
+        // Correction for Titania as seen from Voyager 2 at 1986-01-24 09:14 (UTC)
+        // Composite of two images taken by Voyager from a distance of 500,000 miles
+        // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg2_p29509.html
+        offsetRevolution.put("Titania",113.5);
+        // Correction for Oberon as seen from Voyager 2 at 1986-01-24 10:10 (UTC)
+        // Distance 662,000 km
+        // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg2_2683625.html
+        offsetRevolution.put("Oberon",-41.0);
+        // Correction for Triton as seen from Voyager 2 at 1989-08-25 01:00 (UTC)
+        // Distance 530,000 km
+        // https://sci.esa.int/web/gaia/-/59630-image-of-triton-from-voyager-2
+        offsetRevolution.put("Triton",50.0);
 
         // High and low resolution version of the Earth and Earth's clouds have
         // the same transformations (translations and rotations) as the small
