@@ -1004,7 +1004,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
         if (centerBodies.keySet().contains(name)) {
             String planetName = centerBodies.get(name);
             if (planetSystems.keySet().contains(planetName)) {
-                OblatePlanetSystem planetSystem = planetSystems.get(name);
+                OblatePlanetSystem planetSystem = planetSystems.get(planetName);
                 planetSystem.getParticle(name).setMass(mass);
             }
         }
