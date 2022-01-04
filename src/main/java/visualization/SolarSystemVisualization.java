@@ -415,7 +415,8 @@ public class SolarSystemVisualization extends Stage {
         // Correction for Io as seen from Voyager 1 at AD 1979-03-04 19:29 (UTC)
         // Distance 800,000 km
         // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg1_1636836.html
-        offsetRevolution.put("Io",158.0);
+        // offsetRevolution.put("Io",158.0); // For texture image io.png
+        offsetRevolution.put("Io",158.0 - 180.0); // For texture image Dh_io_texture.png
         // Correction for Europa as seen from Voyager 2 at AD 1979-07-09 15:13 (UTC)
         // Distance 225,000 km
         // https://nssdc.gsfc.nasa.gov/imgcat/html/object_page/vg2_2060811.html
