@@ -2936,6 +2936,11 @@ public class SolarSystemApplication extends Application {
      */
     private void updateVisualizationSettingsSpacecraftView() {
         VisualizationSettings currentSettings = (VisualizationSettings) eventSelector.getValue();
+        // Observation of Shoemaker-Levy 9 impact from Galileo spacecraft
+        if (currentSettings.getEventName().contains("Shoemaker-Levy")) {
+            updateVisualizationSettingsTelescopeView();
+            return;
+        }
         if (currentSettings.getEventName().startsWith("Launch") && simulationIsRunning) {
             Vector3D spacecraftPosition = solarSystem.getParticle(selectedBody).getPosition();
             Vector3D closestBodyPosition = new Vector3D();
@@ -3641,14 +3646,14 @@ public class SolarSystemApplication extends Application {
         GregorianCalendar shoeStartDateTime = CalendarUtil.createGregorianCalendar(1994,5,8,0,0,0);
         shoe.setSimulationStartDateTime(shoeStartDateTime);
         shoe.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","JupiterMoons",
-                "Shoemaker-Levy 9")));
+                "Shoemaker-Levy 9","Galileo")));
         shoe.setSelectedBody("Jupiter");
         shoe.setShowEphemeris(false);
         shoe.setShowRuler(true);
         shoe.setStepMode(false);
         shoe.setValueTopFrontView(30);
         shoe.setValueZoomView(62);
-        shoe.setValueSimulationSpeed(50);
+        shoe.setValueSimulationSpeed(50)
         shoe.setAutomaticView(true);
         events.add(shoe);
         VisualizationSettings pvnh = new VisualizationSettings();

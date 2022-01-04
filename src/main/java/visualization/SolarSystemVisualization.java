@@ -1527,6 +1527,10 @@ public class SolarSystemVisualization extends Stage {
             fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
         }
         fieldOfView = Math.min(Math.max(fieldOfView,4.0),90.0);
+        if ("Galileo".equals(selectedBody) && "Jupiter".equals(observedBody) && shoemaker.isVisible()) {
+            // Observe impact of Shoemaker-Levy from spacecraft Galileo
+            fieldOfView = 0.12;
+        }
         double nearDistance = Math.max(1.0E07,distanceFromSurface - 5.0E09);
         if (distanceFromSurface < 1.0E09) {
             nearDistance = Math.max(1.0E05,distanceFromSurface - 5.0E09);
@@ -1705,6 +1709,12 @@ public class SolarSystemVisualization extends Stage {
             }
             else {
                 shoemaker.setRadius(screenDiameter("Shoemaker-Levy 9"));
+            }
+            // Check for impact of Shoemaker-Levy observed from spacecraft Galileo
+            if (viewMode.equals(SolarSystemViewMode.FROMSPACECRAFT) && "Jupiter".equals(this.selectedBody)) {
+                this.viewMode = viewMode;
+                this.selectedBody = "Galileo";
+                this.observedBody = "Jupiter";
             }
         }
 
