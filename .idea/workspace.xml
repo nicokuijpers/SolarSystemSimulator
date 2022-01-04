@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="offset for revolution of moons">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Bug fix set mass of moon of planet system">
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Galileo.mtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Galileo.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -312,7 +321,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/EphemerisFiles" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -322,9 +331,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
       <recent name="$PROJECT_DIR$/Models" />
+      <recent name="$PROJECT_DIR$/Images" />
       <recent name="$PROJECT_DIR$/Models/ISS" />
       <recent name="$PROJECT_DIR$/src/main/resources/Trajectories" />
     </key>
@@ -332,9 +341,9 @@
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="spacecraft" />
       <recent name="particlesystem" />
       <recent name="solarsystem" />
-      <recent name="spacecraft" />
       <recent name="visualization" />
       <recent name="ephemeris" />
     </key>
@@ -695,7 +704,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635412891967</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Bug fix set mass of moon of planet system">
+      <created>1638710177773</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1638710177773</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -781,6 +797,7 @@
     <option name="version" value="1" />
   </component>
   <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.obj" />
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.mtl" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -812,7 +829,8 @@
     <MESSAGE value="Use Locale.US when reading from text file (ISS)" />
     <MESSAGE value="Bug fix rotation spacecraft" />
     <MESSAGE value="offset for revolution of moons" />
-    <option name="LAST_COMMIT_MESSAGE" value="offset for revolution of moons" />
+    <MESSAGE value="Bug fix set mass of moon of planet system" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug fix set mass of moon of planet system" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

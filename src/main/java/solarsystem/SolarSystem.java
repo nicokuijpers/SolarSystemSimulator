@@ -791,6 +791,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             case "Cassini":
                 craft = new Cassini("Cassini", "Sun", this);
                 break;
+            case "Galileo":
+                craft = new Galileo("Galileo", "Sun", this);
+                break;
             default:
                 System.err.println("ERROR: No spacecraft with name " + spacecraftName);
                 craft = null;
@@ -897,6 +900,21 @@ public class SolarSystem extends ParticleSystem implements Serializable {
                             }
                             if (!"Saturn".equals(centerBodies.get(name))) {
                                 transferSpacecraftToPlanetSystem("Cassini", "Saturn");
+                            }
+                        }
+                    }
+                    // Transfer Galileo to Jupiter System at or after 1 dec 1995 (one week before Jupiter Orbit Insertion)
+                    if ("Galileo".equals(name)) {
+                        if (!simulationDateTime.before(Galileo.getWeekBeforeJupiterOrbitInsertion())) {
+                            if (!planetSystems.containsKey("Jupiter")) {
+                                try {
+                                    this.createPlanetSystem("Jupiter");
+                                } catch (SolarSystemException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (!"Jupiter".equals(centerBodies.get(name))) {
+                                transferSpacecraftToPlanetSystem("Galileo", "Jupiter");
                             }
                         }
                     }

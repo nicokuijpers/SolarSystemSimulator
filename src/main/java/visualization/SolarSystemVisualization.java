@@ -80,6 +80,7 @@ public class SolarSystemVisualization extends Stage {
     private static final double DIAMETERPIONEER     = 5.0E6; // 5000 km
     private static final double DIAMETERVOYAGER     = 5.0E6; // 5000 km
     private static final double DIAMETERCASSINI     = 2.5E6; // 2500 km
+    private static final double DIAMETERGALILEO     = 5.0E6; // 5000 km
     private static final double DIAMETERNEWHORIZONS = 8.0E5; //  800 km
     private static final double DIAMETERROSETTA     = 2.5E5; //  250 km
     private static final double DIAMETERISS         = 2.0E5; //  200 km
@@ -98,7 +99,7 @@ public class SolarSystemVisualization extends Stage {
     private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
 
     // Maximum distance to use high-resolution version of the Earth and Earth's clouds
-    private static final double HIGHRESMAXDISTANCE = 3.0E08; // 300 000 km
+    private static final double HIGHRESMAXDISTANCE = 5.0E07; // 50 000 km
 
     //https://www.genuinecoder.com/javafx-3d-tutorial-object-transform-rotation-with-mouse/
     // Tracks drag starting point for x and y
@@ -138,7 +139,7 @@ public class SolarSystemVisualization extends Stage {
     private Cylinder shadowJupiter, shadowSaturn, shadowUranus, shadowNeptune;
     private Shape3D pallas, juno, vesta, eros, bennu;
     private Shape3D halley, churyumov, ultimaThule;
-    private Shape3D pioneer10, pioneer11, voyager1, voyager2, newhorizons, rosetta, cassini, apollo8;
+    private Shape3D pioneer10, pioneer11, voyager1, voyager2, newhorizons, rosetta, cassini, galileo, apollo8;
     private Map<String,Node> bodies;
     private Map<String,Rotate> bodyRotationsX;
     private Map<String,Rotate> bodyRotationsY;
@@ -374,6 +375,9 @@ public class SolarSystemVisualization extends Stage {
         cassini = shapeFactory.createSpacecraft("Cassini", Color.LIGHTYELLOW);
         bodies.put("Cassini",cassini);
         spacecraftNames.add("Cassini");
+        galileo = shapeFactory.createSpacecraft("Galileo", Color.LIGHTYELLOW);
+        bodies.put("Galileo",galileo);
+        spacecraftNames.add("Galileo");
         apollo8 = shapeFactory.createSpacecraft("Apollo 8", Color.LIGHTYELLOW);
         bodies.put("Apollo 8", apollo8);
         spacecraftNames.add("Apollo 8");
@@ -733,6 +737,9 @@ public class SolarSystemVisualization extends Stage {
                 break;
             case "Cassini":
                 diameter = DIAMETERCASSINI;
+                break;
+            case "Galileo":
+                diameter = DIAMETERGALILEO;
                 break;
             case "ISS":
                 diameter = DIAMETERISS;
@@ -1205,7 +1212,7 @@ public class SolarSystemVisualization extends Stage {
         if (viewMode.equals(SolarSystemViewMode.FROMSPACECRAFT) && earth.isVisible()) {
             Vector3D earthPosition = solarSystem.getPosition("Earth");
             double distance = cameraPosition.euclideanDistance(earthPosition);
-            highres = distance < HIGHRESMAXDISTANCE; // 300 000 km
+            highres = distance < HIGHRESMAXDISTANCE; // 50 000 km
         }
         if (highres) {
             earthLowRes.setVisible(false);
@@ -1510,7 +1517,7 @@ public class SolarSystemVisualization extends Stage {
         double fieldOfView = diameter / FIELDOFVIEWFACTORSPACECRAFT;
         double distanceFromCenter = cameraPosition.euclideanDistance(bodyPosition);
         double distanceFromSurface = distanceFromCenter - 0.5*diameter;
-        if ("Rosetta".equals(selectedBody) && distanceFromSurface < 1.0E11) {
+        if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody)) && distanceFromSurface < 1.0E11) {
             // Rosetta comes close to the surface of the Earth and Mars
             // Increase field of view depending on the distance to the surface
             fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
@@ -1771,6 +1778,7 @@ public class SolarSystemVisualization extends Stage {
                     case "New Horizons":
                     case "Rosetta":
                     case "Cassini":
+                    case "Galileo":
                         if ("Earth".equals(observedBody)) {
                             sun.setVisible(false);
                             viewFromSunToEarth();

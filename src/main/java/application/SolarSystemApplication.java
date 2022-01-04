@@ -633,6 +633,7 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate.put("Apollo 8", CalendarUtil.createGregorianCalendar(1968, 12, 21, 12, 51, 0));
         trajectoryStartDate.put("ISS", CalendarUtil.createGregorianCalendar(1998, 11, 21, 0, 0, 0));
         trajectoryStartDate.put("Cassini", CalendarUtil.createGregorianCalendar(1997, 10, 15, 11, 30, 0));
+        trajectoryStartDate.put("Galileo", CalendarUtil.createGregorianCalendar(1989, 10, 19, 2, 0, 0));
 
         // Define spacecraft names
         spacecraftNames = new ArrayList<>();
@@ -3292,6 +3293,33 @@ public class SolarSystemApplication extends Application {
                         }
                     }
                 }
+                if ("Galileo".equals(selectedBody)) {
+                    if ("Jupiter".equals(closestBody)) {
+                        checkBoxesBodies.get("JupiterMoons").setSelected(true);
+                        String closestMoonFound = "";
+                        double minMoonDistance = Double.MAX_VALUE;
+                        for (String moonName : SolarSystemParameters.getInstance().getMoonsOfPlanet("Jupiter")) {
+                            Vector3D moonPosition = null;
+                            try {
+                                moonPosition = solarSystem.getPosition(moonName);
+                            } catch (SolarSystemException ex) {
+                                showMessage("Error",ex.getMessage());
+                            }
+                            double moonDistance = spacecraftPosition.euclideanDistance(moonPosition);
+                            if (moonDistance < minMoonDistance) {
+                                minMoonDistance = moonDistance;
+                                closestMoonFound = moonName;
+                            }
+                        }
+                        if (minMoonDistance < 1.5E8) {
+                            observedBody = closestMoonFound;
+                            // Minimum distance to Jupiter moon varies between 200 and 3000 km
+                            // At such low distances, simulation progresses slowly
+                            // To encounter this problem, minDistance is increased with 20,000 km (= 2.0E07 m)
+                            minDistance = 1.5*minMoonDistance + 2.0E07;
+                        }
+                    }
+                }
                 if ("Rosetta".equals(selectedBody)) {
                     if (!automaticSimulationFast &&
                             (minDistance < 2.0E08 && (!"67P/Churyumov-Gerasimenko".equals(observedBody) ||
@@ -3349,7 +3377,8 @@ public class SolarSystemApplication extends Application {
                     else {
                         if (!automaticSimulationFast && (minDistance < 1.0E09 ||
                                 (selectedBody.startsWith("Pioneer") && !"Earth".equals(observedBody) && minDistance < 2.5E09) ||
-                                "Cassini".equals(selectedBody) && "Titan".equals(observedBody))) { // Check Voyager
+                                ("Cassini".equals(selectedBody) && "Titan".equals(observedBody))) ||
+                                ("Galileo".equals(selectedBody) && moons.get("Jupiter").contains(observedBody))) { // Check Voyager
                             checkBoxStepMode.setSelected(true);
                             startSimulationStepModeForward();
                             double value = Math.min(100.0, Math.max(5.0, minDistance / 1.0E07));
@@ -3369,7 +3398,9 @@ public class SolarSystemApplication extends Application {
                 }
             } else {
                 // minDistance >= 8.0E09 (8 million km) and spacecraft has passed the planet system
-                checkBoxesBodies.get("JupiterMoons").setSelected(false);
+                if (!"Galileo".equals(selectedBody)) {
+                    checkBoxesBodies.get("JupiterMoons").setSelected(false);
+                }
                 if (!"Cassini".equals(selectedBody)) {
                     checkBoxesBodies.get("SaturnMoons").setSelected(false);
                 }
@@ -3715,6 +3746,20 @@ public class SolarSystemApplication extends Application {
         cas.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         cas.setAutomaticView(true);
         events.add(cas);
+        VisualizationSettings gal = new VisualizationSettings();
+        gal.setEventName("Launch Galileo (1989-10-18)");
+        gal.setSimulationStartDateTime(trajectoryStartDate.get("Galileo"));
+        gal.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Venus","Earth","Moon","Mars","Jupiter",
+                "Galileo")));
+        gal.setSelectedBody("Galileo");
+        gal.setShowEphemeris(false);
+        gal.setShowRuler(true);
+        gal.setStepMode(false);
+        gal.setValueZoomView(20);
+        gal.setValueSimulationSpeed(100);
+        gal.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        gal.setAutomaticView(true);
+        events.add(gal);
         VisualizationSettings nh = new VisualizationSettings();
         nh.setEventName("Launch New Horizons (2006-01-19  19:00)");
         nh.setSimulationStartDateTime(trajectoryStartDate.get("New Horizons"));

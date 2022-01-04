@@ -920,6 +920,8 @@ public class SolarSystemShapeFactory {
          * Model of Cassini is adapted from
          * https://nasa3d.arc.nasa.gov/detail/jpl-vtad-cassini
          * Geometry was scaled with factor 0.0002 and 90 degrees rotated along X-axis
+         *
+         * Model of Galileo is the same as Pioneer 10 / 11.
          */
         String fileName = DIRECTORYMODELS + spacecraftName + EXTENSIONMODEL;
         Shape3D shape;
