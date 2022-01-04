@@ -338,29 +338,39 @@ public class SolarSystemShapeFactory {
                 break;
             case "Io":
                 // https://planet-texture-maps.fandom.com/wiki/Io
-                // Texture image 1440 x 720 pixels
-                file = new File("Images/io.png");
+                // Texture image 1440 x 720 pixels (2.1 MB)
+                // file = new File("Images/io.png");
+                // Texture image 2048 x 1024 pixels (2.4 MB)
+                file = new File("Images/Dh_io_texture.png");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
             case "Europa":
                 // https://planet-texture-maps.fandom.com/wiki/Europa
-                // Texture image 1440 x 720 pixels
-                file = new File("Images/europa.jpg");
+                // Texture image 1440 x 720 pixels (183 KB)
+                // file = new File("Images/europa.jpg");
+                // Texture image 2048 x 1024 pixels (3.5 MB)
+                file = new File("Images/Dh_europa_texture.png");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
             case "Ganymede":
                 // https://planet-texture-maps.fandom.com/wiki/Ganymede
-                // Texture image 450 x 225 pixels
-                file = new File("Images/ganymede.png");
+                // Texture image 450 x 225 pixels (161 KB)
+                // file = new File("Images/ganymede.png");
+                // Texture image 1440 x 720 pixels (1.5 MB)
+                // file = new File("Images/Ganymede_Reworked.png");
+                // Texture image 2048 x 1024 pixels (2.4 MB)
+                file = new File("Images/Dh_ganymede_texture.png");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
             case "Callisto":
                 // https://planet-texture-maps.fandom.com/wiki/Callisto
                 // Texture image 1024 x 512 pixels
-                file = new File("Images/callisto.jpg");
+                // file = new File("Images/callisto.jpg");
+                // Texture image 2048 x 1024 pixels (2.7 MB)
+                file = new File("Images/Dh_callisto_texture.png");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
