@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Spacecraft Galileo">
-      <change afterPath="$PROJECT_DIR$/Images/Dh_callisto_texture.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Dh_europa_texture.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Dh_ganymede_texture.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Dh_io_texture.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="High res textures for Galilean moons">
+      <change afterPath="$PROJECT_DIR$/Images/8k_jupiter.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/8k_mars.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/8k_moon.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -713,7 +712,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641312317044</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="High res textures for Galilean moons">
+      <created>1641312770574</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1641312770574</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -833,7 +839,8 @@
     <MESSAGE value="offset for revolution of moons" />
     <MESSAGE value="Bug fix set mass of moon of planet system" />
     <MESSAGE value="Spacecraft Galileo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Spacecraft Galileo" />
+    <MESSAGE value="High res textures for Galilean moons" />
+    <option name="LAST_COMMIT_MESSAGE" value="High res textures for Galilean moons" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

@@ -222,11 +222,14 @@ public class SolarSystemVisualization extends Stage {
         bodies.put("Venus",venus);
         earth = new Sphere(0.05*screenDiameter("Earth"));
         bodies.put("Earth",earth);
-        moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
+        //moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
+        moon = shapeFactory.createSphereHighRes("Moon", Color.LIGHTGRAY);
         bodies.put("Moon",moon);
-        mars = shapeFactory.createSphere("Mars", Color.RED);
+        //mars = shapeFactory.createSphere("Mars", Color.RED);
+        mars = shapeFactory.createSphereHighRes("Mars", Color.RED);
         bodies.put("Mars",mars);
-        jupiter = shapeFactory.createSphere("Jupiter", Color.ROSYBROWN);
+        //jupiter = shapeFactory.createSphere("Jupiter", Color.ROSYBROWN);
+        jupiter = shapeFactory.createSphereHighRes("Jupiter", Color.ROSYBROWN);
         bodies.put("Jupiter",jupiter);
         saturn = shapeFactory.createSphere("Saturn", Color.ORANGE);
         bodies.put("Saturn",saturn);
