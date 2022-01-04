@@ -3653,7 +3653,7 @@ public class SolarSystemApplication extends Application {
         shoe.setStepMode(false);
         shoe.setValueTopFrontView(30);
         shoe.setValueZoomView(62);
-        shoe.setValueSimulationSpeed(50)
+        shoe.setValueSimulationSpeed(50);
         shoe.setAutomaticView(true);
         events.add(shoe);
         VisualizationSettings pvnh = new VisualizationSettings();
