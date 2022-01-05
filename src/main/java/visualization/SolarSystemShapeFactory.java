@@ -65,6 +65,106 @@ public class SolarSystemShapeFactory {
     }
 
     /**
+     * Create shape for Solar System body or spacecaft.
+     * @param bodyName name of the body
+     */
+    public Node createShape(String bodyName) {
+        switch (bodyName) {
+            case "Eris":
+                return createSphere("Eris", Color.LIGHTSALMON);
+            case "Chiron":
+                return createSphere("Chiron", Color.CRIMSON);
+            case "Ceres":
+                return createSphere("Ceres", Color.ORANGE);
+            case "Pallas":
+                return createSmallBody("Pallas",Color.LIGHTGRAY);
+            case "Juno":
+                return createSmallBody("Juno",Color.LIGHTGRAY);
+            case "Vesta":
+                return createSmallBody("Vesta",Color.YELLOW);
+            case "Eros":
+                Color colorEros = new Color(164.0/255,152.0/255,138.0/255, 1.0);
+                return createSmallBody("Eros",colorEros);
+            case "Bennu":
+                return createSmallBody("Bennu",Color.LIGHTGRAY);
+            case "Halley":
+                createSmallBody("Halley",Color.GRAY);
+            case "Encke":
+                return createSphere("Encke", Color.LIGHTGREEN);
+            case "67P/Churyumov-Gerasimenko":
+                return createSmallBody("67P/Churyumov-Gerasimenko", Color.SNOW);
+            case "Hale-Bopp":
+                return createSphere("Hale-Bopp", Color.LIGHTBLUE);
+            case "Florence":
+                return createSphere("Florence", Color.LIGHTGREEN);
+            case "Ultima Thule":
+                Color colorArrokoth = new Color(159.0/255, 101.0/255, 72.0/255, 1.0);
+                return createSmallBody("Ultima Thule", colorArrokoth);
+            case "Phobos":
+                Color colorPhobos = new Color(176.0 / 255, 148.0 / 255, 127.0 / 255, 1.0);
+                return createSmallBody("Phobos", colorPhobos);
+            case "Deimos":
+                Color colorDeimos = new Color(193.0 / 255, 166.0 / 255, 124.0 / 255, 1.0);
+                return createSmallBody("Deimos", colorDeimos);
+            case "Mimas":
+                return createSphere("Mimas", Color.LIGHTGRAY);
+            case "Enceladus":
+                return createSphere("Enceladus", Color.ALICEBLUE);
+            case "Tethys":
+                return createSphere("Tethys", Color.DARKGOLDENROD);
+            case "Dione":
+                return createSphere("Dione", Color.BISQUE);
+            case "Rhea":
+                return createSphere("Rhea", Color.ORANGE);
+            case "Titan":
+                return createSphere("Titan", Color.PEACHPUFF);
+            case "Hyperion":
+                return createSphere("Hyperion", Color.LIGHTCORAL);
+            case "Iapetus":
+                return createSphere("Iapetus", Color.ALICEBLUE);
+            case "Phoebe":
+                return createSphere("Phoebe", Color.CORAL);
+            case "Miranda":
+                return createSphere("Miranda", Color.LIGHTGRAY);
+            case "Ariel":
+                return createSphere("Ariel", Color.ALICEBLUE);
+            case "Umbriel":
+                return createSphere("Umbriel", Color.PEACHPUFF);
+            case "Titania":
+                return createSphere("Titania", Color.LIGHTSALMON);
+            case "Oberon":
+                return createSphere("Oberon", Color.BISQUE);
+            case "Triton":
+                return createSphere("Triton", Color.LIGHTGRAY);
+            case "Nereid":
+                return createSphere("Nereid", Color.LIGHTSKYBLUE);
+            case "Proteus":
+                return createSphere("Proteus", Color.BISQUE);
+            case "Charon":
+                return createSphere("Charon", Color.GRAY);
+            case "Nix":
+            case "Hydra":
+            case "Kerberos":
+            case "Styx":
+                return createSphere(bodyName, Color.LIGHTGRAY);
+            case "Pioneer 10":
+            case "Pioneer 11":
+            case "Voyager 1":
+            case "Voyager 2":
+            case "New Horizons":
+            case "Rosetta":
+            case "Galileo":
+            case "Cassini":
+            case "Apollo 8":
+                return createSpacecraft(bodyName, Color.LIGHTYELLOW);
+            case "ISS":
+                return createISS("ISS");
+            default:
+                return createSphere(bodyName, Color.WHITE);
+        }
+    }
+
+    /**
      * Create a sphere representing body of the Solar System.
      * @param sphereName name of the sphere
      * @param color  color for the sphere
@@ -99,8 +199,13 @@ public class SolarSystemShapeFactory {
         }
         double radius = 0.5 * visualization.screenDiameter(name);
         double flattening = solarSystemParameters.getFlattening(name);
-        Sphere sphere = new Sphere();
-        sphere.setRadius(radius);
+        Sphere sphere;
+        if (highres) {
+            sphere = new Sphere(radius,256);
+        }
+        else {
+            sphere = new Sphere(radius);
+        }
         sphere.scaleYProperty().setValue(1.0 - flattening);
         PhongMaterial material = new PhongMaterial();
         File file;
@@ -305,7 +410,7 @@ public class SolarSystemShapeFactory {
             case "Pluto":
                 // http://planetpixelemporium.com/planets.html
                 // Does not resemble pictures from New Horizons
-                //file = new File("Images/plutomap1k.jpg");
+                // file = new File("Images/plutomap1k.jpg");
                 // http://www.planetaryvisions.com/images_new/38.jpg
                 // Texture image 640 x 320 pixels
                 // Resembles somewhat pictures from New Horizons
@@ -317,6 +422,9 @@ public class SolarSystemShapeFactory {
                 // PlutoColor2017.jpg adapted using PhotoShop
                 // Texture image 2048 x 1024 pixels (1.5 MB)
                 file = new File("Images/PlutoAdapted.jpg");
+                // https://www.deviantart.com/bob3studios/art/Pluto-Texture-Map-Fixed-Blur-762286905
+                // Texture image 4096 x 2048 pixels (1.6 MB)
+                // file = new File("Images/pluto_deviantart.jpg");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
@@ -333,6 +441,20 @@ public class SolarSystemShapeFactory {
                 // Original texture image grayscale 21093 x 10546 pixels, 35.4 MB
                 // Texture image 2048 x 1024 pixels
                 file = new File("Images/CeresGrayscale2k.jpg");
+                image = new Image(file.toURI().toString());
+                material.setDiffuseMap(image);
+                break;
+            case "Phobos":
+                // http://www.planetaryvisions.com/images_new/215.jpg
+                // Texture image 640 x 320 pixels (72 KB)
+                file = new File("Images/planvis_phobos.png");
+                image = new Image(file.toURI().toString());
+                material.setDiffuseMap(image);
+                break;
+            case "Deimos":
+                // http://www.planetaryvisions.com/images_new/201.jpg
+                // Texture image 640 x 320 pixels (46 KB)
+                file = new File("Images/planvis_deimos.png");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
@@ -454,6 +576,9 @@ public class SolarSystemShapeFactory {
                 // http://www.planetaryvisions.com/images_new/207.jpg
                 // Texture image 640 x 320 pixels
                 file = new File("Images/planvis_hyperion.jpg");
+                // https://planet-texture-maps.fandom.com/wiki/Hyperion
+                // Semi-fictitious texture image 2048 x 1024 pixels
+                // file = new File("Images/Dh_hyperion_texture.png");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
@@ -473,6 +598,19 @@ public class SolarSystemShapeFactory {
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
+            case "Phoebe":
+                // http://www.planetaryvisions.com/images_new/216.jpg
+                // Texture image 640 x 320 pixels (67 KB)
+                // file = new File("Images/planvis_phoebe.jpg");
+                // https://3d-asteroids.space/data/moons/textures/S9_Phoebe/Phoebe.jpg?size=max
+                // Texture image 2880 x 1440 pixels (219 KB)
+                // file = new File("Images/PhoebeGrayscale.jpg");
+                // https://planet-texture-maps.fandom.com/wiki/Phoebe
+                // Semi-fictitious texture image 1024 x 512 pixels (244 KB)
+                file = new File("Images/PhoebeMap2.jpg");
+                image = new Image(file.toURI().toString());
+                material.setDiffuseMap(image);
+                break;
             case "Miranda":
                 // http://www.planetaryvisions.com/images_new/212.jpg
                 // Texture image 640 x 320 pixels, southern hemisphere only
@@ -482,6 +620,10 @@ public class SolarSystemShapeFactory {
                 // file = new File("Images/MirandaVoyager.jpg");
                 // Same texture image with Northern hemisphere gray
                 file = new File("Images/MirandaVoyagerAdapted.jpg");
+                // https://planet-texture-maps.fandom.com/wiki/Miranda
+                // Semi-realistic map of Miranda
+                // Texture image 1024 x 512
+                // file = new File("Images/Miranda-0.jpg");
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
@@ -545,12 +687,49 @@ public class SolarSystemShapeFactory {
                 image = new Image(file.toURI().toString());
                 material.setDiffuseMap(image);
                 break;
+            case "Nereid":
+                // https://planet-texture-maps.fandom.com/wiki/Nereid
+                // Texture images created by Izak1273, complete fiction
+                // Texture image 1000 x 500 pixels (40 KB)
+                // file = new File("Images/Nereid.jpg");
+                // Texture image improved by Izak1273, complete fiction
+                // Texture image 312 x 156 pixels (67 KB)
+                file = new File("Images/Nereidimproved.png");
+                image = new Image(file.toURI().toString());
+                material.setDiffuseMap(image);
+                break;
+            case "Proteus":
+                // http://www.planetaryvisions.com/images_new/218.jpg
+                // Texture image 640 x 320 pixels (38 KB)
+                // file = new File("Images/planvis_proteus.jpg");
+                // https://planet-texture-maps.fandom.com/wiki/Proteus
+                // This is a proteus map made using voyager 2 images (based on a phil stooke map)
+                // Texture image 2048 x 1024 pixels (468 KB)
+                // Note that a large part of the original image is black,
+                // therefore black pixels are converted to gray pixels.
+                file = new File("Images/Proteus.png");
+                image = new Image(file.toURI().toString());
+                Image imageGrayProteus = convertBlackToGray(image,20);
+                material.setDiffuseMap(imageGrayProteus);
+                break;
+            case "Charon":
+                // http://www.planetaryvisions.com/images_new/200.jpg
+                // Texture image 180 x 90 pixels (27 KB)
+                // file = new File("Images/planvis_charon.jpg");
+                // https://3d-asteroids.space/moons/P1-Charon
+                // Texture image 12693 x 6347 pixels (14.6 MB)
+                // No data available of area south of 30 degrees S and Western hemisphere
+                // file = new File("Images/CharonNewHorizons.jpg");
+                // Texture image size adapted to 2048 x 1024 pixels
+                file = new File("Images/CharonNewHorizonsAdapted.jpg");
+                image = new Image(file.toURI().toString());
+                material.setDiffuseMap(image);
+                break;
             default :
                 material.setDiffuseColor(color);
                 break;
         }
         sphere.setMaterial(material);
-        //shapes.put(sphereName,sphere);
         return sphere;
     }
 
@@ -787,13 +966,12 @@ public class SolarSystemShapeFactory {
                 // Read model for Vesta from file
                 // https://3d-asteroids.space/asteroids/4-Vesta
                 // https://3d-asteroids.space/data/asteroids/models/v/4_Vesta.obj
-                // TODO READ MODEL AND APPLY TEXTURE
+                // Create ellipsoid instead of reading 3D model from file
                 shape = new Sphere(radius);
                 double meanDiameter = 525.40;
                 shape.scaleXProperty().setValue(572.6/meanDiameter);
                 shape.scaleYProperty().setValue(557.2/meanDiameter);
                 shape.scaleZProperty().setValue(446.4/meanDiameter);
-
                 // https://3d-asteroids.space/asteroids/4-Vesta
                 // Texture image color 8192 x 4096 pixels, 5.5 MB
                 // File fileDiffuseMap = new File("Images/VestaColor.jpg");
@@ -873,6 +1051,47 @@ public class SolarSystemShapeFactory {
                 objMesh = (Node[]) objImporter.getImport();
                 objImporter.close();
                 shape = (Shape3D) objMesh[0];
+                material = new PhongMaterial();
+                material.setDiffuseColor(color);
+                shape.setMaterial(material);
+                break;
+            case "Phobos":
+                // Read model for Phobos from file
+                // https://3d-asteroids.space/moons/M1-Phobos
+                // https://3d-asteroids.space/data/moons/models/M1_Phobos.obj
+                // File name "Phobos Thomas.obj"
+                // Phobos has dimensions of 27 km × 22 km × 18 km
+                // https://en.wikipedia.org/wiki/Phobos_(moon)
+                // Original file was scaled with factor 0.00002
+                // The scaled model appears 10 times larger than in reality
+                objImporter = new ObjModelImporter();
+                // objImporter.read("Models/phobos-scaled-00002.obj");
+                // Number of faces reduced with factor 0.5 using Blender Decimate Modifier tool
+                objImporter.read("Models/phobos-scaled-00002-reduced.obj");
+                objMesh = (Node[]) objImporter.getImport();
+                objImporter.close();
+                shape = (Shape3D) objMesh[0];
+                material = new PhongMaterial();
+                material.setDiffuseColor(color);
+                shape.setMaterial(material);
+                break;
+            case "Deimos":
+                // Read model for Deimos from file
+                // https://3d-asteroids.space/moons/M2-Deimos
+                // https://3d-asteroids.space/data/moons/models/M2_Deimos.obj
+                // File name "Deimos Thomas.obj"
+                // Deimos has dimensions of 15 km × 12.2 km × 11 km
+                // https://en.wikipedia.org/wiki/Deimos_(moon)
+                // Original file was scaled with factor 0.00002
+                // The scaled model appears 10 times larger than in reality
+                objImporter = new ObjModelImporter();
+                objImporter.read("Models/deimos-scaled-00002.obj");
+                objMesh = (Node[]) objImporter.getImport();
+                objImporter.close();
+                shape = (Shape3D) objMesh[0];
+                material = new PhongMaterial();
+                material.setDiffuseColor(color);
+                shape.setMaterial(material);
                 break;
             default:
                 shape = new Sphere();
@@ -931,7 +1150,7 @@ public class SolarSystemShapeFactory {
          * https://nasa3d.arc.nasa.gov/detail/jpl-vtad-cassini
          * Geometry was scaled with factor 0.0002 and 90 degrees rotated along X-axis
          *
-         * Model of Galileo is the same as Pioneer 10 / 11.
+         * Model of Galileo is the same as Pioneer 10 / 11
          */
         String fileName = DIRECTORYMODELS + spacecraftName + EXTENSIONMODEL;
         Shape3D shape;
@@ -992,5 +1211,36 @@ public class SolarSystemShapeFactory {
         ISS.getChildren().add(ISS_F);
 
         return ISS;
+    }
+
+    /**
+     * Convert black pixels to gray pixels in image.
+     * @param image image for which the color of pixels will be changed
+     * @param threshold threshold value in between 0 and 255
+     * @return converted image
+     */
+    private Image convertBlackToGray(Image image, int threshold) {
+        PixelReader pixelReader = image.getPixelReader();
+        int width = (int) image.getWidth();
+        int height = (int) image.getHeight();
+        WritableImage imageResult = new WritableImage(width, height);
+        PixelWriter pixelWriter = imageResult.getPixelWriter();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int argb = pixelReader.getArgb(x,y);
+                int alpha = (argb>>24) & 0xff;
+                int red = (argb>>16) & 0xff;
+                int green = (argb>>8) & 0xff;
+                int blue = argb & 0xff;
+                if (red < threshold && green < threshold && blue < threshold) {
+                    red = 128;
+                    green = 128;
+                    blue = 128;
+                }
+                int val = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                pixelWriter.setArgb(x, y, val);
+            }
+        }
+        return imageResult;
     }
 }

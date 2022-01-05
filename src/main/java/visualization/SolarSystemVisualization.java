@@ -30,7 +30,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -75,6 +74,7 @@ public class SolarSystemVisualization extends Stage {
     // Also Juno and Pallas are considered small bodies
     private static final double MAXDIAMETERSMALLBODY = 1.0E05; // 100 km
     private static final double SCALESMALLBODY = 2.0E02; // factor 200
+    private static final double SCALESMALLMOON = 1.0E01; // factor 10
 
     // Spacecraft are visualized much larger than they are in reality
     private static final double DIAMETERPIONEER     = 5.0E6; // 5000 km
@@ -123,23 +123,27 @@ public class SolarSystemVisualization extends Stage {
     private SubScene subScene;
     private Text displayObservedBody;
     private Text displayDateTime;
+
+    // Spheres representing Sun, Moon, major planets, Galilean moons, and Shoemaker-Levy 9
     private Sphere sun, moon;
     private Sphere mercury, venus, earth, mars, jupiter, saturn, uranus, neptune;
-    private Sphere pluto, eris, chiron, ceres;
-    private Sphere encke, halebopp, shoemaker, florence;
-    private Sphere io, europa, ganymede, callisto;
-    private Sphere mimas, enceladus, tethys, dione, rhea, titan, hyperion, iapetus;
-    private Sphere miranda, ariel, umbriel, titania, oberon;
-    private Sphere triton;
-    private Sphere shadowIo, shadowEuropa, shadowGanymede, shadowCallisto;
+    private Sphere plutoSystem, pluto;
+    private Sphere shoemaker;
     private Sphere earthLowRes, earthHighRes, cloudsEarthHighRes;
+    private Sphere io, europa, ganymede, callisto;
+    private Sphere shadowIo, shadowEuropa, shadowGanymede, shadowCallisto;
+
+    // Rings of Saturn and Uranus
     private Cylinder ringSaturn, ringUranus;
+
+    // Corona of the Sun which is visible during total solar eclipse
     private Cylinder coronaSun;
+
+    // Shadows of the Earth, Jupiter, Saturn, Uranus, and Neptune
     private Cylinder shadowEarth;
     private Cylinder shadowJupiter, shadowSaturn, shadowUranus, shadowNeptune;
-    private Shape3D pallas, juno, vesta, eros, bennu;
-    private Shape3D halley, churyumov, ultimaThule;
-    private Shape3D pioneer10, pioneer11, voyager1, voyager2, newhorizons, rosetta, cassini, galileo, apollo8;
+
+    // 3D shapes and their rotations
     private Map<String,Node> bodies;
     private Map<String,Rotate> bodyRotationsX;
     private Map<String,Rotate> bodyRotationsY;
@@ -150,9 +154,6 @@ public class SolarSystemVisualization extends Stage {
     private PerspectiveCamera camera;
     private PointLight pointLight;
     private Sphere locationOnEarth;
-
-    // International Space Station
-    private Group iss;
 
     // Names of spacecraft
     private List<String> spacecraftNames;
@@ -215,6 +216,7 @@ public class SolarSystemVisualization extends Stage {
         bodyRotationsObliquity = new HashMap<>();
         offsetRevolution = new HashMap<>();
         sun = shapeFactory.createSphere("Sun", Color.BLANCHEDALMOND);
+        //sun = shapeFactory.createSphereHighRes("Sun", Color.BLANCHEDALMOND);
         bodies.put("Sun",sun);
         mercury = shapeFactory.createSphere("Mercury", Color.ORANGE);
         bodies.put("Mercury",mercury);
@@ -222,16 +224,17 @@ public class SolarSystemVisualization extends Stage {
         bodies.put("Venus",venus);
         earth = new Sphere(0.05*screenDiameter("Earth"));
         bodies.put("Earth",earth);
-        //moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
-        moon = shapeFactory.createSphereHighRes("Moon", Color.LIGHTGRAY);
+        moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
+        //moon = shapeFactory.createSphereHighRes("Moon", Color.LIGHTGRAY);
         bodies.put("Moon",moon);
-        //mars = shapeFactory.createSphere("Mars", Color.RED);
-        mars = shapeFactory.createSphereHighRes("Mars", Color.RED);
+        mars = shapeFactory.createSphere("Mars", Color.RED);
+        //mars = shapeFactory.createSphereHighRes("Mars", Color.RED);
         bodies.put("Mars",mars);
         //jupiter = shapeFactory.createSphere("Jupiter", Color.ROSYBROWN);
         jupiter = shapeFactory.createSphereHighRes("Jupiter", Color.ROSYBROWN);
         bodies.put("Jupiter",jupiter);
         saturn = shapeFactory.createSphere("Saturn", Color.ORANGE);
+        //saturn = shapeFactory.createSphereHighRes("Saturn", Color.ORANGE);
         bodies.put("Saturn",saturn);
         uranus = shapeFactory.createSphere("Uranus", Color.LIGHTBLUE);
         bodies.put("Uranus",uranus);
@@ -239,27 +242,15 @@ public class SolarSystemVisualization extends Stage {
         bodies.put("Neptune",neptune);
         pluto = shapeFactory.createSphere("Pluto", Color.LIGHTBLUE);
         bodies.put("Pluto",pluto);
-        eris = shapeFactory.createSphere("Eris", Color.LIGHTSALMON);
-        bodies.put("Eris",eris);
-        chiron = shapeFactory.createSphere("Chiron", Color.CRIMSON);
-        bodies.put("Chiron",chiron);
-        ceres = shapeFactory.createSphere("Ceres", Color.ORANGE);
-        bodies.put("Ceres",ceres);
-        pallas = shapeFactory.createSphere("Pallas", Color.LIGHTGREEN);
-        bodies.put("Pallas",pallas);
-        eros = shapeFactory.createSphere("Eros", Color.LIGHTBLUE);
-        bodies.put("Eros",eros);
-        halley = shapeFactory.createSphere("Halley", Color.YELLOW);
-        bodies.put("Halley",halley);
-        encke = shapeFactory.createSphere("Encke", Color.LIGHTGREEN);
-        bodies.put("Encke",encke);
-        halebopp = shapeFactory.createSphere("Hale-Bopp", Color.LIGHTBLUE);
-        bodies.put("Hale-Bopp",halebopp);
+        plutoSystem = shapeFactory.createSphere("Pluto", Color.LIGHTBLUE);
+        bodies.put("Pluto System",plutoSystem);
+
+        // Shoemaker-Levy 9
         Color colorShoemaker = new Color(254.0/255,216.0/255,177.0/255, 1.0);
         shoemaker = shapeFactory.createSphere("Shoemaker-Levy 9", colorShoemaker);
         bodies.put("Shoemaker-Levy 9",shoemaker);
-        florence = shapeFactory.createSphere("Florence", Color.LIGHTGREEN);
-        bodies.put("Florence",florence);
+
+        // Galilean moons
         io = shapeFactory.createSphere("Io",Color.YELLOW);
         bodies.put("Io",io);
         europa = shapeFactory.createSphere("Europa",Color.LIGHTBLUE);
@@ -268,34 +259,8 @@ public class SolarSystemVisualization extends Stage {
         bodies.put("Ganymede",ganymede);
         callisto = shapeFactory.createSphere("Callisto",Color.ORANGE);
         bodies.put("Callisto",callisto);
-        mimas = shapeFactory.createSphere("Mimas", Color.LIGHTGRAY);
-        bodies.put("Mimas",mimas);
-        enceladus = shapeFactory.createSphere("Enceladus", Color.ALICEBLUE);
-        bodies.put("Enceladus",enceladus);
-        tethys = shapeFactory.createSphere("Tethys", Color.DARKGOLDENROD);
-        bodies.put("Tethys",tethys);
-        dione = shapeFactory.createSphere("Dione", Color.BISQUE);
-        bodies.put("Dione",dione);
-        rhea = shapeFactory.createSphere("Rhea", Color.ORANGE);
-        bodies.put("Rhea",rhea);
-        titan = shapeFactory.createSphere("Titan", Color.PEACHPUFF);
-        bodies.put("Titan",titan);
-        hyperion = shapeFactory.createSphere("Hyperion", Color.LIGHTCORAL);
-        bodies.put("Hyperion",hyperion);
-        iapetus = shapeFactory.createSphere("Iapetus", Color.ALICEBLUE);
-        bodies.put("Iapetus",iapetus);
-        miranda = shapeFactory.createSphere("Miranda", Color.LIGHTGRAY);
-        bodies.put("Miranda",miranda);
-        ariel = shapeFactory.createSphere("Ariel", Color.ALICEBLUE);
-        bodies.put("Ariel",ariel);
-        umbriel = shapeFactory.createSphere("Umbriel", Color.PEACHPUFF);
-        bodies.put("Umbriel",umbriel);
-        titania = shapeFactory.createSphere("Titania", Color.LIGHTSALMON);
-        bodies.put("Titania",titania);
-        oberon = shapeFactory.createSphere("Oberon", Color.BISQUE);
-        bodies.put("Oberon",oberon);
-        triton = shapeFactory.createSphere("Triton", Color.LIGHTGRAY);
-        bodies.put("Triton",triton);
+
+        // Shadows of the Galilean moons
         shadowIo = shapeFactory.createSphere("shadowIo",Color.BLACK);
         bodies.put("shadowIo",shadowIo);
         shadowEuropa = shapeFactory.createSphere("shadowEuropa",Color.BLACK);
@@ -336,58 +301,17 @@ public class SolarSystemVisualization extends Stage {
         shadowNeptune = shapeFactory.createShadow("Neptune", SHADOWFACTOR, Color.BLACK);
         setBodyRotations("shadowNeptune",shadowNeptune);
 
-        // Small Solar System bodies
-        pallas = shapeFactory.createSmallBody("Pallas",Color.LIGHTGRAY);
-        bodies.put("Pallas",pallas);
-        juno = shapeFactory.createSmallBody("Juno",Color.LIGHTGRAY);
-        bodies.put("Juno",juno);
-        vesta = shapeFactory.createSmallBody("Vesta",Color.YELLOW);
-        bodies.put("Vesta",vesta);
-        Color colorEros = new Color(164.0/255,152.0/255,138.0/255, 1.0);
-        eros = shapeFactory.createSmallBody("Eros",colorEros);
-        bodies.put("Eros",eros);
-        bennu = shapeFactory.createSmallBody("Bennu",Color.LIGHTGRAY);
-        bodies.put("Bennu",bennu);
-        halley = shapeFactory.createSmallBody("Halley",Color.GRAY);
-        bodies.put("Halley",halley);
-        churyumov = shapeFactory.createSmallBody("67P/Churyumov-Gerasimenko", Color.SNOW);
-        bodies.put("67P/Churyumov-Gerasimenko",churyumov);
-        ultimaThule = shapeFactory.createSmallBody("Ultima Thule", Color.LIGHTGRAY);
-        bodies.put("Ultima Thule",ultimaThule);
-
         // Spacecraft
         spacecraftNames = new ArrayList<>();
-        pioneer10 = shapeFactory.createSpacecraft("Pioneer 10", Color.LIGHTYELLOW);
-        bodies.put("Pioneer 10",pioneer10);
         spacecraftNames.add("Pioneer 10");
-        pioneer11 = shapeFactory.createSpacecraft("Pioneer 11", Color.LIGHTYELLOW);
-        bodies.put("Pioneer 11",pioneer11);
         spacecraftNames.add("Pioneer 11");
-        voyager1 = shapeFactory.createSpacecraft("Voyager 1", Color.LIGHTYELLOW);
-        bodies.put("Voyager 1",voyager1);
         spacecraftNames.add("Voyager 1");
-        voyager2 = shapeFactory.createSpacecraft("Voyager 2", Color.LIGHTYELLOW);
-        bodies.put("Voyager 2",voyager2);
         spacecraftNames.add("Voyager 2");
-        newhorizons = shapeFactory.createSpacecraft("New Horizons", Color.LIGHTYELLOW);
-        bodies.put("New Horizons",newhorizons);
         spacecraftNames.add("New Horizons");
-        rosetta = shapeFactory.createSpacecraft("Rosetta", Color.LIGHTYELLOW);
-        bodies.put("Rosetta",rosetta);
         spacecraftNames.add("Rosetta");
-        cassini = shapeFactory.createSpacecraft("Cassini", Color.LIGHTYELLOW);
-        bodies.put("Cassini",cassini);
-        spacecraftNames.add("Cassini");
-        galileo = shapeFactory.createSpacecraft("Galileo", Color.LIGHTYELLOW);
-        bodies.put("Galileo",galileo);
         spacecraftNames.add("Galileo");
-        apollo8 = shapeFactory.createSpacecraft("Apollo 8", Color.LIGHTYELLOW);
-        bodies.put("Apollo 8", apollo8);
+        spacecraftNames.add("Cassini");
         spacecraftNames.add("Apollo 8");
-
-        // International Space Station
-        iss = shapeFactory.createISS("ISS");
-        bodies.put("ISS",iss);
         spacecraftNames.add("ISS");
 
         // Set body rotations and offset for revolution for all shapes
@@ -570,6 +494,21 @@ public class SolarSystemVisualization extends Stage {
         this.setScene(scene);
     }
 
+    /**
+     * Create shape for Solar System body or spacecraft.
+     * @param bodyName name of the body
+     */
+    private void createShape(String bodyName) {
+        Node node = shapeFactory.createShape(bodyName);
+        bodies.put(bodyName,node);
+        solarSystemGroup.getChildren().add(node);
+        if (!offsetRevolution.containsKey(bodyName)) {
+            offsetRevolution.put(bodyName,0.0);
+        }
+        if (!bodyRotationsX.containsKey(bodyName)) {
+            setBodyRotations(bodyName, node);
+        }
+    }
 
     /**
      * Set handlers for mouse control.
@@ -678,9 +617,6 @@ public class SolarSystemVisualization extends Stage {
     private void setCameraSettings(double fieldOfView, double nearDistance, double farDistance) {
         double fieldOfViewZoom = Math.min(90.0, Math.max(0.0, (10.0 - 0.1 * zoom) * fieldOfView));
         camera.setFieldOfView(fieldOfViewZoom);
-        zRotateCamera.setAngle(0.0);
-        yRotateCamera.setAngle(0.0);
-        xRotateCamera.setAngle(0.0);
         if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
             // Ignore given values for near/far distance
             camera.setNearClip(0.1 * SCREENDEPTH);
@@ -754,6 +690,14 @@ public class SolarSystemVisualization extends Stage {
             case "Pallas":
             case "Juno":
                 diameter = SCALESMALLBODY * solarSystemParameters.getDiameter(bodyName);
+                break;
+            case "Phobos":
+            case "Deimos":
+            case "Nix":
+            case "Hydra":
+            case "Kerberos":
+            case "Styx":
+                diameter = SCALESMALLMOON * solarSystemParameters.getDiameter(bodyName);
                 break;
             default:
                 diameter = solarSystemParameters.getDiameter(bodyName);
@@ -1212,7 +1156,8 @@ public class SolarSystemVisualization extends Stage {
         updateBodyRotations(cameraDirection);
 
         // Choose between high resolution and low resolution version of the Earth and Earth's clouds
-        boolean highres = viewMode.equals(SolarSystemViewMode.TELESCOPE) && "Earth".equals(selectedBody);
+        boolean highres = viewMode.equals(SolarSystemViewMode.TELESCOPE) &&
+                ("Earth".equals(selectedBody) || "EarthMoonBarycenter".equals(selectedBody));
         if (viewMode.equals(SolarSystemViewMode.FROMSPACECRAFT) && earth.isVisible()) {
             Vector3D earthPosition = solarSystem.getPosition("Earth");
             double distance = cameraPosition.euclideanDistance(earthPosition);
@@ -1523,6 +1468,7 @@ public class SolarSystemVisualization extends Stage {
         double distanceFromSurface = distanceFromCenter - 0.5*diameter;
         if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody)) && distanceFromSurface < 1.0E11) {
             // Rosetta comes close to the surface of the Earth and Mars
+            // Galileo comes close to the surface of the Earth and the Galilean moons
             // Increase field of view depending on the distance to the surface
             fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
         }
@@ -1627,6 +1573,19 @@ public class SolarSystemVisualization extends Stage {
     public void update(Set<String> bodiesShown, String selectedBody, String observedBody,
                        SolarSystemViewMode viewMode, double latitude, double longitude) {
 
+        /*
+         * Create 3D shapes for Solar System bodies or spacecraft that are
+         * not created yet. Note that 3D shapes will be created by reading
+         * models or textures from file. Memory usage will increase over time
+         * when more and more 3D shapes are being created. 3D shapes are never
+         * removed from memory
+         */
+        for (String bodyName : bodiesShown) {
+            if (!this.bodies.containsKey(bodyName)) {
+                createShape(bodyName);
+            }
+        }
+
         // Set visibility of the objects representing the Solar System bodies
         shadowIo.setVisible(false);
         shadowEuropa.setVisible(false);
@@ -1634,6 +1593,11 @@ public class SolarSystemVisualization extends Stage {
         shadowCallisto.setVisible(false);
         for (String bodyName : bodies.keySet()) {
             bodies.get(bodyName).setVisible(bodiesShown.contains(bodyName));
+        }
+
+        // Pluto and Pluto System are both visualized using a sphere with texture of Pluto
+        if (pluto.isVisible()) {
+            plutoSystem.setVisible(false);
         }
 
         // Shadows of the Galilean Moons
@@ -1742,7 +1706,7 @@ public class SolarSystemVisualization extends Stage {
                 switch (this.selectedBody) {
                     case "ISS":
                         earth.setVisible(true);
-                        iss.setVisible(true);
+                        bodies.get("ISS").setVisible(true);
                         viewFromISS();
                         break;
                     case "Apollo 8":
@@ -1791,8 +1755,8 @@ public class SolarSystemVisualization extends Stage {
                     case "Voyager 2":
                     case "New Horizons":
                     case "Rosetta":
-                    case "Cassini":
                     case "Galileo":
+                    case "Cassini":
                         if ("Earth".equals(observedBody)) {
                             sun.setVisible(false);
                             viewFromSunToEarth();
