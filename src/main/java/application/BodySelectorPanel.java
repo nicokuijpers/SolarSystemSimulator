@@ -32,7 +32,7 @@ public class BodySelectorPanel extends Stage {
 
     // Definition of constant values
     private static final int PANELWIDTH = 370;
-    private static final int PANELHEIGHT = 290;
+    private static final int PANELHEIGHT = 315;
     private static final int CHECKBOXWIDTH = 110;
     private static final int GAPSIZE = 10;
     private static final int BORDERSIZE = 10;
@@ -94,7 +94,7 @@ public class BodySelectorPanel extends Stage {
         checkBox.setTooltip(toolTip);
         grid.add(checkBox,colIndex,rowIndex,horsize,versize);
         rowIndex++;
-        if (rowIndex >= 10) {
+        if (rowIndex >= 11) {
             rowIndex = 0;
             colIndex++;
         }

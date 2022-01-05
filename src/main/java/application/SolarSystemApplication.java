@@ -446,6 +446,8 @@ public class SolarSystemApplication extends Application {
      * https://en.wikipedia.org/wiki/New_Horizons
      * 2015-07-14  11:49  Pluto fly by
      */
+    private GregorianCalendar startNewHorizonsPlutoFlyby =
+            CalendarUtil.createGregorianCalendar(2015, 7, 1, 0, 0, 0);
     private GregorianCalendar endNewHorizonsPlutoFlyby =
             CalendarUtil.createGregorianCalendar(2015, 7, 14, 12, 0, 0);
 
@@ -629,8 +631,8 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate.put("Rosetta", CalendarUtil.createGregorianCalendar(2004, 3, 2, 7, 17, 0));
         trajectoryStartDate.put("Apollo 8", CalendarUtil.createGregorianCalendar(1968, 12, 21, 12, 51, 0));
         trajectoryStartDate.put("ISS", CalendarUtil.createGregorianCalendar(1998, 11, 21, 0, 0, 0));
-        trajectoryStartDate.put("Cassini", CalendarUtil.createGregorianCalendar(1997, 10, 15, 11, 30, 0));
         trajectoryStartDate.put("Galileo", CalendarUtil.createGregorianCalendar(1989, 10, 19, 2, 0, 0));
+        trajectoryStartDate.put("Cassini", CalendarUtil.createGregorianCalendar(1997, 10, 15, 11, 30, 0));
 
         // Define spacecraft names
         spacecraftNames = new ArrayList<>();
@@ -1158,7 +1160,7 @@ public class SolarSystemApplication extends Application {
         createCircle("Saturn", 9, Color.ORANGE);
         createCircle("Uranus", 7, Color.LIGHTBLUE);
         createCircle("Neptune", 7, Color.CADETBLUE);
-        createCircle("Pluto", 3, Color.LIGHTBLUE);
+        createCircle("Pluto System", 2, Color.WHITE);
         createCircle("Eris", 3, Color.LIGHTSALMON);
         createCircle("Chiron", 4, Color.CRIMSON);
         createCircle("Ceres", 3, Color.ORANGE);
@@ -1174,6 +1176,8 @@ public class SolarSystemApplication extends Application {
         createCircle("Shoemaker-Levy 9", 5, Color.PINK);
         createCircle("Florence", 3, Color.LIGHTGREEN);
         createCircle("Ultima Thule", 3, Color.RED);
+        createCircle("Phobos", 3, Color.BROWN);
+        createCircle("Deimos", 3, Color.LIGHTGRAY);
         createCircle("Io", 3, Color.YELLOW);
         createCircle("Europa", 3, Color.LIGHTBLUE);
         createCircle("Ganymede", 3, Color.LIGHTGRAY);
@@ -1186,40 +1190,43 @@ public class SolarSystemApplication extends Application {
         createCircle("Titan", 3, Color.PEACHPUFF);
         createCircle("Hyperion", 3, Color.LIGHTCORAL);
         createCircle("Iapetus", 3, Color.ALICEBLUE);
+        createCircle("Phoebe", 3, Color.CORAL);
         createCircle("Miranda", 3, Color.LIGHTGRAY);
         createCircle("Ariel", 3, Color.ALICEBLUE);
         createCircle("Umbriel", 3, Color.PEACHPUFF);
         createCircle("Titania", 3, Color.LIGHTSALMON);
         createCircle("Oberon", 3, Color.BISQUE);
         createCircle("Triton", 3, Color.LIGHTGRAY);
+        createCircle("Nereid", 3, Color.LIGHTSKYBLUE);
+        createCircle("Proteus", 3, Color.BISQUE);
+        createCircle("Pluto", 3, Color.LIGHTBLUE);
+        createCircle("Charon", 3, Color.GRAY);
+        createCircle("Nix", 2, Color.LIGHTGRAY);
+        createCircle("Hydra", 2, Color.LIGHTCORAL);
+        createCircle("Kerberos", 2, Color.LIGHTGOLDENRODYELLOW);
+        createCircle("Styx", 2, Color.LIGHTSKYBLUE);
         createCircle("EarthMoonBarycenter", 2, Color.WHITE);
         for (String spacecraftName : spacecraftNames) {
             createCircle(spacecraftName, 3, Color.LIGHTYELLOW);
         }
 
-        // Compare EphemerisUranusMoons to HORIZONS (Jan 24, 1986)
-        /*
-        createCircle("MirandaHOR", 3, Color.YELLOW);
-        createCircle("ArielHOR", 3, Color.YELLOW);
-        createCircle("UmbrielHOR", 3, Color.YELLOW);
-        createCircle("TitaniaHOR", 3, Color.YELLOW);
-        createCircle("OberonHOR", 3, Color.YELLOW);
-        */
-
-        // Compare EphemerisNeptuneMoons to HORIZONS (Aug 25, 1989)
-        // createCircle("TritonHOR", 3, Color.YELLOW);
-
-
-
         // Initialize flags to indicate whether moons are shown
         showMoons = new HashMap<>();
+        showMoons.put("Mars", false);
         showMoons.put("Jupiter", false);
         showMoons.put("Saturn", false);
         showMoons.put("Uranus", false);
         showMoons.put("Neptune", false);
+        showMoons.put("Pluto System", false);
 
         // Names of moons per planet
         moons = new HashMap<>();
+
+        // Names of moons of Mars
+        List<String> marsMoons = new ArrayList<>();
+        marsMoons.add("Phobos");
+        marsMoons.add("Deimos");
+        moons.put("Mars", marsMoons);
 
         // Names of moons of Jupiter
         List<String> jupiterMoons = new ArrayList<>();
@@ -1237,7 +1244,9 @@ public class SolarSystemApplication extends Application {
         saturnMoons.add("Dione");
         saturnMoons.add("Rhea");
         saturnMoons.add("Titan");
+        saturnMoons.add("Hyperion");
         saturnMoons.add("Iapetus");
+        saturnMoons.add("Phoebe");
         moons.put("Saturn", saturnMoons);
 
         // Names of moons of Uranus
@@ -1252,7 +1261,19 @@ public class SolarSystemApplication extends Application {
         // Names of moons of Neptune
         List<String> neptuneMoons = new ArrayList<>();
         neptuneMoons.add("Triton");
+        neptuneMoons.add("Nereid");
+        neptuneMoons.add("Proteus");
         moons.put("Neptune", neptuneMoons);
+
+        // Names of moons of Pluto System
+        List<String> plutoSystemMoons = new ArrayList<>();
+        plutoSystemMoons.add("Pluto");
+        plutoSystemMoons.add("Charon");
+        plutoSystemMoons.add("Nix");
+        plutoSystemMoons.add("Hydra");
+        plutoSystemMoons.add("Kerberos");
+        plutoSystemMoons.add("Styx");
+        moons.put("Pluto System", plutoSystemMoons);
 
         // Button to select Solar System bodies
         rowIndex++;
@@ -1324,7 +1345,7 @@ public class SolarSystemApplication extends Application {
         createCheckBox("Neptune", "Neptune",
                 "Neptune was discovered in 1846. "
                         + "Visited by Voyager 2 on 25 August 1989.");
-        createCheckBox("Pluto", "Pluto",
+        createCheckBox("Pluto System", "Pluto",
                 "Pluto was discovered in 1930 and was considered the "
                         + "ninth planet until 2006. Visited by New Horizons on 14 July 2015.");
         createCheckBox("Eris", "Eris",
@@ -1366,15 +1387,19 @@ public class SolarSystemApplication extends Application {
         createCheckBox("Hale-Bopp", "Hale-Bopp",
                 "Hale-Bopp passed perihelion on 1 April 1997 and "
                         + "was visible to the naked eye for 18 months.");
+        createCheckBox("MarsMoons", "Mars Sys",
+                "Mars has two moons, Phobos and Deimos");
         createCheckBox("JupiterMoons", "Jupiter Sys",
                 "The four largest moons of Jupiter are the Galilean moons " +
                         "Io, Europa, Ganymede, and Callisto.");
         createCheckBox("SaturnMoons", "Saturn Sys",
-                "Saturn moons Mimas, Enceladus, Tethys, Dione, Rhea, Titan, and Iapetus.");
+                "Saturn moons Mimas, Enceladus, Tethys, Dione, Rhea, Titan, Hyperion, Iapetus, and Phoebe.");
         createCheckBox("UranusMoons", "Uranus Sys",
                 "Uranus moons Miranda, Ariel, Umbriel, Titania, and Oberon");
         createCheckBox("NeptuneMoons", "Neptune Sys",
-                "Neptune moon Triton");
+                "Neptune moons Triton, Nereid, and Proteus");
+        createCheckBox("Pluto SystemMoons", "Pluto moons",
+                "The Pluto System consists of Pluto, Charon, Nix, Hydra, Kerberos, and Styx");
         createCheckBox("EarthMoonBarycenter", "E-M Bary",
                 "Earth-Moon barycenter is located on average 4671 km from Earth's center.");
     }
@@ -2240,7 +2265,26 @@ public class SolarSystemApplication extends Application {
         // Compute orbit of particle relative to center body
         Vector3D positionRelativeToCenterBody = positionParticle.minus(positionCenterBody);
         Vector3D velocityRelativeToCenterBody = velocityParticle.minus(velocityCenterBody);
-        double muCenterBody = solarSystem.getParticle(centerBodyName).getMu();
+        double muCenterBody;
+        if ("Pluto System".equals(centerBodyName)) {
+            /*
+             * In the Pluto System, all particles orbit around the barycenter which is
+             * located in between Pluto and Charon, outside of Pluto.
+             * To visualise the orbit of a particle of the Pluto System, the gravitational
+             * parameter is estimated under the assumption that the orbit is circular.
+             * For circular orbits, the gravitational parameter mu can be obtained from
+             * v = sqrt(mu/r),
+             * where v is the velocity relative to the barycenter and r the distance to
+             * the barycenter
+             * https://en.wikipedia.org/wiki/Circular_orbit
+             */
+            double v = velocityRelativeToCenterBody.magnitude();
+            double r = positionRelativeToCenterBody.magnitude();
+            muCenterBody = v * v * r;
+        }
+        else {
+            muCenterBody = solarSystem.getParticle(centerBodyName).getMu();
+        }
         Vector3D[] orbitRelativeToCenterBody = EphemerisUtil.computeOrbit(muCenterBody,
                 positionRelativeToCenterBody,velocityRelativeToCenterBody);
 
@@ -2820,7 +2864,7 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Update visualizaton settings.
+     * Update visualization settings.
      */
     private void updateVisualizationSettings() {
         if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
@@ -2832,7 +2876,7 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Update visualizaton settings for telescope view.
+     * Update visualization settings for telescope view.
      */
     private void updateVisualizationSettingsTelescopeView() {
         VisualizationSettings currentSettings = (VisualizationSettings) eventSelector.getValue();
@@ -2929,7 +2973,7 @@ public class SolarSystemApplication extends Application {
     }
 
     /**
-     * Update visualizaton settings for spacecraft view.
+     * Update visualization settings for spacecraft view.
      */
     private void updateVisualizationSettingsSpacecraftView() {
         VisualizationSettings currentSettings = (VisualizationSettings) eventSelector.getValue();
@@ -3254,6 +3298,16 @@ public class SolarSystemApplication extends Application {
                      * https://en.wikipedia.org/wiki/New_Horizons
                      * 2015-07-14  11:49  Pluto fly by
                      */
+                    if (solarSystem.getSimulationDateTime().after(startNewHorizonsPlutoFlyby) &&
+                            solarSystem.getSimulationDateTime().before(endNewHorizonsPlutoFlyby)) {
+                        checkBoxesBodies.get("Pluto SystemMoons").setSelected(true);
+                        observedBody = "Pluto";
+                        // observedBody = "Charon";
+                        sliderZoomView.setValue(100.0);
+                    }
+                    else {
+                        checkBoxesBodies.get("Pluto SystemMoons").setSelected(false);
+                    }
                     if (solarSystem.getSimulationDateTime().after(endNewHorizonsPlutoFlyby)) {
                         observedBody = "Ultima Thule";
                     }
@@ -3262,37 +3316,6 @@ public class SolarSystemApplication extends Application {
                         minDistance = spacecraftPosition.euclideanDistance(observedBodyPosition);
                     } catch (SolarSystemException ex) {
                         showMessage("Error",ex.getMessage());
-                    }
-                }
-                if ("Cassini".equals(selectedBody)) {
-                    if ("Saturn".equals(closestBody)) {
-                        checkBoxesBodies.get("SaturnMoons").setSelected(true);
-                        String closestMoonFound = "";
-                        double minMoonDistance = Double.MAX_VALUE;
-                        for (String moonName : SolarSystemParameters.getInstance().getMoonsOfPlanet("Saturn")) {
-                            Vector3D moonPosition = null;
-                            try {
-                                moonPosition = solarSystem.getPosition(moonName);
-                            } catch (SolarSystemException ex) {
-                                showMessage("Error",ex.getMessage());
-                            }
-                            double moonDistance = spacecraftPosition.euclideanDistance(moonPosition);
-                            if (moonDistance < minMoonDistance) {
-                                minMoonDistance = moonDistance;
-                                closestMoonFound = moonName;
-                            }
-                        }
-                        if (minMoonDistance < 5.0E8 && "Titan".equals(closestMoonFound)) {
-                            Vector3D titanPosition = solarSystem.getParticle("Titan").getPosition();
-                            if (spacecraftPosition.magnitude() < titanPosition.magnitude() || minMoonDistance < 1.5E8) {
-                                observedBody = "Titan";
-                            }
-                        }
-                        else {
-                            if (minMoonDistance < 1.5E8) {
-                                observedBody = closestMoonFound;
-                            }
-                        }
                     }
                 }
                 if ("Galileo".equals(selectedBody)) {
@@ -3319,6 +3342,39 @@ public class SolarSystemApplication extends Application {
                             // At such low distances, simulation progresses slowly
                             // To encounter this problem, minDistance is increased with 20,000 km (= 2.0E07 m)
                             minDistance = 1.5*minMoonDistance + 2.0E07;
+                        }
+                    }
+                }
+                if ("Cassini".equals(selectedBody)) {
+                    if ("Saturn".equals(closestBody)) {
+                        checkBoxesBodies.get("SaturnMoons").setSelected(true);
+                        String closestMoonFound = "";
+                        double minMoonDistance = Double.MAX_VALUE;
+                        for (String moonName : SolarSystemParameters.getInstance().getMoonsOfPlanet("Saturn")) {
+                            Vector3D moonPosition = null;
+                            try {
+                                moonPosition = solarSystem.getPosition(moonName);
+                            } catch (SolarSystemException ex) {
+                                showMessage("Error",ex.getMessage());
+                            }
+                            double moonDistance = spacecraftPosition.euclideanDistance(moonPosition);
+                            if (moonDistance < minMoonDistance) {
+                                minMoonDistance = moonDistance;
+                                closestMoonFound = moonName;
+                            }
+                        }
+                        if (minMoonDistance < 5.0E8 && "Titan".equals(closestMoonFound)) {
+                            Vector3D titanPosition = solarSystem.getParticle("Titan").getPosition();
+                            if (spacecraftPosition.magnitude() < titanPosition.magnitude() || minMoonDistance < 1.5E8) {
+                                observedBody = "Titan";
+                                minDistance = Math.min(minDistance, 10.0 * minMoonDistance + 2.0E07);
+                            }
+                        }
+                        else {
+                            if (minMoonDistance < 1.5E8) {
+                                observedBody = closestMoonFound;
+                                minDistance = Math.min(minDistance, 5.0 * minMoonDistance);
+                            }
                         }
                     }
                 }
@@ -3529,7 +3585,7 @@ public class SolarSystemApplication extends Application {
         VisualizationSettings outer = new VisualizationSettings();
         outer.setEventName("Outer planets (current time)");
         outer.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Jupiter","Saturn",
-                "Uranus","Neptune","Pluto")));
+                "Uranus","Neptune","Pluto System")));
         outer.setValueTopFrontView(15);
         outer.setValueZoomView(5);
         events.add(outer);
@@ -3545,6 +3601,12 @@ public class SolarSystemApplication extends Application {
                 "Juno","Vesta","Eros","Bennu","Florence")));
         ast.setValueZoomView(23);
         events.add(ast);
+        VisualizationSettings mar = new VisualizationSettings();
+        mar.setEventName("Mars system (current time)");
+        mar.setBodiesShown(new HashSet<>(Arrays.asList("Mars","MarsMoons")));
+        mar.setSelectedBody("Mars");
+        mar.setValueZoomView(100);
+        events.add(mar);
         VisualizationSettings jup = new VisualizationSettings();
         jup.setEventName("Jupiter system (current time)");
         jup.setBodiesShown(new HashSet<>(Arrays.asList("Jupiter","JupiterMoons")));
@@ -3570,6 +3632,13 @@ public class SolarSystemApplication extends Application {
         nep.setSelectedBody("Neptune");
         nep.setValueZoomView(88);
         events.add(nep);
+        VisualizationSettings plu = new VisualizationSettings();
+        plu.setEventName("Pluto system (current time)");
+        plu.setBodiesShown(new HashSet<>(Arrays.asList("Pluto System","Pluto SystemMoons")));
+        plu.setSelectedBody("Pluto System");
+        plu.setValueTopFrontView(40);
+        plu.setValueZoomView(100);
+        events.add(plu);
         VisualizationSettings sol = new VisualizationSettings();
         sol.setEventName("Solar eclipse Nancy (1999-08-11)");
         GregorianCalendar solStartDateTime = CalendarUtil.createGregorianCalendar(1999,8,11,9,10, 0);
@@ -3657,7 +3726,7 @@ public class SolarSystemApplication extends Application {
         pvnh.setEventName("Spacecraft leaving the Solar System");
         pvnh.setSimulationStartDateTime(trajectoryStartDate.get("Pioneer 10"));
         pvnh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
-                "Pluto","Ultima Thule","Pioneer 10","Pioneer 11","Voyager 1","Voyager 2","New Horizons")));
+                "Pluto System","Ultima Thule","Pioneer 10","Pioneer 11","Voyager 1","Voyager 2","New Horizons")));
         pvnh.setSelectedBody("Sun");
         pvnh.setShowEphemeris(false);
         pvnh.setShowRuler(true);
@@ -3720,34 +3789,6 @@ public class SolarSystemApplication extends Application {
         voy2.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         voy2.setAutomaticView(true);
         events.add(voy2);
-        VisualizationSettings ros = new VisualizationSettings();
-        ros.setEventName("Launch Rosetta (2004-03-02  07:17)");
-        ros.setSimulationStartDateTime(trajectoryStartDate.get("Rosetta"));
-        ros.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Mars","67P/Churyumov-Gerasimenko",
-                "Rosetta")));
-        ros.setSelectedBody("Rosetta");
-        ros.setShowEphemeris(false);
-        ros.setShowRuler(true);
-        ros.setStepMode(false);
-        ros.setValueZoomView(20);
-        ros.setValueSimulationSpeed(100);
-        ros.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
-        ros.setAutomaticView(true);
-        events.add(ros);
-        VisualizationSettings cas = new VisualizationSettings();
-        cas.setEventName("Launch Cassini (1997-10-15)");
-        cas.setSimulationStartDateTime(trajectoryStartDate.get("Cassini"));
-        cas.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Venus","Earth","Moon","Jupiter","Saturn",
-                "Cassini")));
-        cas.setSelectedBody("Cassini");
-        cas.setShowEphemeris(false);
-        cas.setShowRuler(true);
-        cas.setStepMode(false);
-        cas.setValueZoomView(20);
-        cas.setValueSimulationSpeed(100);
-        cas.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
-        cas.setAutomaticView(true);
-        events.add(cas);
         VisualizationSettings gal = new VisualizationSettings();
         gal.setEventName("Launch Galileo (1989-10-18)");
         gal.setSimulationStartDateTime(trajectoryStartDate.get("Galileo"));
@@ -3762,11 +3803,39 @@ public class SolarSystemApplication extends Application {
         gal.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         gal.setAutomaticView(true);
         events.add(gal);
+        VisualizationSettings cas = new VisualizationSettings();
+        cas.setEventName("Launch Cassini (1997-10-15)");
+        cas.setSimulationStartDateTime(trajectoryStartDate.get("Cassini"));
+        cas.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Venus","Earth","Moon","Jupiter","Saturn",
+                "Cassini")));
+        cas.setSelectedBody("Cassini");
+        cas.setShowEphemeris(false);
+        cas.setShowRuler(true);
+        cas.setStepMode(false);
+        cas.setValueZoomView(20);
+        cas.setValueSimulationSpeed(100);
+        cas.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        cas.setAutomaticView(true);
+        events.add(cas);
+        VisualizationSettings ros = new VisualizationSettings();
+        ros.setEventName("Launch Rosetta (2004-03-02  07:17)");
+        ros.setSimulationStartDateTime(trajectoryStartDate.get("Rosetta"));
+        ros.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Mars","67P/Churyumov-Gerasimenko",
+                "Rosetta")));
+        ros.setSelectedBody("Rosetta");
+        ros.setShowEphemeris(false);
+        ros.setShowRuler(true);
+        ros.setStepMode(false);
+        ros.setValueZoomView(20);
+        ros.setValueSimulationSpeed(100);
+        ros.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        ros.setAutomaticView(true);
+        events.add(ros);
         VisualizationSettings nh = new VisualizationSettings();
         nh.setEventName("Launch New Horizons (2006-01-19  19:00)");
         nh.setSimulationStartDateTime(trajectoryStartDate.get("New Horizons"));
-        nh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune","Pluto",
-                "Ultima Thule","New Horizons")));
+        nh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
+                "Pluto System", "Ultima Thule","New Horizons")));
         nh.setSelectedBody("New Horizons");
         nh.setShowEphemeris(false);
         nh.setShowRuler(true);
