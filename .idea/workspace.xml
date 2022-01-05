@@ -4,28 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Observe impact Shoemaker-Levy 9 from spacecraft Galileo">
-      <change afterPath="$PROJECT_DIR$/Images/CharonNewHorizons.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/CharonNewHorizonsAdapted.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Dh_hyperion_texture.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Miranda-0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Nereid.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Nereidimproved.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/PhoebeGrayscale.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/PhoebeMap2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Proteus.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/planvis_charon.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/planvis_deimos.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/planvis_phobos.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/planvis_phoebe.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/planvis_proteus.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/pluto_deviantart.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/deimos-scaled-00002.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/phobos-scaled-00002-reduced.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/phobos-scaled-00002.obj" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Visualization: create objects when needed to save memory, new textures and models">
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/de405.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/jup365_GalileanMoons_1970_2025.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/mar097_MarsSystem_1970_2025.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/nep081_NeptuneMoons_1970_2025.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/plu058_PlutoSystem_1970_2025.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/sat427_SaturnSystem_1970_2025.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFiles/ura111_UranusSystem_1970_2025.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurateBSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisGalileanMoonsBSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisMarsMoonsBSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoonsBSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisPlutoSystemBSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSaturnMoonsBSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUranusMoonsBSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SPK.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisApproximate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisApproximate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisTriton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisApproximate.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisApproximate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,7 +339,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Models" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/EphemerisFiles" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -342,21 +349,21 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/EphemerisFiles" />
+      <recent name="$PROJECT_DIR$/src/main/java/ephemeris" />
       <recent name="$PROJECT_DIR$/Models" />
       <recent name="$PROJECT_DIR$/Images" />
-      <recent name="$PROJECT_DIR$/EphemerisFiles" />
       <recent name="$PROJECT_DIR$/Models/ISS" />
-      <recent name="$PROJECT_DIR$/src/main/resources/Trajectories" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ephemeris" />
+      <recent name="solarsystem" />
       <recent name="visualization" />
       <recent name="spacecraft" />
       <recent name="particlesystem" />
-      <recent name="solarsystem" />
-      <recent name="ephemeris" />
     </key>
   </component>
   <component name="RunManager" selected="Application.SolarSystemApplication (1)">
@@ -764,7 +771,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641321173237</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Visualization: create objects when needed to save memory, new textures and models">
+      <created>1641388868269</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1641388868269</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -888,7 +902,8 @@
     <MESSAGE value="High res textures for Moon, Mars, and Jupiter" />
     <MESSAGE value="Offset revolution for Io adjusted for high-res texture image" />
     <MESSAGE value="Observe impact Shoemaker-Levy 9 from spacecraft Galileo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Observe impact Shoemaker-Levy 9 from spacecraft Galileo" />
+    <MESSAGE value="Visualization: create objects when needed to save memory, new textures and models" />
+    <option name="LAST_COMMIT_MESSAGE" value="Visualization: create objects when needed to save memory, new textures and models" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

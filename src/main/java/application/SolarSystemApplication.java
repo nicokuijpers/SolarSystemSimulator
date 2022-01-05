@@ -619,9 +619,6 @@ public class SolarSystemApplication extends Application {
         // Create the Solar System
         solarSystem = new SolarSystem();
 
-        // The stars STARS
-        //stars = EphemerisStars.getInstance().getAllStars();
-
         // Start dates for trajectories of spacecraft
         trajectoryStartDate = new HashMap<>();
         trajectoryStartDate.put("Pioneer 10", CalendarUtil.createGregorianCalendar(1972,3,3,1,49,0));

@@ -30,7 +30,7 @@ import java.util.*;
  * @author Marco Brassé and Nico Kuijpers
  */
 
-public class EphemerisNeptuneMoons implements IEphemeris {
+public class EphemerisTriton implements IEphemeris {
 
     /*
      *  Ephemeris of Triton from
@@ -97,7 +97,7 @@ public class EphemerisNeptuneMoons implements IEphemeris {
     /**
      * Constructor. Singleton pattern.
      */
-    private EphemerisNeptuneMoons() {
+    private EphemerisTriton() {
 
         // Bodies for which ephemeris can be computed or approximated
         bodies = new ArrayList<>();
@@ -127,7 +127,7 @@ public class EphemerisNeptuneMoons implements IEphemeris {
      */
     public static IEphemeris getInstance() {
         if (instance == null) {
-            instance = new EphemerisNeptuneMoons();
+            instance = new EphemerisTriton();
         }
         return instance;
     }
@@ -356,7 +356,7 @@ public class EphemerisNeptuneMoons implements IEphemeris {
     }
 
     public static void main (String[] args) {
-        EphemerisNeptuneMoons obj = new EphemerisNeptuneMoons();
+        EphemerisTriton obj = new EphemerisTriton();
         Vector3D[] posVel = obj.getPositionVelocityTriton(2451497.500000); // Triton
         System.out.println("Resulting positionVelocity [Triton]");
         System.out.println(posVel[0]);
