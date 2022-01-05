@@ -1,27 +1,28 @@
 /*
- * Copyright (c) 2017 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy 
- * of this software and associated documentation files (the "Software"), to deal 
- * in the Software without restriction, including without limitation the rights 
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
- * copies of the Software, and to permit persons to whom the Software is furnished 
+ * Copyright (c) 2019 Nico Kuijpers
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
  * to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
  * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package particlesystem;
 
+import util.Vector3D;
+
 import java.io.Serializable;
 import java.util.Collection;
-import util.Vector3D;
 
 /**
  * Represents a single particle of a particle system.
@@ -51,14 +52,34 @@ public class Particle implements Serializable {
     private double mu;
     private Vector3D position;
     private Vector3D velocity;
-    private Vector3D acceleration;
-    private Vector3D accelerationNewtonMechanics;
+    private Vector3D acceleration = new Vector3D(); // DEBUG GR
+    private Vector3D accelerationNewtonMechanics = new Vector3D(); // DEBUG GR
     private double potentialEnergy;
+
+    // Store position and velocity of former time step for
+    // Runge-Kutta method and four-step Adams-Bashforth-Moulton method
+    public Vector3D formerPosition;
+    public Vector3D formerVelocity;
     
-    // Runge-Kutta method
-    Vector3D formerPosition, k1, k2, k3, k4;
-    Vector3D formerVelocity, l1, l2, l3, l4;
-    
+    // Store intermediate state for Runge-Kutta method
+    private Vector3D k1, k2, k3, k4;
+    private Vector3D l1, l2, l3, l4;
+
+    // Cyclic arrays to store velocity and acceleration for
+    // four-step Adams-Bashforth-Moulton method
+    private Vector3D[] velocityABM4 = new Vector3D[4];
+    private Vector3D[] accelerationABM4 = new Vector3D[4];
+
+    /**
+     * Default constructor.
+     */
+    public Particle() {
+        this.mass = 1.0;
+        this.mu = GRAVITATIONALCONSTANT * mass;
+        this.position = new Vector3D();
+        this.velocity = new Vector3D();
+    }
+
     /**
      * Constructor when standard gravitational parameter is not known.
      * @param mass      mass in kg
@@ -88,7 +109,7 @@ public class Particle implements Serializable {
 
     /**
      * Get mass of particle in kg.
-     * @return mass in kg
+     * @return mass [kg]
      */
     public double getMass() {
         return mass;
@@ -96,14 +117,32 @@ public class Particle implements Serializable {
     
     /**
      * Set mass of particle in kg.
-     * standard gravitational parameter will be adjusted.
-     * @param mass in kg
+     * Standard gravitational parameter will be adjusted accordingly
+     * @param mass new mass [kg]
      */
     public void setMass(double mass) {
         this.mass = mass;
         this.mu = GRAVITATIONALCONSTANT * mass;
     }
-    
+
+    /**
+     * Get standard gravitational parameter in m3/s2.
+     * @return standard gravitational parameter [m3/s2]
+     */
+    public double getMu() {
+        return mu;
+    }
+
+    /**
+     * Set standard gravitational parameter in m3/s2.
+     * Mass will adjusted accordingly
+     * @param mu new standard gravitational parameter [m3/s2]
+     */
+    public void setMu(double mu) {
+        this.mu = mu;
+        this.mass = mu / GRAVITATIONALCONSTANT;
+    }
+
     /**
      * Get position of particle in m.
      * @return position in m
@@ -134,6 +173,15 @@ public class Particle implements Serializable {
      */
     public void setVelocity(Vector3D velocity) {
         this.velocity = velocity;
+    }
+
+    /**
+     * Add acceleration to acceleration of particle.
+     * Used by OblatePlanetSystem.
+     * @param acc in m/s2
+     */
+    public void addAcceleration(Vector3D acc) {
+        this.acceleration.addVector(acc);
     }
     
     /**
@@ -197,18 +245,21 @@ public class Particle implements Serializable {
         for (Particle p : particles) {
             if (p != this) {
                 // Add acceleration from other particle
-                acceleration.addVector(accelerationNewtonMechanics(p));
+                Vector3D accelerationFromParticle = p.accelerationNewtonMechanics(this);
+                acceleration.addVector(accelerationFromParticle);
+
                 // Add contribution to potential energy
                 potentialEnergy += potentialEngergy(p);
             }
         }
+
         // Every pair of particles is counted twice, so divide by 2
         potentialEnergy = 0.5 * potentialEnergy;
-        
+
         // Set acceleration computed by Newton Mechanics
         // such that it can be used to compute acceleration by
         // General Relativity
-        accelerationNewtonMechanics = new Vector3D(acceleration);   
+        accelerationNewtonMechanics = new Vector3D(acceleration);
     }
     
     /**
@@ -240,7 +291,7 @@ public class Particle implements Serializable {
         // position of gravity (Page 47, Table 4)
         double beta = 1.0;
                 
-        // gamma is the PPn parameter measuring space curvature produced
+        // gamma is the PPN parameter measuring space curvature produced
         // by unit rest mass (Page 47, Table 4)
         double gamma = 1.0;
         
@@ -263,8 +314,9 @@ public class Particle implements Serializable {
                 // distAB = r_AB = Euclidean distance between A and B
                 double distAB = this.position.euclideanDistance(p.position);
                 
-                // factor = GM_B / r_AB^3
-                double factor = p.mu/(distAB*distAB*distAB);
+                // accelerationFromParticle = GM_B (vec_r_B - vec_r_A) / r_AB^3
+                // Use perturbation forces from zonal coefficients for oblate planet
+                Vector3D accelerationFromParticle = new Vector3D(p.accelerationNewtonMechanics(this));
                 
                 // sumCnotA = (Sum C : C != A : GM_C / r_AC)
                 double sumCnotA = 0.0;
@@ -317,8 +369,8 @@ public class Particle implements Serializable {
                     (3.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rAminrBdotvBdivrAB*rAminrBdotvBdivrAB +
                     (1.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rBminrAdotaB;
 
-                // Add factor * (vec_r_B - vec_r_A) * factorCurlyBraces to the first term
-                firstTermVector.addVector(diffPositionBA.scalarProduct(factor*factorCurlyBraces));
+                // Add accelerationFromParticle * factorCurlyBraces to the first term
+                firstTermVector.addVector(accelerationFromParticle.scalarProduct(factorCurlyBraces));
             }
         }
         
@@ -390,7 +442,7 @@ public class Particle implements Serializable {
      * Initialize velocity for leapfrog algorithm.
      * @param deltaT time step in s
      */
-    public void initStateLeapfrog(long deltaT) {
+    public void initStateLeapfrog(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute velocity v(-1/2) at time -0.5 * deltaT
         // v(-1/2) = v(0) - 0.5 * deltaT * a(0)
@@ -401,7 +453,7 @@ public class Particle implements Serializable {
      * Update velocity and position of particle using leapfrog algorithm.
      * @param deltaT time step in s
      */
-    public void updateStateLeapfrog(long deltaT) {
+    public void updateStateLeapfrog(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute velocity v(n+1/2)
         // v(n+1/2) = v(n-1/2) + deltaT * a(n)
@@ -416,7 +468,7 @@ public class Particle implements Serializable {
      * Step 1: compute k1 and l1.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaA(long deltaT) {
+    public void updateStateRungeKuttaA(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Store position and velocity of current simulation time
         formerPosition = new Vector3D(position);
@@ -435,7 +487,7 @@ public class Particle implements Serializable {
      * Step 2: compute k2 and l2.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaB(long deltaT) {
+    public void updateStateRungeKuttaB(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute k2 and l2 for Runge-Kutta method
         k2 = acceleration.scalarProduct(deltaT);
@@ -451,7 +503,7 @@ public class Particle implements Serializable {
      * Step 3: compute k3 and l3.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaC(long deltaT) {
+    public void updateStateRungeKuttaC(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute k3 and l3 for Runge-Kutta method
         k3 = acceleration.scalarProduct(deltaT);
@@ -467,7 +519,7 @@ public class Particle implements Serializable {
      * Step 4: compute k4 and l4; compute new position and velocity.
      * @param deltaT time step in s
      */
-    public void updateStateRungeKuttaD(long deltaT) {
+    public void updateStateRungeKuttaD(double deltaT) {
         // http://physics.bu.edu/py502/lectures3/cmotion.pdf
         // Compute k4 and l4 for Runge-Kutta method
         k4 = acceleration.scalarProduct(deltaT);
@@ -491,28 +543,107 @@ public class Particle implements Serializable {
     }
 
     /**
-     * Compute acceleration applied by another particle using Newton Mechanics.
+     * Four-step Adams-Bashfort-Moulton method. Store velocity and acceleration in
+     * cyclic arrays of size 4 at given index.
+     * @param index index in cyclic arrays, 0 <= index < 4
+     */
+    public void storeVelocityAccelerationABM4(int index) {
+        velocityABM4[index] = new Vector3D(velocity);
+        accelerationABM4[index] = new Vector3D(acceleration);
+    }
+
+    /**
+     * Predictor step of four-step Adams-Bashforth-Moulton method.
+     * @param deltaT time step in s
+     * @param index index in cyclic arrays, 0 <= index < 4
+     */
+    public void updateStateABM4Predictor(double deltaT, int index) {
+        // Store position and velocity of current simulation time
+        formerPosition = new Vector3D(position);
+        formerVelocity = new Vector3D(velocity);
+
+        /*
+         * Predictor step of four-step Adams-Bashforth-Moulton method
+         * https://en.wikiversity.org/wiki/Adams-Bashforth_and_Adams-Moulton_methods
+         * P_{n+1} = y_n + (h/24) * (55 * f(t_n,y_n) - 59 * f(t_{n-1},y_{n-1}) +
+         *                           37 * f(t_{n-2},y_{n-2}) - 9 * f(t_{n-3},y_{n-3}))
+         * where h is time step and f(t_n,y_n) is velocity/acceleration at time step n
+         */
+        int i = index;
+        position.addVector(velocityABM4[i].scalarProduct(55.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(-59.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(37.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(-9.0*deltaT/24.0));
+        i = index;
+        velocity.addVector(accelerationABM4[i].scalarProduct(55.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(-59.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(37.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(-9.0*deltaT/24.0));
+    }
+
+    /**
+     * Corrector step of four-step Adams-Bashforth-Moulton method.
+     * @param deltaT time step in s
+     * @param index index in cyclic arrays, o <= index < 4
+     */
+    public void updateStateABM4Corrector(double deltaT, int index) {
+        /*
+         * Corrector step of four-step Adams-Bashforth-Moulton method
+         * https://en.wikiversity.org/wiki/Adams-Bashforth_and_Adams-Moulton_methods
+         * y_{n+1} = y_n + (h/24) * (9 * f(t_{n+1},P_{n+1}) + 19 * f(t_n,y_n) -
+         *                           5 * f(t_{n-1},y_{n-1}) + f(t_{n-2},y_{n-2}))
+         * where h is time step and f(t_n,y_n) is velocity/acceleration at time step n
+         */
+        int i = index;
+        position = new Vector3D(formerPosition);
+        position.addVector(velocityABM4[i].scalarProduct(9.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(19.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(-5.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        position.addVector(velocityABM4[i].scalarProduct(deltaT/24.0));
+        i = index;
+        velocity = new Vector3D(formerVelocity);
+        velocity.addVector(accelerationABM4[i].scalarProduct(9.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(19.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(-5.0*deltaT/24.0));
+        i = (i + 3) % 4;
+        velocity.addVector(accelerationABM4[i].scalarProduct(deltaT/24.0));
+    }
+
+    /**
+     * Compute acceleration applied by this particle to another particle
+     * using Newton Mechanics.
      * @param p other particle
      * @return acceleration in m/s2
      */
-    private Vector3D accelerationNewtonMechanics(Particle p) {
+    protected Vector3D accelerationNewtonMechanics(Particle p) {
 
         /*
          * Gravitational force = (G*M*m)/r2 = (mu*m)/r2, where
-         * G = gravitational constant, M = mass of the other body, mu = G*M,
-         * m = mass of this body, and r is distance between the bodies.
+         * G = gravitational constant, M = mass of this body, mu = G*M,
+         * m = mass of the other body, and r is distance between the bodies.
          * Acceleration = Gravitational force / mass, thus
          * Acceleration = (G*M)/r2 = mu/r2
          */
         
         // Square of distance r2
         double distanceSquare = position.euclideanDistanceSquare(p.position);
-        
+
         // Magnitude of acceleration = mu/r2
-        double accelerationMagnitude = p.mu/distanceSquare;
+        double accelerationMagnitude = this.mu/distanceSquare;
         
         // Direction of gravitational force
-        Vector3D direction = position.direction(p.position);
+        Vector3D direction = (p.position).direction(this.position);
         
         // Acceleration
         return direction.scalarProduct(accelerationMagnitude);

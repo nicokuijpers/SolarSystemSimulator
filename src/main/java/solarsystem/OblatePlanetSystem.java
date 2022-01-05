@@ -31,6 +31,7 @@ import java.util.List;
 
 /**
  * Represents a planet system with an oblate planet.
+ *
  * @author Nico Kuijpers and Marco Brassé
  */
 public class OblatePlanetSystem extends ParticleSystem implements Serializable {
@@ -46,12 +47,13 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
 
     // Particles from Solar System
     private List<Particle> solarSystemParticles;
-    
+
     /**
      * Constructor.
      * Create planet at origin of the particle system.
+     *
      * @param planetSystemName name of the planet system
-     * @param solarSystem reference to the Solar System
+     * @param solarSystem      reference to the Solar System
      */
     public OblatePlanetSystem(String planetSystemName, SolarSystem solarSystem) {
 
@@ -77,15 +79,24 @@ public class OblatePlanetSystem extends ParticleSystem implements Serializable {
     }
 
     @Override
-    protected void computeAcceleration() 
-    {
+    protected void computeAcceleration() {
         // Compute acceleration using Newton mechanics
         // Include the Sun and large planets from the Solar System
-        // Note that General Relativity is not applied within oblate planet system
         List<Particle> tempParticles = new ArrayList<>(particles.values());
         tempParticles.addAll(solarSystemParticles);
         for (Particle p : particles.values()) {
             p.computeAccelerationNewtonMechanics(tempParticles);
+        }
+
+        // TODO CHECK GENERAL RELATIVITY
+        // NOTE accelerationNewtonMechanics may be null pointer
+        // Compute acceleration using General Relativity
+        if (getGeneralRelativityFlag()) {
+            // Note that the acceleration computed by Newton mechanics
+            // is used to compute acceleration using General Relativity
+            for (Particle p : particles.values()) {
+                p.computeAccelerationGeneralRelativity(tempParticles);
+            }
         }
     }
 

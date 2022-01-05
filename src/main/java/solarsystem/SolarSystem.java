@@ -240,7 +240,17 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             // Create the planet system
             ParticleSystem planetSystem;
             if ("Pluto System".equals(planetName)) {
+                //if ("Mars".equals(planetName) || "Pluto System".equals(planetName)) {
                 planetSystem = new ParticleSystem();
+                // DEBUG
+                /*
+                if ("Mars".equals(planetName)) {
+                    double massPlanet = solarSystemParameters.getMass(planetName);
+                    double muPlanet = solarSystemParameters.getMu(planetName);
+                    Particle planet = new Particle(massPlanet, muPlanet, new Vector3D(), new Vector3D());
+                    planetSystem.addParticle("Mars Extra", planet);
+                }
+                 */
             }
             else {
                 planetSystem = new OblatePlanetSystem(planetName, this);
