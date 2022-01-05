@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Accurate ephemeris for major planets and moons using BSP files">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto">
+      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -760,7 +759,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641393115676</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto">
+      <created>1641401171730</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1641401171730</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -886,7 +892,8 @@
     <MESSAGE value="Observe impact Shoemaker-Levy 9 from spacecraft Galileo" />
     <MESSAGE value="Visualization: create objects when needed to save memory, new textures and models" />
     <MESSAGE value="Accurate ephemeris for major planets and moons using BSP files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Accurate ephemeris for major planets and moons using BSP files" />
+    <MESSAGE value="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
