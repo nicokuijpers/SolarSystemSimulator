@@ -5,55 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13_2.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SolarSystemSimulator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/CreateSolarSystemStateFiles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/CreateSolarSystemStateFiles.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanetSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemBody.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystemBody.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/Vector3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/Vector3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisUtilTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/CreateSolarSystemStateFiles.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/experiments/CreateSolarSystemStateFiles.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/FlorenceEarthExperiment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/experiments/FlorenceEarthExperiment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/SimulationAccuracyExperiment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/experiments/SimulationAccuracyExperiment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$10.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$11.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$12.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$13.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$14.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$15.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$16.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$17.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$18.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$19.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$20.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$21.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$22.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$23.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$24.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$DrawAnimationTimer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication$SimRunnable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemBody.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystemBody.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/util/Vector3D.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/util/Vector3D.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ephemeris/EphemerisUtilTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/DateTimeSelector.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,6 +64,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
