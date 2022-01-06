@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Oblate planet">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update simulation state files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/InformationPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/InformationPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AD_2000-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2000-01-01_00-00.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AD_2002-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2002-01-01_00-00.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AD_2004-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2004-01-01_00-00.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AD_2006-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2006-01-01_00-00.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AD_2008-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2008-01-01_00-00.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AD_2010-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2010-01-01_00-00.sol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -341,7 +346,7 @@
       <recent name="util" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CreateSolarSystemStateFiles">
+  <component name="RunManager" selected="Application.SolarSystemApplication (1)">
     <configuration name="CreateSolarSystemStateFiles" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.CreateSolarSystemStateFiles" />
       <module name="SolarSystemSimulator" />
@@ -422,8 +427,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CreateSolarSystemStateFiles" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
+        <item itemvalue="Application.CreateSolarSystemStateFiles" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="JUnit.CalendarUtilTest" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
@@ -772,7 +777,21 @@
       <option name="project" value="LOCAL" />
       <updated>1641460385667</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Visualization orbit of moons of Pluto System (information panel)">
+      <created>1641461071198</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1641461071198</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Update simulation state files">
+      <created>1641461239071</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1641461239071</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -874,8 +893,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rotated view when observing from the Earth." />
-    <MESSAGE value="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn." />
     <MESSAGE value="3D visualization SmartGroup removed." />
     <MESSAGE value="Minor problems fixed" />
     <MESSAGE value="Spacecraft Cassini and transfer of spacecraft to/from planet system" />
@@ -899,7 +916,9 @@
     <MESSAGE value="Accurate ephemeris for major planets and moons using BSP files" />
     <MESSAGE value="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto" />
     <MESSAGE value="Oblate planet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Oblate planet" />
+    <MESSAGE value="Visualization orbit of moons of Pluto System (information panel)" />
+    <MESSAGE value="Update simulation state files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update simulation state files" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
