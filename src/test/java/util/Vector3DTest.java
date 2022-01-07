@@ -19,12 +19,9 @@
  */
 package util;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for class Vector3D.
@@ -216,6 +213,24 @@ public class Vector3DTest {
         Vector3D u = new Vector3D(4.0,5.0,6.0);
         double expected = 32.0;
         double actual = v.dotProduct(u);
+        assertEquals(expected,actual,1.0E-14);
+    }
+
+    @Test
+    public void testAngleRad() {
+        Vector3D v = new Vector3D(3.0,0.0,0.0);
+        Vector3D u = new Vector3D(0.0,5.0,0.0);
+        double expected = 0.5*Math.PI;
+        double actual = v.angleRad(u);
+        assertEquals(expected,actual,1.0E-14);
+    }
+
+    @Test
+    public void testAngleDeg() {
+        Vector3D v = new Vector3D(3.0,0.0,0.0);
+        Vector3D u = new Vector3D(0.0,5.0,0.0);
+        double expected = 90.0;
+        double actual = v.angleDeg(u);
         assertEquals(expected,actual,1.0E-14);
     }
     

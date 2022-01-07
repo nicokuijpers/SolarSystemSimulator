@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Experiment with Florence and Earth">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Test conversion for seconds and milliseconds">
+      <change beforePath="$PROJECT_DIR$/src/test/java/util/Vector3DTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/Vector3DTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,14 +333,14 @@
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="experiments" />
+      <recent name="util" />
       <recent name="ephemeris" />
+      <recent name="experiments" />
       <recent name="application" />
       <recent name="solarsystem" />
-      <recent name="util" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.JulianDateConverterTest">
+  <component name="RunManager" selected="JUnit.Vector3DTest">
     <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
       <module name="SolarSystemSimulator" />
@@ -356,19 +356,6 @@
     </configuration>
     <configuration name="SolarSystemApplication (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="application.SolarSystemApplication" />
-      <module name="SolarSystemSimulator" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="application.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SolarSystemApplicationOUD" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="application.SolarSystemApplicationOUD" />
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
         <pattern>
@@ -410,20 +397,35 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Vector3DTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SolarSystemSimulator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="util" />
+      <option name="MAIN_CLASS_NAME" value="util.Vector3DTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.SolarSystemApplication (1)" />
       <item itemvalue="Application.FlorenceEarthExperiment" />
-      <item itemvalue="Application.SolarSystemApplicationOUD" />
       <item itemvalue="JUnit.EphemerisAccurateTest" />
       <item itemvalue="JUnit.JulianDateConverterTest" />
+      <item itemvalue="JUnit.Vector3DTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.Vector3DTest" />
         <item itemvalue="JUnit.JulianDateConverterTest" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
-        <item itemvalue="Application.SolarSystemApplicationOUD" />
       </list>
     </recent_temporary>
   </component>
@@ -474,13 +476,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00001" summary="Rotated view when observing from the Earth. Correction speed of light improved">
-      <created>1625993112561</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1625993112561</updated>
     </task>
     <task id="LOCAL-00002" summary="Rotated view when observing from the Earth.">
       <created>1625993180968</created>
@@ -818,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641557240989</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Test conversion for seconds and milliseconds">
+      <created>1641558941622</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1641558941622</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -930,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Shadows of Uranus of Neptune added" />
     <MESSAGE value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
     <MESSAGE value="Change between high-res and low-res Earth during run-time" />
     <MESSAGE value="Use Locale.US when reading from file" />
@@ -955,7 +956,8 @@
     <MESSAGE value="Pluto as major planet renamed to Pluto System" />
     <MESSAGE value="Interface for ephemeris" />
     <MESSAGE value="Experiment with Florence and Earth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Experiment with Florence and Earth" />
+    <MESSAGE value="Test conversion for seconds and milliseconds" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test conversion for seconds and milliseconds" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
