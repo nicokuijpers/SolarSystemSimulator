@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Test computation of angle between vectors" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Solar System Exception">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -338,7 +341,7 @@
       <recent name="solarsystem" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Vector3DTest">
+  <component name="RunManager" selected="Application.SolarSystemApplication (1)">
     <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
       <module name="SolarSystemSimulator" />
@@ -419,11 +422,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.SolarSystemApplication (1)" />
         <item itemvalue="JUnit.Vector3DTest" />
         <item itemvalue="JUnit.JulianDateConverterTest" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
-        <item itemvalue="Application.SolarSystemApplication (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -474,13 +477,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00003" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629282245923</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1629282245923</updated>
     </task>
     <task id="LOCAL-00004" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629282258558</created>
@@ -818,7 +814,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641559131984</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Solar System Exception">
+      <created>1641559507991</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1641559507991</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -930,7 +933,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Change between high-res and low-res Earth during run-time" />
     <MESSAGE value="Use Locale.US when reading from file" />
     <MESSAGE value="Use Locale.US when reading from text file" />
     <MESSAGE value="Use Locale.US when reading from text file (ISS)" />
@@ -955,7 +957,8 @@
     <MESSAGE value="Experiment with Florence and Earth" />
     <MESSAGE value="Test conversion for seconds and milliseconds" />
     <MESSAGE value="Test computation of angle between vectors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test computation of angle between vectors" />
+    <MESSAGE value="Solar System Exception" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solar System Exception" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
