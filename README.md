@@ -16,11 +16,11 @@ Video The Grand Tour of Voyager: https://youtu.be/Yq0LxCjSxdI
 
 Video The Journeys of Pioneers 10 and 11: https://youtu.be/a5LRzPxkXR4
 
-Required ephemeris files: 
-DE405EphemerisFiles (directory containing ephemeris data as text files)
+Required ephemeris files:\
+DE405EphemerisFiles (directory containing ephemeris data as text files)\
 EphemerisFiles (directory containing .bsp and .txt file)
 
-When downloading source code, the .bsp will not be downloaded. You should download them separately:
+When downloading source code, the .bsp will not be downloaded. You should download them separately:\
 https://github.com/nicokuijpers/SolarSystemSimulator/blob/master/EphemerisFiles/de405.bsp
 https://github.com/nicokuijpers/SolarSystemSimulator/blob/master/EphemerisFiles/jup365_GalileanMoons_1970_2025.bsp
 https://github.com/nicokuijpers/SolarSystemSimulator/blob/master/EphemerisFiles/mar097_MarsSystem_1970_2025.bsp
