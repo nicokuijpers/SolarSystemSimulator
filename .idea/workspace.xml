@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Calendar conversion take seconds and milliseconds into account">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Interface for ephemeris">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/experiments/FlorenceEarthExperiment.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -335,14 +335,14 @@
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="ephemeris" />
       <recent name="experiments" />
+      <recent name="ephemeris" />
       <recent name="application" />
       <recent name="solarsystem" />
       <recent name="util" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.EphemerisAccurateTest">
+  <component name="RunManager" selected="Application.FlorenceEarthExperiment">
     <configuration name="CreateSolarSystemStateFiles" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.CreateSolarSystemStateFiles" />
       <module name="SolarSystemSimulator" />
@@ -419,11 +419,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
         <item itemvalue="Application.SolarSystemApplicationOUD" />
         <item itemvalue="Application.CreateSolarSystemStateFiles" />
-        <item itemvalue="Application.FlorenceEarthExperiment" />
       </list>
     </recent_temporary>
   </component>
@@ -797,7 +797,21 @@
       <option name="project" value="LOCAL" />
       <updated>1641556615533</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Pluto as major planet renamed to Pluto System">
+      <created>1641557000027</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1641557000027</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Interface for ephemeris">
+      <created>1641557097702</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1641557097702</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -909,8 +923,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Spacecraft Cassini and transfer of spacecraft to/from planet system" />
-    <MESSAGE value="Launch Cassini added to selection menu" />
     <MESSAGE value="Method to create shadow for Jupiter and Saturn" />
     <MESSAGE value="Shadows of Uranus of Neptune added" />
     <MESSAGE value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
@@ -934,7 +946,9 @@
     <MESSAGE value="Update simulation state files" />
     <MESSAGE value="Update workspace" />
     <MESSAGE value="Calendar conversion take seconds and milliseconds into account" />
-    <option name="LAST_COMMIT_MESSAGE" value="Calendar conversion take seconds and milliseconds into account" />
+    <MESSAGE value="Pluto as major planet renamed to Pluto System" />
+    <MESSAGE value="Interface for ephemeris" />
+    <option name="LAST_COMMIT_MESSAGE" value="Interface for ephemeris" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
