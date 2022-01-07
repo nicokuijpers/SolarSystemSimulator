@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update simulation state files">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update workspace">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AD_2000-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2000-01-01_00-00.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AD_2002-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2002-01-01_00-00.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AD_2004-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2004-01-01_00-00.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AD_2006-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2006-01-01_00-00.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AD_2008-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2008-01-01_00-00.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AD_2010-01-01_00-00.sol" beforeDir="false" afterPath="$PROJECT_DIR$/AD_2010-01-01_00-00.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/DECheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisDE405.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/JulianDateConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/JulianDateConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/JulianDateConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/JulianDateConverter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,10 +338,10 @@
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="experiments" />
+      <recent name="ephemeris" />
       <recent name="application" />
       <recent name="solarsystem" />
-      <recent name="ephemeris" />
-      <recent name="experiments" />
       <recent name="util" />
     </key>
   </component>
@@ -386,6 +385,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SolarSystemApplicationOUD" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="application.SolarSystemApplicationOUD" />
+      <module name="SolarSystemSimulator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="application.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CalendarUtilTest" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
@@ -403,35 +415,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EphemerisAccurateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SolarSystemSimulator" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ephemeris.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ephemeris" />
-      <option name="MAIN_CLASS_NAME" value="ephemeris.EphemerisAccurateTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.SolarSystemApplication (1)" />
       <item itemvalue="Application.FlorenceEarthExperiment" />
       <item itemvalue="JUnit.CalendarUtilTest" />
-      <item itemvalue="JUnit.EphemerisAccurateTest" />
       <item itemvalue="Application.CreateSolarSystemStateFiles" />
+      <item itemvalue="Application.SolarSystemApplicationOUD" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.SolarSystemApplication (1)" />
+        <item itemvalue="Application.SolarSystemApplicationOUD" />
         <item itemvalue="Application.CreateSolarSystemStateFiles" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="JUnit.CalendarUtilTest" />
-        <item itemvalue="JUnit.EphemerisAccurateTest" />
       </list>
     </recent_temporary>
   </component>
@@ -791,7 +788,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641461239071</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Update workspace">
+      <created>1641489229397</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1641489229397</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -880,6 +884,16 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.obj" />
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.mtl" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -893,7 +907,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="3D visualization SmartGroup removed." />
     <MESSAGE value="Minor problems fixed" />
     <MESSAGE value="Spacecraft Cassini and transfer of spacecraft to/from planet system" />
     <MESSAGE value="Launch Cassini added to selection menu" />
@@ -918,7 +931,8 @@
     <MESSAGE value="Oblate planet" />
     <MESSAGE value="Visualization orbit of moons of Pluto System (information panel)" />
     <MESSAGE value="Update simulation state files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update simulation state files" />
+    <MESSAGE value="Update workspace" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update workspace" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
