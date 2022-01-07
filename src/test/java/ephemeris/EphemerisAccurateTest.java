@@ -1,21 +1,7 @@
 /*
- * Copyright (c) 2019 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
- * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package ephemeris;
 
@@ -56,7 +42,7 @@ public class EphemerisAccurateTest {
         majorBodies.add("Saturn");
         majorBodies.add("Uranus");
         majorBodies.add("Neptune");
-        majorBodies.add("Pluto");
+        majorBodies.add("Pluto System");
     }
     
     @AfterClass
@@ -88,8 +74,8 @@ public class EphemerisAccurateTest {
         GregorianCalendar endDate = new GregorianCalendar(2200,0,31);
         
         // Previous position and velocity
-        Map<String, Vector3D> positionPrevious = new HashMap<>();
-        Map<String, Vector3D> velocityPrevious = new HashMap<>();
+        Map<String,Vector3D> positionPrevious = new HashMap<>();
+        Map<String,Vector3D> velocityPrevious = new HashMap<>();
         
         // Start test
         while (date.before(endDate)) {
@@ -114,7 +100,7 @@ public class EphemerisAccurateTest {
                      *     0.5 * deltaTime * current velocity
                      * with deltaTime = 3600 s
                      */
-                    Vector3D positionPredicted =
+                    Vector3D positionPredicted = 
                         positionPrevious.get(bodyName).
                         plus(velocityPrevious.get(bodyName).scalarProduct(1800.0).
                         plus(velocity.scalarProduct(1800.0)));

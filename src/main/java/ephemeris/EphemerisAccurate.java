@@ -161,7 +161,7 @@ public class EphemerisAccurate implements IEphemeris {
         indexMap.put("Saturn", 5);
         indexMap.put("Uranus", 6);
         indexMap.put("Neptune", 7);
-        indexMap.put("Pluto", 8);
+        indexMap.put("Pluto System", 8);
         indexMap.put("Moon", 9);
         indexMap.put("Sun", 10);
         indexMap.put("Earth", 11);

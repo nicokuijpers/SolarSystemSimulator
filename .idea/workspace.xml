@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update workspace">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Calendar conversion take seconds and milliseconds into account">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/DECheck.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisDE405.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/JulianDateConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/JulianDateConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/JulianDateConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/JulianDateConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ephemeris/EphemerisAccurateTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -338,14 +335,14 @@
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="experiments" />
       <recent name="ephemeris" />
+      <recent name="experiments" />
       <recent name="application" />
       <recent name="solarsystem" />
       <recent name="util" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SolarSystemApplication (1)">
+  <component name="RunManager" selected="JUnit.EphemerisAccurateTest">
     <configuration name="CreateSolarSystemStateFiles" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.CreateSolarSystemStateFiles" />
       <module name="SolarSystemSimulator" />
@@ -398,7 +395,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CalendarUtilTest" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration name="EphemerisAccurateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
         <pattern>
@@ -407,10 +404,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="ephemeris" />
-      <option name="MAIN_CLASS_NAME" value="ephemeris.CalendarUtilTest" />
-      <option name="METHOD_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ephemeris.EphemerisAccurateTest" />
       <option name="TEST_OBJECT" value="class" />
-      <option name="PARAMETERS" value="" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -418,17 +413,17 @@
     <list>
       <item itemvalue="Application.SolarSystemApplication (1)" />
       <item itemvalue="Application.FlorenceEarthExperiment" />
-      <item itemvalue="JUnit.CalendarUtilTest" />
       <item itemvalue="Application.CreateSolarSystemStateFiles" />
       <item itemvalue="Application.SolarSystemApplicationOUD" />
+      <item itemvalue="JUnit.EphemerisAccurateTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.EphemerisAccurateTest" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
         <item itemvalue="Application.SolarSystemApplicationOUD" />
         <item itemvalue="Application.CreateSolarSystemStateFiles" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
-        <item itemvalue="JUnit.CalendarUtilTest" />
       </list>
     </recent_temporary>
   </component>
@@ -795,7 +790,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641489229397</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Calendar conversion take seconds and milliseconds into account">
+      <created>1641556615533</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1641556615533</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -907,7 +909,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Minor problems fixed" />
     <MESSAGE value="Spacecraft Cassini and transfer of spacecraft to/from planet system" />
     <MESSAGE value="Launch Cassini added to selection menu" />
     <MESSAGE value="Method to create shadow for Jupiter and Saturn" />
@@ -932,7 +933,8 @@
     <MESSAGE value="Visualization orbit of moons of Pluto System (information panel)" />
     <MESSAGE value="Update simulation state files" />
     <MESSAGE value="Update workspace" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update workspace" />
+    <MESSAGE value="Calendar conversion take seconds and milliseconds into account" />
+    <option name="LAST_COMMIT_MESSAGE" value="Calendar conversion take seconds and milliseconds into account" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
