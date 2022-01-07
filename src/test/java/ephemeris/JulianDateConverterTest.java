@@ -1,35 +1,18 @@
 /*
- * Copyright (c) 2017 Nico Kuijpers
- * Permission is hereby granted, free of charge, to any person obtaining a copy 
- * of this software and associated documentation files (the "Software"), to deal 
- * in the Software without restriction, including without limitation the rights 
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
- * copies of the Software, and to permit persons to whom the Software is furnished 
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
- * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package ephemeris;
+
+import org.junit.*;
 
 import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Ignore;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for class JulianDateConverter.
@@ -161,6 +144,18 @@ public class JulianDateConverterTest {
         GregorianCalendar date = new GregorianCalendar(2017,4,24,17,46);
         date.setTimeZone(TimeZone.getTimeZone("UTC"));
         double expResult = 2457898.2402778;
+        double result = JulianDateConverter.convertCalendarToJulianDate(date);
+        assertEquals(expResult, result, 1.0E-07);
+    }
+
+    @Test
+    public void testConvertCalendarToJulianDate22Dec2020HoursMinSeconds() {
+        // Date: December 22, 2020 Time: 13:27:19
+        // https://ssd.jpl.nasa.gov/tc.cgi#top
+        // JD 2459206.0606366
+        GregorianCalendar date = new GregorianCalendar(2020,11,22,13,27, 19);
+        date.setTimeZone(TimeZone.getTimeZone("UTC"));
+        double expResult = 2459206.0606366;
         double result = JulianDateConverter.convertCalendarToJulianDate(date);
         assertEquals(expResult, result, 1.0E-07);
     }
@@ -325,7 +320,6 @@ public class JulianDateConverterTest {
     }
     
     @Test
-    @Ignore("This test is ignored because it takes a long time")
     public void testConvertCalendarToJulianDateRangeStepHour() {
         // Julian Date is 0 at Jan 1, 4713 BC 12h
         // http://aa.usno.navy.mil/data/docs/JulianDate.php
@@ -415,7 +409,47 @@ public class JulianDateConverterTest {
         GregorianCalendar expResult = new GregorianCalendar(2017,4,24,17,46);
         expResult.setTimeZone(TimeZone.getTimeZone("UTC"));
         GregorianCalendar actResult = JulianDateConverter.convertJulianDateToCalendar(julianDate);
-        assertEquals(0, actResult.compareTo(expResult));
+        assertEquals(expResult.get(Calendar.YEAR),actResult.get(Calendar.YEAR));
+        assertEquals(expResult.get(Calendar.MONTH),actResult.get(Calendar.MONTH));
+        assertEquals(expResult.get(Calendar.DAY_OF_MONTH),actResult.get(Calendar.DAY_OF_MONTH));
+        assertEquals(expResult.get(Calendar.HOUR_OF_DAY),actResult.get(Calendar.HOUR_OF_DAY));
+        assertEquals(expResult.get(Calendar.MINUTE),actResult.get(Calendar.MINUTE));
+    }
+
+    @Test
+    public void testConvertJulianDateToCalendar22Dec2020HoursMinSeconds() {
+        // Date: December 22, 2020 Time: 13:27:19
+        // https://ssd.jpl.nasa.gov/tc.cgi#top
+        // JD 2459206.0606366
+        double julianDate = 2459206.0606366;
+        GregorianCalendar expResult = new GregorianCalendar(2020,11,22,13,27, 19);
+        expResult.setTimeZone(TimeZone.getTimeZone("UTC"));
+        GregorianCalendar actResult = JulianDateConverter.convertJulianDateToCalendar(julianDate);
+        assertEquals(expResult.get(Calendar.YEAR),actResult.get(Calendar.YEAR));
+        assertEquals(expResult.get(Calendar.MONTH),actResult.get(Calendar.MONTH));
+        assertEquals(expResult.get(Calendar.DAY_OF_MONTH),actResult.get(Calendar.DAY_OF_MONTH));
+        assertEquals(expResult.get(Calendar.HOUR_OF_DAY),actResult.get(Calendar.HOUR_OF_DAY));
+        assertEquals(expResult.get(Calendar.MINUTE),actResult.get(Calendar.MINUTE));
+        assertEquals(expResult.get(Calendar.SECOND),actResult.get(Calendar.SECOND));
+    }
+
+    @Test
+    public void testConvertRoundtripMilliseconds() {
+        GregorianCalendar expResult = new GregorianCalendar(2020,11,22,13,27,19);
+        expResult.setTimeZone(TimeZone.getTimeZone("UTC"));
+        for (int expms = 1; expms < 1000; expms++) {
+            expResult.add(Calendar.MILLISECOND, 1);
+            double julianDate = JulianDateConverter.convertCalendarToJulianDate(expResult);
+            GregorianCalendar actResult = JulianDateConverter.convertJulianDateToCalendar(julianDate);
+            assertEquals(expResult.get(Calendar.YEAR), actResult.get(Calendar.YEAR));
+            assertEquals(expResult.get(Calendar.MONTH), actResult.get(Calendar.MONTH));
+            assertEquals(expResult.get(Calendar.DAY_OF_MONTH), actResult.get(Calendar.DAY_OF_MONTH));
+            assertEquals(expResult.get(Calendar.HOUR_OF_DAY), actResult.get(Calendar.HOUR_OF_DAY));
+            assertEquals(expResult.get(Calendar.MINUTE), actResult.get(Calendar.MINUTE));
+            assertEquals(expResult.get(Calendar.SECOND), actResult.get(Calendar.SECOND));
+            // Allow difference of 1 millisecond
+            assertEquals(expms, actResult.get(Calendar.MILLISECOND),1.0);
+        }
     }
     
     @Test
@@ -438,7 +472,6 @@ public class JulianDateConverterTest {
     }
     
     @Test
-    @Ignore("This test is ignored because it takes a long time")
     public void testConvertJulianDateToCalendarRangeStep45Minutes() {
         // http://aa.usno.navy.mil/data/docs/JulianDate.php
         // https://ssd.jpl.nasa.gov/tc.cgi#top

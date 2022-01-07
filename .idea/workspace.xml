@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Interface for ephemeris">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Experiment with Florence and Earth">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/FlorenceEarthExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/experiments/FlorenceEarthExperiment.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -342,20 +340,7 @@
       <recent name="util" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FlorenceEarthExperiment">
-    <configuration name="CreateSolarSystemStateFiles" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="experiments.CreateSolarSystemStateFiles" />
-      <module name="SolarSystemSimulator" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="experiments.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.JulianDateConverterTest">
     <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
       <module name="SolarSystemSimulator" />
@@ -410,20 +395,35 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="JulianDateConverterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SolarSystemSimulator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ephemeris.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ephemeris" />
+      <option name="MAIN_CLASS_NAME" value="ephemeris.JulianDateConverterTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.SolarSystemApplication (1)" />
       <item itemvalue="Application.FlorenceEarthExperiment" />
-      <item itemvalue="Application.CreateSolarSystemStateFiles" />
       <item itemvalue="Application.SolarSystemApplicationOUD" />
       <item itemvalue="JUnit.EphemerisAccurateTest" />
+      <item itemvalue="JUnit.JulianDateConverterTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.JulianDateConverterTest" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
         <item itemvalue="JUnit.EphemerisAccurateTest" />
         <item itemvalue="Application.SolarSystemApplication (1)" />
         <item itemvalue="Application.SolarSystemApplicationOUD" />
-        <item itemvalue="Application.CreateSolarSystemStateFiles" />
       </list>
     </recent_temporary>
   </component>
@@ -811,7 +811,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641557097702</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Experiment with Florence and Earth">
+      <created>1641557240989</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1641557240989</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -923,7 +930,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Method to create shadow for Jupiter and Saturn" />
     <MESSAGE value="Shadows of Uranus of Neptune added" />
     <MESSAGE value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
     <MESSAGE value="Change between high-res and low-res Earth during run-time" />
@@ -948,7 +954,8 @@
     <MESSAGE value="Calendar conversion take seconds and milliseconds into account" />
     <MESSAGE value="Pluto as major planet renamed to Pluto System" />
     <MESSAGE value="Interface for ephemeris" />
-    <option name="LAST_COMMIT_MESSAGE" value="Interface for ephemeris" />
+    <MESSAGE value="Experiment with Florence and Earth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Experiment with Florence and Earth" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
