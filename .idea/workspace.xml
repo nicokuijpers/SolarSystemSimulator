@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Test conversion for seconds and milliseconds">
-      <change beforePath="$PROJECT_DIR$/src/test/java/util/Vector3DTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/Vector3DTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Test computation of angle between vectors" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -333,10 +331,10 @@
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="application" />
       <recent name="util" />
       <recent name="ephemeris" />
       <recent name="experiments" />
-      <recent name="application" />
       <recent name="solarsystem" />
     </key>
   </component>
@@ -476,13 +474,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00002" summary="Rotated view when observing from the Earth.">
-      <created>1625993180968</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1625993180968</updated>
     </task>
     <task id="LOCAL-00003" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629282245923</created>
@@ -820,7 +811,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641558941622</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Test computation of angle between vectors">
+      <created>1641559131984</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1641559131984</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -932,7 +930,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds." />
     <MESSAGE value="Change between high-res and low-res Earth during run-time" />
     <MESSAGE value="Use Locale.US when reading from file" />
     <MESSAGE value="Use Locale.US when reading from text file" />
@@ -957,7 +954,8 @@
     <MESSAGE value="Interface for ephemeris" />
     <MESSAGE value="Experiment with Florence and Earth" />
     <MESSAGE value="Test conversion for seconds and milliseconds" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test conversion for seconds and milliseconds" />
+    <MESSAGE value="Test computation of angle between vectors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test computation of angle between vectors" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
