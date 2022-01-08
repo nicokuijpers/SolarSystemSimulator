@@ -32,8 +32,8 @@ import java.util.*;
 public class EphemerisAccurateBSP implements IEphemeris {
 
     // File name of BSP files
-    private final String BSPfilename0 = "EphemerisFilesBSP/de405A.bsp";
-    private final String BSPfilename1 = "EphemerisFilesBSP/de405B.bsp";
+    private final String BSPfilenameA = "EphemerisFilesBSP/de405_1600_1899.bsp";
+    private final String BSPfilenameB = "EphemerisFilesBSP/de405_1900_2200.bsp";
 
     // Bodies for which ephemeris can be computed or approximated
     private List<String> bodies;
@@ -44,7 +44,7 @@ public class EphemerisAccurateBSP implements IEphemeris {
     // Last valid date
     private final GregorianCalendar lastValidDate;
 
-    // First valid julian date for de405B.bsp is Jan 1, 1900
+    // First valid julian date for de405_1900_2200.bsp is Jan 1, 1900
     // Julian date for January 1, 1990, 00:00 UTC is 2415020.5
     private final double firstValidJulianDateTimeB = 2415020.5;
 
@@ -78,10 +78,10 @@ public class EphemerisAccurateBSP implements IEphemeris {
          * First valid date 2305424.50 = December 9, 1599
          * Last valid date 2525008.50 = February 20, 2201
          *
-         * BSP files de405A.bsp and de405b.bsp were generated from de405.bsp
+         * BSP files de405_1600_1899.bsp and de405_1900_2200.bsp were generated from de405.bsp
          * using
-         * python -m jplephem excerpt 1000 1900 de405.bsp de405A.bsp
-         * python -m jplephem excerpt 1900 3000 de405.bsp de405B.bsp
+         * python -m jplephem excerpt 1000 1900 de405.bsp de405_1600_1899.bsp
+         * python -m jplephem excerpt 1900 3000 de405.bsp de405_1900_2200.bsp
          * https://pypi.org/project/jplephem/
          *
          * de405.bsp:
@@ -104,9 +104,9 @@ public class EphemerisAccurateBSP implements IEphemeris {
          * 2305424.50..2525008.50 Type 2 Venus Barycenter (2) -> Venus (299)
          * 2305424.50..2525008.50 Type 2 Mars Barycenter (4) -> Mars (499)
          *
-         * de405A.bsp:
+         * de405_1600_1899.bsp:
          * First valid date 2305424.50 = December 9, 1599, 00:00 UTC
-         * Last valid date 2415024.50 = January 5, 00:00 UTC
+         * Last valid date 2415024.50 = January 5, 1900, 00:00 UTC
          * File type NAIF/DAF and format BIG-IEEE with 15 segments:
          * 2305424.50..2415024.50 Type 2 Solar System Barycenter (0) -> Mercury Barycenter (1)
          * 2305424.50..2415024.50 Type 2 Solar System Barycenter (0) -> Venus Barycenter (2)
@@ -124,7 +124,7 @@ public class EphemerisAccurateBSP implements IEphemeris {
          * 2305424.50..2525008.50 Type 2 Venus Barycenter (2) -> Venus (299)
          * 2305424.50..2525008.50 Type 2 Mars Barycenter (4) -> Mars (499)
          *
-         * de405B.bsp:
+         * de405_1900_2200.bsp:
          * First valid date 2305424.50 = December 28, 1899, 00:00 UTC
          * Last valid date 2415024.50 = February 20, 2201, 00:00 UTC
          * File type NAIF/DAF and format BIG-IEEE with 15 segments:
@@ -168,16 +168,16 @@ public class EphemerisAccurateBSP implements IEphemeris {
         firstValidDate = new GregorianCalendar(1600,0,1,0,0);
         firstValidDate.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        // Last valid date Dec 31, 2200
-        lastValidDate = new GregorianCalendar(2200,11,31,23,59);
+        // Last valid date Jan 1, 2201
+        lastValidDate = new GregorianCalendar(2201,0,1,0,0);
         lastValidDate.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         // Open ephemeris file to read ephemeris from Jan 1, 1600 through Dec 31, 1899 file when needed
         spk[0] = null;
 
-        // Open ephemeris file to read ephemeris from Jan 1, 1900 through Dec 31, 2199
+        // Open ephemeris file to read ephemeris from Jan 1, 1900 through Dec 31, 2200
         spk[1] = new SPK();
-        spk[1].initWithBSPFile(BSPfilename1);
+        spk[1].initWithBSPFile(BSPfilenameB);
 
         // Initialize current Julian date/time, positions, and velocities
         GregorianCalendar today = new GregorianCalendar();
@@ -298,18 +298,18 @@ public class EphemerisAccurateBSP implements IEphemeris {
          * Ephemeris of all other objects is relative to Solar System Barycenter (observer 0)
          */
 
-        // Set index to read ephemeris from either de405A.bsp or de405B.bsp
+        // Set index to read ephemeris from either de405_1600_1899.bsp or de405_1900_2200.bsp
         int index;
         if (julianDateTime < firstValidJulianDateTimeB) {
             if (spk[0] == null) {
-                // Open ephemeris file de405A.bsp to read ephemeris from Jan 1, 1600 through Dec 31, 1899
+                // Open ephemeris file de405_1600_1899.bsp to read ephemeris from Jan 1, 1600 through Dec 31, 1899
                 spk[0] = new SPK();
-                spk[0].initWithBSPFile(BSPfilename0);
+                spk[0].initWithBSPFile(BSPfilenameA);
             }
             index = 0;
         }
         else {
-            // Ephemeris file de405B.bsp to read ephemeris from Jan 1, 1900 through Dec 31, 2199 is already open
+            // Ephemeris file de405_1900_2200.bsp to read ephemeris from Jan 1, 1900 through Dec 31, 2199 is already open
             index = 1;
         }
 
