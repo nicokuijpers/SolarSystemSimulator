@@ -32,7 +32,7 @@ import java.util.*;
 public class EphemerisUranusMoonsBSP implements IEphemeris {
 
     // File name of BSP file
-    private final String BSPfilename = "EphemerisFiles/ura111_UranusSystem_1970_2025.bsp";
+    private final String BSPfilename = "EphemerisFilesBSP/ura111_UranusSystem_1970_2025.bsp";
 
     // Observer code for BSP file
     private final int observer = 7;

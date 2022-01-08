@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Readme file includes hyper links to .bsp files">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Ephemeris for major planets and the Moon split in two BSP files">
+      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/nep081_NeptuneMoons_1970_2025.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/ura111_UranusSystem_1970_2025.bsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/de405.bsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/jup365_GalileanMoons_1970_2025.bsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/mar097_MarsSystem_1970_2025.bsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/nep081_NeptuneMoons_1970_2025.bsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/plu058_PlutoSystem_1970_2025.bsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/sat427_SaturnSystem_1970_2025.bsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/ura111_UranusSystem_1970_2025.bsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoonsBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoonsBSP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUranusMoonsBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUranusMoonsBSP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -320,7 +318,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/particlesystem" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/EphemerisFilesBSP" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -330,19 +328,19 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/EphemerisFilesBSP" />
       <recent name="$PROJECT_DIR$/src/main/java/particlesystem" />
       <recent name="$PROJECT_DIR$/src/main/java/solarsystem" />
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
       <recent name="$PROJECT_DIR$/src/main/java/ephemeris" />
-      <recent name="$PROJECT_DIR$/Models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ephemeris" />
       <recent name="application" />
       <recent name="util" />
-      <recent name="ephemeris" />
       <recent name="experiments" />
       <recent name="solarsystem" />
     </key>
@@ -483,13 +481,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00007" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629283117803</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1629283117803</updated>
     </task>
     <task id="LOCAL-00008" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629283452014</created>
@@ -827,7 +818,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641561410007</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="Ephemeris for major planets and the Moon split in two BSP files">
+      <created>1641637951484</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1641637951484</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -939,7 +937,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Use Locale.US when reading from text file (ISS)" />
     <MESSAGE value="Bug fix rotation spacecraft" />
     <MESSAGE value="offset for revolution of moons" />
     <MESSAGE value="Bug fix set mass of moon of planet system" />
@@ -964,7 +961,8 @@
     <MESSAGE value="Solar System Exception" />
     <MESSAGE value="Readme file includes links to .bsp files" />
     <MESSAGE value="Readme file includes hyper links to .bsp files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Readme file includes hyper links to .bsp files" />
+    <MESSAGE value="Ephemeris for major planets and the Moon split in two BSP files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ephemeris for major planets and the Moon split in two BSP files" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
