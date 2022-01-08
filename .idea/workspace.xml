@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Ephemeris for major planets and the Moon split in two BSP files">
-      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/nep081_NeptuneMoons_1970_2025.bsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/ura111_UranusSystem_1970_2025.bsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoonsBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoonsBSP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUranusMoonsBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisUranusMoonsBSP.java" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Ephemeris for Uranus System and Neptune System using BSP files">
+      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/plu058_PlutoSystem_1970_2025.bsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisPlutoSystemBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisPlutoSystemBSP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -482,13 +478,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00008" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629283452014</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1629283452014</updated>
-    </task>
     <task id="LOCAL-00009" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629290583674</created>
       <option name="number" value="00009" />
@@ -825,7 +814,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641637951484</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="Ephemeris for Uranus System and Neptune System using BSP files">
+      <created>1641638431193</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1641638431193</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -937,7 +933,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Bug fix rotation spacecraft" />
     <MESSAGE value="offset for revolution of moons" />
     <MESSAGE value="Bug fix set mass of moon of planet system" />
     <MESSAGE value="Spacecraft Galileo" />
@@ -962,7 +957,8 @@
     <MESSAGE value="Readme file includes links to .bsp files" />
     <MESSAGE value="Readme file includes hyper links to .bsp files" />
     <MESSAGE value="Ephemeris for major planets and the Moon split in two BSP files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ephemeris for major planets and the Moon split in two BSP files" />
+    <MESSAGE value="Ephemeris for Uranus System and Neptune System using BSP files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ephemeris for Uranus System and Neptune System using BSP files" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
