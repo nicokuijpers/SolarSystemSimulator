@@ -3605,6 +3605,7 @@ public class SolarSystemApplication extends Application {
         mar.setEventName("Mars system (current time)");
         mar.setBodiesShown(new HashSet<>(Arrays.asList("Mars","MarsMoons")));
         mar.setSelectedBody("Mars");
+        mar.setStepMode(true);
         mar.setValueZoomView(100);
         events.add(mar);
         VisualizationSettings jup = new VisualizationSettings();

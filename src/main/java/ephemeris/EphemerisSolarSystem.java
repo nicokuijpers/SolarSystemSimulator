@@ -98,7 +98,7 @@ public class EphemerisSolarSystem implements IEphemeris {
     private EphemerisSolarSystem() {
         
         // Accurate Ephemeris for Sun, Moon, and major planets including Pluto
-        // ephemerisAccurate = EphemerisAccurate.getInstance(); // Uses DE405EphemerisFiles
+        //ephemerisAccurate = EphemerisAccurate.getInstance(); // Uses DE405EphemerisFiles
         ephemerisAccurate = EphemerisAccurateBSP.getInstance(); // Uses de405.bsp
 
         // Approximate Ephemeris for major planets including Pluto
@@ -273,6 +273,52 @@ public class EphemerisSolarSystem implements IEphemeris {
         return null;
     }
 
+    /**
+     * Select accurate ephemeris for a moon of the Solar System, regardless of
+     * the date/time.
+     * @param name moon name
+     * @return reference to ephemeris if an accurate ephemeris exists, otherwise null
+     */
+    private IEphemeris selectAccurateEphemerisForMoon(String name) {
+        // Check whether ephemeris for Mars moons can be used
+        if (ephemerisMarsMoons.getBodies().contains(name)) {
+            return ephemerisMarsMoons;
+        }
+
+        // Check whether accurate ephemeris for Galilean moons can be used
+        if (ephemerisGalileanMoonsAccurate.getBodies().contains(name)) {
+            return ephemerisGalileanMoonsAccurate;
+        }
+
+        // Check whether accurate ephemeris for Saturn moons can be used
+        if (ephemerisSaturnMoonsAccurate.getBodies().contains(name)) {
+            return ephemerisSaturnMoonsAccurate;
+        }
+
+        // Check whether accurate ephemeris for Uranus moons can be used
+        if (ephemerisUranusMoonsAccurate.getBodies().contains(name)) {
+            return ephemerisUranusMoonsAccurate;
+        }
+
+        // Check whether ephemeris for Neptune moon Triton can be used
+        if (ephemerisTriton.getBodies().contains(name)) {
+            return ephemerisTriton;
+        }
+
+        // Check whether ephemeris for other moons of Neptune can be used
+        if (ephemerisNeptuneMoons.getBodies().contains(name)) {
+            return ephemerisNeptuneMoons;
+        }
+
+        // Check whether ephemeris for Pluto System can be used
+        if (ephemerisPlutoSystem.getBodies().contains(name)) {
+            return ephemerisPlutoSystem;
+        }
+
+        // No suitable ephemeris can be found
+        return null;
+    }
+
     @Override
     public GregorianCalendar getFirstValidDate() {
         return firstValidDate;
@@ -323,7 +369,7 @@ public class EphemerisSolarSystem implements IEphemeris {
         // Approximate position of other moons of the Solar System
         if (solarSystemParameters.getMoons().contains(name)) {
             // Index 0 is position
-            return approximatePositionVelocityMoon(name, date)[0];
+            return approximatePositionVelocityForMoon(name, date)[0];
         }
         
         // Compute position from Solar System parameters
@@ -378,7 +424,7 @@ public class EphemerisSolarSystem implements IEphemeris {
         // Approximate velocity of other moons of the Solar System
         if (solarSystemParameters.getMoons().contains(name)) {
             // Index 1 is velocity
-            return approximatePositionVelocityMoon(name, date)[1];
+            return approximatePositionVelocityForMoon(name, date)[1];
         }
         
         // Compute velocity from Solar System parameters
@@ -442,7 +488,7 @@ public class EphemerisSolarSystem implements IEphemeris {
 
         // Approximate position and velocity of other moons of the Solar System
         if (solarSystemParameters.getMoons().contains(name)) {
-            return approximatePositionVelocityMoon(name, date);
+            return approximatePositionVelocityForMoon(name, date);
         }
         
         // Compute position and velocity from Solar System parameters
@@ -500,7 +546,7 @@ public class EphemerisSolarSystem implements IEphemeris {
         // It is assumed that position and velocity of the Earth and the Moon relative
         // to the Earth-Moon barycenter are the same each orbit of the Moon around the Earth.
         // Find a date for which accurate position and velocity of both 
-        // the Earth and the Moon are known
+        // the Earth and the Moon are known.
         double julianDateTime = JulianDateConverter.convertCalendarToJulianDate(date);
         if (julianDateTime == currentJulianDateTime) {
             return;
@@ -560,23 +606,25 @@ public class EphemerisSolarSystem implements IEphemeris {
      * @param date date/time
      * @return array containing position [m] and velocity [m/s]
      */
-    private Vector3D[] approximatePositionVelocityMoon(String name, GregorianCalendar date) {
-        // It is assumed that position and velocity of the Earth and the Moon relative
-        // to the Earth-Moon barycenter are the same each orbit of the Moon around the Earth.
-        // Find a date for which accurate position and velocity of both
-        // the Earth and the Moon are known
+    private Vector3D[] approximatePositionVelocityForMoon(String name, GregorianCalendar date) {
+        // Find accurate ephemeris for this moon
+        IEphemeris ephemeris = selectAccurateEphemerisForMoon(name);
+
+        // It is assumed that position and velocity of the moon relative to the planet or
+        // barycenter are the same each orbit of the moon around the planet.
+        // Find a date for which accurate position and velocity of the moon are known.
         double julianDateTime = JulianDateConverter.convertCalendarToJulianDate(date);
         double orbitPeriodMoon = solarSystemParameters.getOrbitalPeriod(name);
         double julianDateTimeValid = julianDateTime;
-        if (date.before(firstValidDateMoonsBSP)) {
+        if (date.before(ephemeris.getFirstValidDate())) {
             double julianDateFirstValid =
-                    JulianDateConverter.convertCalendarToJulianDate(firstValidDateMoonsBSP);
+                    JulianDateConverter.convertCalendarToJulianDate(ephemeris.getFirstValidDate());
             int nrMoonOrbits = (int) Math.ceil((julianDateFirstValid - julianDateTime) / orbitPeriodMoon);
             julianDateTimeValid = julianDateTime + nrMoonOrbits * orbitPeriodMoon;
         }
-        if (date.after(lastValidDateMoonsBSP)) {
+        if (date.after(ephemeris.getLastValidDate())) {
             double julianDateLastValid =
-                    JulianDateConverter.convertCalendarToJulianDate(lastValidDateMoonsBSP);
+                    JulianDateConverter.convertCalendarToJulianDate(ephemeris.getLastValidDate());
             int nrMoonOrbits = (int) Math.ceil((julianDateTime - julianDateLastValid) / orbitPeriodMoon);
             julianDateTimeValid = julianDateTime - nrMoonOrbits * orbitPeriodMoon;
         }
