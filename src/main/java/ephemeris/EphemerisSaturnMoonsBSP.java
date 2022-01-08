@@ -31,8 +31,9 @@ import java.util.*;
 
 public class EphemerisSaturnMoonsBSP implements IEphemeris {
 
-    // File name of BSP file
-    private final String BSPfilename = "EphemerisFiles/sat427_SaturnSystem_1970_2025.bsp";
+    // File names of BSP files
+    private final String BSPfilenameA = "EphemerisFilesBSP/sat427_SaturnSystem_1970_1999.bsp";
+    private final String BSPfilenameB = "EphemerisFilesBSP/sat427_SaturnSystem_2000_2029.bsp";
 
     // Observer code for BSP file
     private final int observer = 6;
@@ -43,17 +44,20 @@ public class EphemerisSaturnMoonsBSP implements IEphemeris {
     // Bodies for which ephemeris can be computed or approximated
     private List<String> bodies;
 
-    // First valid date
-    private final GregorianCalendar firstValidDate;
+    // First valid date for ephemeris 1970-1999
+    private final GregorianCalendar firstValidDateA;
 
-    // Last valid date
-    private final GregorianCalendar lastValidDate;
+    // First valid date for ephemeris 2000-2029
+    private final GregorianCalendar firstValidDateB;
+
+    // Last valid date for ephemeris 2000-2029
+    private final GregorianCalendar lastValidDateB;
 
     // Singleton instance
     private static IEphemeris instance = null;
 
     // Read ephemeris from BSP file
-    private SPK spk = null;
+    private SPK[] spk = new SPK[2];
 
     /**
      * Constructor. Singleton pattern.
@@ -61,11 +65,48 @@ public class EphemerisSaturnMoonsBSP implements IEphemeris {
     private EphemerisSaturnMoonsBSP() {
 
         /*
-         * BSP file sat427_SaturnSystem_1970_2025.bsp was generated from sat427.bsp
+         * The following BSP files are used for the ephemeris of the Saturn System:
+         * sat427_SaturnSystem_1970_1999.bsp
+         * sat427_SaturnSystem_2000_2029.bsp
+         *
+         * These BSP files are generated from sat427.bsp
          * https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat427.bsp
          * using
-         * python -m jplephem excerpt --targets 6,601,602,603,604,605,606,607,608,609,699 1970/1/1 2025/12/31 sat427.bsp sat427_SaturnSystem_1970_2025.bsp
+         * python -m jplephem excerpt --targets 6,601,602,603,604,605,606,607,608,609,699 1969/12/30 2000/01/02 sat427.bsp sat427_SaturnSystem_1970_1999.bsp
+         * python -m jplephem excerpt --targets 6,601,602,603,604,605,606,607,608,609,699 1999/12/30 2030/01/02 sat427.bsp sat427_SaturnSystem_2000_2029.bsp
          * https://pypi.org/project/jplephem/
+         *
+         * sat427_SaturnSystem_1970_1999.bsp (43.4 MB)
+         * First valid date 2440586.00 = December 30, 1969, 12:00 UTC
+         * Last valid date 2451546.50 = January 3, 2200, 00:00 UTC
+         * File type DAF/SPK and format LTL-IEEE with 11 segments:
+         * 2440586.00..2451546.50  Type 3  Saturn Barycenter (6) -> Mimas (601)
+         * 2440586.00..2451546.50  Type 3  Saturn Barycenter (6) -> Enceladus (602)
+         * 2440586.00..2451546.50  Type 3  Saturn Barycenter (6) -> Tethys (603)
+         * 2440586.00..2451546.50  Type 3  Saturn Barycenter (6) -> Dione (604)
+         * 2440584.50..2451546.50  Type 3  Saturn Barycenter (6) -> Rhea (605)
+         * 2440584.50..2451546.50  Type 3  Saturn Barycenter (6) -> Titan (606)
+         * 2440584.50..2451546.50  Type 3  Saturn Barycenter (6) -> Hyperion (607)
+         * 2440584.50..2451546.50  Type 3  Saturn Barycenter (6) -> Iapetus (608)
+         * 2440584.50..2451546.50  Type 3  Saturn Barycenter (6) -> Phoebe (609)
+         * 2440586.00..2451546.50  Type 3  Saturn Barycenter (6) -> Saturn (699)
+         * 2440560.50..2451568.50  Type 2  Solar System Barycenter (0) -> Saturn Barycenter (6)
+         *
+         * sat427_SaturnSystem_2000_2029.bsp (43.4 MB)
+         * First valid date 2451542.75 = December 30, 1999, 06:00 UTC
+         * Last valid date 2462504.75 = January 3, 2030, 06:00 UTC
+         * File type DAF/SPK and format LTL-IEEE with 11 segments:
+         * 2451542.75..2462504.75  Type 3  Saturn Barycenter (6) -> Mimas (601)
+         * 2451542.75..2462504.75  Type 3  Saturn Barycenter (6) -> Enceladus (602)
+         * 2451542.00..2462505.50  Type 3  Saturn Barycenter (6) -> Tethys (603)
+         * 2451542.00..2462505.50  Type 3  Saturn Barycenter (6) -> Dione (604)
+         * 2451542.00..2462506.25  Type 3  Saturn Barycenter (6) -> Rhea (605)
+         * 2451540.50..2462505.50  Type 3  Saturn Barycenter (6) -> Titan (606)
+         * 2451540.50..2462505.50  Type 3  Saturn Barycenter (6) -> Hyperion (607)
+         * 2451537.50..2462508.50  Type 3  Saturn Barycenter (6) -> Iapetus (608)
+         * 2451528.50..2462508.50  Type 3  Saturn Barycenter (6) -> Phoebe (609)
+         * 2451542.00..2462505.50  Type 3  Saturn Barycenter (6) -> Saturn (699)
+         * 2451536.50..2462512.50  Type 2  Solar System Barycenter (0) -> Saturn Barycenter (6)
          */
 
         // Target codes for BSP file
@@ -85,17 +126,21 @@ public class EphemerisSaturnMoonsBSP implements IEphemeris {
         bodies = new ArrayList<>();
         bodies.addAll(targets.keySet());
 
-        // First valid date Jan 2, 1970
-        firstValidDate = new GregorianCalendar(1970,0,2);
-        firstValidDate.setTimeZone(TimeZone.getTimeZone("UTC"));
+        // First valid date for ephemeris 1970-1999 is Jan 1, 1970
+        firstValidDateA = new GregorianCalendar(1970,0,1);
+        firstValidDateA.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        // Last valid date Dec 31, 2025
-        lastValidDate = new GregorianCalendar(2025,11,31);
-        lastValidDate.setTimeZone(TimeZone.getTimeZone("UTC"));
+        // First valid date for ephemeris 2000-2029 is Jan 1, 2000
+        firstValidDateB = new GregorianCalendar(2000,0,1);
+        firstValidDateB.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        // Last valid date for ephemeris 2000-2029 Jan 1, 2030
+        lastValidDateB = new GregorianCalendar(2030,0,1);
+        lastValidDateB.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     /**
-     * Get instance of EphemerisPlutoMoons.
+     * Get instance of EphemerisSaturnMoonsBSP.
      * @return instance
      */
     public static IEphemeris getInstance() {
@@ -107,12 +152,12 @@ public class EphemerisSaturnMoonsBSP implements IEphemeris {
 
     @Override
     public GregorianCalendar getFirstValidDate() {
-        return firstValidDate;
+        return firstValidDateA;
     }
 
     @Override
     public GregorianCalendar getLastValidDate() {
-        return lastValidDate;
+        return lastValidDateB;
     }
 
     @Override
@@ -139,14 +184,27 @@ public class EphemerisSaturnMoonsBSP implements IEphemeris {
         }
 
         // Check whether date is valid
-        if (date.before(firstValidDate) || date.after(lastValidDate)) {
+        if (date.before(firstValidDateA) || date.after(lastValidDateB)) {
             throw new IllegalArgumentException("Date not valid for Ephemeris of Saturn System");
         }
 
         // Initialize SPK and open file to read when needed for the first time
-        if (spk == null) {
-            spk = new SPK();
-            spk.initWithBSPFile(BSPfilename);
+        int index;
+        if (date.before(firstValidDateB)) {
+            if (spk[0] == null) {
+                // Open ephemeris file to read ephemeris from Jan 1, 1970 through Dec 31, 1999
+                spk[0] = new SPK();
+                spk[0].initWithBSPFile(BSPfilenameA);
+            }
+            index = 0;
+        }
+        else {
+            if (spk[1] == null) {
+                // Open ephemeris file to read ephemeris from Jan 1, 2000 through Dec 31, 2029
+                spk[1] = new SPK();
+                spk[1].initWithBSPFile(BSPfilenameB);
+            }
+            index = 1;
         }
 
         // Number of seconds past J2000
@@ -156,8 +214,8 @@ public class EphemerisSaturnMoonsBSP implements IEphemeris {
         int target = targets.get(name);
 
         // Observer is barycenter of Saturn System
-        Vector3D[] moonPosVel = spk.getPositionVelocity(et,target,observer);
-        Vector3D[] saturnPosVel = spk.getPositionVelocity(et,699,observer);
+        Vector3D[] moonPosVel = spk[index].getPositionVelocity(et,target,observer);
+        Vector3D[] saturnPosVel = spk[index].getPositionVelocity(et,699,observer);
         moonPosVel[0] = moonPosVel[0].minus(saturnPosVel[0]);
         moonPosVel[1] = moonPosVel[1].minus(saturnPosVel[1]);
 

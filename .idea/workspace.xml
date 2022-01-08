@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Ephemeris for Pluto System using BSP file (1970-2025)">
-      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/jup365_GalileanMoons_1970_2025.bsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisGalileanMoonsBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisGalileanMoonsBSP.java" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Ephemeris for Galilean moons using BSP file (1970-2025)">
+      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/sat427_SaturnSystem_1970_1999.bsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/sat427_SaturnSystem_2000_2029.bsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSaturnMoonsBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSaturnMoonsBSP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -478,13 +480,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00010" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629290619700</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1629290619700</updated>
-    </task>
     <task id="LOCAL-00011" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629291066071</created>
       <option name="number" value="00011" />
@@ -821,7 +816,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641638790373</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Ephemeris for Galilean moons using BSP file (1970-2025)">
+      <created>1641639204147</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1641639204147</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -933,7 +935,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Bug fix set mass of moon of planet system" />
     <MESSAGE value="Spacecraft Galileo" />
     <MESSAGE value="High res textures for Galilean moons" />
     <MESSAGE value="High res textures for Moon, Mars, and Jupiter" />
@@ -958,7 +959,8 @@
     <MESSAGE value="Ephemeris for major planets and the Moon split in two BSP files" />
     <MESSAGE value="Ephemeris for Uranus System and Neptune System using BSP files" />
     <MESSAGE value="Ephemeris for Pluto System using BSP file (1970-2025)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ephemeris for Pluto System using BSP file (1970-2025)" />
+    <MESSAGE value="Ephemeris for Galilean moons using BSP file (1970-2025)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ephemeris for Galilean moons using BSP file (1970-2025)" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
