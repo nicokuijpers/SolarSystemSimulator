@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Readme file includes links to .bsp files">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Readme file includes hyper links to .bsp files">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/de405.bsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/jup365_GalileanMoons_1970_2025.bsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/mar097_MarsSystem_1970_2025.bsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/nep081_NeptuneMoons_1970_2025.bsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/plu058_PlutoSystem_1970_2025.bsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/sat427_SaturnSystem_1970_2025.bsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/ura111_UranusSystem_1970_2025.bsp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -477,13 +484,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00006" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629282993619</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1629282993619</updated>
-    </task>
     <task id="LOCAL-00007" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629283117803</created>
       <option name="number" value="00007" />
@@ -820,7 +820,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641561019730</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Readme file includes hyper links to .bsp files">
+      <created>1641561410007</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1641561410007</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -932,7 +939,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Use Locale.US when reading from text file" />
     <MESSAGE value="Use Locale.US when reading from text file (ISS)" />
     <MESSAGE value="Bug fix rotation spacecraft" />
     <MESSAGE value="offset for revolution of moons" />
@@ -957,7 +963,8 @@
     <MESSAGE value="Test computation of angle between vectors" />
     <MESSAGE value="Solar System Exception" />
     <MESSAGE value="Readme file includes links to .bsp files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Readme file includes links to .bsp files" />
+    <MESSAGE value="Readme file includes hyper links to .bsp files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Readme file includes hyper links to .bsp files" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
