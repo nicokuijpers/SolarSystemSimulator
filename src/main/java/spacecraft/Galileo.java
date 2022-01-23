@@ -19,9 +19,9 @@
  */
 package spacecraft;
 
-import ephemeris.CalendarUtil;
-import ephemeris.JulianDateConverter;
+import ephemeris.*;
 import solarsystem.SolarSystem;
+import util.Vector3D;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -86,7 +86,7 @@ public class Galileo extends Spacecraft implements Serializable {
      * TCM-11 Oct 9, 1991 Gaspra target cleanup
      * TCM-12 Oct 24, 1991 Gaspra target cleanup
      * Gaspra encounter Oct 29, 1991
-     * TCM-14 Aug 14, 1992 First Earth-2 target
+     * TCM-14 Aug 4, 1992 First Earth-2 target
      * TCM-15 Oct 9, 1992 Second Earth-2 target
      * TCM-16 Nov 13, 1992 Final Earth-2 target
      * TCM-17 Nov 28, 1992 Post Earth-2 cleanup
@@ -124,9 +124,11 @@ public class Galileo extends Spacecraft implements Serializable {
      * On the basis of known TCMs and encounters, the following corrections are simulated:
      * 19-Oct-1989 02:00:00 after launch
      * 20-Oct-1989 00:00:00 correction after launch
+     * 11-Nov-1989 10:00:00 after TCM-1
      * 12-Nov-1989 00:00:00 after TCM-1
      * 23-Dec-1989 00:00:00 after TCM-2
      * 10-Feb-1990 00:00:00 before Venus encounter
+     * 11-Feb-1990 00:00:00 after Venus encounter
      * 12-Feb-1990 00:00:00 after Venus encounter
      * 13-Apr-1990 00:00:00 after TCM-4A
      * 13-May-1990 00:00:00 after TCM-4B
@@ -135,20 +137,28 @@ public class Galileo extends Spacecraft implements Serializable {
      * 14-Nov-1990 00:00:00 after TCM-7
      * 29-Nov-1990 00:00:00 after TCM-8
      * 08-Dec-1990 00:00:00 before first Earth encounter
+     * 09-Dec-1990 00:00:00 after first Earth encounter
      * 10-Dec-1990 00:00:00 after first Earth encounter
      * 20-Dec-1990 00:00:00 after TCM-9A
      * 21-Mar-1991 00:00:00 after TCM-9B
      * 03-Jul-1991 00:00:00 after TCM-10
      * 10-Oct-1991 00:00:00 after TCM-11
      * 25-Oct-1991 00:00:00 after TCM-12
-     * 15-Aug-1992 00:00:00 after TCM-14
+     * 05-Aug-1992 00:00:00 after TCM-14
+     * 06-Aug-1992 00:00:00 after TCM-14
+     * 10-Aug-1992 00:00:00 after TCM-14
      * 10-Oct-1992 00:00:00 after TCM-15
      * 14-Nov-1992 00:00:00 after TCM-16
      * 29-Nov-1992 00:00:00 after TCM-17
      * 08-Dec-1992 00:00:00 before second Earth encounter
+     * 09-Dec-1992 00:00:00 after second Earth encounter
      * 10-Dec-1992 00:00:00 after second Earth encounter
+     * 11-Apr-1993 00:00:00 extra correction
      * 05-Oct-1993 00:00:00 after TCM-22
+     * 06-Oct-1993 00:00:00 after TCM-22
+     * 09-Oct-1993 00:00:00 after TCM-22
      * 16-Feb-1994 00:00:00 after TCM-22A
+     * 01-Mar-1995 00:00:00 extra correction
      * 13-Apr-1995 00:00:00 after TCM-23
      * 10-Jul-1995 00:00:00 probe release
      * 28-Jul-1995 00:00:00 after Orbit Deflection Maneuver
@@ -156,17 +166,27 @@ public class Galileo extends Spacecraft implements Serializable {
      * 18-Nov-1995 00:00:00 three weeks before Jupiter Orbit Insertion
      * 25-Nov-1995 00:00:00 two weeks before Jupiter Orbit Insertion
      * 01-Dec-1995 00:00:00 one week before Jupiter Orbit Insertion, transfer spacecraft to Jupiter System
-     * 07-Dec-1995 00:00:00 Before IO flyby
+     * 07-Dec-1995 00:00:00 before IO flyby
+     * 08-Dec-1995 00:00:00 after IO flyby
+     * 08-Dec-1995 02:00:00 after IO flyby
+     * 08-Dec-1995 04:00:00 after IO flyby
+     * 08-Dec-1995 06:00:00 after IO flyby
      * 09-Dec-1995 00:00:00 after Jupiter Orbit Insertion
+     * 10-Dec-1995 00:00:00 after Jupiter Orbit Insertion
+     * 22-Jan-1995 00:00:00 extra correction
+     * 15-Mar-1996 00:00:00 after PJR (Peri-Jove Raise Maneuver)
      * 15-Mar-1996 00:00:00 after PJR (Peri-Jove Raise Maneuver) on Mar 14, 1996
      * 04-May-1996 00:00:00 after OTM-4
      * 13-Jun-1996 00:00:00 after OTM-5
      * 25-Jun-1996 00:00:00 after OTM-6
      * 01-Aug-1996 00:00:00 after OTM-7
      * 06-Aug-1996 00:00:00 after OTM-8
+     * 07-Aug-1996 00:00:00 after OTM-8
      * 28-Aug-1996 00:00:00 after OTM-9
      * 10-Sep-1996 00:00:00 after OTM-11
+     * 11-Sep-1996 00:00:00 after OTM-11
      * 09-Oct-1996 00:00:00 after OTM-12
+     * 10-Oct-1996 00:00:00 after OTM-12
      * 11-Nov-1996 00:00:00 after OTM-14
      * 27-Nov-1996 00:00:00 after OTM-15
      * 16-Dec-1996 00:00:00 after OTM-16
@@ -174,12 +194,14 @@ public class Galileo extends Spacecraft implements Serializable {
      * 07-Feb-1997 00:00:00 after OTM-19
      * 24-Feb-1997 00:00:00 after OTM-21
      * 14-Mar-1997 00:00:00 after OTM-22
+     * 15-Mar-1997 00:00:00 after OTM-22
      *
      * https://en.wikipedia.org/wiki/Timeline_of_Galileo_(spacecraft)
-     * In addition, three corrections are simulated for each encounter:
+     * In addition, four corrections are simulated for each encounter:
      *   1 week before the encounter
      *   at 0.00 on the day of encounter
      *   at 0.00 on the next day
+     *   at 0.00 the day thereafter
      *
      * Orbit: C: Callisto, E: Europa, G: Ganymede, I: Io, J: Jupiter, closest approach
      * 27-Jun-1996 G1   835 km gravity-assist reduced Galileo's orbital period from 210 to 72 days
@@ -189,7 +211,7 @@ public class Galileo extends Spacecraft implements Serializable {
      * 20-Jan-1997 J5  No close encounter to a Jovian moon was scheduled because Earth and Jupiter were in Sun conjunction
      * 20-Feb-1997 E6   586 km
      * 05-Apr-1997 G7  3102 km
-     * 07-May-1997 G8  1603 km
+     * 07-May-1997 G8  1603 km (extra correction added on 12-May-1997 00:00)
      * 25-Jun-1997 C9   418 km
      * 17-Sep-1997 C10  539 km
      * 06-Nov-1997 E11 1266 km
@@ -299,10 +321,25 @@ public class Galileo extends Spacecraft implements Serializable {
     }
 
     @Override
+    public void updateStatus(GregorianCalendar dateTime) {
+        // Obtain position and velocity from Ephemeris of Galileo
+        IEphemeris ephemerisGalileo = EphemerisGalileoBSP.getInstance();
+        if (!(dateTime.before(ephemerisGalileo.getFirstValidDate()) || dateTime.after(ephemerisGalileo.getLastValidDate()))) {
+            Vector3D[] positionVelocityGalileo = ephemerisGalileo.getBodyPositionVelocity("Galileo", dateTime);
+            Vector3D position = positionVelocityGalileo[0];
+            Vector3D velocity = positionVelocityGalileo[1];
+            setPosition(position);
+            setVelocity(velocity);
+        }
+    }
+
+    @Override
     protected List<SpacecraftTrajectory> defineTrajectories() {
         readOrbitParametersFromFile("EphemerisFiles/orbitParsGalileoJupiter.txt");
         List<SpacecraftTrajectory> trajectories = new ArrayList<>();
         eventDateTimes = new ArrayList<>();
+        double muSun = SolarSystemParameters.getInstance().getMu("Sun");
+        double muJupiter = SolarSystemParameters.getInstance().getMu("Jupiter");
         int index = 0;
         while (index < orbitPars.length) {
             GregorianCalendar startDateTime = JulianDateConverter.convertJulianDateToCalendar(orbitDates[index]);
@@ -316,12 +353,31 @@ public class Galileo extends Spacecraft implements Serializable {
             String centerBodyName;
             if (startDateTime.before(startJupiterCenterBody)) {
                 centerBodyName = "Sun";
+                // Use this code to obtain orbital parameters from Ephemeris of Interplanetary cruise
+                Vector3D[] positionVelocityGalileo = EphemerisGalileoBSP.getInstance().getBodyPositionVelocity("Galileo", startDateTime);
+                Vector3D position = positionVelocityGalileo[0];
+                Vector3D velocity = positionVelocityGalileo[1];
+                double[] orbitParsGalileo =
+                        EphemerisUtil.computeOrbitalParametersFromPositionVelocity(muSun, position, velocity, startDateTime);
+                trajectories.add(
+                        new SpacecraftTrajectory(startDateTime, stopDateTime, centerBodyName, orbitParsGalileo));
             }
             else {
                 centerBodyName = "Jupiter";
+                // Use this code to obtain orbital parameters from Ephemeris of Primary mission, GEM, and GMM
+                Vector3D[] positionVelocityGalileo = EphemerisGalileoJupiterBSP.getInstance().getBodyPositionVelocity("Galileo", startDateTime);
+                Vector3D position = positionVelocityGalileo[0];
+                Vector3D velocity = positionVelocityGalileo[1];
+                double[] orbitParsGalileo =
+                        EphemerisUtil.computeOrbitalParametersFromPositionVelocity(muJupiter, position, velocity, startDateTime);
+                trajectories.add(
+                        new SpacecraftTrajectory(startDateTime, stopDateTime, centerBodyName, orbitParsGalileo));
             }
+            /*
+            // Use this line to use orbital parameters read from file
             trajectories.add(
                     new SpacecraftTrajectory(startDateTime, stopDateTime, centerBodyName, orbitPars[index]));
+             */
             eventDateTimes.add(startDateTime);
             index++;
         }
