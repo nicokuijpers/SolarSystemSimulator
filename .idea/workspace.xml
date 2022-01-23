@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update documents">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update orbit parameters ISS" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -313,7 +311,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/EphemerisFiles" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -323,8 +321,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/EphemerisFilesBSP" />
       <recent name="$PROJECT_DIR$/src/main/java/particlesystem" />
       <recent name="$PROJECT_DIR$/src/main/java/solarsystem" />
@@ -474,13 +472,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00018" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629292582488</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1629292582488</updated>
     </task>
     <task id="LOCAL-00019" summary="3D visualization SmartGroup removed.">
       <created>1629293934841</created>
@@ -818,7 +809,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642958817688</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="Update orbit parameters ISS">
+      <created>1642959754448</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1642959754449</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -930,7 +928,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto" />
     <MESSAGE value="Oblate planet" />
     <MESSAGE value="Visualization orbit of moons of Pluto System (information panel)" />
     <MESSAGE value="Update simulation state files" />
@@ -955,7 +952,8 @@
     <MESSAGE value="Ephemeris for Galileo mission using BSP files" />
     <MESSAGE value="Galileo spacecraft uses BSP files to determine trajectory" />
     <MESSAGE value="Update documents" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update documents" />
+    <MESSAGE value="Update orbit parameters ISS" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update orbit parameters ISS" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
