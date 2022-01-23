@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Ephemeris for Galileo mission using BSP files">
-      <change afterPath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftGalileoEphemerisExperiment.java" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Galileo spacecraft uses BSP files to determine trajectory">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SPK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorManual.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorManual.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -318,7 +315,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EphemerisFiles" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -328,11 +325,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
       <recent name="$PROJECT_DIR$/EphemerisFilesBSP" />
       <recent name="$PROJECT_DIR$/src/main/java/particlesystem" />
       <recent name="$PROJECT_DIR$/src/main/java/solarsystem" />
-      <recent name="$PROJECT_DIR$/src/main/java/ephemeris" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
@@ -479,13 +476,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00016" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629292088005</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1629292088005</updated>
     </task>
     <task id="LOCAL-00017" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629292180221</created>
@@ -823,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642956703670</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Galileo spacecraft uses BSP files to determine trajectory">
+      <created>1642957810060</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1642957810060</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -935,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Visualization: create objects when needed to save memory, new textures and models" />
     <MESSAGE value="Accurate ephemeris for major planets and moons using BSP files" />
     <MESSAGE value="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto" />
     <MESSAGE value="Oblate planet" />
@@ -960,7 +956,8 @@
     <MESSAGE value="Accurate ephemeris for major planets and moons 1600-2200" />
     <MESSAGE value="Ephemeris files (BSP) for Galileo and its probe" />
     <MESSAGE value="Ephemeris for Galileo mission using BSP files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ephemeris for Galileo mission using BSP files" />
+    <MESSAGE value="Galileo spacecraft uses BSP files to determine trajectory" />
+    <option name="LAST_COMMIT_MESSAGE" value="Galileo spacecraft uses BSP files to determine trajectory" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
