@@ -631,7 +631,7 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate.put("Rosetta", CalendarUtil.createGregorianCalendar(2004, 3, 2, 7, 17, 0));
         trajectoryStartDate.put("Apollo 8", CalendarUtil.createGregorianCalendar(1968, 12, 21, 12, 51, 0));
         trajectoryStartDate.put("ISS", CalendarUtil.createGregorianCalendar(1998, 11, 21, 0, 0, 0));
-        trajectoryStartDate.put("Galileo", CalendarUtil.createGregorianCalendar(1989, 10, 19, 2, 0, 0));
+        trajectoryStartDate.put("Galileo", CalendarUtil.createGregorianCalendar(1989, 10, 19, 1, 30, 0));
         trajectoryStartDate.put("Cassini", CalendarUtil.createGregorianCalendar(1997, 10, 15, 11, 30, 0));
 
         // Define spacecraft names

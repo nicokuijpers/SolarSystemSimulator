@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Ephemeris using three BSP files Phobos and Deimos 1970-2029">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Accurate ephemeris for major planets and moons 1600-2200">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFilesBSP/de405A.bsp" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFilesBSP/de405_1600_1899.bsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFilesBSP/de405B.bsp" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFilesBSP/de405_1900_2200.bsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurateBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisAccurateBSP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -480,13 +477,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00013" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629291323091</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1629291323091</updated>
-    </task>
     <task id="LOCAL-00014" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629291818737</created>
       <option name="number" value="00014" />
@@ -823,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641649326911</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Accurate ephemeris for major planets and moons 1600-2200">
+      <created>1641659174463</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1641659174463</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -935,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="High res textures for Moon, Mars, and Jupiter" />
     <MESSAGE value="Offset revolution for Io adjusted for high-res texture image" />
     <MESSAGE value="Observe impact Shoemaker-Levy 9 from spacecraft Galileo" />
     <MESSAGE value="Visualization: create objects when needed to save memory, new textures and models" />
@@ -960,7 +956,8 @@
     <MESSAGE value="Ephemeris for Galilean moons using BSP file (1970-2025)" />
     <MESSAGE value="Ephemeris for Saturn System using BSP file (1970-2029)" />
     <MESSAGE value="Ephemeris using three BSP files Phobos and Deimos 1970-2029" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ephemeris using three BSP files Phobos and Deimos 1970-2029" />
+    <MESSAGE value="Accurate ephemeris for major planets and moons 1600-2200" />
+    <option name="LAST_COMMIT_MESSAGE" value="Accurate ephemeris for major planets and moons 1600-2200" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
