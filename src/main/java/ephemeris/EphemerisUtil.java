@@ -232,6 +232,25 @@ public class EphemerisUtil {
     }
 
     /**
+     * Transform coordinates from B1950 to J2000.
+     * Optimized for ephemeris of Galileo spacecraft.
+     * @param coordinates input coordinates
+     * @return coordinates after transformation
+     */
+    public static Vector3D transformFromB1950ToJ2000_for_GalileoBSP(Vector3D coordinates) {
+        // See http://www2.arnes.si/~gljsentvid10/b1950.html
+        double x = coordinates.getX();
+        double y = coordinates.getY();
+        double z = coordinates.getZ();
+        double xt = 9.99925678e-01 * x - 1.11817101e-02 * y - 4.85907354e-03  * z;
+        double yt = 1.11817273e-02 * x + 9.99937471e-01 * y - 2.71162230e-05 * z;
+        double zt = 4.85900339e-03 * x - 2.71651686e-05 * y + 9.99988165e-01 * z;
+        return new Vector3D(xt,yt,zt);
+    }
+
+
+
+    /**
      * Transform coordinates from J2000 to B1950.
      * @param coordinates input coordinates
      * @return coordinates after transformation
