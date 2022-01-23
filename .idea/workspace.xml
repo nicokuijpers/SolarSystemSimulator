@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Galileo spacecraft uses BSP files to determine trajectory">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update documents">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorManual.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorManual.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -477,13 +475,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00017" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
-      <created>1629292180221</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1629292180221</updated>
-    </task>
     <task id="LOCAL-00018" summary="Interaction improved, bug fix rotations when viewing above or below ecliptic plane, shadows Jupiter and Saturn.">
       <created>1629292582488</created>
       <option name="number" value="00018" />
@@ -820,7 +811,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642957810060</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="Update documents">
+      <created>1642958817688</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1642958817688</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -932,7 +930,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Accurate ephemeris for major planets and moons using BSP files" />
     <MESSAGE value="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto" />
     <MESSAGE value="Oblate planet" />
     <MESSAGE value="Visualization orbit of moons of Pluto System (information panel)" />
@@ -957,7 +954,8 @@
     <MESSAGE value="Ephemeris files (BSP) for Galileo and its probe" />
     <MESSAGE value="Ephemeris for Galileo mission using BSP files" />
     <MESSAGE value="Galileo spacecraft uses BSP files to determine trajectory" />
-    <option name="LAST_COMMIT_MESSAGE" value="Galileo spacecraft uses BSP files to determine trajectory" />
+    <MESSAGE value="Update documents" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update documents" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
