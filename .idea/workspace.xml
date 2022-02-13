@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update orbit parameters Galileo">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update constants for Earth ascension and declination of z-axis">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -475,13 +476,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00021" summary="Spacecraft Cassini and transfer of spacecraft to/from planet system">
-      <created>1629298083023</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1629298083023</updated>
-    </task>
     <task id="LOCAL-00022" summary="Launch Cassini added to selection menu">
       <created>1629305031481</created>
       <option name="number" value="00022" />
@@ -818,7 +812,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644772433230</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="Update constants for Earth ascension and declination of z-axis">
+      <created>1644773010843</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1644773010843</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -930,7 +931,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update simulation state files" />
     <MESSAGE value="Update workspace" />
     <MESSAGE value="Calendar conversion take seconds and milliseconds into account" />
     <MESSAGE value="Pluto as major planet renamed to Pluto System" />
@@ -955,7 +955,8 @@
     <MESSAGE value="Update orbit parameters ISS" />
     <MESSAGE value="Update orbit parameters Rosetta" />
     <MESSAGE value="Update orbit parameters Galileo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update orbit parameters Galileo" />
+    <MESSAGE value="Update constants for Earth ascension and declination of z-axis" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update constants for Earth ascension and declination of z-axis" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

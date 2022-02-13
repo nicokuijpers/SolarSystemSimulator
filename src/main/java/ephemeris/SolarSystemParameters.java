@@ -610,6 +610,13 @@ public class SolarSystemParameters {
      * Uranus, and Neptune
      * https://ssd.jpl.nasa.gov/?gravity_fields_op
      *
+     * Earth:
+     * https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html
+     * Right Ascension:  0.00 - 0.641T
+     * Declination    : 90.00 - 0.557T
+     * Reference Date : 12:00 UT 1 Jan 2000 (JD 2451545.0)
+     * T = Julian centuries from reference date
+     *
      * Mars:
      * https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/mar097.cmt
      * POLTIM   2.451545000000000E+06 JED
