@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update orbit parameters ISS" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update orbit parameters Rosetta">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -411,9 +415,9 @@
     <list>
       <item itemvalue="Application.SolarSystemApplication (1)" />
       <item itemvalue="Application.FlorenceEarthExperiment" />
+      <item itemvalue="Application.SpacecraftGalileoEphemerisExperiment" />
       <item itemvalue="JUnit.JulianDateConverterTest" />
       <item itemvalue="JUnit.Vector3DTest" />
-      <item itemvalue="Application.SpacecraftGalileoEphemerisExperiment" />
     </list>
     <recent_temporary>
       <list>
@@ -472,13 +476,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00019" summary="3D visualization SmartGroup removed.">
-      <created>1629293934841</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1629293934841</updated>
     </task>
     <task id="LOCAL-00020" summary="Minor problems fixed">
       <created>1629294990715</created>
@@ -816,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642959754449</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Update orbit parameters Rosetta">
+      <created>1642960021569</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1642960021569</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -928,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Oblate planet" />
     <MESSAGE value="Visualization orbit of moons of Pluto System (information panel)" />
     <MESSAGE value="Update simulation state files" />
     <MESSAGE value="Update workspace" />
@@ -953,7 +956,8 @@
     <MESSAGE value="Galileo spacecraft uses BSP files to determine trajectory" />
     <MESSAGE value="Update documents" />
     <MESSAGE value="Update orbit parameters ISS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update orbit parameters ISS" />
+    <MESSAGE value="Update orbit parameters Rosetta" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update orbit parameters Rosetta" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
