@@ -651,7 +651,7 @@ public class SolarSystemParameters {
      * DDEPL8   0.000000000000000E+00 degrees/century
      */
     private static final double[] EARTHZAXISPARAMETERS =
-            new double[]{2.451545000000000E+06, 0.0, 90.0, 0.0, 0.0};
+            new double[]{2.451545000000000E+06, 0.0, 90.0, -0.641, -0.557};
     private static final double[] MARSZAXISPARAMETERS =
             new double[]{2.451545000000000E+06, 3.176808445956354E+02, 5.288644035581287E+01,
                     -1.061000000000000E-01, -6.090000000000000E-02};
