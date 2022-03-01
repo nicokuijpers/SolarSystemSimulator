@@ -2051,23 +2051,6 @@ public class SolarSystemApplication extends Application {
         double diameterPixels = screenX(diameterEndView) - screenX(diameterBeginView);
         double radius = Math.max(circle.getRadius(),diameterPixels/2.0);
 
-        // Draw ring elements of Saturn or Uranus behind the planet
-        if (("Saturn".equals(body.getName()) || "Uranus".equals(body.getName()))
-                && radius > circle.getRadius()) {
-            drawRings(body.getName(), position, false);
-        }
-
-        // Draw circle on screen using color and radius from Circle-object
-        GraphicsContext gc = screen.getGraphicsContext2D();
-        gc.setFill(circle.getFill());
-        gc.fillOval(posx - radius, posy - radius, 2*radius, 2*radius);
-
-        // Draw ring elements of Saturn or Uranus in front of the planet
-        if (("Saturn".equals(body.getName()) || "Uranus".equals(body.getName()))
-                && radius > circle.getRadius()) {
-            drawRings(body.getName(), position, true);
-        }
-
         // Draw shadow of Galilean Moon on the surface of Jupiter
         if (observationFromEarth && "Jupiter".equals(selectedBody) && body.getCenterBody() != null &&
                 "Jupiter".equals(body.getCenterBody().getName())) {
@@ -2088,11 +2071,29 @@ public class SolarSystemApplication extends Application {
                     Vector3D positionShadowView = convertToScreenView(observationFromEarthView(positionShadow));
                     double shadowPosx = screenX(positionShadowView);
                     double shadowPosy = screenY(positionShadowView);
+                    GraphicsContext gc = screen.getGraphicsContext2D();
                     gc.setFill(Color.BLACK);
                     gc.fillOval(shadowPosx - radius, shadowPosy - radius, 2 * radius, 2 * radius);
                     gc.fillText(body.getName(),shadowPosx + 0.5*radius,shadowPosy - radius);
                 }
             }
+        }
+
+        // Draw ring elements of Saturn or Uranus behind the planet
+        if (("Saturn".equals(body.getName()) || "Uranus".equals(body.getName()))
+                && radius > circle.getRadius()) {
+            drawRings(body.getName(), position, false);
+        }
+
+        // Draw circle on screen using color and radius from Circle-object
+        GraphicsContext gc = screen.getGraphicsContext2D();
+        gc.setFill(circle.getFill());
+        gc.fillOval(posx - radius, posy - radius, 2*radius, 2*radius);
+
+        // Draw ring elements of Saturn or Uranus in front of the planet
+        if (("Saturn".equals(body.getName()) || "Uranus".equals(body.getName()))
+                && radius > circle.getRadius()) {
+            drawRings(body.getName(), position, true);
         }
 
         // Draw name on screen using color from Circle-object
