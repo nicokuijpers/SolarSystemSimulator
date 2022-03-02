@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update constants for Earth ascension and declination of z-axis - reference included">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Draw shadow of Galilean moon first, then the moon itself">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -476,13 +477,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00023" summary="Method to create shadow for Jupiter and Saturn">
-      <created>1629366578571</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1629366578571</updated>
-    </task>
     <task id="LOCAL-00024" summary="Shadows of Uranus of Neptune added">
       <created>1629376518022</created>
       <option name="number" value="00024" />
@@ -819,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644776116964</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Draw shadow of Galilean moon first, then the moon itself">
+      <created>1646135758837</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1646135758837</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -931,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Calendar conversion take seconds and milliseconds into account" />
     <MESSAGE value="Pluto as major planet renamed to Pluto System" />
     <MESSAGE value="Interface for ephemeris" />
     <MESSAGE value="Experiment with Florence and Earth" />
@@ -956,7 +956,8 @@
     <MESSAGE value="Update orbit parameters Galileo" />
     <MESSAGE value="Update constants for Earth ascension and declination of z-axis" />
     <MESSAGE value="Update constants for Earth ascension and declination of z-axis - reference included" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update constants for Earth ascension and declination of z-axis - reference included" />
+    <MESSAGE value="Draw shadow of Galilean moon first, then the moon itself" />
+    <option name="LAST_COMMIT_MESSAGE" value="Draw shadow of Galilean moon first, then the moon itself" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

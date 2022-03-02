@@ -294,6 +294,9 @@ public class Galileo extends Spacecraft implements Serializable {
      *   These corrections occur mainly shortly after flyby of one of the Galilean Moons.
      *   Extra corrections were added when intervals between corrections where larger than one month
      *
+     *   Extra corrections approximately 3 hours before encounter where added based on the results of
+     *   SpacecraftGalileoExperiment with timestep 1 minute and Newton Mechanics.
+     *
      * Orbit: C: Callisto, E: Europa, G: Ganymede, I: Io, J: Jupiter, closest approach
      * 27-Jun-1996 G1   835 km gravity-assist reduced Galileo's orbital period from 210 to 72 days
      * 06-Sep-1996 G2   260 km gravity-assist put Galileo into coplanar orbit with other Galilean satellites
@@ -305,7 +308,7 @@ public class Galileo extends Spacecraft implements Serializable {
      * 07-May-1997 G8  1603 km (extra correction added on 07-May-1997 16:30 and 12-May-1997 00:00 and )
      * 25-Jun-1997 C9   418 km (extra correction added on 25-Jun-1997 14:10)
      * 17-Sep-1997 C10  539 km (extra correction added on 16-Sep-1997 12.00 and 17-Sep-1997 00:40)
-     * 06-Nov-1997 E11 1266 km (extra correction added on 06-Nov-1997 21:00)
+     * 06-Nov-1997 E11 2042 km (extra correction added on 06-Nov-1997 21:00)
      * 16-Dec-1997 E12  196 km (extra correction added on 16-Dec-1997 12:30)
      * 10-Feb-1998 E13 3562 km
      * 28-Mar-1998 E14 1645 km (extra correction added on 29-Mar-1998 13:50)
