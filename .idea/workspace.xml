@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Draw shadow of Galilean moon first, then the moon itself">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -335,9 +334,9 @@
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="experiments" />
       <recent name="spacecraft" />
       <recent name="ephemeris" />
-      <recent name="experiments" />
       <recent name="application" />
       <recent name="util" />
     </key>
@@ -476,13 +475,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00024" summary="Shadows of Uranus of Neptune added">
-      <created>1629376518022</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1629376518023</updated>
     </task>
     <task id="LOCAL-00025" summary="Self-illumation Earth (lights) and Sun, more detailed textures for Earth and Earth's clouds.">
       <created>1629623989525</created>
@@ -820,7 +812,14 @@
       <option name="project" value="LOCAL" />
       <updated>1646135758837</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment.">
+      <created>1646216598128</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1646216598128</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -932,7 +931,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Pluto as major planet renamed to Pluto System" />
     <MESSAGE value="Interface for ephemeris" />
     <MESSAGE value="Experiment with Florence and Earth" />
     <MESSAGE value="Test conversion for seconds and milliseconds" />
@@ -957,7 +955,8 @@
     <MESSAGE value="Update constants for Earth ascension and declination of z-axis" />
     <MESSAGE value="Update constants for Earth ascension and declination of z-axis - reference included" />
     <MESSAGE value="Draw shadow of Galilean moon first, then the moon itself" />
-    <option name="LAST_COMMIT_MESSAGE" value="Draw shadow of Galilean moon first, then the moon itself" />
+    <MESSAGE value="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment." />
+    <option name="LAST_COMMIT_MESSAGE" value="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

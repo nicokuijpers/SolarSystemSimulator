@@ -79,6 +79,8 @@ public class SolarSystemParameters {
      * Mass of comet D/1993 F2-A (Shoemaker-Levy 9) is unknown. Estimated mass 1.0E13 kg
      * Mass of asteroid 3122 Florence is unknown. Estimated mass 1.0E13 kg
      * Mass of Ultima Thule is computed from standard gravitational parameter mu = G*M
+     * https://en.wikipedia.org/wiki/951_Gaspra
+     * https://en.wikipedia.org/wiki/243_Ida
      * Mass of Phobos and Deimos https://ssd.jpl.nasa.gov/horizons/app.html#/
      * https://en.wikipedia.org/wiki/Io_(moon)
      * https://en.wikipedia.org/wiki/Europa_(moon)
@@ -116,6 +118,8 @@ public class SolarSystemParameters {
     private static final double UTMASS =
             (Math.pow(2.9591220828559093E-04, 1.0 / 3.0) * ASTRONOMICALUNIT /
                     Math.pow(86400, 2.0)) / Particle.GRAVITATIONALCONSTANT;
+    private static final double GASPRAMASS = 2.5E16; // estimated 2–3 × 10^16 kg
+    private static final double IDAMASS = 4.2E16;    // 4.2 ± 0.6 × 10^16 kg
     /*
     private static final double IOMASS        =        8.931938E22;
     private static final double EUROPAMASS    =        4.799844E22;
@@ -323,6 +327,8 @@ public class SolarSystemParameters {
      * https://en.wikipedia.org/wiki/Comet_Shoemaker–Levy_9: diameter unknown
      * https://en.wikipedia.org/wiki/3122_Florence: maximum reported dimension 4.9 km
      * https://www.dw.com/en/nasa-faraway-mini-world-ultima-thule-is-snowman-shaped/a-46938428
+     * https://en.wikipedia.org/wiki/951_Gaspra: mean diameter 12.2 km
+     * https://en.wikipedia.org/wiki/243_Ida: mean radius 15.7 km, diameter 31.4 km
      * Radius Phobos from HORIZONS 13.1 x 11.1 x 9.3 km, diameter = 26.2 km
      * Radius Deimos from HORIZONS 7.8 x 6.0 x 5.1 km, diameter = 15.6 km
      * Radius Io obtained from HORIZONS 1821.3 +- 0.2 km, diameter = 3642.6 km
@@ -380,6 +386,8 @@ public class SolarSystemParameters {
     private static final double SL9DIAMETER         = 1.0E04;     //   estimated
     private static final double FLORENCEDIAMETER    = 4.9E03;     //      4.9 km
     private static final double UTDIAMETER          = 3.3E04;     //     33 km
+    private static final double GASPRADIAMETER      = 1.22E04;    //     12.2 km
+    private static final double IDADIAMETER         = 3.14E04;    //     31.4 km
     private static final double PHOBOSDIAMETER      = 2.62E04;    //     26.2 km
     private static final double DEIMOSDIAMETER      = 1.56E04;    //     15.6 km
     private static final double IODIAMETER          = 3.6426E06;  //   3642.6 km
@@ -778,6 +786,8 @@ public class SolarSystemParameters {
      * Halley   : 2.2 d (52.8 h) (?)
      * 67P/Churyumov-Gerasimenko : 12.4043 ± 0.0007 h
      * Ultima Thule: 15.9380 ± 0.0005 h
+     * Gaspra   : ROTPER = 7.042 h
+     * Ida      : ROTPER = 4.634 h
      * Phobos   : Orbital period =  0.319    d; Rotation period synchronous
      * Deimos   : Orbital period =  1.263    d; Rotation period synchronous
      * Io       : Orbital period =  1.769138 d; Rotation period synchronous
@@ -829,6 +839,8 @@ public class SolarSystemParameters {
     private static final double HALLEYROTPERIOD    =  52.8;
     private static final double CGROTPERIOD        =  12.4043;
     private static final double UTROTPERIOD        =  15.9380;
+    private static final double GASPRAROTPERIOD    =   7.042;
+    private static final double IDAROTPERIOD       =   4.634;
     private static final double PHOBOSROTPERIOD    =   0.319 * 24.0;
     private static final double DEIMOSROTPERIOD    =   1.263 * 24.0;
     private static final double IOROTPERIOD        =   1.769138 * 24.0;
@@ -957,7 +969,7 @@ public class SolarSystemParameters {
      * https://en.wikipedia.org/wiki/2060_Chiron
      * No information regarding RA and DECL of pole of rotation
      *
-     * Ceres, Pallas, Vesta, Eros, moons of Jupiter, Saturn, Uranus, and Neptune
+     * Ceres, Pallas, Vesta, Eros, Gaspra, Ida, moons of Jupiter, Saturn, Uranus, and Neptune
      * Report of IAU Working Group
      * https://web.archive.org/web/20160304065344/http://astropedia.astrogeology.usgs.gov/
      * alfresco/d/d/workspace/SpacesStore/28fd9e81-1964-44d6-a58b-fbbf61e64e15/WGCCRE2009reprint.pdf
@@ -1002,6 +1014,16 @@ public class SolarSystemParameters {
      * https://en.wikipedia.org/wiki/486958_Arrokoth
      * North pole right ascension	317.5  ± 1 [degrees]
      * North pole declination       −24.89 ± 1 [degrees]
+     *
+     * Gaspra
+     * alhpa0 = 9.47 [degrees]
+     * delta0 = 26.70 [degrees]
+     * W = 83.67 + 1226.9114850d [degrees]
+     *
+     * Ida
+     * alpha0 = 168.76 [degrees]
+     * delta0 = −2.88 [degrees]
+     * W = 265.95 + 1864.6280070d [degrees]
      *
      * Phobos
      * alpha0 = 317.68 − 0.108T + 1.79 sin M1
@@ -1120,6 +1142,8 @@ public class SolarSystemParameters {
     private static final double[] BENNUPOLE = new double[]{85.65, -60.17};
     private static final double[] CGPOLE = new double[]{69.3, 64.1};
     private static final double[] UTPOLE = new double[]{317.5, -24.89};
+    private static final double[] GASPRAPOLE = new double[]{9.47, 26.70};
+    private static final double[] IDAPOLE = new double[]{168.76, -2.88};
     private static final double[] PHOBOSPOLE = new double[]{317.68, 52.90};
     private static final double[] DEIMOSPOLE = new double[]{316.65, 53.52};
     private static final double[] IOPOLE = new double[]{268.05, 64.50};
@@ -1824,6 +1848,76 @@ public class SolarSystemParameters {
     private static final double[] UTORBITPARS = new double[]
             {axisUTAU, eccentricityUT, inclinationUT, argPeriapsisUT, longNodeUT,
                     periapsisPassageUT, meanMotionUT};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons/app.html#/
+     * Results from HORIZONS
+     *
+     * Target body name: 951 Gaspra (A916 OJ)            {source: JPL#137}
+     * Center body name: Sun (10)                        {source: DE441}
+     * Center-site name: BODY CENTER
+     *
+     * Start time      : A.D. 1989-Oct-19 01:30:00.0000 TDB
+     * Stop  time      : A.D. 2003-Sep-30 12:00:00.0000 TDB
+     * Step-size       : 6 calendar months
+     *
+     * Rotational period : 7.042 hours
+     * Keplerian GM      : 2.8247609193859084E-07 au^3/d^2
+     *
+     * First valid date for ephemeris of Interplanetary cruise of spacecraft Galileo
+     * is October 19, 1989 at 01:30
+     *
+     * 2447818.562500000 = A.D. 1989-Oct-19 01:30:00.0000 TDB
+     *  EC= 1.737361467661201E-01 QR= 1.826245908305981E+00 IN= 4.098440679889092E+00
+     *  OM= 2.534556950992714E+02 W = 1.292696535637790E+02 Tp=  2447624.108062545769
+     *  N = 2.999461701312683E-01 MA= 5.832586377942168E+01 TA= 7.709139027498372E+01
+     *  A = 2.210245433293871E+00 AD= 2.594244958281762E+00 PR= 1.200215358117257E+03
+     */
+    private static final double axisGaspraAU = 2.210245433293871E+00; // Semi-major axis [au]
+    private static final double eccentricityGaspra = 1.737361467661201E-01; // Eccentricity [-]
+    private static final double inclinationGaspra = 4.098440679889092E+00; // Inclination [degrees]
+    private static final double argPeriapsisGaspra = 1.292696535637790E+02; // Arg perifocus [degrees]
+    private static final double longNodeGaspra = 2.534556950992714E+02; // Long asc node [degrees]
+    private static final double periapsisPassageGaspra = 2447624.108062545769;  // Time of periapsis [JD]
+    private static final double meanMotionGaspra = 2.999461701312683E-01; // Mean motion [degrees/day]
+    private static final double[] GASPRAORBITPARS = new double[]
+            {axisGaspraAU, eccentricityGaspra, inclinationGaspra, argPeriapsisGaspra, longNodeGaspra,
+                    periapsisPassageGaspra, meanMotionGaspra};
+
+    /**
+     * https://ssd.jpl.nasa.gov/horizons/app.html#/
+     * Results from HORIZONS
+     *
+     * Target body name: 243 Ida (A884 SB)               {source: JPL#163}
+     * Center body name: Sun (10)                        {source: DE441}
+     * Center-site name: BODY CENTER
+     *
+     * Start time      : A.D. 1989-Oct-19 01:30:00.0000 TDB
+     * Stop  time      : A.D. 2003-Sep-30 12:00:00.0000 TDB
+     * Step-size       : 6 calendar months
+     *
+     * Rotational period : 4.634 hours
+     * Keplerian GM      : 2.9591220828411951E-04 au^3/d^2
+     *
+     * First valid date for ephemeris of Interplanetary cruise of spacecraft Galileo
+     * is October 19, 1989 at 01:30
+     *
+     * 2447818.562500000 = A.D. 1989-Oct-19 01:30:00.0000 TDB
+     *  EC= 4.209490396346829E-02 QR= 2.742048654454489E+00 IN= 1.140902549825848E+00
+     *  OM= 3.247331392069160E+02 W = 1.104777931367361E+02 Tp=  2448569.498659976292
+     *  N = 2.035049908808558E-01 MA= 2.071807436119349E+02 TA= 2.050764358736893E+02
+     *  A = 2.862547308496535E+00 AD= 2.983045962538581E+00 PR= 1.768998383979515E+03
+     */
+    private static final double axisIdaAU = 2.862547308496535E+00; // Semi-major axis [au]
+    private static final double eccentricityIda = 4.209490396346829E-02; // Eccentricity [-]
+    private static final double inclinationIda = 1.140902549825848E+00; // Inclination [degrees]
+    private static final double argPeriapsisIda = 1.104777931367361E+02; // Arg perifocus [degrees]
+    private static final double longNodeIda = 3.247331392069160E+02; // Long asc node [degrees]
+    private static final double periapsisPassageIda = 2448569.498659976292;  // Time of periapsis [JD]
+    private static final double meanMotionIda = 2.035049908808558E-01; // Mean motion [degrees/day]
+    private static final double[] IDAORBITPARS = new double[]
+            {axisIdaAU, eccentricityIda, inclinationIda, argPeriapsisIda, longNodeIda,
+                    periapsisPassageIda, meanMotionIda};
 
     /**
      * https://ssd.jpl.nasa.gov/horizons.cgi#results
@@ -3060,6 +3154,8 @@ public class SolarSystemParameters {
         massMap.put("Hale-Bopp", HBMASS);
         massMap.put("Florence", FLORENCEMASS);
         massMap.put("Ultima Thule", UTMASS);
+        massMap.put("Gaspra", GASPRAMASS);
+        massMap.put("Ida", IDAMASS);
         massMap.put("Phobos", PHOBOSMASS);
         massMap.put("Deimos", DEIMOSMASS);
         massMap.put("Io", IOMASS);
@@ -3169,6 +3265,8 @@ public class SolarSystemParameters {
         diameterMap.put("Hale-Bopp", HBDIAMETER);
         diameterMap.put("Florence", FLORENCEDIAMETER);
         diameterMap.put("Ultima Thule", UTDIAMETER);
+        diameterMap.put("Gaspra", GASPRADIAMETER);
+        diameterMap.put("Ida", IDADIAMETER);
         diameterMap.put("Phobos", PHOBOSDIAMETER);
         diameterMap.put("Deimos", DEIMOSDIAMETER);
         diameterMap.put("Io", IODIAMETER);
@@ -3313,6 +3411,8 @@ public class SolarSystemParameters {
         siderealRotationalPeriodMap.put("Halley", HALLEYROTPERIOD);
         siderealRotationalPeriodMap.put("67P/Churyumov-Gerasimenko", CGROTPERIOD);
         siderealRotationalPeriodMap.put("Ultima Thule", UTROTPERIOD);
+        siderealRotationalPeriodMap.put("Gaspra", GASPRAROTPERIOD);
+        siderealRotationalPeriodMap.put("Ida", IDAROTPERIOD);
         siderealRotationalPeriodMap.put("Phobos", PHOBOSROTPERIOD);
         siderealRotationalPeriodMap.put("Deimos", DEIMOSROTPERIOD);
         siderealRotationalPeriodMap.put("Io", IOROTPERIOD);
@@ -3363,6 +3463,8 @@ public class SolarSystemParameters {
         rotationPoleMap.put("Bennu", BENNUPOLE);
         rotationPoleMap.put("67P/Churyumov-Gerasimenko", CGPOLE);
         rotationPoleMap.put("Ultima Thule", UTPOLE);
+        rotationPoleMap.put("Gaspra", GASPRAPOLE);
+        rotationPoleMap.put("Ida", IDAPOLE);
         rotationPoleMap.put("Phobos", PHOBOSPOLE);
         rotationPoleMap.put("Deimos", DEIMOSPOLE);
         rotationPoleMap.put("Io", IOPOLE);
@@ -3421,6 +3523,8 @@ public class SolarSystemParameters {
         orbitParametersMap.put("Hale-Bopp", HBORBITPARS);// Comet C/1995 O1 Hale-Bopp
         orbitParametersMap.put("Florence", FLORENCEORBITPARS);// Asteroid 3122 Florence
         orbitParametersMap.put("Ultima Thule", UTORBITPARS);// Kuiper belt object Ultima Thule
+        orbitParametersMap.put("Gaspra", GASPRAORBITPARS);// Asteroid 951 Gaspra
+        orbitParametersMap.put("Ida", IDAORBITPARS);// Asteroid 243 Ida
         orbitParametersMap.put("Phobos", PHOBOSORBITPARS);// Phobos, moon of Mars
         orbitParametersMap.put("Deimos", DEIMOSORBITPARS);// Deimos, moon of Mars
         orbitParametersMap.put("Io", IOORBITPARS);// Io, moon of Jupiter
