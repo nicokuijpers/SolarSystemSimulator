@@ -1176,6 +1176,8 @@ public class SolarSystemApplication extends Application {
         createCircle("Shoemaker-Levy 9", 5, Color.PINK);
         createCircle("Florence", 3, Color.LIGHTGREEN);
         createCircle("Ultima Thule", 3, Color.RED);
+        createCircle("Gaspra", 3, Color.LIGHTGRAY);
+        createCircle("Ida", 3, Color.LIGHTGOLDENRODYELLOW);
         createCircle("Phobos", 3, Color.BROWN);
         createCircle("Deimos", 3, Color.LIGHTGRAY);
         createCircle("Io", 3, Color.YELLOW);
@@ -1363,9 +1365,15 @@ public class SolarSystemApplication extends Application {
                 "Juno was the third asteroid discovered and is the 11th largest asteroid");
         createCheckBox("Vesta", "4 Vesta",
                 "Vesta is the second-largest body in the asteroid belt after Ceres");
+        createCheckBox("Ida", "243 Ida",
+                "Astroid 243 Ida was discovered in 1884 and was visited by the Galileo spacecraft "
+                        + "on 28 August 1993");
         createCheckBox("Eros", "433 Eros",
                 "Eros is a near-Earth astroid. NASA spacecraft NEAR Shoemaker "
                         + "entered orbit around Eros in 2000, and landed in 2001.");
+        createCheckBox("Gaspra", "951 Gaspra",
+                "Astroid 951 Gaspra was discovered in 1916 and was visited by the Galileo spacecraft "
+                        + "on 29 October 1991");
         createCheckBox("Bennu", "Bennu",
                 "Astroid 101955 Bennu was discovered on 11 September 1999. "
                         + "The OSIRIS-REx spacecraft arrived at Bennu on 3 December 2018");
@@ -3599,7 +3607,7 @@ public class SolarSystemApplication extends Application {
         VisualizationSettings ast = new VisualizationSettings();
         ast.setEventName("Jupiter and asteroids (current time)");
         ast.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Jupiter","Ceres","Pallas",
-                "Juno","Vesta","Eros","Bennu","Florence")));
+                "Juno","Vesta","Ida","Eros","Gaspra","Bennu","Florence")));
         ast.setValueZoomView(23);
         events.add(ast);
         VisualizationSettings mar = new VisualizationSettings();
@@ -3795,7 +3803,7 @@ public class SolarSystemApplication extends Application {
         gal.setEventName("Launch Galileo (1989-10-18)");
         gal.setSimulationStartDateTime(trajectoryStartDate.get("Galileo"));
         gal.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Venus","Earth","Moon","Mars","Jupiter",
-                "Galileo")));
+                "Gaspra","Ida","Galileo")));
         gal.setSelectedBody("Galileo");
         gal.setShowEphemeris(false);
         gal.setShowRuler(true);

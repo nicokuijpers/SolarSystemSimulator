@@ -172,6 +172,7 @@ public class Galileo extends Spacecraft implements Serializable {
      * 14-Nov-1990 00:00:00 after TCM-7
      * 29-Nov-1990 00:00:00 after TCM-8
      * 08-Dec-1990 00:00:00 before first Earth encounter
+     * 08-Dec-1990 20:45:00 during first Earth encounter
      * 08-Dec-1990 22:00:00 after first Earth encounter
      * 10-Dec-1990 00:00:00 after first Earth encounter
      * 20-Dec-1990 00:00:00 after TCM-9A
@@ -185,6 +186,7 @@ public class Galileo extends Spacecraft implements Serializable {
      * 01-Sep-1991 00:00:00 extra correction
      * 10-Oct-1991 00:00:00 after TCM-11
      * 25-Oct-1991 00:00:00 after TCM-12
+     * 29-Oct-1991 00:00:00 extra correction before Gaspra flyby
      * 01-Jan-1992 00:10:00 extra correction
      * 19-Apr-1992 00:10:00 extra correction
      * 10-Jul-1992 00:10:00 extra correction
@@ -200,6 +202,7 @@ public class Galileo extends Spacecraft implements Serializable {
      * 14-Nov-1992 00:10:00 after TCM-16
      * 29-Nov-1992 00:00:00 after TCM-17
      * 08-Dec-1992 00:00:00 before second Earth encounter
+     * 08-Dec-1992 14:20:00 during second Earth encounter
      * 08-Dec-1992 20:00:00 after second Earth encounter
      * 10-Dec-1992 00:00:00 after second Earth encounter
      * 01-Feb-1993 00:00:00 extra correction
@@ -208,6 +211,7 @@ public class Galileo extends Spacecraft implements Serializable {
      * 04-Jun-1993 00:10:00 extra correction
      * 01-Jul-1993 00:00:00 extra correction
      * 01-Aug-1993 00:00:00 extra correction
+     * 28-Aug-1993 00:00:00 extra correction before Ida flyby
      * 01-Sep-1993 00:00:00 extra correction
      * 01-Oct-1993 00:10:00 extra correction
      * 05-Oct-1993 00:00:00 after TCM-22
@@ -483,8 +487,25 @@ public class Galileo extends Spacecraft implements Serializable {
 
     @Override
     protected void defineEvents(SolarSystem solarSystem) {
+        // Update position and velocity of Galileo spacecraft at date/time obtained from file
         for (GregorianCalendar dateTime : eventDateTimes) {
             solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(dateTime)));
         }
+
+        // Update position and velocity of Gaspra on Oct 18 and Oct 28, 1991 prior to flyby
+        List<String> bodyNamesGaspra = new ArrayList<>();
+        bodyNamesGaspra.add("Gaspra");
+        GregorianCalendar dateTimeGaspraA = CalendarUtil.createGregorianCalendar(1991,10,18,0,0,0);
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(),dateTimeGaspraA,bodyNamesGaspra));
+        GregorianCalendar dateTimeGaspraB = CalendarUtil.createGregorianCalendar(1991,10,28,0,0,0);
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(),dateTimeGaspraB,bodyNamesGaspra));
+
+        // Update position and velocity of Ida on Aug 17 and Aug 27, 1993 prior to flyby
+        List<String> bodyNamesIda = new ArrayList<>();
+        bodyNamesIda.add("Ida");
+        GregorianCalendar dateTimeIdaA = CalendarUtil.createGregorianCalendar(1993,8,17,0,0,0);
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(),dateTimeIdaA,bodyNamesIda));
+        GregorianCalendar dateTimeIdaB = CalendarUtil.createGregorianCalendar(1993,8,27,0,0,0);
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(),dateTimeIdaB,bodyNamesIda));
     }
 }

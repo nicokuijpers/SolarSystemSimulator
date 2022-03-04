@@ -131,11 +131,26 @@ public class SpacecraftGalileoExperiment {
         endDateTime = CalendarUtil.createGregorianCalendar(1990,12,10,0,0,0);
         flyby("Earth", startDateTime, endDateTime, 960);
 
-        // Second Earth encounter Dec 8, 1992, 15:35 UTC (passes the Moon over the North Pole at 111000 km)
-        // Distance to the surface of the Earth is unknown TODO
+        // Gaspra flyby Oct 29, 1991 (closest approach 1,600 km)
+        startDateTime = CalendarUtil.createGregorianCalendar(1991,10,26,0,0,0);
+        endDateTime = CalendarUtil.createGregorianCalendar(1991,10,31,0,0,0);
+        flyby("Gaspra", startDateTime, endDateTime, 1600);
+
+        // During second Earth encounter on Dec 8, 1992, Galileo passes the Moon over the North Pole at 111000 km
+        startDateTime = CalendarUtil.createGregorianCalendar(1992,12,6,0,0,0);
+        endDateTime = CalendarUtil.createGregorianCalendar(1992,12,9,0,0,0);
+        flyby("Moon", startDateTime, endDateTime, 111000);
+
+        // Second Earth encounter Dec 8, 1992, 15:10 UTC (altitude 304 km)
+        // See https://en.wikipedia.org/wiki/Galileo_project for time and altitude
         startDateTime = CalendarUtil.createGregorianCalendar(1992,12,6,0,0,0);
         endDateTime = CalendarUtil.createGregorianCalendar(1992,12,10,0,0,0);
-        flyby("Earth", startDateTime, endDateTime, 300);
+        flyby("Earth", startDateTime, endDateTime, 304);
+
+        // Ida flyby Aug 28, 1993 (closest approach 2,390 km)
+        startDateTime = CalendarUtil.createGregorianCalendar(1993,8,25,0,0,0);
+        endDateTime = CalendarUtil.createGregorianCalendar(1993,8,30,0,0,0);
+        flyby("Ida", startDateTime, endDateTime, 2390);
 
         // Io flyby Dec 7, 1995 (closest approach 1000 km)
         startDateTime = CalendarUtil.createGregorianCalendar(1995,12,5,0,0,0);
@@ -326,212 +341,230 @@ public class SpacecraftGalileoExperiment {
 
         Earth:
         Date/time : 1990-12-08 20:36:00.000
-        Minimum distance to body center   : 7344.608714921441 km
-        Minimum distance to body surface  : 966.6087149214409 km
+        Minimum distance to body center   : 7344.608716067241 km
+        Minimum distance to body surface  : 966.6087160672415 km
         Expected distance to body surface : 960.0 km
+
+        Gaspra:
+        Date/time : 1991-10-29 22:37:00.000
+        Minimum distance to body center   : 1620.1133900873765 km
+        Minimum distance to body surface  : 1614.0133900873766 km
+        Expected distance to body surface : 1600.0 km
+
+        Moon:
+        Date/time : 1992-12-08 03:59:00.000
+        Minimum distance to body center   : 112006.24335540054 km
+        Minimum distance to body surface  : 110268.74335540054 km
+        Expected distance to body surface : 111000.0 km
 
         Earth:
         Date/time : 1992-12-08 15:10:00.000
-        Minimum distance to body center   : 6684.752754898726 km
-        Minimum distance to body surface  : 306.752754898726 km
-        Expected distance to body surface : 300.0 km
+        Minimum distance to body center   : 6684.622179881214 km
+        Minimum distance to body surface  : 306.62217988121415 km
+        Expected distance to body surface : 304.0 km
+
+        Ida:
+        Date/time : 1993-08-28 16:53:00.000
+        Minimum distance to body center   : 2616.8888975558843 km
+        Minimum distance to body surface  : 2601.1888975558845 km
+        Expected distance to body surface : 2390.0 km
 
         Io:
         Date/time : 1995-12-07 17:47:00.000
-        Minimum distance to body center   : 2724.6965107188594 km
-        Minimum distance to body surface  : 903.3965107188593 km
+        Minimum distance to body center   : 2724.6965062019726 km
+        Minimum distance to body surface  : 903.3965062019727 km
         Expected distance to body surface : 1000.0 km
 
         Ganymede:
         Date/time : 1996-06-27 06:30:00.000
-        Minimum distance to body center   : 3468.900184252033 km
-        Minimum distance to body surface  : 834.900184252033 km
+        Minimum distance to body center   : 3468.900184041099 km
+        Minimum distance to body surface  : 834.9001840410987 km
         Expected distance to body surface : 835.0 km
 
         Ganymede:
         Date/time : 1996-09-06 19:01:00.000
-        Minimum distance to body center   : 2906.666213938567 km
-        Minimum distance to body surface  : 272.6662139385673 km
+        Minimum distance to body center   : 2906.6662131964013 km
+        Minimum distance to body surface  : 272.6662131964015 km
         Expected distance to body surface : 260.0 km
 
         Callisto:
         Date/time : 1996-11-04 13:35:00.000
-        Minimum distance to body center   : 3549.9215127078983 km
-        Minimum distance to body surface  : 1146.9215127078985 km
+        Minimum distance to body center   : 3549.9215126821546 km
+        Minimum distance to body surface  : 1146.9215126821548 km
         Expected distance to body surface : 1136.0 km
 
         Europa:
         Date/time : 1996-12-19 06:54:00.000
-        Minimum distance to body center   : 2256.4971704372483 km
-        Minimum distance to body surface  : 691.4971704372484 km
+        Minimum distance to body center   : 2256.497169062957 km
+        Minimum distance to body surface  : 691.4971690629567 km
         Expected distance to body surface : 692.0 km
 
         Europa:
         Date/time : 1997-02-20 17:07:00.000
-        Minimum distance to body center   : 2152.2344116944773 km
-        Minimum distance to body surface  : 587.2344116944773 km
+        Minimum distance to body center   : 2152.234411415273 km
+        Minimum distance to body surface  : 587.2344114152728 km
         Expected distance to body surface : 586.0 km
 
         Ganymede:
         Date/time : 1997-04-05 07:11:00.000
-        Minimum distance to body center   : 5736.793262820654 km
-        Minimum distance to body surface  : 3102.7932628206536 km
+        Minimum distance to body center   : 5736.793263520155 km
+        Minimum distance to body surface  : 3102.793263520155 km
         Expected distance to body surface : 3102.0 km
 
         Ganymede:
         Date/time : 1997-05-07 15:57:00.000
-        Minimum distance to body center   : 4237.91766318866 km
-        Minimum distance to body surface  : 1603.9176631886605 km
+        Minimum distance to body center   : 4237.917662876219 km
+        Minimum distance to body surface  : 1603.9176628762186 km
         Expected distance to body surface : 1603.0 km
 
         Callisto:
         Date/time : 1997-06-25 13:49:00.000
-        Minimum distance to body center   : 2821.9356939295003 km
-        Minimum distance to body surface  : 418.9356939295004 km
+        Minimum distance to body center   : 2821.9356938401856 km
+        Minimum distance to body surface  : 418.93569384018565 km
         Expected distance to body surface : 418.0 km
 
         Callisto:
         Date/time : 1997-09-17 00:20:00.000
-        Minimum distance to body center   : 2937.79708846811 km
-        Minimum distance to body surface  : 534.7970884681097 km
+        Minimum distance to body center   : 2937.7970884619895 km
+        Minimum distance to body surface  : 534.7970884619896 km
         Expected distance to body surface : 539.0 km
 
         Europa:
         Date/time : 1997-11-06 20:33:00.000
-        Minimum distance to body center   : 3608.6971778126185 km
-        Minimum distance to body surface  : 2043.6971778126187 km
+        Minimum distance to body center   : 3608.697177469192 km
+        Minimum distance to body surface  : 2043.6971774691922 km
         Expected distance to body surface : 2042.0 km
 
         Europa:
         Date/time : 1997-12-16 12:04:00.000
-        Minimum distance to body center   : 1771.5052144364747 km
-        Minimum distance to body surface  : 206.50521443647472 km
+        Minimum distance to body center   : 1771.505214070936 km
+        Minimum distance to body surface  : 206.50521407093598 km
         Expected distance to body surface : 196.0 km
 
         Europa:
         Date/time : 1998-02-10 17:59:00.000
-        Minimum distance to body center   : 5124.106070652633 km
-        Minimum distance to body surface  : 3559.1060706526328 km
+        Minimum distance to body center   : 5124.106070503098 km
+        Minimum distance to body surface  : 3559.106070503098 km
         Expected distance to body surface : 3562.0 km
 
         Europa:
         Date/time : 1998-03-29 13:22:00.000
-        Minimum distance to body center   : 3208.2700390931213 km
-        Minimum distance to body surface  : 1643.2700390931213 km
+        Minimum distance to body center   : 3208.2700391340045 km
+        Minimum distance to body surface  : 1643.2700391340047 km
         Expected distance to body surface : 1645.0 km
 
         Europa:
         Date/time : 1998-05-31 21:14:00.000
-        Minimum distance to body center   : 4080.1541498551246 km
-        Minimum distance to body surface  : 2515.1541498551246 km
+        Minimum distance to body center   : 4080.154150013728 km
+        Minimum distance to body surface  : 2515.154150013728 km
         Expected distance to body surface : 2515.0 km
 
         Europa:
         Date/time : 1998-07-21 05:05:00.000
-        Minimum distance to body center   : 3401.7633251127327 km
-        Minimum distance to body surface  : 1836.7633251127327 km
+        Minimum distance to body center   : 3401.763324341567 km
+        Minimum distance to body surface  : 1836.7633243415673 km
         Expected distance to body surface : 1830.0 km
 
         Europa:
         Date/time : 1998-09-26 03:55:00.000
-        Minimum distance to body center   : 5148.5808166275365 km
-        Minimum distance to body surface  : 3583.580816627537 km
+        Minimum distance to body center   : 5148.580816390593 km
+        Minimum distance to body surface  : 3583.5808163905936 km
         Expected distance to body surface : 3582.0 km
 
         Europa:
         Date/time : 1998-11-22 11:39:00.000
-        Minimum distance to body center   : 3839.1315227689115 km
-        Minimum distance to body surface  : 2274.1315227689115 km
+        Minimum distance to body center   : 3839.131524046534 km
+        Minimum distance to body surface  : 2274.131524046534 km
         Expected distance to body surface : 2273.0 km
 
         Europa:
         Date/time : 1999-02-01 02:21:00.000
-        Minimum distance to body center   : 3005.490395951551 km
-        Minimum distance to body surface  : 1440.490395951551 km
+        Minimum distance to body center   : 3005.4903963334705 km
+        Minimum distance to body surface  : 1440.4903963334705 km
         Expected distance to body surface : 1439.0 km
 
         Callisto:
         Date/time : 1999-05-05 13:57:00.000
-        Minimum distance to body center   : 3729.470207708612 km
-        Minimum distance to body surface  : 1326.4702077086122 km
+        Minimum distance to body center   : 3729.4702077053184 km
+        Minimum distance to body surface  : 1326.4702077053184 km
         Expected distance to body surface : 1315.0 km
 
         Callisto:
         Date/time : 1999-06-30 07:48:00.000
-        Minimum distance to body center   : 3451.01588986078 km
-        Minimum distance to body surface  : 1048.01588986078 km
+        Minimum distance to body center   : 3451.015889861401 km
+        Minimum distance to body surface  : 1048.0158898614006 km
         Expected distance to body surface : 1047.0 km
 
         Callisto:
         Date/time : 1999-08-14 08:32:00.000
-        Minimum distance to body center   : 4702.438080915003 km
-        Minimum distance to body surface  : 2299.438080915003 km
+        Minimum distance to body center   : 4702.438081037604 km
+        Minimum distance to body surface  : 2299.438081037604 km
         Expected distance to body surface : 2296.0 km
 
         Callisto:
         Date/time : 1999-09-16 17:28:00.000
-        Minimum distance to body center   : 3455.879715503941 km
-        Minimum distance to body surface  : 1052.8797155039408 km
+        Minimum distance to body center   : 3455.8797155024017 km
+        Minimum distance to body surface  : 1052.8797155024017 km
         Expected distance to body surface : 1057.0 km
 
         Io:
         Date/time : 1999-10-11 04:34:00.000
-        Minimum distance to body center   : 2432.9255884020877 km
-        Minimum distance to body surface  : 611.6255884020878 km
+        Minimum distance to body center   : 2432.925594392276 km
+        Minimum distance to body surface  : 611.625594392276 km
         Expected distance to body surface : 611.0 km
 
         Io:
         Date/time : 1999-11-26 04:06:00.000
-        Minimum distance to body center   : 2130.8651088144293 km
-        Minimum distance to body surface  : 309.5651088144295 km
+        Minimum distance to body center   : 2130.865100038292 km
+        Minimum distance to body surface  : 309.56510003829186 km
         Expected distance to body surface : 300.0 km
 
         Europa:
         Date/time : 2000-01-03 18:01:00.000
-        Minimum distance to body center   : 1919.0516349982481 km
-        Minimum distance to body surface  : 354.0516349982482 km
+        Minimum distance to body center   : 1919.0516367489508 km
+        Minimum distance to body surface  : 354.05163674895095 km
         Expected distance to body surface : 351.0 km
 
         Io:
         Date/time : 2000-02-22 13:48:00.000
-        Minimum distance to body center   : 2020.522653146294 km
-        Minimum distance to body surface  : 199.22265314629394 km
+        Minimum distance to body center   : 2020.522653878707 km
+        Minimum distance to body surface  : 199.22265387870698 km
         Expected distance to body surface : 198.0 km
 
         Ganymede:
         Date/time : 2000-05-20 10:11:00.000
-        Minimum distance to body center   : 3446.2776786069844 km
-        Minimum distance to body surface  : 812.2776786069842 km
+        Minimum distance to body center   : 3446.27767888943 km
+        Minimum distance to body surface  : 812.2776788894297 km
         Expected distance to body surface : 1000.0 km
 
         Ganymede:
         Date/time : 2000-12-28 08:27:00.000
-        Minimum distance to body center   : 4980.861881496253 km
-        Minimum distance to body surface  : 2346.8618814962524 km
+        Minimum distance to body center   : 4980.861880810232 km
+        Minimum distance to body surface  : 2346.861880810232 km
         Expected distance to body surface : 2321.0 km
 
         Callisto:
         Date/time : 2001-05-25 11:25:00.000
-        Minimum distance to body center   : 2542.369129703385 km
-        Minimum distance to body surface  : 139.36912970338528 km
+        Minimum distance to body center   : 2542.369129695625 km
+        Minimum distance to body surface  : 139.36912969562505 km
         Expected distance to body surface : 138.0 km
 
         Io:
         Date/time : 2001-08-06 05:00:00.000
-        Minimum distance to body center   : 2024.0706272385996 km
-        Minimum distance to body surface  : 202.7706272385996 km
+        Minimum distance to body center   : 2024.0706318073762 km
+        Minimum distance to body surface  : 202.77063180737616 km
         Expected distance to body surface : 200.0 km
 
         Io:
         Date/time : 2001-10-16 01:24:00.000
-        Minimum distance to body center   : 2012.9364277944799 km
-        Minimum distance to body surface  : 191.63642779447977 km
+        Minimum distance to body center   : 2012.9364239767253 km
+        Minimum distance to body surface  : 191.63642397672544 km
         Expected distance to body surface : 181.0 km
 
         Io:
         Date/time : 2002-01-17 14:10:00.000
-        Minimum distance to body center   : 1937.0391214145175 km
-        Minimum distance to body surface  : 115.73912141451751 km
+        Minimum distance to body center   : 1937.0391234692074 km
+        Minimum distance to body surface  : 115.73912346920744 km
         Expected distance to body surface : 102.0 km
      */
 }

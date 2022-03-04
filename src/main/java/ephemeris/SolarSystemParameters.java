@@ -1866,20 +1866,26 @@ public class SolarSystemParameters {
      *
      * First valid date for ephemeris of Interplanetary cruise of spacecraft Galileo
      * is October 19, 1989 at 01:30
-     *
      * 2447818.562500000 = A.D. 1989-Oct-19 01:30:00.0000 TDB
      *  EC= 1.737361467661201E-01 QR= 1.826245908305981E+00 IN= 4.098440679889092E+00
      *  OM= 2.534556950992714E+02 W = 1.292696535637790E+02 Tp=  2447624.108062545769
      *  N = 2.999461701312683E-01 MA= 5.832586377942168E+01 TA= 7.709139027498372E+01
      *  A = 2.210245433293871E+00 AD= 2.594244958281762E+00 PR= 1.200215358117257E+03
+     *
+     * Flyby of Galileo spacecraft Oct 29, 1991
+     * 2448557.500000000 = A.D. 1991-Oct-28 00:00:00.0000 TDB
+     *  EC= 1.738758023340638E-01 QR= 1.825431696928328E+00 IN= 4.097585350136800E+00
+     *  OM= 2.534455363335123E+02 W = 1.290461287773248E+02 Tp=  2448823.040777185932
+     *  N = 3.000707801953600E-01 MA= 2.803189718161464E+02 TA= 2.603383271929652E+02
+     *  A = 2.209633493469570E+00 AD= 2.593835290010812E+00 PR= 1.199716946000618E+03
      */
-    private static final double axisGaspraAU = 2.210245433293871E+00; // Semi-major axis [au]
-    private static final double eccentricityGaspra = 1.737361467661201E-01; // Eccentricity [-]
-    private static final double inclinationGaspra = 4.098440679889092E+00; // Inclination [degrees]
-    private static final double argPeriapsisGaspra = 1.292696535637790E+02; // Arg perifocus [degrees]
-    private static final double longNodeGaspra = 2.534556950992714E+02; // Long asc node [degrees]
-    private static final double periapsisPassageGaspra = 2447624.108062545769;  // Time of periapsis [JD]
-    private static final double meanMotionGaspra = 2.999461701312683E-01; // Mean motion [degrees/day]
+    private static final double axisGaspraAU = 2.209633493469570E+00; // Semi-major axis [au]
+    private static final double eccentricityGaspra = 1.738758023340638E-01; // Eccentricity [-]
+    private static final double inclinationGaspra = 4.097585350136800E+00; // Inclination [degrees]
+    private static final double argPeriapsisGaspra = 1.290461287773248E+02; // Arg perifocus [degrees]
+    private static final double longNodeGaspra = 2.534455363335123E+02; // Long asc node [degrees]
+    private static final double periapsisPassageGaspra = 2448823.040777185932;  // Time of periapsis [JD]
+    private static final double meanMotionGaspra = 3.000707801953600E-01; // Mean motion [degrees/day]
     private static final double[] GASPRAORBITPARS = new double[]
             {axisGaspraAU, eccentricityGaspra, inclinationGaspra, argPeriapsisGaspra, longNodeGaspra,
                     periapsisPassageGaspra, meanMotionGaspra};
@@ -1901,20 +1907,26 @@ public class SolarSystemParameters {
      *
      * First valid date for ephemeris of Interplanetary cruise of spacecraft Galileo
      * is October 19, 1989 at 01:30
-     *
      * 2447818.562500000 = A.D. 1989-Oct-19 01:30:00.0000 TDB
      *  EC= 4.209490396346829E-02 QR= 2.742048654454489E+00 IN= 1.140902549825848E+00
      *  OM= 3.247331392069160E+02 W = 1.104777931367361E+02 Tp=  2448569.498659976292
      *  N = 2.035049908808558E-01 MA= 2.071807436119349E+02 TA= 2.050764358736893E+02
      *  A = 2.862547308496535E+00 AD= 2.983045962538581E+00 PR= 1.768998383979515E+03
+     *
+     * Flyby of Galileo spacecraft Aug 28, 1993
+     * 2449226.500000000 = A.D. 1993-Aug-27 00:00:00.0000 TDB
+     *  EC= 4.310311401600877E-02 QR= 2.740306393372853E+00 IN= 1.137119396065933E+00
+     *  OM= 3.245875854452980E+02 W = 1.130157539056025E+02 Tp=  2448580.951057635248
+     *  N = 2.033775914844145E-01 MA= 1.312901890834860E+02 TA= 1.348715255734626E+02
+     *  A = 2.863742617946714E+00 AD= 2.987178842520576E+00 PR= 1.770106516516536E+03
      */
-    private static final double axisIdaAU = 2.862547308496535E+00; // Semi-major axis [au]
-    private static final double eccentricityIda = 4.209490396346829E-02; // Eccentricity [-]
-    private static final double inclinationIda = 1.140902549825848E+00; // Inclination [degrees]
-    private static final double argPeriapsisIda = 1.104777931367361E+02; // Arg perifocus [degrees]
-    private static final double longNodeIda = 3.247331392069160E+02; // Long asc node [degrees]
-    private static final double periapsisPassageIda = 2448569.498659976292;  // Time of periapsis [JD]
-    private static final double meanMotionIda = 2.035049908808558E-01; // Mean motion [degrees/day]
+    private static final double axisIdaAU = 2.863742617946714E+00; // Semi-major axis [au]
+    private static final double eccentricityIda = 4.310311401600877E-02; // Eccentricity [-]
+    private static final double inclinationIda = 1.137119396065933E+00; // Inclination [degrees]
+    private static final double argPeriapsisIda = 1.130157539056025E+02; // Arg perifocus [degrees]
+    private static final double longNodeIda = 3.245875854452980E+02; // Long asc node [degrees]
+    private static final double periapsisPassageIda = 2448580.951057635248;  // Time of periapsis [JD]
+    private static final double meanMotionIda = 2.033775914844145E-01; // Mean motion [degrees/day]
     private static final double[] IDAORBITPARS = new double[]
             {axisIdaAU, eccentricityIda, inclinationIda, argPeriapsisIda, longNodeIda,
                     periapsisPassageIda, meanMotionIda};
