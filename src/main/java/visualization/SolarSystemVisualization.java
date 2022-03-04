@@ -74,6 +74,7 @@ public class SolarSystemVisualization extends Stage {
     // Also Juno and Pallas are considered small bodies
     private static final double MAXDIAMETERSMALLBODY = 1.0E05; // 100 km
     private static final double SCALESMALLBODY = 2.0E02; // factor 200
+    private static final double SCALEIDAGASPRA = 1.0E02; // factor 100
     private static final double SCALESMALLMOON = 1.0E01; // factor 10
 
     // Spacecraft are visualized much larger than they are in reality
@@ -473,7 +474,7 @@ public class SolarSystemVisualization extends Stage {
         displayDateTime = new Text();
         displayDateTime.setX(SCREENWIDTH - 300.0);
         displayDateTime.setY(SCREENHEIGHT - 40.0);
-        displayDateTime.setFont(new Font("Courier", 16));
+        displayDateTime.setFont(new Font("Arial", 16));
         displayDateTime.setFill(Color.LIGHTYELLOW);
         group.getChildren().add(displayDateTime);
 
@@ -601,8 +602,8 @@ public class SolarSystemVisualization extends Stage {
         GregorianCalendar dateTime = solarSystem.getSimulationDateTime();
         String dateTimeString = CalendarUtil.calendarToString(dateTime);
         StringBuilder sb = new StringBuilder(dateTimeString);
-        int index = dateTimeString.length() - 1;
-        sb.replace(index,index + 1," ");
+        int index = dateTimeString.length() - 4;
+        sb.replace(index,index + 4," ");
         sb.append("(" + dateTime.getTimeZone().getID() + ")");
         displayDateTime.setText(sb.toString());
     }
@@ -690,6 +691,10 @@ public class SolarSystemVisualization extends Stage {
             case "Pallas":
             case "Juno":
                 diameter = SCALESMALLBODY * solarSystemParameters.getDiameter(bodyName);
+                break;
+            case "Ida":
+            case "Gaspra":
+                diameter = SCALEIDAGASPRA * solarSystemParameters.getDiameter(bodyName);
                 break;
             case "Phobos":
             case "Deimos":
@@ -1466,7 +1471,8 @@ public class SolarSystemVisualization extends Stage {
         double fieldOfView = diameter / FIELDOFVIEWFACTORSPACECRAFT;
         double distanceFromCenter = cameraPosition.euclideanDistance(bodyPosition);
         double distanceFromSurface = distanceFromCenter - 0.5*diameter;
-        if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody)) && distanceFromSurface < 1.0E11) {
+        if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody)) &&
+                !"Moon".equals(observedBody) && distanceFromSurface < 1.0E11) {
             // Rosetta comes close to the surface of the Earth and Mars
             // Galileo comes close to the surface of the Earth and the Galilean moons
             // Increase field of view depending on the distance to the surface

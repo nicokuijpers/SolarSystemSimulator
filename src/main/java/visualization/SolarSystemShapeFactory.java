@@ -82,9 +82,16 @@ public class SolarSystemShapeFactory {
                 return createSmallBody("Juno",Color.LIGHTGRAY);
             case "Vesta":
                 return createSmallBody("Vesta",Color.YELLOW);
+            case "Ida":
+                //Color colorIda = new Color(164.0/255,152.0/255,138.0/255, 1.0);
+                Color colorIda = new Color(172.0/255,156.0/255,130.0/255, 1.0);
+                return createSmallBody("Ida",colorIda);
             case "Eros":
                 Color colorEros = new Color(164.0/255,152.0/255,138.0/255, 1.0);
                 return createSmallBody("Eros",colorEros);
+            case "Gaspra":
+                Color colorGaspra = new Color(160.0/255,152.0/255,142.0/255, 1.0);
+                return createSmallBody("Gaspra",colorGaspra);
             case "Bennu":
                 return createSmallBody("Bennu",Color.LIGHTGRAY);
             case "Halley":
@@ -984,12 +991,40 @@ public class SolarSystemShapeFactory {
                 material.setDiffuseMap(imageDiffuseMap);
                 shape.setMaterial(material);
                 break;
+            case "Ida":
+                // Read model for 243 Ida from file
+                // https://3d-asteroids.space/asteroids/243-Ida
+                // Original file Ida Stooke.obj
+                // Scaled with factor 0.0002
+                objImporter = new ObjModelImporter();
+                objImporter.read("Models/Ida_scale0002.obj");
+                objMesh = (Node[]) objImporter.getImport();
+                objImporter.close();
+                shape = (Shape3D) objMesh[0];
+                material = new PhongMaterial();
+                material.setDiffuseColor(color);
+                shape.setMaterial(material);
+                break;
             case "Eros":
                 // Read model for 433 Eros from file
                 // https://3d-asteroids.space/asteroids/433-Eros
                 // Afmetingen: [Xmax-min 0.023681, Ymax-min 0.012243, Zmax-min 0.008672]
                 objImporter = new ObjModelImporter();
                 objImporter.read("Models/Eros_Gaskell_50k_poly_scaled.obj");
+                objMesh = (Node[]) objImporter.getImport();
+                objImporter.close();
+                shape = (Shape3D) objMesh[0];
+                material = new PhongMaterial();
+                material.setDiffuseColor(color);
+                shape.setMaterial(material);
+                break;
+            case "Gaspra":
+                // Read model for 951 Gaspra from file
+                // https://3d-asteroids.space/asteroids/951-Gaspra
+                // Original file Gaspra Stooke.obj
+                // Scaled with factor 0.0002
+                objImporter = new ObjModelImporter();
+                objImporter.read("Models/Gaspra_scale0002.obj");
                 objMesh = (Node[]) objImporter.getImport();
                 objImporter.close();
                 shape = (Shape3D) objMesh[0];

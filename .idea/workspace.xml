@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Solar System parameters for Gaspra and Ida">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Galileo spacecraft Gaspra and Ida encounter">
+      <change afterPath="$PROJECT_DIR$/Models/Gaspra_scale0002.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Ida_scale0002.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFiles/orbitParsGalileoJupiter.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftGalileoExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftGalileoExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Galileo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -319,7 +317,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EphemerisFiles" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Models" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -329,11 +327,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Models" />
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/EphemerisFilesBSP" />
       <recent name="$PROJECT_DIR$/src/main/java/particlesystem" />
-      <recent name="$PROJECT_DIR$/src/main/java/solarsystem" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/EphemerisFiles" />
@@ -480,13 +478,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00026" summary="Change between high-res and low-res Earth during run-time">
-      <created>1629646456840</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1629646456840</updated>
     </task>
     <task id="LOCAL-00027" summary="Use Locale.US when reading from file">
       <created>1629648583960</created>
@@ -824,7 +815,14 @@
       <option name="project" value="LOCAL" />
       <updated>1646312415816</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Galileo spacecraft Gaspra and Ida encounter">
+      <created>1646393538774</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1646393538774</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -936,7 +934,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Experiment with Florence and Earth" />
     <MESSAGE value="Test conversion for seconds and milliseconds" />
     <MESSAGE value="Test computation of angle between vectors" />
     <MESSAGE value="Solar System Exception" />
@@ -961,7 +958,8 @@
     <MESSAGE value="Draw shadow of Galilean moon first, then the moon itself" />
     <MESSAGE value="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment." />
     <MESSAGE value="Solar System parameters for Gaspra and Ida" />
-    <option name="LAST_COMMIT_MESSAGE" value="Solar System parameters for Gaspra and Ida" />
+    <MESSAGE value="Galileo spacecraft Gaspra and Ida encounter" />
+    <option name="LAST_COMMIT_MESSAGE" value="Galileo spacecraft Gaspra and Ida encounter" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
