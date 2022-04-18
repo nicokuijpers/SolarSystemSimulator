@@ -16,6 +16,8 @@ Video The Grand Tour of Voyager: https://youtu.be/Yq0LxCjSxdI
 
 Video The Journeys of Pioneers 10 and 11: https://youtu.be/a5LRzPxkXR4
 
+Video The Journey of Galileo: https://youtu.be/9zmWbzj6hq8
+
 Required ephemeris files:\
 DE405EphemerisFiles (directory containing DE405 ephemeris data as text files)\
 EphemerisFiles (directory containing .txt files)\
