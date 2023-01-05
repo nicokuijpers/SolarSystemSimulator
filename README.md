@@ -22,6 +22,8 @@ Video The Journey of Cassini: https://youtu.be/bIHReSQoMjA
 
 Video The Journey of New Horizons: https://youtu.be/eeLuBIomQ44
 
+Video The Journey of Apollo 8: https://youtu.be/XaKjY08vBnA
+
 Required ephemeris files:\
 DE405EphemerisFiles (directory containing DE405 ephemeris data as text files)\
 EphemerisFiles (directory containing .txt files)\
