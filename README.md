@@ -24,6 +24,8 @@ Video The Journey of New Horizons: https://youtu.be/eeLuBIomQ44
 
 Video The Journey of Apollo 8: https://youtu.be/XaKjY08vBnA
 
+Video The Journey of Rosetta: https://youtu.be/oY79OQmN518
+
 Required ephemeris files:\
 DE405EphemerisFiles (directory containing DE405 ephemeris data as text files)\
 EphemerisFiles (directory containing .txt files)\
