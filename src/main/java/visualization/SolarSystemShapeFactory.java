@@ -162,8 +162,9 @@ public class SolarSystemShapeFactory {
             case "Rosetta":
             case "Galileo":
             case "Cassini":
-            case "Apollo 8":
                 return createSpacecraft(bodyName, Color.LIGHTYELLOW);
+            case "Apollo 8":
+                return createSpacecraft(bodyName, Color.SILVER);
             case "ISS":
                 return createISS("ISS");
             default:
