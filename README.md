@@ -16,6 +16,16 @@ Video The Grand Tour of Voyager: https://youtu.be/Yq0LxCjSxdI
 
 Video The Journeys of Pioneers 10 and 11: https://youtu.be/a5LRzPxkXR4
 
+Video The Journey of Galileo: https://youtu.be/9zmWbzj6hq8
+
+Video The Journey of Cassini: https://youtu.be/bIHReSQoMjA
+
+Video The Journey of New Horizons: https://youtu.be/eeLuBIomQ44
+
+Video The Journey of Apollo 8: https://youtu.be/XaKjY08vBnA
+
+Video The Journey of Rosetta: https://youtu.be/oY79OQmN518
+
 Required ephemeris files:\
 DE405EphemerisFiles (directory containing DE405 ephemeris data as text files)\
 EphemerisFiles (directory containing .txt files)\
