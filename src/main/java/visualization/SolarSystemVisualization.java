@@ -49,8 +49,8 @@ import java.util.*;
 public class SolarSystemVisualization extends Stage {
 
     // Screen size and scale
-    private static final int SCREENWIDTH  = 900;
-    private static final int SCREENHEIGHT = 900;
+    private static final int SCREENWIDTH  = 900; // VIDEO USE 1920
+    private static final int SCREENHEIGHT = 900; // VIDEO USE 1080
     private static final int SCREENDEPTH  = 900;
     private static final double SCREENSCALE = 3.0 * SolarSystemParameters.ASTRONOMICALUNIT;
     private static final double FIELDOFVIEWFACTORTELESCOPE  = 1.0E9;
@@ -101,7 +101,7 @@ public class SolarSystemVisualization extends Stage {
     private SolarSystemViewMode viewMode = SolarSystemViewMode.TELESCOPE;
 
     // Maximum distance to use high-resolution version of the Earth and Earth's clouds
-    private static final double HIGHRESMAXDISTANCE = 5.0E07; // 50 000 km
+    private static final double HIGHRESMAXDISTANCE = 5.0E07; // 50 000 km - OPTIMIZE FOR VIDEO
 
     //https://www.genuinecoder.com/javafx-3d-tutorial-object-transform-rotation-with-mouse/
     // Tracks drag starting point for x and y
@@ -628,7 +628,7 @@ public class SolarSystemVisualization extends Stage {
             camera.setNearClip(0.1 * SCREENDEPTH);
             // Use 3 * SCREENDEPTH to see Saturn when observing Jupiter during
             // the great conjunction on Dec 19, 2020
-            camera.setFarClip(3.0 * SCREENDEPTH);
+            camera.setFarClip(SCREENDEPTH);
         } else {
             // View observed object from position of spacecraft
             camera.setNearClip(SCREENDEPTH*(nearDistance/SCREENSCALE));
@@ -728,6 +728,8 @@ public class SolarSystemVisualization extends Stage {
      * @return x-position in pixels
      */
     private double screenX(Vector3D position) {
+        // FOR VIDEO FORMAT 1920 x 1080
+        // return -SCREENHEIGHT * (position.getX() / SCREENSCALE);
         return -SCREENWIDTH * (position.getX() / SCREENSCALE);
     }
 
@@ -746,6 +748,8 @@ public class SolarSystemVisualization extends Stage {
      * @return z-postion in pixels
      */
     private double screenZ(Vector3D position) {
+        // FOR VIDEO FORMAT 1920 x 1080
+        // return SCREENHEIGHT * (position.getZ() / SCREENSCALE);
         return SCREENDEPTH * (position.getZ() / SCREENSCALE);
     }
 
@@ -1489,6 +1493,22 @@ public class SolarSystemVisualization extends Stage {
             if ("Mariner 10".equals(selectedBody) && "Earth".equals(observedBody) && distanceFromSurface < 1.0E06) {
                 fieldOfView = 90.0;
             }
+        }
+        if (("Cassini".equals(selectedBody)) &&
+                !"Moon".equals(observedBody) &&
+                !"Phoebe".equals(observedBody) &&
+                !"Mimas".equals(observedBody) &&
+                !"Hyperion".equals(observedBody) &&
+                !"Jupiter".equals(observedBody) && distanceFromSurface < 1.0E11) {
+            // Cassini comes close to the surface of Venus, Earth, and most of the Saturnian moons
+            // Increase field of view depending on the distance to the surface
+            fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
+        }
+        if ("Cassini".equals(selectedBody) && "Phoebe".equals(observedBody)) {
+            fieldOfView *= 4.0;
+        }
+        if ("Cassini".equals(selectedBody) && "Jupiter".equals(observedBody)) {
+            fieldOfView *= 0.05;
         }
         fieldOfView = Math.min(Math.max(fieldOfView,4.0),90.0);
         if ("Galileo".equals(selectedBody) && "Jupiter".equals(observedBody) && shoemaker.isVisible()) {

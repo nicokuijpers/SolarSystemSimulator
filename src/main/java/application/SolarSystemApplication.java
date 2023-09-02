@@ -66,8 +66,13 @@ public class SolarSystemApplication extends Application {
 
     // Screen size
     private static final int BORDERSIZE = 10;
+    // private static final int BORDERSIZE = 0; // TO REMOVE WHITE BORDERS
     private static final int SCREENWIDTH = 900;
     private static final int SCREENHEIGHT = 900;
+    //private static final int SCREENWIDTH = 1920; // VIDEO WIDTH
+    //private static final int SCREENHEIGHT = 1080; // VIDEO HEIGHT
+    //private static final int SCREENWIDTH = 450; // VIDEO SMALL RIGHT UPPER CORNER
+    //private static final int SCREENHEIGHT = 450; // VIDEO SMALL RIGHT UPPER CORNER
     private static final double SELECTORWIDTH = 310.0;
     private static final double BUTTONWIDTH = 70.0;
     private static final double SCREENSCALE = 180.0 * SolarSystemParameters.ASTRONOMICALUNIT;
@@ -376,6 +381,7 @@ public class SolarSystemApplication extends Application {
             CalendarUtil.createGregorianCalendar(1979,7,9,9,0,0);
     private GregorianCalendar startVoyagerTwoJupiter =
             CalendarUtil.createGregorianCalendar(1979,7,9,18,0,0);
+
     /*
      * Date/times in UTC to control 3D visualization from Voyager 2 during flyby of Saturn
      * January = 1, February = 2, etc
@@ -438,6 +444,128 @@ public class SolarSystemApplication extends Application {
             CalendarUtil.createGregorianCalendar(1989,8,25,6,0,0);
     private GregorianCalendar startVoyagerTwoNeptune =
             CalendarUtil.createGregorianCalendar(1989,8,25,10,0,0);
+
+    /*
+     * Date/times in UTC to control 3D visualization from Cassini during flybys in Saturn System
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Timeline_of_Cassini–Huygens
+     * Phoebe                   2004 June 11, 19:33         1,997 km
+     * Passage through rings    2004 June 30, (twice)           0 km
+     * Orbital insertion        2004 July 1, 02:48	            0 km
+     * Enceladus	            2005 July 14, 19:58           175 km
+     * Tethys	                2005 September 24, 01:36    1,500 km
+     * Hyperion                 2005 September 26, 01:46      500 km
+     * Dione                    2005 October 11, 17:59        500 km
+     * Titan                    2005 October 28, 04:04      1,451 km
+     * Rhea                     2005 November 26, 22:37       500 km
+     * Iapetus                  2007 September 10, 12:34    1,227 km
+     * Enceladus                2008 October 9, 19:07          25 km
+     * Mimas                    2010 February 13            9,500 km
+     * Rhea                     2010 March 2, 17:41           101 km
+     * Titan                    2010 June 21, 01:27           880 km (below the ionosphere)
+     * Dione                    2011 December 12, 09:39        99 km
+     * Enceladus                2015 October 28, 15:23         49 km
+     * Titan                    2017 April 22, 02:08          979 km
+     * Passage within rings     2017 April 26
+     * End of mission           2017 September 15, 06:58
+     */
+    private GregorianCalendar startCassiniPhoebe =
+            CalendarUtil.createGregorianCalendar(2004,6,11,18,0,0);
+    private GregorianCalendar stopCassiniPhoebe =
+            CalendarUtil.createGregorianCalendar(2004,6,11,21,0,0);
+    private GregorianCalendar startCassiniPassageThroughRings =
+            CalendarUtil.createGregorianCalendar(2004,6,20,14,0,0);
+    private GregorianCalendar stopCassiniPassageThroughRings =
+            CalendarUtil.createGregorianCalendar(2004,7,3,12,0,0);
+    private GregorianCalendar startCassiniEnceladus =
+            CalendarUtil.createGregorianCalendar(2005,3,9,4,0,0);
+    private GregorianCalendar stopCassiniEnceladus =
+            CalendarUtil.createGregorianCalendar(2005,3,9,13,0,0);
+    private GregorianCalendar startCassiniSaturnMimasA =
+            CalendarUtil.createGregorianCalendar(2005,4,9,21,0,0);
+    private GregorianCalendar stopCassiniSaturnMimasA =
+            CalendarUtil.createGregorianCalendar(2005,4,15,21,30,0);
+    private GregorianCalendar startCassiniSaturnMimasB =
+            CalendarUtil.createGregorianCalendar(2005,4,14,22,30,0);
+    private GregorianCalendar stopCassiniSaturnMimasB =
+            CalendarUtil.createGregorianCalendar(2005,4,15,3,00,0);
+    private GregorianCalendar startCassiniSaturnA =
+            CalendarUtil.createGregorianCalendar(2005,4,28,20,30,0);
+    private GregorianCalendar stopCassiniSaturnA =
+            CalendarUtil.createGregorianCalendar(2005,5,3,3,00,0);
+    private GregorianCalendar startCassiniEnceladusA =
+            CalendarUtil.createGregorianCalendar(2005,7,14,18,0,0);
+    private GregorianCalendar stopCassiniEnceladusA =
+            CalendarUtil.createGregorianCalendar(2005,7,14,21,0,0);
+    private GregorianCalendar startCassiniTethys =
+            CalendarUtil.createGregorianCalendar(2005,9,24,0,0,0);
+    private GregorianCalendar stopCassiniTethys =
+            CalendarUtil.createGregorianCalendar(2005,9,24,4,0,0);
+    private GregorianCalendar startCassiniHyperion =
+            CalendarUtil.createGregorianCalendar(2005,9,26,0,0,0);
+    private GregorianCalendar stopCassiniHyperion =
+            CalendarUtil.createGregorianCalendar(2005,9,26,3,0,0);
+    private GregorianCalendar startCassiniDioneA =
+            CalendarUtil.createGregorianCalendar(2005,10,11,14,0,0);
+    private GregorianCalendar stopCassiniDioneA =
+            CalendarUtil.createGregorianCalendar(2005,10,11,20,0,0);
+    private GregorianCalendar startCassiniTitanA =
+            CalendarUtil.createGregorianCalendar(2005,10,27,20,0,0);
+    private GregorianCalendar stopCassiniTitanA =
+            CalendarUtil.createGregorianCalendar(2005,10,28,6,0,0);
+    private GregorianCalendar startCassiniRheaA =
+            CalendarUtil.createGregorianCalendar(2005,11,26,9,0,0);
+    private GregorianCalendar stopCassiniRheaA =
+            CalendarUtil.createGregorianCalendar(2005,11,28,0,0,0);
+    private GregorianCalendar startCassiniIapetus =
+            CalendarUtil.createGregorianCalendar(2007,9,10,4,0,0);
+    private GregorianCalendar stopCassiniIapetus =
+            CalendarUtil.createGregorianCalendar(2007,9,11,0,0,0);
+    private GregorianCalendar startCassiniEnceladusB =
+            CalendarUtil.createGregorianCalendar(2008,10,9,13,0,0);
+    private GregorianCalendar stopCassiniEnceladusB =
+            CalendarUtil.createGregorianCalendar(2008,10,9,23,0,0);
+    private GregorianCalendar startCassiniMimas =
+            CalendarUtil.createGregorianCalendar(2010,2,13,0,0,0);
+    private GregorianCalendar stopCassiniMimas =
+            CalendarUtil.createGregorianCalendar(2010,2,14,3,0,0);
+    private GregorianCalendar startCassiniRheaB =
+            CalendarUtil.createGregorianCalendar(2010,3,2,8,0,0);
+    private GregorianCalendar stopCassiniRheaB =
+            CalendarUtil.createGregorianCalendar(2010,3,2,21,0,0);
+    private GregorianCalendar startCassiniTitanB =
+            CalendarUtil.createGregorianCalendar(2010,6,20,17,0,0);
+    private GregorianCalendar stopCassiniTitanB =
+            CalendarUtil.createGregorianCalendar(2010,6,21,6,0,0);
+    private GregorianCalendar startCassiniDioneB =
+            CalendarUtil.createGregorianCalendar(2011,12,12,1,0,0);
+    private GregorianCalendar stopCassiniDioneB =
+            CalendarUtil.createGregorianCalendar(2011,12,12,14,0,0);
+    private GregorianCalendar startCassiniEnceladusC =
+            CalendarUtil.createGregorianCalendar(2015,10,28,7,0,0);
+    private GregorianCalendar stopCassiniEnceladusC =
+            CalendarUtil.createGregorianCalendar(2015,10,28,17,0,0);
+    private GregorianCalendar startCassiniTitanC =
+            CalendarUtil.createGregorianCalendar(2017,4,21,19,0,0);
+    private GregorianCalendar stopCassiniTitanC =
+            CalendarUtil.createGregorianCalendar(2017,4,22,16,0,0);
+    private GregorianCalendar startCassiniInsideRings =
+            CalendarUtil.createGregorianCalendar(2017,4,25,0,0,0);
+    private GregorianCalendar stopCassiniInsideRings =
+            CalendarUtil.createGregorianCalendar(2017,4,26,10,0,0);
+    private GregorianCalendar startCassiniEndOfMission =
+            CalendarUtil.createGregorianCalendar(2017,9,14,0,0,0);
+    private GregorianCalendar stopCassiniEndOfMission =
+            CalendarUtil.createGregorianCalendar(2017,9,15,7,0,0);
+    private List<GregorianCalendar> startFlybysCassini;
+    private List<GregorianCalendar> stopFlybysCassini;
+    private Iterator<GregorianCalendar> startFlybysCassiniIterator;
+    private Iterator<GregorianCalendar> stopFlybysCassiniIterator;
+    private GregorianCalendar stopCurrentFlybyCassini;
+    private List<String> bodyFlybysCassini;
+    private Iterator<String> bodyFlybysCassiniIterator;
+    private String currentBodyFlybyCassini;
 
     /*
      * Date/times in UTC to control 3D visualization from New Horizons during flyby of Pluto
@@ -588,6 +716,7 @@ public class SolarSystemApplication extends Application {
         // Screen to draw trajectories
         screen = new Canvas(SCREENWIDTH, SCREENHEIGHT);
         grid.add(screen, 0, 0, 1, 28);
+        // grid.add(screen, 0, 0, 1, 14); // USE FOR VIDEO SMALL RIGHT UPPER CORNER
         initTranslate();
         clearScreen();
 
@@ -1936,6 +2065,11 @@ public class SolarSystemApplication extends Application {
         //double zoom = Math.exp(0.1*sliderZoomView.getValue());
         double zoom = Math.exp(0.12*sliderZoomView.getValue());
 
+        // USE FOR VIDEO NEW HORIZONS
+        // if ("Pluto".equals(observedBody) || "Charon".equals(observedBody)) {
+        //     zoom *= 1.5;
+        //}
+
         if (observationFromEarth) {
             return position.scalarProduct(10.0*zoom);
         }
@@ -2096,8 +2230,10 @@ public class SolarSystemApplication extends Application {
 
         // Draw circle on screen using color and radius from Circle-object
         GraphicsContext gc = screen.getGraphicsContext2D();
-        gc.setFill(circle.getFill());
-        gc.fillOval(posx - radius, posy - radius, 2*radius, 2*radius);
+        if (!showMoons.get("Pluto System") || !"Pluto System".equals(body.getName())) {
+            gc.setFill(circle.getFill());
+            gc.fillOval(posx - radius, posy - radius, 2 * radius, 2 * radius);
+        }
 
         // Draw ring elements of Saturn or Uranus in front of the planet
         if (("Saturn".equals(body.getName()) || "Uranus".equals(body.getName()))
@@ -2125,7 +2261,9 @@ public class SolarSystemApplication extends Application {
         else {
             label = body.getName();
         }
-        gc.fillText(label,posx + 0.5*radius,posy - radius);
+        if (!showMoons.get("Pluto System") || !"Pluto System".equals(body.getName())) {
+            gc.fillText(label, posx + 0.5 * radius, posy - radius);
+        }
     }
 
     /**
@@ -2412,12 +2550,12 @@ public class SolarSystemApplication extends Application {
             scaleLength *= 10;
             scale *= 10;
         }
-        while (scaleLength > 600.0) {
+        while (scaleLength > 600.0) { // USE 400.0 FOR VIDEO SMALL RIGHT UPPER CORNER
             scaleLength /= 10;
             scale /= 10;
         }
-        double x = 50.0;
-        double y = 860.0;
+        double x = 50.0;  // USE 10.0 FOR VIDEO SMALL RIGHT UPPER CORNER
+        double y = SCREENHEIGHT - 40.0;
         // Draw the scale als a cyan line
         gc.strokeLine(x, y, x + scaleLength, y);
         // Place text "0" at the left end
@@ -2437,6 +2575,18 @@ public class SolarSystemApplication extends Application {
         for (int i = 0; i <= 10; i++) {
             gc.strokeLine(x + i * 0.1 * scaleLength, y - 4, x + i * 0.1 * scaleLength, y);
         }
+
+        /* VIDEO: USE CODE BELOW TO SHOW DATE IN RIGHT LOWER CORNER
+        gc.setStroke(Color.LIGHTYELLOW);
+        gc.setFill(Color.LIGHTYELLOW);
+        gc.setFont(new Font("Arial", 16));
+        x = SCREENWIDTH - 150.0;
+        y = SCREENHEIGHT - 40.0;
+        String textDate = CalendarUtil.calendarToString(solarSystem.getSimulationDateTime());
+        String displayDate = textDate.substring(0,textDate.length() - 13);
+        gc.fillText(displayDate, x, y);
+        gc.setFont(new Font("Arial", 13));
+        */
     }
 
     /**
@@ -3379,20 +3529,55 @@ public class SolarSystemApplication extends Application {
                 if ("Cassini".equals(selectedBody)) {
                     if ("Saturn".equals(closestBody)) {
                         checkBoxesBodies.get("SaturnMoons").setSelected(true);
+                        if (startFlybysCassini == null && solarSystem.getSimulationDateTime().after(startCassiniPhoebe)) {
+                            initializeFlybysCassini();
+                            startFlybysCassiniIterator = startFlybysCassini.iterator();
+                            stopFlybysCassiniIterator = stopFlybysCassini.iterator();
+                            bodyFlybysCassiniIterator = bodyFlybysCassini.iterator();
+                            startFlybysCassiniIterator.next();
+                            stopCurrentFlybyCassini = stopFlybysCassiniIterator.next();
+                            currentBodyFlybyCassini = bodyFlybysCassiniIterator.next();
+                            System.out.println("stopCurrentFlybyCassini = " + CalendarUtil.calendarToString(stopCurrentFlybyCassini));
+                        }
+                        if (startFlybysCassini != null  &&
+                                stopFlybysCassiniIterator.hasNext() &&
+                                bodyFlybysCassiniIterator.hasNext() &&
+                                solarSystem.getSimulationDateTime().after(stopCurrentFlybyCassini)) {
+                            stopCurrentFlybyCassini = stopFlybysCassiniIterator.next();
+                            currentBodyFlybyCassini = bodyFlybysCassiniIterator.next();
+                            System.out.println("stopCurrentFlybyCassini = " + CalendarUtil.calendarToString(stopCurrentFlybyCassini));
+                            try {
+                                solarSystem.initializeSimulation(startFlybysCassiniIterator.next());
+                            } catch (SolarSystemException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         String closestMoonFound = "";
                         double minMoonDistance = Double.MAX_VALUE;
-                        for (String moonName : SolarSystemParameters.getInstance().getMoonsOfPlanet("Saturn")) {
+                        if (startFlybysCassini == null) {
+                            for (String moonName : SolarSystemParameters.getInstance().getMoonsOfPlanet("Saturn")) {
+                                Vector3D moonPosition = null;
+                                try {
+                                    moonPosition = solarSystem.getPosition(moonName);
+                                } catch (SolarSystemException ex) {
+                                    showMessage("Error", ex.getMessage());
+                                }
+                                double moonDistance = spacecraftPosition.euclideanDistance(moonPosition);
+                                if (moonDistance < minMoonDistance) {
+                                    minMoonDistance = moonDistance;
+                                    closestMoonFound = moonName;
+                                }
+                            }
+                        }
+                        else {
+                            closestMoonFound = currentBodyFlybyCassini;
                             Vector3D moonPosition = null;
                             try {
-                                moonPosition = solarSystem.getPosition(moonName);
+                                moonPosition = solarSystem.getPosition(closestMoonFound);
                             } catch (SolarSystemException ex) {
-                                showMessage("Error",ex.getMessage());
+                                showMessage("Error", ex.getMessage());
                             }
-                            double moonDistance = spacecraftPosition.euclideanDistance(moonPosition);
-                            if (moonDistance < minMoonDistance) {
-                                minMoonDistance = moonDistance;
-                                closestMoonFound = moonName;
-                            }
+                            minMoonDistance = spacecraftPosition.euclideanDistance(moonPosition);
                         }
                         if (minMoonDistance < 5.0E8 && "Titan".equals(closestMoonFound)) {
                             Vector3D titanPosition = solarSystem.getParticle("Titan").getPosition();
@@ -3475,7 +3660,12 @@ public class SolarSystemApplication extends Application {
                             if (moons.get("Uranus").contains(observedBody)) {
                                 value = Math.min(value,10.0);
                             }
-                            sliderSimulationSpeed.setValue(value);
+                            if ("New Horizons".equals(selectedBody)) {
+                                sliderSimulationSpeed.setValue(Math.max(20.0,value));
+                            }
+                            else {
+                                sliderSimulationSpeed.setValue(value);
+                            }
                         } else {
                             checkBoxStepMode.setSelected(false);
                             startSimulationForward();
@@ -3886,7 +4076,7 @@ public class SolarSystemApplication extends Application {
         nh.setShowEphemeris(false);
         nh.setShowRuler(true);
         nh.setStepMode(false);
-        nh.setValueZoomView(7);
+        nh.setValueZoomView(5);
         nh.setValueSimulationSpeed(100);
         events.add(nh);
         nh.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
@@ -3916,6 +4106,81 @@ public class SolarSystemApplication extends Application {
         iss.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         events.add(iss);
         return events;
+    }
+
+    /**
+     * Create lists of start/stop times for flybys of Cassini.
+     */
+    private void initializeFlybysCassini() {
+        startFlybysCassini = new ArrayList<>();
+        stopFlybysCassini = new ArrayList<>();
+        bodyFlybysCassini = new ArrayList<>();
+        startFlybysCassini.add(startCassiniPhoebe);
+        stopFlybysCassini.add(stopCassiniPhoebe);
+        bodyFlybysCassini.add("Phoebe");
+        startFlybysCassini.add(startCassiniPassageThroughRings);
+        stopFlybysCassini.add(stopCassiniPassageThroughRings);
+        //bodyFlybysCassini.add("Saturn");
+        bodyFlybysCassini.add("Mimas");
+        startFlybysCassini.add(startCassiniEnceladus);
+        stopFlybysCassini.add(stopCassiniEnceladus);
+        bodyFlybysCassini.add("Enceladus");
+        startFlybysCassini.add(startCassiniSaturnMimasA);
+        stopFlybysCassini.add(stopCassiniSaturnMimasA);
+        bodyFlybysCassini.add("Saturn");
+        startFlybysCassini.add(startCassiniSaturnA);
+        stopFlybysCassini.add(stopCassiniSaturnA);
+        bodyFlybysCassini.add("Saturn");
+        startFlybysCassini.add(startCassiniEnceladusA);
+        stopFlybysCassini.add(stopCassiniEnceladusA);
+        bodyFlybysCassini.add("Enceladus");
+        startFlybysCassini.add(startCassiniTethys);
+        stopFlybysCassini.add(stopCassiniTethys);
+        bodyFlybysCassini.add("Tethys");
+        startFlybysCassini.add(startCassiniHyperion);
+        stopFlybysCassini.add(stopCassiniHyperion);
+        bodyFlybysCassini.add("Hyperion");
+        startFlybysCassini.add(startCassiniDioneA);
+        stopFlybysCassini.add(stopCassiniDioneA);
+        bodyFlybysCassini.add("Dione");
+        startFlybysCassini.add(startCassiniTitanA);
+        stopFlybysCassini.add(stopCassiniTitanA);
+        bodyFlybysCassini.add("Titan");
+        startFlybysCassini.add(startCassiniRheaA);
+        stopFlybysCassini.add(stopCassiniRheaA);
+        bodyFlybysCassini.add("Rhea");
+        startFlybysCassini.add(startCassiniIapetus);
+        stopFlybysCassini.add(stopCassiniIapetus);
+        bodyFlybysCassini.add("Iapetus");
+        /*
+        startFlybysCassini.add(startCassiniEnceladusB);
+        stopFlybysCassini.add(stopCassiniEnceladusB);
+        bodyFlybysCassini.add("Enceladus");
+        */
+        startFlybysCassini.add(startCassiniMimas);
+        stopFlybysCassini.add(stopCassiniMimas);
+        bodyFlybysCassini.add("Mimas");
+        startFlybysCassini.add(startCassiniRheaB);
+        stopFlybysCassini.add(stopCassiniRheaB);
+        bodyFlybysCassini.add("Rhea");
+        startFlybysCassini.add(startCassiniTitanB);
+        stopFlybysCassini.add(stopCassiniTitanB);
+        bodyFlybysCassini.add("Titan");
+        startFlybysCassini.add(startCassiniDioneB);
+        stopFlybysCassini.add(stopCassiniDioneB);
+        bodyFlybysCassini.add("Dione");
+        startFlybysCassini.add(startCassiniEnceladusC);
+        stopFlybysCassini.add(stopCassiniEnceladusC);
+        bodyFlybysCassini.add("Enceladus");
+        startFlybysCassini.add(startCassiniTitanC);
+        stopFlybysCassini.add(stopCassiniTitanC);
+        bodyFlybysCassini.add("Titan");
+        startFlybysCassini.add(startCassiniInsideRings);
+        stopFlybysCassini.add(stopCassiniInsideRings);
+        bodyFlybysCassini.add("Saturn");
+        startFlybysCassini.add(startCassiniEndOfMission);
+        stopFlybysCassini.add(stopCassiniEndOfMission);
+        bodyFlybysCassini.add("Saturn");
     }
 
     /**
