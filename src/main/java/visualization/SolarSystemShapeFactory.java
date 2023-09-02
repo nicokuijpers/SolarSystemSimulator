@@ -156,6 +156,7 @@ public class SolarSystemShapeFactory {
                 return createSphere(bodyName, Color.LIGHTGRAY);
             case "Pioneer 10":
             case "Pioneer 11":
+            case "Mariner 10":
             case "Voyager 1":
             case "Voyager 2":
             case "New Horizons":
@@ -1160,6 +1161,10 @@ public class SolarSystemShapeFactory {
          * Models of Pioneer 10 and 11 are the same and are adapted from
          * https://free3d.com/3d-model/pioneer-10-v1--330916.html
          * Geometry was moved to the origin, rotated, and scaled with factor 0.000145
+         *
+         * Model of Mariner 10 is adapted from
+         * https://free3d.com/3d-model/mariner-10-v1--105152.html
+         * Geometry was scaled with factor 0.00000168
          *
          * Model of Voyager 1 is adapted from
          * https://free3d.com/3d-model/voyager-1-v2--602253.html

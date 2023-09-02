@@ -625,6 +625,7 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate = new HashMap<>();
         trajectoryStartDate.put("Pioneer 10", CalendarUtil.createGregorianCalendar(1972,3,3,1,49,0));
         trajectoryStartDate.put("Pioneer 11", CalendarUtil.createGregorianCalendar(1973,4,6,2,11,0));
+        trajectoryStartDate.put("Mariner 10", CalendarUtil.createGregorianCalendar(1973,11,3,17,45,0));
         trajectoryStartDate.put("Voyager 1", CalendarUtil.createGregorianCalendar(1977,9,5,12,56,0));
         trajectoryStartDate.put("Voyager 2", CalendarUtil.createGregorianCalendar(1977,8,20,14,29,0));
         trajectoryStartDate.put("New Horizons", CalendarUtil.createGregorianCalendar(2006,1,19,19,0,0));
@@ -3135,6 +3136,27 @@ public class SolarSystemApplication extends Application {
                         showMessage("Error",ex.getMessage());
                     }
                 }
+                if ("Mariner 10".equals(selectedBody)) {
+                    if (minDistance < 2.0E10 && ("Mercury".equals(observedBody) ||
+                            "Venus".equals(observedBody))) {
+                        checkBoxStepMode.setSelected(true);
+                        startSimulationStepModeForward();
+                        double value = Math.min(100.0, Math.max(5.0, minDistance / 2.0E06));
+                        sliderZoomView.setValue(95.0 - 0.3 * value);
+                        if ("Mercury".equals(observedBody)) {
+                            sliderSimulationSpeed.setValue(value*0.1);
+                        }
+                        else {
+                            sliderSimulationSpeed.setValue(value);
+                        }
+                    } else {
+                        checkBoxStepMode.setSelected(false);
+                        startSimulationForward();
+                        double value = Math.min(100.0, Math.max(0.0, (minDistance - 2.0E08) / 7.0E06));
+                        sliderZoomView.setValue(65.0 - 0.3 * value);
+                        sliderSimulationSpeed.setValue(value);
+                    }
+                }
                 if ("Voyager 1".equals(selectedBody)) {
                     if ("Jupiter".equals(closestBody)) {
                         checkBoxesBodies.get("JupiterMoons").setSelected(true);
@@ -3772,6 +3794,20 @@ public class SolarSystemApplication extends Application {
         pio11.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         pio11.setAutomaticView(true);
         events.add(pio11);
+        VisualizationSettings marin = new VisualizationSettings();
+        marin.setEventName("Launch Mariner 10 (1973-11-03  17:45)");
+        marin.setSimulationStartDateTime(trajectoryStartDate.get("Mariner 10"));
+        marin.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Mercury","Venus","Earth","Moon",
+                "Mariner 10")));
+        marin.setSelectedBody("Mariner 10");
+        marin.setShowEphemeris(false);
+        marin.setShowRuler(true);
+        marin.setStepMode(false);
+        marin.setValueZoomView(40);
+        marin.setValueSimulationSpeed(100);
+        marin.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        marin.setAutomaticView(true);
+        events.add(marin);
         VisualizationSettings voy1 = new VisualizationSettings();
         voy1.setEventName("Launch Voyager 1 (1977-09-05  12:56)");
         voy1.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 1"));

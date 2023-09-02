@@ -84,6 +84,7 @@ public class SolarSystemVisualization extends Stage {
     private static final double DIAMETERGALILEO     = 5.0E6; // 5000 km
     private static final double DIAMETERNEWHORIZONS = 8.0E5; //  800 km
     private static final double DIAMETERROSETTA     = 2.5E5; //  250 km
+    private static final double DIAMETERMARINERTEN  = 2.5E5; //  250 km
     private static final double DIAMETERISS         = 2.0E5; //  200 km
     private static final double DIAMETERAPOLLO      = 2.0E5; //  200 km
 
@@ -306,6 +307,7 @@ public class SolarSystemVisualization extends Stage {
         spacecraftNames = new ArrayList<>();
         spacecraftNames.add("Pioneer 10");
         spacecraftNames.add("Pioneer 11");
+        spacecraftNames.add("Mariner 10");
         spacecraftNames.add("Voyager 1");
         spacecraftNames.add("Voyager 2");
         spacecraftNames.add("New Horizons");
@@ -321,6 +323,9 @@ public class SolarSystemVisualization extends Stage {
             setBodyRotations(name,node);
             offsetRevolution.put(name,0.0);
         }
+        // Correction for view from Mariner 10 on March 30 after first encounter with Mercury
+        // https://photojournal.jpl.nasa.gov/jpeg/PIA03104.jpg
+        offsetRevolution.put("Mercury",19.0);
         // When the Earth is observed from the Sun, the Greenwich meridian
         // should be in the center at noon (12:00:00) UTC.
         // However, because of Earth's uneven angular velocity in its
@@ -681,6 +686,9 @@ public class SolarSystemVisualization extends Stage {
                 break;
             case "Galileo":
                 diameter = DIAMETERGALILEO;
+                break;
+            case "Mariner 10":
+                diameter = DIAMETERMARINERTEN;
                 break;
             case "ISS":
                 diameter = DIAMETERISS;
@@ -1471,12 +1479,16 @@ public class SolarSystemVisualization extends Stage {
         double fieldOfView = diameter / FIELDOFVIEWFACTORSPACECRAFT;
         double distanceFromCenter = cameraPosition.euclideanDistance(bodyPosition);
         double distanceFromSurface = distanceFromCenter - 0.5*diameter;
-        if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody)) &&
+        if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody) || "Mariner 10".equals(selectedBody)) &&
                 !"Moon".equals(observedBody) && distanceFromSurface < 1.0E11) {
             // Rosetta comes close to the surface of the Earth and Mars
             // Galileo comes close to the surface of the Earth and the Galilean moons
+            // Mariner 10 comes close to the surface of the Earth, Venus, and Mercury
             // Increase field of view depending on the distance to the surface
             fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
+            if ("Mariner 10".equals(selectedBody) && "Earth".equals(observedBody) && distanceFromSurface < 1.0E06) {
+                fieldOfView = 90.0;
+            }
         }
         fieldOfView = Math.min(Math.max(fieldOfView,4.0),90.0);
         if ("Galileo".equals(selectedBody) && "Jupiter".equals(observedBody) && shoemaker.isVisible()) {
