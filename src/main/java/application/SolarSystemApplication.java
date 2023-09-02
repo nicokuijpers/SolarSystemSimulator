@@ -1305,7 +1305,7 @@ public class SolarSystemApplication extends Application {
         createCircle("Hale-Bopp", 5, Color.LIGHTBLUE);
         createCircle("Shoemaker-Levy 9", 5, Color.PINK);
         createCircle("Florence", 3, Color.LIGHTGREEN);
-        createCircle("Ultima Thule", 3, Color.RED);
+        createCircle("Arrokoth", 3, Color.RED);
         createCircle("Gaspra", 3, Color.LIGHTGRAY);
         createCircle("Ida", 3, Color.LIGHTGOLDENRODYELLOW);
         createCircle("Phobos", 3, Color.BROWN);
@@ -1510,8 +1510,8 @@ public class SolarSystemApplication extends Application {
         createCheckBox("Florence", "Florence",
                 "Asteroid 3122 Florence approached Earth within 0.047 au on "
                         + "1 September 2017.");
-        createCheckBox("Ultima Thule", "Ultima Thule",
-                "Kuiper belt object Ultima Thule was visitied by New Horizons on "
+        createCheckBox("Arrokoth", "Arrokoth",
+                "Kuiper belt object Arrokoth was visited by New Horizons on "
                         + "1 January 2019.");
         createCheckBox("Halley", "1P/Halley",
                 "Halley's Comet has a period of 76 years. Last perihelion 9 Feb 1986. "
@@ -3490,7 +3490,7 @@ public class SolarSystemApplication extends Application {
                         checkBoxesBodies.get("Pluto SystemMoons").setSelected(false);
                     }
                     if (solarSystem.getSimulationDateTime().after(endNewHorizonsPlutoFlyby)) {
-                        observedBody = "Ultima Thule";
+                        observedBody = "Arrokoth";
                     }
                     try {
                         Vector3D observedBodyPosition = solarSystem.getPosition(observedBody);
@@ -3948,7 +3948,7 @@ public class SolarSystemApplication extends Application {
         pvnh.setEventName("Spacecraft leaving the Solar System");
         pvnh.setSimulationStartDateTime(trajectoryStartDate.get("Pioneer 10"));
         pvnh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
-                "Pluto System","Ultima Thule","Pioneer 10","Pioneer 11","Voyager 1","Voyager 2","New Horizons")));
+                "Pluto System","Arrokoth","Pioneer 10","Pioneer 11","Voyager 1","Voyager 2","New Horizons")));
         pvnh.setSelectedBody("Sun");
         pvnh.setShowEphemeris(false);
         pvnh.setShowRuler(true);
@@ -4071,7 +4071,7 @@ public class SolarSystemApplication extends Application {
         nh.setEventName("Launch New Horizons (2006-01-19  19:00)");
         nh.setSimulationStartDateTime(trajectoryStartDate.get("New Horizons"));
         nh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
-                "Pluto System", "Ultima Thule","New Horizons")));
+                "Pluto System", "Arrokoth","New Horizons")));
         nh.setSelectedBody("New Horizons");
         nh.setShowEphemeris(false);
         nh.setShowRuler(true);

@@ -1462,11 +1462,11 @@ public class SolarSystemVisualization extends Stage {
         // Let camera look in the direction of the body being observed
         Vector3D bodyPosition = solarSystem.getPosition(observedBody);
         Vector3D lookAtPosition = new Vector3D(bodyPosition);
-        if ("New Horizons".equals(selectedBody) && "Ultima Thule".equals(observedBody)) {
+        if ("New Horizons".equals(selectedBody) && "Arrokoth".equals(observedBody)) {
             // https://en.wikipedia.org/wiki/New_Horizons
-            // Ultima Thule fly by January 1, 2019, 05:33 UTC at a distance of 3,500 km
-            // The shape of Ultima Thule is about 200 times larger compared to other objects
-            // To get a good view of Ultima Thule the distance between the camera and the shape
+            // Arrokoth fly by January 1, 2019, 05:33 UTC at a distance of 3,500 km
+            // The shape of Arrokoth is about 200 times larger compared to other objects
+            // To get a good view of Arrokoth the distance between the camera and the shape
             // should be increased
             double distanceKm = spacecraftPosition.euclideanDistance(bodyPosition)/1000.0;
             if (distanceKm < 3.0E5) {

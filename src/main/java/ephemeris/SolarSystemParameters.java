@@ -3165,7 +3165,7 @@ public class SolarSystemParameters {
         massMap.put("Shoemaker-Levy 9", SL9MASS);
         massMap.put("Hale-Bopp", HBMASS);
         massMap.put("Florence", FLORENCEMASS);
-        massMap.put("Ultima Thule", UTMASS);
+        massMap.put("Arrokoth", UTMASS);
         massMap.put("Gaspra", GASPRAMASS);
         massMap.put("Ida", IDAMASS);
         massMap.put("Phobos", PHOBOSMASS);
@@ -3219,7 +3219,7 @@ public class SolarSystemParameters {
         muMap.put("Pallas", PALLASMU);
         muMap.put("Vesta", VESTAMU);
         muMap.put("Eros", EROSMU);
-        muMap.put("Ultima Thule", UTMU);
+        muMap.put("Arrokoth", UTMU);
         muMap.put("Phobos", PHOBOSMU);
         muMap.put("Deimos", DEIMOSMU);
         muMap.put("Io", IOMU);
@@ -3276,7 +3276,7 @@ public class SolarSystemParameters {
         diameterMap.put("Shoemaker-Levy 9", SL9DIAMETER);
         diameterMap.put("Hale-Bopp", HBDIAMETER);
         diameterMap.put("Florence", FLORENCEDIAMETER);
-        diameterMap.put("Ultima Thule", UTDIAMETER);
+        diameterMap.put("Arrokoth", UTDIAMETER);
         diameterMap.put("Gaspra", GASPRADIAMETER);
         diameterMap.put("Ida", IDADIAMETER);
         diameterMap.put("Phobos", PHOBOSDIAMETER);
@@ -3422,7 +3422,7 @@ public class SolarSystemParameters {
         siderealRotationalPeriodMap.put("Bennu", BENNUROTPERIOD);
         siderealRotationalPeriodMap.put("Halley", HALLEYROTPERIOD);
         siderealRotationalPeriodMap.put("67P/Churyumov-Gerasimenko", CGROTPERIOD);
-        siderealRotationalPeriodMap.put("Ultima Thule", UTROTPERIOD);
+        siderealRotationalPeriodMap.put("Arrokoth", UTROTPERIOD);
         siderealRotationalPeriodMap.put("Gaspra", GASPRAROTPERIOD);
         siderealRotationalPeriodMap.put("Ida", IDAROTPERIOD);
         siderealRotationalPeriodMap.put("Phobos", PHOBOSROTPERIOD);
@@ -3474,7 +3474,7 @@ public class SolarSystemParameters {
         rotationPoleMap.put("Eros", EROSPOLE);
         rotationPoleMap.put("Bennu", BENNUPOLE);
         rotationPoleMap.put("67P/Churyumov-Gerasimenko", CGPOLE);
-        rotationPoleMap.put("Ultima Thule", UTPOLE);
+        rotationPoleMap.put("Arrokoth", UTPOLE);
         rotationPoleMap.put("Gaspra", GASPRAPOLE);
         rotationPoleMap.put("Ida", IDAPOLE);
         rotationPoleMap.put("Phobos", PHOBOSPOLE);
@@ -3534,7 +3534,7 @@ public class SolarSystemParameters {
         orbitParametersMap.put("Shoemaker-Levy 9", SL9ORBITPARS);// Comet D/1993 F2-A Shoemaker-Levy 9
         orbitParametersMap.put("Hale-Bopp", HBORBITPARS);// Comet C/1995 O1 Hale-Bopp
         orbitParametersMap.put("Florence", FLORENCEORBITPARS);// Asteroid 3122 Florence
-        orbitParametersMap.put("Ultima Thule", UTORBITPARS);// Kuiper belt object Ultima Thule
+        orbitParametersMap.put("Arrokoth", UTORBITPARS);// Kuiper belt object Arrokoth (nickname Ultima Thule)
         orbitParametersMap.put("Gaspra", GASPRAORBITPARS);// Asteroid 951 Gaspra
         orbitParametersMap.put("Ida", IDAORBITPARS);// Asteroid 243 Ida
         orbitParametersMap.put("Phobos", PHOBOSORBITPARS);// Phobos, moon of Mars

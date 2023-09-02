@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment=" Spacecraft Mariner 10 visualization">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Visualisation settings for New Horizons and Cassini">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -478,13 +480,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00031" summary="offset for revolution of moons">
-      <created>1635412891967</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1635412891967</updated>
-    </task>
     <task id="LOCAL-00032" summary="Bug fix set mass of moon of planet system">
       <created>1638710177773</created>
       <option name="number" value="00032" />
@@ -821,7 +816,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693651998376</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="Visualisation settings for New Horizons and Cassini">
+      <created>1693666349185</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1693666349185</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -933,7 +935,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Readme file includes hyper links to .bsp files" />
     <MESSAGE value="Ephemeris for major planets and the Moon split in two BSP files" />
     <MESSAGE value="Ephemeris for Uranus System and Neptune System using BSP files" />
     <MESSAGE value="Ephemeris for Pluto System using BSP file (1970-2025)" />
@@ -958,7 +959,8 @@
     <MESSAGE value="Solution for Lambert's Problem" />
     <MESSAGE value="Spacecraft Mariner 10" />
     <MESSAGE value=" Spacecraft Mariner 10 visualization" />
-    <option name="LAST_COMMIT_MESSAGE" value=" Spacecraft Mariner 10 visualization" />
+    <MESSAGE value="Visualisation settings for New Horizons and Cassini" />
+    <option name="LAST_COMMIT_MESSAGE" value="Visualisation settings for New Horizons and Cassini" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

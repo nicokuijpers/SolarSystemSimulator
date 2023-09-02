@@ -104,9 +104,9 @@ public class SolarSystemShapeFactory {
                 return createSphere("Hale-Bopp", Color.LIGHTBLUE);
             case "Florence":
                 return createSphere("Florence", Color.LIGHTGREEN);
-            case "Ultima Thule":
+            case "Arrokoth":
                 Color colorArrokoth = new Color(159.0/255, 101.0/255, 72.0/255, 1.0);
-                return createSmallBody("Ultima Thule", colorArrokoth);
+                return createSmallBody("Arrokoth", colorArrokoth);
             case "Phobos":
                 Color colorPhobos = new Color(176.0 / 255, 148.0 / 255, 127.0 / 255, 1.0);
                 return createSmallBody("Phobos", colorPhobos);
@@ -1077,7 +1077,8 @@ public class SolarSystemShapeFactory {
                 material.setDiffuseColor(color);
                 shape.setMaterial(material);
                 break;
-            case "Ultima Thule":
+            case "Arrokoth":
+                // Arrokoth was nicknamed Ultima Thule at the time of flyby by New Horizons
                 // Read model and texture Ultima Thule from file
                 objImporter = new ObjModelImporter();
                 // objImporter.read("Models/ultima-thule-3d.obj");
