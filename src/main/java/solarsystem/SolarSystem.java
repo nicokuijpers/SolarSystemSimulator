@@ -825,6 +825,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             case "Pioneer 11":
                 craft = new PioneerEleven("Pioneer 11", "Sun", this);
                 break;
+            case "Mariner 10":
+                craft = new MarinerTen("Mariner 10", "Sun", this);
+                break;
             case "Voyager 2":
                 craft = new VoyagerTwo("Voyager 2", "Sun", this);
                 break;

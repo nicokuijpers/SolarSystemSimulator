@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Silver color for Apollo 8 spacecraft">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ephemeris/LambertProblem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/MathUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ephemeris/LambertProblemTest.java" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Solution for Lambert's Problem">
+      <change afterPath="$PROJECT_DIR$/src/main/java/experiments/MarinerTenExperiment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/MarinerTen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -344,7 +344,7 @@
       <recent name="application" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.LambertProblemTest">
+  <component name="RunManager" selected="Application.MarinerTenExperiment">
     <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
       <module name="SolarSystemSimulator" />
@@ -423,10 +423,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MarinerTenExperiment" />
         <item itemvalue="JUnit.LambertProblemTest" />
         <item itemvalue="JUnit.CalendarUtilTest" />
         <item itemvalue="Application.SolarSystemApplication" />
-        <item itemvalue="Application.MarinerTenExperiment" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
       </list>
     </recent_temporary>
@@ -478,13 +478,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00028" summary="Use Locale.US when reading from text file">
-      <created>1629648735229</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1629648735229</updated>
     </task>
     <task id="LOCAL-00029" summary="Use Locale.US when reading from text file (ISS)">
       <created>1629648833948</created>
@@ -822,7 +815,14 @@
       <option name="project" value="LOCAL" />
       <updated>1692269187457</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="Solution for Lambert's Problem">
+      <created>1693648404138</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1693648404138</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -934,7 +934,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Test computation of angle between vectors" />
     <MESSAGE value="Solar System Exception" />
     <MESSAGE value="Readme file includes links to .bsp files" />
     <MESSAGE value="Readme file includes hyper links to .bsp files" />
@@ -959,7 +958,8 @@
     <MESSAGE value="Solar System parameters for Gaspra and Ida" />
     <MESSAGE value="Galileo spacecraft Gaspra and Ida encounter" />
     <MESSAGE value="Silver color for Apollo 8 spacecraft" />
-    <option name="LAST_COMMIT_MESSAGE" value="Silver color for Apollo 8 spacecraft" />
+    <MESSAGE value="Solution for Lambert's Problem" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solution for Lambert's Problem" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
