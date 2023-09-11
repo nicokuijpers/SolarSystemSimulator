@@ -26,6 +26,8 @@ Video The Journey of Apollo 8: https://youtu.be/XaKjY08vBnA
 
 Video The Journey of Rosetta: https://youtu.be/oY79OQmN518
 
+Video The Journey of Mariner 10: https://youtu.be/lOKnr1tp4TQ
+
 Required ephemeris files:\
 DE405EphemerisFiles (directory containing DE405 ephemeris data as text files)\
 EphemerisFiles (directory containing .txt files)\
