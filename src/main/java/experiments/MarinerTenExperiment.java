@@ -240,13 +240,12 @@ public class MarinerTenExperiment {
           date/time : 1974-03-29 20:48:00.000
           distance  : 696.6562722826409 km
         Second encounter with Mercury:
-          date/time : 1974-09-21 21:21:00.000
-          distance  : 45874.47326370415 km
+          date/time : 1974-09-21 21:14:00.000
+          distance  : 46942.03917407435 km
         Third encounter with Mercury:
           date/time : 1975-03-16 22:39:00.000
-          distance  : 399.5944890233339 km
+          distance  : 399.58732072039646 km
 
-        Simulation results:
         General Relativity with time step 60.0 seconds
         Encounter with Venus:
           date/time : 1974-02-05 17:05:00.000
@@ -255,11 +254,11 @@ public class MarinerTenExperiment {
           date/time : 1974-03-29 20:48:00.000
           distance  : 699.4492596606943 km
         Second encounter with Mercury:
-          date/time : 1974-09-21 21:21:00.000
-          distance  : 45950.01747820919 km
+          date/time : 1974-09-21 21:14:00.000
+          distance  : 46998.8782989459 km
         Third encounter with Mercury:
           date/time : 1975-03-16 22:38:00.000
-          distance  : 281.7401703928304 km
+          distance  : 281.7343358435882 km
      */
 }
 

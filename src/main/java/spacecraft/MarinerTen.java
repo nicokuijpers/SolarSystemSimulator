@@ -248,7 +248,7 @@ public class MarinerTen extends Spacecraft implements Serializable {
 
     // Determine orbital parameters for Venus to Mercury
     // First Mercury encounter took place on 29 March 1974 at 20:47 UTC
-    // Mariner 10 passed Mercury at the shadow side with closest distance 703 kilometers
+    // Mariner 10 passed Mercury at the shadow side with closest distance 703 km
     private static final GregorianCalendar mercuryEncounterDateTimeA =
             new GregorianCalendar(1974, 2, 29, 20, 47, 0);
     private static final Vector3D mercuryPositionA = EphemerisSolarSystem.getInstance().getBodyPosition("Mercury", mercuryEncounterDateTimeA);
@@ -267,14 +267,14 @@ public class MarinerTen extends Spacecraft implements Serializable {
 
     // Determine orbital parameters for trajectory from first Mercury encounter to second Mercury encounter
     // Second Mercury encounter took place on 21 September 1974 at 20:59 UTC
-    // Mariner 10 passed Mercury below the southern hemisphere at a distance of 48,069 kilometers
+    // Mariner 10 passed Mercury below the southern hemisphere at a distance of 48,069 km
     private static final GregorianCalendar mercuryEncounterDateTimeB =
             new GregorianCalendar(1974, 8, 21, 20, 59, 0);
     private static final Vector3D mercuryPositionB = EphemerisSolarSystem.getInstance().getBodyPosition("Mercury", mercuryEncounterDateTimeB);
     private static final double distanceEncounterMercuryB = 0.5 * SolarSystemParameters.getInstance().getDiameter("Mercury") + 48069000;
     private static final double xShiftEncounterB = 0.0;
-    private static final double yShiftEncounterB = 0.01*distanceEncounterMercuryB;
-    private static final double zShiftEncounterB = -distanceEncounterMercuryB;
+    private static final double yShiftEncounterB = Math.sqrt(0.5)*distanceEncounterMercuryB;
+    private static final double zShiftEncounterB = -Math.sqrt(0.5)*distanceEncounterMercuryB;
     private static final Vector3D spacecraftPositionEncounterMercuryB =
             mercuryPositionB.plus(new Vector3D(xShiftEncounterB, yShiftEncounterB, zShiftEncounterB));
 
@@ -287,7 +287,7 @@ public class MarinerTen extends Spacecraft implements Serializable {
 
     // Determine orbital parameters for second Mercury encounter to third Mercury encounter
     // Third Mercury encounter took place on 16 March 1975 at 22:39 UTC
-    // Mariner 10 passed Mercury almost over the north pole at a distance of 327 kilometers
+    // Mariner 10 passed Mercury almost over the north pole at a distance of 327 km
     private static final GregorianCalendar mercuryEncounterDateTimeC =
             new GregorianCalendar(1975, 2, 16, 22, 39, 0);
     private static final Vector3D mercuryPositionC = EphemerisSolarSystem.getInstance().getBodyPosition("Mercury", mercuryEncounterDateTimeC);

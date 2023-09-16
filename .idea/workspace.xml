@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Visualisation settings for New Horizons and Cassini">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Name Ultima Thule replaced by Arrokoth">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/MarinerTenExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/MarinerTenExperiment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/MarinerTen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/MarinerTen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -345,7 +344,7 @@
       <recent name="application" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SolarSystemApplication">
+  <component name="RunManager" selected="Application.MarinerTenExperiment">
     <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
       <module name="SolarSystemSimulator" />
@@ -424,8 +423,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SolarSystemApplication" />
         <item itemvalue="Application.MarinerTenExperiment" />
+        <item itemvalue="Application.SolarSystemApplication" />
         <item itemvalue="JUnit.LambertProblemTest" />
         <item itemvalue="JUnit.CalendarUtilTest" />
         <item itemvalue="Application.FlorenceEarthExperiment" />
@@ -479,13 +478,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00032" summary="Bug fix set mass of moon of planet system">
-      <created>1638710177773</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1638710177773</updated>
     </task>
     <task id="LOCAL-00033" summary="Spacecraft Galileo">
       <created>1641312317044</created>
@@ -823,7 +815,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693666349185</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="Name Ultima Thule replaced by Arrokoth">
+      <created>1693667779379</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1693667779380</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -935,7 +934,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ephemeris for major planets and the Moon split in two BSP files" />
     <MESSAGE value="Ephemeris for Uranus System and Neptune System using BSP files" />
     <MESSAGE value="Ephemeris for Pluto System using BSP file (1970-2025)" />
     <MESSAGE value="Ephemeris for Galilean moons using BSP file (1970-2025)" />
@@ -960,7 +958,8 @@
     <MESSAGE value="Spacecraft Mariner 10" />
     <MESSAGE value=" Spacecraft Mariner 10 visualization" />
     <MESSAGE value="Visualisation settings for New Horizons and Cassini" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visualisation settings for New Horizons and Cassini" />
+    <MESSAGE value="Name Ultima Thule replaced by Arrokoth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Name Ultima Thule replaced by Arrokoth" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
