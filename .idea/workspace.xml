@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Name Ultima Thule replaced by Arrokoth">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Mariner 10 second Mercury encounter less to South and more towards Sun">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/MarinerTenExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/MarinerTenExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/MarinerTen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/MarinerTen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -479,13 +476,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00033" summary="Spacecraft Galileo">
-      <created>1641312317044</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1641312317044</updated>
-    </task>
     <task id="LOCAL-00034" summary="High res textures for Galilean moons">
       <created>1641312770574</created>
       <option name="number" value="00034" />
@@ -822,7 +812,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693667779380</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="Mariner 10 second Mercury encounter less to South and more towards Sun">
+      <created>1694852815519</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1694852815520</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -934,7 +931,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ephemeris for Uranus System and Neptune System using BSP files" />
     <MESSAGE value="Ephemeris for Pluto System using BSP file (1970-2025)" />
     <MESSAGE value="Ephemeris for Galilean moons using BSP file (1970-2025)" />
     <MESSAGE value="Ephemeris for Saturn System using BSP file (1970-2029)" />
@@ -959,7 +955,8 @@
     <MESSAGE value=" Spacecraft Mariner 10 visualization" />
     <MESSAGE value="Visualisation settings for New Horizons and Cassini" />
     <MESSAGE value="Name Ultima Thule replaced by Arrokoth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Name Ultima Thule replaced by Arrokoth" />
+    <MESSAGE value="Mariner 10 second Mercury encounter less to South and more towards Sun" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mariner 10 second Mercury encounter less to South and more towards Sun" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
