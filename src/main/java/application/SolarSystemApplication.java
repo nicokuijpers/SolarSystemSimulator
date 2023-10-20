@@ -580,6 +580,19 @@ public class SolarSystemApplication extends Application {
             CalendarUtil.createGregorianCalendar(2015, 7, 14, 12, 0, 0);
 
     /*
+     * Date/times in UTC to control 3D visualization from Giotto during encounter with
+     * Halley's Comet.
+     * January = 1, February = 2, etc
+     *
+     * https://en.wikipedia.org/wiki/Giotto_(spacecraft)
+     * Flyby of Comet Halley
+     * Closest approach	14 March 1986
+     * Distance	596 km (370 mi)
+     */
+    private GregorianCalendar startGiottoHalley =
+            CalendarUtil.createGregorianCalendar(1986, 3, 1, 0, 0, 0);
+
+    /*
      * Date/times in UTC to control 3D visualization from Rosetta during encounter with 67P
      * January = 1, February = 2, etc
      *
@@ -758,6 +771,7 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate.put("Voyager 1", CalendarUtil.createGregorianCalendar(1977,9,5,12,56,0));
         trajectoryStartDate.put("Voyager 2", CalendarUtil.createGregorianCalendar(1977,8,20,14,29,0));
         trajectoryStartDate.put("New Horizons", CalendarUtil.createGregorianCalendar(2006,1,19,19,0,0));
+        trajectoryStartDate.put("Giotto", CalendarUtil.createGregorianCalendar(1985, 7, 2, 11, 23, 0));
         trajectoryStartDate.put("Rosetta", CalendarUtil.createGregorianCalendar(2004, 3, 2, 7, 17, 0));
         trajectoryStartDate.put("Apollo 8", CalendarUtil.createGregorianCalendar(1968, 12, 21, 12, 51, 0));
         trajectoryStartDate.put("ISS", CalendarUtil.createGregorianCalendar(1998, 11, 21, 0, 0, 0));
@@ -1303,6 +1317,7 @@ public class SolarSystemApplication extends Application {
         createCircle("Encke", 6, Color.LIGHTGREEN);
         createCircle("67P/Churyumov-Gerasimenko", 5, Color.ORANGE);
         createCircle("Hale-Bopp", 5, Color.LIGHTBLUE);
+        createCircle("26P/Grigg-Skjellerup", 5, Color.WHITESMOKE);
         createCircle("Shoemaker-Levy 9", 5, Color.PINK);
         createCircle("Florence", 3, Color.LIGHTGREEN);
         createCircle("Arrokoth", 3, Color.RED);
@@ -1525,6 +1540,8 @@ public class SolarSystemApplication extends Application {
         createCheckBox("Hale-Bopp", "Hale-Bopp",
                 "Hale-Bopp passed perihelion on 1 April 1997 and "
                         + "was visible to the naked eye for 18 months.");
+        createCheckBox("26P/Grigg-Skjellerup", "26P/Grigg-Skjellerup",
+                "26P/Grigg-Skjellerup was visited by ESA's Giotto space probe on 10 July 1992.");
         createCheckBox("MarsMoons", "Mars Sys",
                 "Mars has two moons, Phobos and Deimos");
         createCheckBox("JupiterMoons", "Jupiter Sys",
@@ -3499,6 +3516,26 @@ public class SolarSystemApplication extends Application {
                         showMessage("Error",ex.getMessage());
                     }
                 }
+                if ("Giotto".equals(selectedBody)) {
+                    if (minDistance < 2.0E10 || solarSystem.getSimulationDateTime().after(startGiottoHalley)) {
+                        checkBoxStepMode.setSelected(true);
+                        startSimulationStepModeForward();
+                        double value = Math.min(100.0, Math.max(5.0, minDistance / 2.0E06));
+                        sliderZoomView.setValue(95.0 - 0.3 * value);
+                        if ("Halley".equals(observedBody)) {
+                            sliderSimulationSpeed.setValue(value*0.1);
+                        }
+                        else {
+                            sliderSimulationSpeed.setValue(100);
+                        }
+                    } else {
+                        checkBoxStepMode.setSelected(false);
+                        startSimulationForward();
+                        double value = Math.min(100.0, Math.max(0.0, (minDistance - 2.0E08) / 7.0E06));
+                        sliderZoomView.setValue(65.0 - 0.3 * value);
+                        sliderSimulationSpeed.setValue(value);
+                    }
+                }
                 if ("Galileo".equals(selectedBody)) {
                     if ("Jupiter".equals(closestBody)) {
                         checkBoxesBodies.get("JupiterMoons").setSelected(true);
@@ -4025,6 +4062,20 @@ public class SolarSystemApplication extends Application {
         voy2.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         voy2.setAutomaticView(true);
         events.add(voy2);
+        VisualizationSettings gio = new VisualizationSettings();
+        gio.setEventName("Launch Giotto (1985-07-02  11:23)");
+        gio.setSimulationStartDateTime(trajectoryStartDate.get("Giotto"));
+        gio.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Moon","Halley",
+                "26P/Grigg-Skjellerup","Giotto")));
+        gio.setSelectedBody("Giotto");
+        gio.setShowEphemeris(false);
+        gio.setShowRuler(true);
+        gio.setStepMode(false);
+        gio.setValueZoomView(20);
+        gio.setValueSimulationSpeed(100);
+        gio.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        gio.setAutomaticView(true);
+        events.add(gio);
         VisualizationSettings gal = new VisualizationSettings();
         gal.setEventName("Launch Galileo (1989-10-18)");
         gal.setSimulationStartDateTime(trajectoryStartDate.get("Galileo"));

@@ -31,7 +31,7 @@ import javafx.stage.Stage;
 public class BodySelectorPanel extends Stage {
 
     // Definition of constant values
-    private static final int PANELWIDTH = 370;
+    private static final int PANELWIDTH = 480;
     private static final int PANELHEIGHT = 315;
     private static final int CHECKBOXWIDTH = 110;
     private static final int GAPSIZE = 10;

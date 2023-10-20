@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Update orbit parameters Halley's Comet">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/SolarSystemParameters.java" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Parameters comet 26P/Grigg-Skjellerup">
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/BodySelectorPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -477,13 +477,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00037" summary="Observe impact Shoemaker-Levy 9 from spacecraft Galileo">
-      <created>1641320933820</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1641320933820</updated>
-    </task>
     <task id="LOCAL-00038" summary="Observe impact Shoemaker-Levy 9 from spacecraft Galileo">
       <created>1641321173237</created>
       <option name="number" value="00038" />
@@ -820,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697818547338</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="Parameters comet 26P/Grigg-Skjellerup">
+      <created>1697819499250</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1697819499250</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -932,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ephemeris using three BSP files Phobos and Deimos 1970-2029" />
     <MESSAGE value="Accurate ephemeris for major planets and moons 1600-2200" />
     <MESSAGE value="Ephemeris files (BSP) for Galileo and its probe" />
     <MESSAGE value="Ephemeris for Galileo mission using BSP files" />
@@ -957,7 +956,8 @@
     <MESSAGE value="3D Model of Giotto spacecraft" />
     <MESSAGE value="Giotto spacecraft" />
     <MESSAGE value="Update orbit parameters Halley's Comet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update orbit parameters Halley's Comet" />
+    <MESSAGE value="Parameters comet 26P/Grigg-Skjellerup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Parameters comet 26P/Grigg-Skjellerup" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
