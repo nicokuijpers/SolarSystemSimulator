@@ -85,6 +85,7 @@ public class SolarSystemVisualization extends Stage {
     private static final double DIAMETERNEWHORIZONS = 8.0E5; //  800 km
     private static final double DIAMETERROSETTA     = 2.5E5; //  250 km
     private static final double DIAMETERMARINERTEN  = 2.5E5; //  250 km
+    private static final double DIAMETERGIOTTO      = 2.5E5; //  250 km
     private static final double DIAMETERISS         = 2.0E5; //  200 km
     private static final double DIAMETERAPOLLO      = 2.0E5; //  200 km
 
@@ -316,6 +317,7 @@ public class SolarSystemVisualization extends Stage {
         spacecraftNames.add("Cassini");
         spacecraftNames.add("Apollo 8");
         spacecraftNames.add("ISS");
+        spacecraftNames.add("Giotto");
 
         // Set body rotations and offset for revolution for all shapes
         for (String name : bodies.keySet()) {
@@ -626,6 +628,7 @@ public class SolarSystemVisualization extends Stage {
         if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
             // Ignore given values for near/far distance
             camera.setNearClip(0.1 * SCREENDEPTH);
+            //camera.setNearClip(0.2 * SCREENDEPTH); // VIDEO GIOTTO NEAR HALLEY
             // Use 3 * SCREENDEPTH to see Saturn when observing Jupiter during
             // the great conjunction on Dec 19, 2020
             camera.setFarClip(SCREENDEPTH);
@@ -690,6 +693,9 @@ public class SolarSystemVisualization extends Stage {
             case "Mariner 10":
                 diameter = DIAMETERMARINERTEN;
                 break;
+            case "Giotto":
+                diameter = DIAMETERGIOTTO;
+                break;
             case "ISS":
                 diameter = DIAMETERISS;
                 break;
@@ -710,6 +716,7 @@ public class SolarSystemVisualization extends Stage {
             case "Hydra":
             case "Kerberos":
             case "Styx":
+            case "26P/Grigg-Skjellerup":
                 diameter = SCALESMALLMOON * solarSystemParameters.getDiameter(bodyName);
                 break;
             default:
@@ -809,6 +816,14 @@ public class SolarSystemVisualization extends Stage {
                         double angleZrad = Math.acos(spacecraftDirection.getZ());
                         double angleZdeg = Math.toDegrees(angleZrad);
                         bodyRotationsX.get(name).setAngle(90.0 + camPhiDeg - angleZdeg);
+                        // VIDEO GIOTTO
+                        // Giotto rotates every 4 seconds
+                        if ("Giotto".equals(name)) {
+                            int seconds = dateTime.get(Calendar.SECOND);
+                            int milliseconds = dateTime.get(Calendar.MILLISECOND);
+                            double revolutionAngleDeg = 360.0 * (((1000*seconds + milliseconds) % 4000) / 4000.0);
+                            bodyRotationsObliquity.get(name).setAngle(revolutionAngleDeg);
+                        }
                     }
                     else {
                         // Rotate spacecraft such that parabolic antenna is directed towards the Earth
@@ -1476,6 +1491,14 @@ public class SolarSystemVisualization extends Stage {
                 cameraPosition.addVector(spacecraftDirection.scalarProduct(shiftDistance));
             }
         }
+        if ("Giotto".equals(selectedBody) && "Halley".equals(observedBody)) {
+            // https://en.wikipedia.org/wiki/Giotto_(spacecraft)
+            // Flyby of Halley's Comet.
+            // Closest approach on 14 March 1986 at distance of 596 km.
+            // The shape of Halley's Comet is about 200 times larger compared to other objects
+            Vector3D spacecraftDirection = lookAtPosition.direction(spacecraftPosition);
+            cameraPosition.addVector(spacecraftDirection.scalarProduct(1.0E7));
+        }
         lookAt(cameraPosition,lookAtPosition);
 
         // Set field of view of the camera
@@ -1483,11 +1506,13 @@ public class SolarSystemVisualization extends Stage {
         double fieldOfView = diameter / FIELDOFVIEWFACTORSPACECRAFT;
         double distanceFromCenter = cameraPosition.euclideanDistance(bodyPosition);
         double distanceFromSurface = distanceFromCenter - 0.5*diameter;
-        if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody) || "Mariner 10".equals(selectedBody)) &&
+        if (("Rosetta".equals(selectedBody) || "Galileo".equals(selectedBody) ||
+                "Mariner 10".equals(selectedBody) || "Giotto".equals(selectedBody)) &&
                 !"Moon".equals(observedBody) && distanceFromSurface < 1.0E11) {
             // Rosetta comes close to the surface of the Earth and Mars
             // Galileo comes close to the surface of the Earth and the Galilean moons
             // Mariner 10 comes close to the surface of the Earth, Venus, and Mercury
+            // Giotto comes close to the surface of the Earth
             // Increase field of view depending on the distance to the surface
             fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
             if ("Mariner 10".equals(selectedBody) && "Earth".equals(observedBody) && distanceFromSurface < 1.0E06) {

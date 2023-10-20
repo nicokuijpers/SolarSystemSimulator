@@ -95,7 +95,7 @@ public class SolarSystemShapeFactory {
             case "Bennu":
                 return createSmallBody("Bennu",Color.LIGHTGRAY);
             case "Halley":
-                createSmallBody("Halley",Color.GRAY);
+                return createSmallBody("Halley",Color.GRAY);
             case "Encke":
                 return createSphere("Encke", Color.LIGHTGREEN);
             case "67P/Churyumov-Gerasimenko":
@@ -163,6 +163,7 @@ public class SolarSystemShapeFactory {
             case "Rosetta":
             case "Galileo":
             case "Cassini":
+            case "Giotto":
                 return createSpacecraft(bodyName, Color.LIGHTYELLOW);
             case "Apollo 8":
                 return createSpacecraft(bodyName, Color.SILVER);
