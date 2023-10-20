@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Spacecraft Giotto and comet 26P/Grigg-Skjellerup added">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Visualization of spacecraft Giotto and comet 26P/Grigg-Skjellerup">
+      <change afterPath="$PROJECT_DIR$/src/main/java/experiments/GiottoHalleyExperiment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemShapeFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/SolarSystemParameters.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -345,9 +342,9 @@
       <recent name="application" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SolarSystemApplication">
-    <configuration name="FlorenceEarthExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="experiments.FlorenceEarthExperiment" />
+  <component name="RunManager" selected="Application.GiottoHalleyExperiment">
+    <configuration name="GiottoHalleyExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="experiments.GiottoHalleyExperiment" />
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
         <pattern>
@@ -418,17 +415,17 @@
     <list>
       <item itemvalue="Application.MarinerTenExperiment" />
       <item itemvalue="Application.SolarSystemApplication" />
-      <item itemvalue="Application.FlorenceEarthExperiment" />
       <item itemvalue="JUnit.CalendarUtilTest" />
       <item itemvalue="JUnit.LambertProblemTest" />
+      <item itemvalue="Application.GiottoHalleyExperiment" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.GiottoHalleyExperiment" />
         <item itemvalue="Application.SolarSystemApplication" />
         <item itemvalue="Application.MarinerTenExperiment" />
         <item itemvalue="JUnit.LambertProblemTest" />
         <item itemvalue="JUnit.CalendarUtilTest" />
-        <item itemvalue="Application.FlorenceEarthExperiment" />
       </list>
     </recent_temporary>
   </component>
@@ -479,13 +476,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00040" summary="Accurate ephemeris for major planets and moons using BSP files">
-      <created>1641393115676</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1641393115676</updated>
     </task>
     <task id="LOCAL-00041" summary="Phobos, Deimos, Phoebe, Hyperion, Nereid, Proteus, moons of Pluto">
       <created>1641401171730</created>
@@ -823,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697820137250</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="Visualization of spacecraft Giotto and comet 26P/Grigg-Skjellerup">
+      <created>1697821107797</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1697821107797</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -935,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ephemeris files (BSP) for Galileo and its probe" />
     <MESSAGE value="Ephemeris for Galileo mission using BSP files" />
     <MESSAGE value="Galileo spacecraft uses BSP files to determine trajectory" />
     <MESSAGE value="Update documents" />
@@ -960,7 +956,8 @@
     <MESSAGE value="Update orbit parameters Halley's Comet" />
     <MESSAGE value="Parameters comet 26P/Grigg-Skjellerup" />
     <MESSAGE value="Spacecraft Giotto and comet 26P/Grigg-Skjellerup added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Spacecraft Giotto and comet 26P/Grigg-Skjellerup added" />
+    <MESSAGE value="Visualization of spacecraft Giotto and comet 26P/Grigg-Skjellerup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Visualization of spacecraft Giotto and comet 26P/Grigg-Skjellerup" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
