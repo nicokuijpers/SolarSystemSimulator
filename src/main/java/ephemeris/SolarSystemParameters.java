@@ -36,6 +36,9 @@ public class SolarSystemParameters {
     // From DECheck.java
     public static final double ASTRONOMICALUNIT = 1.49597870691E11;
 
+    // Number of seconds per day
+    private static final double nrSecondsPerDay = 24 * 60 * 60;
+
     // Number of days per century
     // https://www.grc.nasa.gov/www/k-12/Numbers/Math/Mathematical_Thinking/calendar_calculations.htm
     private static final double nrDaysPerCentury = 36524.25;
@@ -1566,33 +1569,43 @@ public class SolarSystemParameters {
                     periapsisPassageBennu, meanMotionBennu};
 
     /**
-     * JPL/HORIZONS                      1P/Halley                2017-May-28 08:05:31
-     * Rec #:900033 (+COV)   Soln.date: 2001-Aug-02_13:51:39   # obs: 7428 (1835-1994)
-     *
-     * IAU76/J2000 helio. ecliptic osc. elements (au, days, deg., period=Julian yrs):
-     *
-     * EPOCH=  2449400.5 ! 1994-Feb-17.0000000 (TDB)    RMSW= n.a.
-     * EC= .9671429084623044   QR= .5859781115169086   TP= 2446467.3953170511
-     * OM= 58.42008097656843   W= 111.3324851045177    IN= 162.2626905791606
-     * A= 17.83414429255373    MA= 38.384264476436     ADIST= 35.08231047359055
-     * PER= 75.315892782197    N= .013086564           ANGMOM= .01846886
-     * DAN= 1.77839            DDN= .8527              L= 306.1250589
-     * B= 16.4859355           MOID= .0637815          TP= 1986-Feb-05.8953170511
-     *
-     * Keplerian orbital parameters for comet 1P/Halley
-     * https://ssd.jpl.nasa.gov/sbdb.cgi?soln=SAO%2F1910;cad=0;cov=0;sstr=1P;orb=1;log=0;old=0#elem
+     * https://ssd.jpl.nasa.gov/horizons/app.html#/
+     * *******************************************************************************
+     * Ephemeris / WWW_USER Thu Aug 17 10:31:39 2023 Pasadena, USA      / Horizons
+     * *******************************************************************************
+     * Target body name: 1P/Halley                       {source: JPL#73}
+     * Center body name: Sun (10)                        {source: DE441}
+     * Center-site name: BODY CENTER
+     * *******************************************************************************
+     * Start time      : A.D. 1986-Mar-14 00:00:00.0000 TDB
+     * Stop  time      : A.D. 1986-Mar-15 00:00:00.0000 TDB
+     * Step-size       : 1440 minutes
+     * *******************************************************************************
+     * 2446503.500000000 = A.D. 1986-Mar-14 00:00:00.0000 TDB
+     *  EC= 9.672762642165265E-01 QR= 8.782947176592447E+07 IN= 1.622422026323596E+02
+     *  OM= 5.886005820198258E+01 W = 1.118656381655383E+02 Tp=  2446470.958944328595
+     *  N = 1.501109451684555E-07 MA= 4.220440090781836E-01 TA= 7.317310830521595E+01
+     *  A = 2.683968369231275E+09 AD= 5.280107266696625E+09 PR= 2.398226189276242E+09
+     * 2446504.500000000 = A.D. 1986-Mar-15 00:00:00.0000 TDB
+     *  EC= 9.672763553421685E-01 QR= 8.782948326137619E+07 IN= 1.622422043923148E+02
+     *  OM= 5.886005877754081E+01 W = 1.118656510222060E+02 Tp=  2446470.958947572857
+     *  N = 1.501102886784670E-07 MA= 4.350116501919553E-01 TA= 7.445297505012023E+01
+     *  A = 2.683976194575760E+09 AD= 5.280122905890143E+09 PR= 2.398236677641146E+09
+     * *******************************************************************************
      */
-    private static final double axisHalley = 17.83414429255373; // A [au]
-    private static final double eccentricityHalley = 0.9671429084623044; // EC [-]
-    private static final double inclinationHalley = 162.2626905791606; // IN [degrees]
-    private static final double argPerihelionHalley = 111.3324851045177; // [degrees]
-    private static final double longNodeHalley = 58.42008097656843; // OM [degrees]
-    private static final double perihelionPassageHalley = 2446467.395317050925; // TP [JED]
-    private static final double meanMotionHalley = 0.01308656479244564; // [degrees/day]
-    private static final double orbitalPeriodHalley = 75.315892782197; // PER [years]
+    private static final double axisHalleyKm = 2.683968369231275E+09; // A [km]
+    private static final double axisHalley = axisHalleyKm*1.0E3 / ASTRONOMICALUNIT; // A [au]
+    private static final double eccentricityHalley = 9.672762642165265E-01; // EC [-]
+    private static final double inclinationHalley = 1.622422026323596E+02; // IN [degrees]
+    private static final double argPerihelionHalley = 1.118656381655383E+02; // [degrees]
+    private static final double longNodeHalley = 5.886005820198258E+01; // OM [degrees]
+    private static final double perihelionPassageHalley = 2446470.958944328595; // TP [JED]
+    private static final double meanMotionHalleyDegPerSec = 1.501109451684555E-07; // [degrees/sec]
+    private static final double meanMotionHalley = meanMotionHalleyDegPerSec * nrSecondsPerDay; // [degrees/day]
     private static final double[] HALLEYORBITPARS = new double[]
             {axisHalley, eccentricityHalley, inclinationHalley, argPerihelionHalley, longNodeHalley,
                     perihelionPassageHalley, meanMotionHalley};
+
 
     /**
      * Keplerian orbital parameters for comet 2P/Encke
