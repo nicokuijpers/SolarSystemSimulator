@@ -849,6 +849,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             case "Galileo":
                 craft = new Galileo("Galileo", "Sun", this);
                 break;
+            case "Giotto":
+                craft = new Giotto("Giotto", "Sun", this);
+                break;
             default:
                 System.err.println("ERROR: No spacecraft with name " + spacecraftName);
                 craft = null;
