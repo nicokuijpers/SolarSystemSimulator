@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Mariner 10 second Mercury encounter less to South and more towards Sun">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="3D Model of Giotto spacecraft">
+      <change afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Giotto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -931,7 +931,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ephemeris for Pluto System using BSP file (1970-2025)" />
     <MESSAGE value="Ephemeris for Galilean moons using BSP file (1970-2025)" />
     <MESSAGE value="Ephemeris for Saturn System using BSP file (1970-2029)" />
     <MESSAGE value="Ephemeris using three BSP files Phobos and Deimos 1970-2029" />
@@ -956,7 +955,8 @@
     <MESSAGE value="Visualisation settings for New Horizons and Cassini" />
     <MESSAGE value="Name Ultima Thule replaced by Arrokoth" />
     <MESSAGE value="Mariner 10 second Mercury encounter less to South and more towards Sun" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mariner 10 second Mercury encounter less to South and more towards Sun" />
+    <MESSAGE value="3D Model of Giotto spacecraft" />
+    <option name="LAST_COMMIT_MESSAGE" value="3D Model of Giotto spacecraft" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
