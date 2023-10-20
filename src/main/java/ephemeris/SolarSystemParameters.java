@@ -79,6 +79,7 @@ public class SolarSystemParameters {
      * https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19730024004.pdf (page 2)
      * https://en.wikipedia.org/wiki/67P/Churyumov–Gerasimenko
      * Mass of comet C/1995 O1 (Hale-Bopp) is unknown. Estimated mass 1.0E13 kg
+     * Mass of comet 26P/Grigg-Skjellerup is unknown. Estimated mass 1.0E13 kg
      * Mass of comet D/1993 F2-A (Shoemaker-Levy 9) is unknown. Estimated mass 1.0E13 kg
      * Mass of asteroid 3122 Florence is unknown. Estimated mass 1.0E13 kg
      * Mass of Ultima Thule is computed from standard gravitational parameter mu = G*M
@@ -116,6 +117,7 @@ public class SolarSystemParameters {
     private static final double ENCKEMASS = 9.2E15; // nominal model
     private static final double CGMASS = 9.982E12;
     private static final double HBMASS = 1.0E13; // estimated
+    private static final double GSMASS = 1.0E13; // estimated
     private static final double SL9MASS = 1.0E13; // estimated
     private static final double FLORENCEMASS = 1.0E13; // estimated
     private static final double UTMASS =
@@ -200,6 +202,7 @@ public class SolarSystemParameters {
      * https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19730024004.pdf (page 2)
      * 67P/Churyumov–Gerasimenko: G * mass
      * C/1995 O1 (Hale-Bopp): G * mass with estimated mass 1.0E13 kg.
+     * 26P/Grigg-Skjellerup: G * mass with estimated mass 1.0E13 kg.
      * D/1993 F2-A (Shoemaker-Levy 9): G * mass with estimated mass 1.0E13 kg.
      * 3122 Florence: G * mass with estimated mass 1.0E13 kg.
      * Ultima Thule (HORIZONS) Keplerian GM =2.9591220828559093E-04 au^3/d^2
@@ -327,6 +330,7 @@ public class SolarSystemParameters {
      * https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19730024004.pdf (page 2): radius 1.3 km
      * https://en.wikipedia.org/wiki/67P/Churyumov–Gerasimenko: largest diameter 4.1 km
      * https://en.wikipedia.org/wiki/Comet_Hale–Bopp: dimensions 40 - 80 km
+     * https://en.wikipedia.org/wiki/26P/Grigg–Skjellerup: nucleus diameter 2.6 km
      * https://en.wikipedia.org/wiki/Comet_Shoemaker–Levy_9: diameter unknown
      * https://en.wikipedia.org/wiki/3122_Florence: maximum reported dimension 4.9 km
      * https://www.dw.com/en/nasa-faraway-mini-world-ultima-thule-is-snowman-shaped/a-46938428
@@ -385,7 +389,8 @@ public class SolarSystemParameters {
     private static final double HALLEYDIAMETER      = 1.1E04;     //     11 km
     private static final double ENCKEDIAMETER       = 2.6E03;     //      2.6 km
     private static final double CGDIAMETER          = 4.1E03;     //      4.1 km
-    private static final double HBDIAMETER          = 8.0E04;     //     80 km
+    private static final double HBDIAMETER          = 8.0E04;     //     80
+    private static final double GSDIAMETER          = 2.6E03;     //      2.6 km
     private static final double SL9DIAMETER         = 1.0E04;     //   estimated
     private static final double FLORENCEDIAMETER    = 4.9E03;     //      4.9 km
     private static final double UTDIAMETER          = 3.3E04;     //     33 km
@@ -1724,6 +1729,75 @@ public class SolarSystemParameters {
     private static final double[] HBORBITPARS = new double[]
             {axisHB, eccentricityHB, inclinationHB, argPerihelionHB, longNodeHB,
                     perihelionPassageHB, meanMotionHB};
+
+    /**
+     * Keplerian orbital parameters for comet 26P/Grigg–Skjellerup.
+     * https://en.wikipedia.org/wiki/26P/Grigg–Skjellerup
+     * Comet Grigg-Skjellerup is a periodic comet. It was visited by the Giotto probe
+     * in July 1992. The spacecraft came as close as 200 km, but could not take pictures,
+     * because some instruments were damaged from its encounter with Halley's Comet.
+     * The comet was discovered in 1902 by John Grigg of New Zealand, and rediscovered in
+     * its next appearance in 1922 by John Francis Skjellerup, an Australian then living
+     * and working in South Africa. In 1987, it was discovered by Ľubor Kresák that the
+     * comet had been observed in 1808 by Jean-Louis Pons.
+     * The comet has often suffered the gravitational influence of Jupiter, which has altered
+     * its orbit considerably. For instance, its perihelion distance has changed from 0.77 AU
+     * in 1725 to 0.89 AU in 1922 to 0.99 AU in 1977 and to 1.12 AU in 1999.
+     * REMARK: Parameters mass and mu = G*M are unknown.
+     *
+     * Orbital elements obtained from JPL's Small-Body Database
+     * https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=26p
+     * Epoch 2455440.5 (2010-Sep-01.0) TDB = Barycentric Dynamical Time
+     * e         0.6339236684420211
+     * a         3.038159478676167   au
+     * q         1.112198276641873   au
+     * i        22.40700482624807    deg
+     * node    211.6412756217135     deg
+     * peri      1.635708949076988   deg
+     * M       165.8843838939078     deg
+     * tp  2454549.213597815783 = 2008-Mar-23.71359782 TDB
+     * period 1934.25744638825 days = 5.295708272110199 years
+     * n         0.1861179341313699	deg/day
+     * Q         4.964120680710462	au
+     *
+     *
+     * Epoch 2448840.5 (1992-Aug-06.0) TDB
+     * e         0.664325
+     * q         0.994690    au
+     * tp  2448825.6377 = 1992-Jul-22.1377 TDB
+     * node    213.3403      deg
+     * peri    359.2650      deg
+     * i        21.0989	     deg
+     *
+     * Epoch 2446960.5 (1987-Jun-14.0) TDB
+     * e	      0.664712
+     * q	      0.993304    au
+     * tp   2446964.5459 = 1987-Jun-18.0459 TDB
+     * node	    213.3355     deg
+     * peri	    359.3057     deg
+     * i         21.1005     deg
+     *
+     * Physical parameters:
+     * Diameter 2.6 km
+     */
+    // q = a(1 - e), thus a = q/(1 - e)
+    // T = 2*pi*sqrt(a^3/(G*M)) with G*M = muSun
+    // n = 360/T
+    // Define orbital parameters (epoch 6 Aug 1992)
+    private static final double perihelionDistGS = 0.994690; // [au]
+    private static final double eccentricityGS = 0.664325; // [-]
+    private static final double axisGS = perihelionDistGS/(1.0 - eccentricityGS); // [au]
+    private static final double inclinationGS = 21.0989; // [degrees]
+    private static final double argPerihelionGS = 359.2650; // [degrees]
+    private static final double longNodeGS = 213.3403; // [degrees]
+    private static final double perihelionPassageGS = 2448825.6377; // [JED]
+    private static final double axisGSm = axisGS * ASTRONOMICALUNIT; // [m]
+    private static final double orbitalPeriodGSsec = 2*Math.PI*Math.sqrt((axisGSm*axisGSm*axisGSm)/SUNMU); // [seconds]
+    private static final double orbitalPeriodGS = orbitalPeriodGSsec/nrSecondsPerDay; // [days]
+    private static final double meanMotionGS = 360.0/orbitalPeriodGS; // [degrees/day]
+    private static final double[] GSORBITPARS = new double[]
+            {axisGS, eccentricityGS, inclinationGS, argPerihelionGS, longNodeGS,
+                    perihelionPassageGS, meanMotionGS};
 
     /**
      * Keplerian orbital parameters for asteroid 3122 Florence.
@@ -3177,6 +3251,7 @@ public class SolarSystemParameters {
         massMap.put("67P/Churyumov-Gerasimenko", CGMASS);
         massMap.put("Shoemaker-Levy 9", SL9MASS);
         massMap.put("Hale-Bopp", HBMASS);
+        massMap.put("26P/Grigg-Skjellerup", GSMASS);
         massMap.put("Florence", FLORENCEMASS);
         massMap.put("Arrokoth", UTMASS);
         massMap.put("Gaspra", GASPRAMASS);
@@ -3288,6 +3363,7 @@ public class SolarSystemParameters {
         diameterMap.put("67P/Churyumov-Gerasimenko", CGDIAMETER);
         diameterMap.put("Shoemaker-Levy 9", SL9DIAMETER);
         diameterMap.put("Hale-Bopp", HBDIAMETER);
+        diameterMap.put("26P/Grigg-Skjellerup", GSDIAMETER);
         diameterMap.put("Florence", FLORENCEDIAMETER);
         diameterMap.put("Arrokoth", UTDIAMETER);
         diameterMap.put("Gaspra", GASPRADIAMETER);
@@ -3546,6 +3622,7 @@ public class SolarSystemParameters {
         orbitParametersMap.put("67P/Churyumov-Gerasimenko", CGORBITPARS);// Comet P67/Churyumov-Gerasimenko
         orbitParametersMap.put("Shoemaker-Levy 9", SL9ORBITPARS);// Comet D/1993 F2-A Shoemaker-Levy 9
         orbitParametersMap.put("Hale-Bopp", HBORBITPARS);// Comet C/1995 O1 Hale-Bopp
+        orbitParametersMap.put("26P/Grigg-Skjellerup", GSORBITPARS);// Comet 26P/Grigg-Skjellerup
         orbitParametersMap.put("Florence", FLORENCEORBITPARS);// Asteroid 3122 Florence
         orbitParametersMap.put("Arrokoth", UTORBITPARS);// Kuiper belt object Arrokoth (nickname Ultima Thule)
         orbitParametersMap.put("Gaspra", GASPRAORBITPARS);// Asteroid 951 Gaspra
