@@ -628,7 +628,6 @@ public class SolarSystemVisualization extends Stage {
         if (viewMode.equals(SolarSystemViewMode.TELESCOPE)) {
             // Ignore given values for near/far distance
             camera.setNearClip(0.1 * SCREENDEPTH);
-            //camera.setNearClip(0.2 * SCREENDEPTH); // VIDEO GIOTTO NEAR HALLEY
             // Use 3 * SCREENDEPTH to see Saturn when observing Jupiter during
             // the great conjunction on Dec 19, 2020
             camera.setFarClip(SCREENDEPTH);
@@ -816,14 +815,6 @@ public class SolarSystemVisualization extends Stage {
                         double angleZrad = Math.acos(spacecraftDirection.getZ());
                         double angleZdeg = Math.toDegrees(angleZrad);
                         bodyRotationsX.get(name).setAngle(90.0 + camPhiDeg - angleZdeg);
-                        // VIDEO GIOTTO
-                        // Giotto rotates every 4 seconds
-                        if ("Giotto".equals(name)) {
-                            int seconds = dateTime.get(Calendar.SECOND);
-                            int milliseconds = dateTime.get(Calendar.MILLISECOND);
-                            double revolutionAngleDeg = 360.0 * (((1000*seconds + milliseconds) % 4000) / 4000.0);
-                            bodyRotationsObliquity.get(name).setAngle(revolutionAngleDeg);
-                        }
                     }
                     else {
                         // Rotate spacecraft such that parabolic antenna is directed towards the Earth
@@ -837,6 +828,14 @@ public class SolarSystemVisualization extends Stage {
                         double angleZrad = Math.acos(directionToEarth.getZ());
                         double angleZdeg = Math.toDegrees(angleZrad);
                         bodyRotationsX.get(name).setAngle(90.0 + camPhiDeg - angleZdeg);
+                        // VIDEO GIOTTO
+                        // Giotto rotates every 4 seconds
+                        if ("Giotto".equals(name)) {
+                            int seconds = dateTime.get(Calendar.SECOND);
+                            int milliseconds = dateTime.get(Calendar.MILLISECOND);
+                            double revolutionAngleDeg = 360.0 * (((1000*seconds + milliseconds) % 4000) / 4000.0);
+                            bodyRotationsObliquity.get(name).setAngle(revolutionAngleDeg);
+                        }
                     }
                 } else {
                     // Rotate around y-axis to visualize revolution
