@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Experiment spacecraft Giotto and encounters with Halley, Earth, and 26P/Grigg-Skjellerup">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Visualization of rotation of spacecraft Giotto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SolarSystemVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/Giotto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/Giotto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -477,13 +477,6 @@
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
     </task>
-    <task id="LOCAL-00042" summary="Oblate planet">
-      <created>1641460385667</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1641460385667</updated>
-    </task>
     <task id="LOCAL-00043" summary="Visualization orbit of moons of Pluto System (information panel)">
       <created>1641461071198</created>
       <option name="number" value="00043" />
@@ -820,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697822597671</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Visualization of rotation of spacecraft Giotto">
+      <created>1697882937817</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1697882937817</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -932,7 +932,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Galileo spacecraft uses BSP files to determine trajectory" />
     <MESSAGE value="Update documents" />
     <MESSAGE value="Update orbit parameters ISS" />
     <MESSAGE value="Update orbit parameters Rosetta" />
@@ -957,7 +956,8 @@
     <MESSAGE value="Spacecraft Giotto and comet 26P/Grigg-Skjellerup added" />
     <MESSAGE value="Visualization of spacecraft Giotto and comet 26P/Grigg-Skjellerup" />
     <MESSAGE value="Experiment spacecraft Giotto and encounters with Halley, Earth, and 26P/Grigg-Skjellerup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Experiment spacecraft Giotto and encounters with Halley, Earth, and 26P/Grigg-Skjellerup" />
+    <MESSAGE value="Visualization of rotation of spacecraft Giotto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Visualization of rotation of spacecraft Giotto" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">

@@ -194,6 +194,27 @@ public class Giotto extends Spacecraft implements Serializable {
      * X = 258711.735 m
      * Y = 574371.257 m
      * Z = -16391.104 m
+     *
+     * Schwehm, G. (1991). Giotto extended mission. Advances in Space Research, 11(12), 127–131.
+     * doi:10.1016/0273-1177(91)90554-w
+     * https://www.sciencedirect.com/science/article/abs/pii/027311779190554W
+     * https://sci-hub.se/https://doi.org/10.1016/0273-1177(91)90554-W
+     * ... Earth gravity assist manoeuvre that was performed on 2 July 1990, 10:01:18 UT perigee time.
+     * Coming from deep space Giotto encountered the Earth on a nearly hyperbolic orbit with its
+     * perigee at a distance of about 22,731 km (approx. 3.56 Earth radii) from the Earth surface.
+     * Both the magnetometer experiment and the energetic particle experiment were switched on during
+     * the swing-by and provided excellent data. Thus, Giotto's mission to planet Earth is the first
+     * encounter of an observing spacecraft, coming from deep space, with our home planet.
+     *
+     * Glassmeier et al. Giotto's Mission to Planet Earth. Geophysical Research Letters,
+     * Vol 18, No 9, pp 1663-1666
+     * https://agupubs.onlinelibrary.wiley.com/doi/10.1029/91GL00550
+     * https://sci-hub.se/10.1029/91GL00550
+     * ... a close swing-by with the Earth was necessary and was performed on July 2, 1990,
+     * 10:01:18 UT perigee time. Coming from deep space Giotto encountered the Earth on a nearly
+     * hyperbolic orbit with perigee at a distance of about 22731 km from the Earth's surface.
+     * ...
+     * See Figure 1 for the trajectory of Giotto during the encounter of the Earth.
      */
 
     // Default serialVersion id
@@ -253,6 +274,34 @@ public class Giotto extends Spacecraft implements Serializable {
     private static final GregorianCalendar correctionJ =
             new GregorianCalendar(1990, 4, 15, 0, 0, 0);
 
+    // Schedule simulated correction on June 20, 1990, 0:00 UTC
+    private static final GregorianCalendar correctionJA =
+            new GregorianCalendar(1990, 5, 20, 0, 0, 0);
+
+    // Schedule simulated correction on June 25, 1990, 0:00 UTC
+    private static final GregorianCalendar correctionJB =
+            new GregorianCalendar(1990, 5, 25, 0, 0, 0);
+
+    // Schedule simulated correction on June 28, 1990, 0:00 UTC
+    private static final GregorianCalendar correctionJC =
+            new GregorianCalendar(1990, 5, 28, 0, 0, 0);
+
+    // Schedule simulated correction on June 29, 1990, 0:00 UTC
+    private static final GregorianCalendar correctionJD =
+            new GregorianCalendar(1990, 5, 29, 0, 0, 0);
+
+    // Schedule simulated correction on June 30, 1990, 0:00 UTC
+    private static final GregorianCalendar correctionJE =
+            new GregorianCalendar(1990, 5, 30, 0, 0, 0);
+
+    // Schedule simulated correction on June 30, 1990, 12:00 UTC
+    private static final GregorianCalendar correctionJF =
+            new GregorianCalendar(1990, 5, 30, 12, 0, 0);
+
+    // Schedule simulated correction on July 1, 1990, 00:00 UTC
+    private static final GregorianCalendar correctionJG =
+            new GregorianCalendar(1990, 6, 1, 0, 0, 0);
+
     // Schedule simulated correction on July 10, 1990, 0:00 UTC after Earth flyby on July 2
     private static final GregorianCalendar correctionK =
             new GregorianCalendar(1990, 6, 10, 0, 0, 0);
@@ -276,20 +325,20 @@ public class Giotto extends Spacecraft implements Serializable {
     // Position of Giotto relative to Halley's Comet at moment of encounter
     private static final Vector3D positionGiottoRelativeToHalley = new Vector3D(258711.735, 574371.257 , -16391.104);
 
-    // Encounter with Earth on July 2, 1990 at 12.00 (Time estimated)
+    // Encounter with Earth on July 2, 1990 at 10:01:18 UT perigee time
     private static final GregorianCalendar encounterEarthDateTime =
-            new GregorianCalendar(1990, 6, 2, 12, 0, 0);
+            new GregorianCalendar(1990, 6, 2, 10, 1, 18);
 
-    // Closest distance during encounter with Earth was 22,730 km = 22,730,000 m
-    private static final double distanceEncounterEarth = 2.273E07;
+    // Closest distance during encounter with Earth was 22,731 km = 22,731,000 m
+    private static final double distanceEncounterEarth = 2.2731E07;
 
     // Arrival date/time to determine orbital parameters for the flight near Earth with center body Earth
     private static final GregorianCalendar arrivalEarthDateTime =
-            new GregorianCalendar(1990, 5, 30, 0, 0, 0);
+            new GregorianCalendar(1990, 6, 1, 10, 1, 18);
 
     // Departure date/time to determine orbital parameters for the flight near Earth with center body Earth
     private static final GregorianCalendar departureEarthDateTime =
-            new GregorianCalendar(1990, 6, 4, 0, 0, 0);
+            new GregorianCalendar(1990, 6, 3, 10, 1, 18);
 
     // Encounter with 26P/Grigg-Skjellerup on July 10, 1992 at 15:18:43
     private static final GregorianCalendar encounterGSDateTime =
@@ -368,13 +417,14 @@ public class Giotto extends Spacecraft implements Serializable {
                 EphemerisSolarSystem.getInstance().getBodyVelocity("Earth", encounterEarthDateTime);
 
         // Position of Giotto during passage on July 2, 1990
-        // Distance from surface of the Earth was 22,730 km
-        // It is assumed that Giotto was behind the Earth at the moment of closest distance
-        // The exact time is not known. It is assumed that this time was 12.00 (noon)
+        // Encounter with Earth on July 2, 1990 at 10:01:18 UT perigee time
+        // Distance from surface of the Earth was 22,731 km
+        // Closest approach was away from the Sun, see Glassmeier et al. Mission to Planet Earth. Figure 1
         double radiusEarth = 0.5*SolarSystemParameters.getInstance().getDiameter("Earth");
         double distanceEncounterEarthCenter = radiusEarth + distanceEncounterEarth;
+        Vector3D directionGiottoEarthEncounter = positionEarthEncounter.normalize().rotateXdeg(45.0);
         Vector3D positionGiottoEarthEncounter =
-                positionEarthEncounter.minus(velocityEarthEncounter.normalize().scalarProduct(distanceEncounterEarthCenter));
+                positionEarthEncounter.plus(directionGiottoEarthEncounter.scalarProduct(distanceEncounterEarthCenter));
 
         // Orbital parameters relative to the Sun for trajectory from the Earth to Halley's Comet
         double[] orbitParsEarthHalley =
@@ -418,27 +468,6 @@ public class Giotto extends Spacecraft implements Serializable {
         double[] orbitParsCorrectionF = computeOrbitalParameters(correctionF, encounterEarthDateTime,
                 positionGiottoCorrectionF, positionGiottoEarthEncounter, "Sun", false ,8);
 
-        // Position of Giotto at Earth arrival
-        double[] orbitElementsArrivalEarthRelativeToSun = EphemerisUtil.computeOrbitalElements(orbitParsCorrectionF, arrivalEarthDateTime);
-        Vector3D positionArrivalEarthRelativeToSun = EphemerisUtil.computePosition(orbitElementsArrivalEarthRelativeToSun);
-        Vector3D positionEarthArrivalEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth", arrivalEarthDateTime);
-        Vector3D positionArrivalEarthRelativeToEarth = positionArrivalEarthRelativeToSun.minus(positionEarthArrivalEarth);
-
-        // Position of spacecraft during encounter with Earth
-        Vector3D positionEarthEncounterEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth", encounterEarthDateTime);
-        Vector3D positionEncounterEarthRelativeToEarth = positionGiottoEarthEncounter.minus(positionEarthEncounterEarth);
-
-        // Orbital parameters with center body Earth during Earth encounter
-        double[] orbitParsEncounterEarth =
-                computeOrbitalParameters(arrivalEarthDateTime, encounterEarthDateTime,
-                        positionArrivalEarthRelativeToEarth, positionEncounterEarthRelativeToEarth, "Earth", false, 0);
-
-        // Position of Giotto when leaving Earth
-        double[] orbitElementsDepartureEarthRelativeToEarth = EphemerisUtil.computeOrbitalElements(orbitParsEncounterEarth, departureEarthDateTime);
-        Vector3D positionDepartureEarthRelativeToEarth = EphemerisUtil.computePosition(orbitElementsDepartureEarthRelativeToEarth);
-        Vector3D positionEarthDepartureEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth", departureEarthDateTime);
-        Vector3D positionDepartureEarthRelativeToSun = positionEarthDepartureEarth.plus(positionDepartureEarthRelativeToEarth);
-
         // Position of 26P/Grigg–Skjellerup at moment of encounter
         Vector3D positionGSEncounter =
                 EphemerisSolarSystem.getInstance().getBodyPosition("26P/Grigg-Skjellerup", encounterGSDateTime);
@@ -448,10 +477,27 @@ public class Giotto extends Spacecraft implements Serializable {
         Vector3D positionGiottoGSEncounter =
                 positionGSEncounter.plus(positionGSEncounter.normalize().scalarProduct(distanceEncounterGS));
 
-        // Orbital parameters relative to the Sun for trajectory to 26P/Grigg–Skjellerup
+        // Orbital parameters relative to the Sun for trajectory from encounter with Earth to 26P/Grigg–Skjellerup
         double[] orbitParsEncounterGS =
-                computeOrbitalParameters(departureEarthDateTime, encounterGSDateTime,
-                        positionDepartureEarthRelativeToSun, positionGiottoGSEncounter, "Sun", false ,1);
+                computeOrbitalParameters(encounterEarthDateTime, encounterGSDateTime,
+                        positionEarthEncounter, positionGiottoGSEncounter, "Sun", false ,1);
+
+        // Position of Giotto at Earth arrival
+        double[] orbitElementsArrivalEarthRelativeToSun = EphemerisUtil.computeOrbitalElements(orbitParsCorrectionF, arrivalEarthDateTime);
+        Vector3D positionArrivalEarthRelativeToSun = EphemerisUtil.computePosition(orbitElementsArrivalEarthRelativeToSun);
+        Vector3D positionEarthArrivalEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth", arrivalEarthDateTime);
+        Vector3D positionArrivalEarthRelativeToEarth = positionArrivalEarthRelativeToSun.minus(positionEarthArrivalEarth);
+
+        // Position of Giotto when leaving Earth
+        double[] orbitElementsDepartureEarthRelativeToSun = EphemerisUtil.computeOrbitalElements(orbitParsEncounterGS, departureEarthDateTime);
+        Vector3D positionDepartureEarthRelativeToSun = EphemerisUtil.computePosition(orbitElementsDepartureEarthRelativeToSun);
+        Vector3D positionEarthDepartureEarth = EphemerisSolarSystem.getInstance().getBodyPosition("Earth", departureEarthDateTime);
+        Vector3D positionDepartureEarthRelativeToEarth = positionDepartureEarthRelativeToSun.minus(positionEarthDepartureEarth);
+
+        // Orbital parameters with center body Earth during Earth encounter
+        double[] orbitParsEncounterEarth =
+                computeOrbitalParameters(arrivalEarthDateTime, departureEarthDateTime,
+                        positionArrivalEarthRelativeToEarth, positionDepartureEarthRelativeToEarth, "Earth", false, 0);
 
         // Define trajectory
         List<SpacecraftTrajectory> trajectories = new ArrayList<>();
@@ -473,7 +519,6 @@ public class Giotto extends Spacecraft implements Serializable {
                 new SpacecraftTrajectory(arrivalEarthDateTime, departureEarthDateTime, "Earth", orbitParsEncounterEarth));
         trajectories.add(
                 new SpacecraftTrajectory(departureEarthDateTime, deactivated, "Sun", orbitParsEncounterGS));
-
         return trajectories;
     }
 
@@ -522,6 +567,13 @@ public class Giotto extends Spacecraft implements Serializable {
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionH)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionI)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJ)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJA)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJB)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJC)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJD)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJE)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJF)));
+        solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionJG)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(arrivalEarthDateTime)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(departureEarthDateTime)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionK)));
@@ -545,18 +597,6 @@ public class Giotto extends Spacecraft implements Serializable {
                                                      Vector3D ephemerisPosition, Vector3D encounterPosition, String centerBodyName,
                                                      boolean cw, int multiRevs) {
 
-        /* DEBUG
-        System.out.println();
-        System.out.println("COMPUTE ORBITAL PARAMETERS");
-        System.out.println("Ephemeris date/time " + CalendarUtil.calendarToString(ephemerisDateTime));
-        System.out.println("Encounter date/time " + CalendarUtil.calendarToString(encounterDateTime));
-        System.out.println("Ephemeris position  " + ephemerisPosition);
-        System.out.println("Encounter position  " + encounterPosition);
-        System.out.println("Center body         " + centerBodyName);
-        System.out.println("Parameter cw        " + cw);
-        System.out.println("Parameter mulitRevs " + multiRevs);
-        */
-
         // Obtain desired velocity of spacecraft at time of ephemeris by solving Lambert's problem
         double tof = (encounterDateTime.getTimeInMillis() - ephemerisDateTime.getTimeInMillis()) / 1000.0;
         double mu = SolarSystemParameters.getInstance().getMu(centerBodyName);
@@ -565,7 +605,6 @@ public class Giotto extends Spacecraft implements Serializable {
             LambertProblem lambertProblem = new LambertProblem(ephemerisPosition, encounterPosition, tof, mu, cw, multiRevs);
             int index = lambertProblem.getMaxNumberRevolutions();
             ephemerisVelocity = lambertProblem.getAllVelocities1()[index];
-            // System.out.println(lambertProblem);
         } catch (SolarSystemException e) {
             e.printStackTrace();
         }
@@ -573,17 +612,6 @@ public class Giotto extends Spacecraft implements Serializable {
         // Compute orbital parameters from position and velocity of spacecraft at time of ephemeris
         double[] orbitParametersSpacecraft = EphemerisUtil.computeOrbitalParametersFromPositionVelocity(mu,
                 ephemerisPosition, ephemerisVelocity, ephemerisDateTime);
-
-        /* DEBUG
-        System.out.println("ORBIT PARAMETERS:");
-        System.out.println(" semi-major axis [au]                  " + orbitParametersSpacecraft[0]);
-        System.out.println(" eccentricity [-]                      " + orbitParametersSpacecraft[1]);
-        System.out.println(" inclination [degrees]                 " + orbitParametersSpacecraft[2]);
-        System.out.println(" argument of perifocus [degrees]       " + orbitParametersSpacecraft[3]);
-        System.out.println(" longitude of ascending node [degrees] " + orbitParametersSpacecraft[4]);
-        System.out.println(" time of perifocus passage [JED]       " + orbitParametersSpacecraft[5]);
-        System.out.println(" mean motion [degrees/day]             " + orbitParametersSpacecraft[6]);
-        */
 
         return orbitParametersSpacecraft;
     }
