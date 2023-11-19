@@ -384,6 +384,9 @@ public class SolarSystemVisualization extends Stage {
         // Distance 530,000 km
         // https://sci.esa.int/web/gaia/-/59630-image-of-triton-from-voyager-2
         offsetRevolution.put("Triton",50.0);
+        // Correction for Halley's Comet as seen from Giotto at 1986-02-13 23:55 (UTC)
+        // https://sci.esa.int/web/giotto/-/26428-the-nucleus-of-comet-halley
+        offsetRevolution.put("Halley",-70.0);
 
         // High and low resolution version of the Earth and Earth's clouds have
         // the same transformations (translations and rotations) as the small
