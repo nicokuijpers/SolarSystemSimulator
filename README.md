@@ -28,7 +28,7 @@ Video The Journey of Rosetta: https://youtu.be/oY79OQmN518
 
 Video The Journey of Mariner 10: https://youtu.be/lOKnr1tp4TQ
 
-Video The Journey of Giotto: https://youtu.be/45rrlIs2UxU?si=6z9ShUJOqy_DoQy0
+Video The Journey of Giotto: https://www.youtube.com/watch?v=45rrlIs2UxU
 
 Required ephemeris files:\
 DE405EphemerisFiles (directory containing DE405 ephemeris data as text files)\
