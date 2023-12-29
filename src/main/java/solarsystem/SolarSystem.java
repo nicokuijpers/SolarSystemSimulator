@@ -240,17 +240,7 @@ public class SolarSystem extends ParticleSystem implements Serializable {
             // Create the planet system
             ParticleSystem planetSystem;
             if ("Pluto System".equals(planetName)) {
-                //if ("Mars".equals(planetName) || "Pluto System".equals(planetName)) {
                 planetSystem = new ParticleSystem();
-                // DEBUG
-                /*
-                if ("Mars".equals(planetName)) {
-                    double massPlanet = solarSystemParameters.getMass(planetName);
-                    double muPlanet = solarSystemParameters.getMu(planetName);
-                    Particle planet = new Particle(massPlanet, muPlanet, new Vector3D(), new Vector3D());
-                    planetSystem.addParticle("Mars Extra", planet);
-                }
-                 */
             }
             else {
                 planetSystem = new OblatePlanetSystem(planetName, this);
@@ -347,8 +337,13 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param deltaT simulation time step [s]
      */
     private void advancePlanetSystems(double deltaT) {
-        // Time step for planet systems is at most 10 minutes
-        double timeStep = Math.min(Math.abs(deltaT), 600.0);
+        // Time step for planet systems is at most 5 minutes
+        // 5 minutes is a compromise to obtain accurate
+        // simulation results for Mimas, Enceladus, Miranda, and Proteus.
+        // A simulation time step of 1 minute gives better results
+        // for Phobos, but has little effect on other moons.
+        // See SolarSystemMoonsExperiment.java
+        double timeStep = Math.min(Math.abs(deltaT), 300.0);
 
         // Position planet systems relative to the Sun
         for (String planetName : planetSystems.keySet()) {
@@ -576,16 +571,9 @@ public class SolarSystem extends ParticleSystem implements Serializable {
      * @param moonName
      */
     private void moveMoonParticle(String moonName) {
-        Vector3D[] positionAndVelocityMoon;
-        if ("Triton".equals(moonName)) {
-            // Use accurate ephemeris to initialize position and velocity for Triton
-            EphemerisTriton ephemerisTriton = (EphemerisTriton) EphemerisTriton.getInstance();
-            positionAndVelocityMoon =
-                    ephemerisTriton.getBodyPositionVelocityTritonForInitialization(simulationDateTime);
-        }
-        else {
-            positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, simulationDateTime);
-        }
+
+        // Obtain position and velocity of moon from Ephemeris
+        Vector3D[] positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, simulationDateTime);
         Vector3D positionMoon = positionAndVelocityMoon[0];
         Vector3D velocityMoon = positionAndVelocityMoon[1];
 
@@ -718,16 +706,8 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     private void createMoon(String planetName, String moonName, 
             double mass, double mu, double diameter, GregorianCalendar date) {
 
-        Vector3D[] positionAndVelocityMoon;
-        if ("Triton".equals(moonName)) {
-            // Use accurate ephemeris to initialize position and velocity for Triton
-            EphemerisTriton ephemerisTriton = (EphemerisTriton) EphemerisTriton.getInstance();
-            positionAndVelocityMoon =
-                    ephemerisTriton.getBodyPositionVelocityTritonForInitialization(date);
-        }
-        else {
-            positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, date);
-        }
+        // Obtain position and velocity of moon from Ephemeris
+        Vector3D[] positionAndVelocityMoon = ephemeris.getBodyPositionVelocity(moonName, date);
         Vector3D positionMoon = positionAndVelocityMoon[0];
         Vector3D velocityMoon = positionAndVelocityMoon[1];
 
