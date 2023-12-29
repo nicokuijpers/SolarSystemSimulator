@@ -52,8 +52,8 @@ public class Particle implements Serializable {
     private double mu;
     private Vector3D position;
     private Vector3D velocity;
-    private Vector3D acceleration = new Vector3D(); // DEBUG GR
-    private Vector3D accelerationNewtonMechanics = new Vector3D(); // DEBUG GR
+    private Vector3D acceleration = new Vector3D(); // GR computation
+    private Vector3D accelerationNewtonMechanics = new Vector3D(); // GR computation
     private double potentialEnergy;
 
     // Store position and velocity of former time step for

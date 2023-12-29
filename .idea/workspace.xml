@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Offset revolution for Halley's Comet adjusted for Giotto passage">
-      <change afterPath="$PROJECT_DIR$/EphemerisFilesBSP/nep081_NeptuneSystem_2000_2029.bsp" afterDir="false" />
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Oblateness max distance set to 5 mln km">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EphemerisFilesBSP/nep081_NeptuneMoons_1970_2025.bsp" beforeDir="false" afterPath="$PROJECT_DIR$/EphemerisFilesBSP/nep081_NeptuneSystem_1970_1999.bsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoonsBSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisNeptuneMoonsBSP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisSolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisTriton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ephemeris/EphemerisTriton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SolarSystemMoonsExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/OblatePlanet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -350,7 +343,7 @@
       <recent name="application" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SolarSystemMoonsExperiment">
+  <component name="RunManager" selected="Application.SolarSystemApplication">
     <configuration name="GiottoHalleyExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.GiottoHalleyExperiment" />
       <module name="SolarSystemSimulator" />
@@ -427,8 +420,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SolarSystemMoonsExperiment" />
         <item itemvalue="Application.SolarSystemApplication" />
+        <item itemvalue="Application.SolarSystemMoonsExperiment" />
         <item itemvalue="Application.GiottoHalleyExperiment" />
         <item itemvalue="Application.MarinerTenExperiment" />
         <item itemvalue="JUnit.LambertProblemTest" />
@@ -482,20 +475,6 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-    </task>
-    <task id="LOCAL-00045" summary="Update workspace">
-      <created>1641489229397</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1641489229397</updated>
-    </task>
-    <task id="LOCAL-00046" summary="Calendar conversion take seconds and milliseconds into account">
-      <created>1641556615533</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1641556615533</updated>
     </task>
     <task id="LOCAL-00047" summary="Pluto as major planet renamed to Pluto System">
       <created>1641557000027</created>
@@ -826,7 +805,21 @@
       <option name="project" value="LOCAL" />
       <updated>1700393739214</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="Ephemeris Triton using BSP file; 5 min timestep to update planet systems">
+      <created>1703857862170</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1703857862171</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Oblateness max distance set to 5 mln km">
+      <created>1703857944031</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1703857944031</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -938,8 +931,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update orbit parameters Rosetta" />
-    <MESSAGE value="Update orbit parameters Galileo" />
     <MESSAGE value="Update constants for Earth ascension and declination of z-axis" />
     <MESSAGE value="Update constants for Earth ascension and declination of z-axis - reference included" />
     <MESSAGE value="Draw shadow of Galilean moon first, then the moon itself" />
@@ -963,7 +954,9 @@
     <MESSAGE value="Visualization of rotation of spacecraft Giotto" />
     <MESSAGE value="Improved trajectory for spacecraft Giotto during encounter with Earth" />
     <MESSAGE value="Offset revolution for Halley's Comet adjusted for Giotto passage" />
-    <option name="LAST_COMMIT_MESSAGE" value="Offset revolution for Halley's Comet adjusted for Giotto passage" />
+    <MESSAGE value="Ephemeris Triton using BSP file; 5 min timestep to update planet systems" />
+    <MESSAGE value="Oblateness max distance set to 5 mln km" />
+    <option name="LAST_COMMIT_MESSAGE" value="Oblateness max distance set to 5 mln km" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
