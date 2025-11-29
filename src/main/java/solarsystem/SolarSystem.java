@@ -181,6 +181,20 @@ public class SolarSystem extends ParticleSystem implements Serializable {
     }
 
     /**
+     * Set/reset flag to apply Curvature of Wave Propagation Method (CWPM)
+     * when computing acceleration.
+     * @param flag flag
+     */
+    @Override
+    public void setCurvatureWavePropagationFlag(boolean flag) {
+        super.setCurvatureWavePropagationFlag(flag);
+        for (ParticleSystem planetSystem : planetSystems.values()) {
+            planetSystem.setCurvatureWavePropagationFlag(flag);
+        }
+        setValidABM4(false);
+    }
+
+    /**
      * Get reference to particle with given name.
      * @param name    Name of particle
      * @return particle with given name

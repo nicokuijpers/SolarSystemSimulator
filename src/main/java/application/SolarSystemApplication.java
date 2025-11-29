@@ -66,11 +66,11 @@ public class SolarSystemApplication extends Application {
 
     // Screen size
     private static final int BORDERSIZE = 10;
-    // private static final int BORDERSIZE = 0; // TO REMOVE WHITE BORDERS
+    //private static final int BORDERSIZE = 0; // TO REMOVE WHITE BORDERS
     private static final int SCREENWIDTH = 900;
     private static final int SCREENHEIGHT = 900;
-    //private static final int SCREENWIDTH = 1920; // VIDEO WIDTH
-    //private static final int SCREENHEIGHT = 1080; // VIDEO HEIGHT
+    //private static final int SCREENWIDTH = 1940; // VIDEO WIDTH
+    //private static final int SCREENHEIGHT = 1100; // VIDEO HEIGHT
     //private static final int SCREENWIDTH = 450; // VIDEO SMALL RIGHT UPPER CORNER
     //private static final int SCREENHEIGHT = 450; // VIDEO SMALL RIGHT UPPER CORNER
     private static final double SELECTORWIDTH = 310.0;
@@ -113,6 +113,7 @@ public class SolarSystemApplication extends Application {
     // Radio buttons to set simulation method
     private RadioButton radioNewtonMechanics;
     private RadioButton radioGeneralRelativity;
+    private RadioButton radioCurvatureWavePropagation;
 
     // Radio buttons to set visualization of ephemeris/simulation results
     private RadioButton radioEphemerisOnly;
@@ -958,7 +959,7 @@ public class SolarSystemApplication extends Application {
 
         // Radio buttons to set simulation method
         // 1. Newton Mechanics
-        // 2. General Relativity
+        // 2. General Relativity (PPN)
         // 3. Curvature of Wave Propagation Method
         rowIndex++;
         Label labelSimulationMethod = new Label("Simulation Method:");
@@ -972,6 +973,7 @@ public class SolarSystemApplication extends Application {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 solarSystem.setGeneralRelativityFlag(!newValue);
+                solarSystem.setCurvatureWavePropagationFlag(!newValue);
             }
         });
         radioGeneralRelativity =
@@ -983,15 +985,30 @@ public class SolarSystemApplication extends Application {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 solarSystem.setGeneralRelativityFlag(newValue);
+                solarSystem.setCurvatureWavePropagationFlag(!newValue);
+            }
+        });
+        radioCurvatureWavePropagation =
+                new RadioButton("CWPM");
+        Tooltip tooltipCurvatureWavePropagation =
+                new Tooltip("Curvature of Wave Propagation Method is both fast and accurate");
+        radioCurvatureWavePropagation.setTooltip(tooltipCurvatureWavePropagation);
+        radioCurvatureWavePropagation.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                solarSystem.setGeneralRelativityFlag(newValue);
+                solarSystem.setCurvatureWavePropagationFlag(newValue);
             }
         });
         ToggleGroup simulationMethod = new ToggleGroup();
         radioNewtonMechanics.setToggleGroup(simulationMethod);
         radioGeneralRelativity.setToggleGroup(simulationMethod);
+        radioCurvatureWavePropagation.setToggleGroup(simulationMethod);
         radioNewtonMechanics.setSelected(true);
         rowIndex++;
         grid.add(radioNewtonMechanics, 1, rowIndex, 20, 1);
         grid.add(radioGeneralRelativity, 15, rowIndex, 20, 1);
+        grid.add(radioCurvatureWavePropagation, 15, rowIndex + 1, 20, 1);
 
         // Check box to select step mode
         rowIndex++;
@@ -1967,7 +1984,9 @@ public class SolarSystemApplication extends Application {
      * @return x-position in pixels
      */
     private double screenX(Vector3D position) {
-        return translateX + SCREENWIDTH * (position.getX() / SCREENSCALE);
+        // USE SCREENHEIGHT FOR VIDEO
+        // return translateX + SCREENWIDTH * (position.getX() / SCREENSCALE);
+        return translateX + SCREENHEIGHT * (position.getX() / SCREENSCALE);
     }
 
     /**
@@ -2594,17 +2613,19 @@ public class SolarSystemApplication extends Application {
             gc.strokeLine(x + i * 0.1 * scaleLength, y - 4, x + i * 0.1 * scaleLength, y);
         }
 
-        /* VIDEO: USE CODE BELOW TO SHOW DATE IN RIGHT LOWER CORNER
+        /* VIDEO: USE CODE BELOW TO SHOW DATE IN RIGHT LOWER CORNER */
         gc.setStroke(Color.LIGHTYELLOW);
         gc.setFill(Color.LIGHTYELLOW);
         gc.setFont(new Font("Arial", 16));
         x = SCREENWIDTH - 150.0;
         y = SCREENHEIGHT - 40.0;
         String textDate = CalendarUtil.calendarToString(solarSystem.getSimulationDateTime());
-        String displayDate = textDate.substring(0,textDate.length() - 13);
+        String displayDate = textDate.substring(0,textDate.length() - 13); // Date only
+        //String displayDate = textDate.substring(0,textDate.length() - 4); // Date + time
+        x = x - 50.0; // Date + time
         gc.fillText(displayDate, x, y);
         gc.setFont(new Font("Arial", 13));
-        */
+        /* */
     }
 
     /**

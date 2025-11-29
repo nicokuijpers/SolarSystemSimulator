@@ -1,9 +1,12 @@
 <component name="libraryTable">
   <library name="jimObjModelImporterJFX">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../MarcoP67/JFX3DModelImporters_EA_2013-12-27/jimObjModelImporterJFX.jar!/" />
+      <root url="file://$PROJECT_DIR$/../JFX3DModelImporters_EA_2014-02-09" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/../JFX3DModelImporters_EA_2014-02-09/apidoc" />
+    </JAVADOC>
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../JFX3DModelImporters_EA_2014-02-09" recursive="false" />
   </library>
 </component>

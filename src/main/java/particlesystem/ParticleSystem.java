@@ -45,7 +45,13 @@ public class ParticleSystem implements Serializable {
      * should be applied when computing acceleration.
      */
     private boolean generalRelativityFlag = false;
-    
+
+    /**
+     * Flag to indicate whether Curvature of Wave Propagation Method (CWPM)
+     * should be applied when computing acceleration.
+     */
+    private boolean curvatureWavePropagationFlag = false;
+
     /**
      * List of all particles.
      */
@@ -68,12 +74,12 @@ public class ParticleSystem implements Serializable {
     /**
      * Set/reset flag to apply general relativity when computing
      * acceleration.
-     * @param flag flag 
+     * @param flag flag
      */
     public void setGeneralRelativityFlag(boolean flag) {
         generalRelativityFlag = flag;
     }
-    
+
     /**
      * Get value of flag to apply general relativity when computing
      * acceleration.
@@ -81,6 +87,24 @@ public class ParticleSystem implements Serializable {
      */
     public boolean getGeneralRelativityFlag() {
         return generalRelativityFlag;
+    }
+
+    /**
+     * Set/reset flag to apply Curvature of Wave Propagation Method (CWPM)
+     * when computing acceleration.
+     * @param flag flag
+     */
+    public void setCurvatureWavePropagationFlag(boolean flag) {
+        curvatureWavePropagationFlag = flag;
+    }
+
+    /**
+     * Get value of flag to apply Curvature of Wave Propagation Method (CWPM)
+     * when computing acceleration.
+     * @return true when flag is set, false otherwise
+     */
+    public boolean getCurvatureWavePropagationFlag() {
+        return curvatureWavePropagationFlag;
     }
 
     /**
@@ -105,7 +129,7 @@ public class ParticleSystem implements Serializable {
     }
 
     /**
-     * Add new particle to particle system when 
+     * Add new particle to particle system when
      * standard gravitational parameter is known.
      * @param name     Name of particle
      * @param mass     Mass of particle in kg
@@ -137,7 +161,7 @@ public class ParticleSystem implements Serializable {
     public Particle getParticle(String name) {
         return particles.get(name);
     }
-     
+
     /**
      * Initialize state for leapfrog algorithm.
      * @param deltaT time step in s
@@ -149,7 +173,7 @@ public class ParticleSystem implements Serializable {
             p.initStateLeapfrog(deltaT);
         }
     }
-    
+
     /**
      * Advance a time step using leapfrog algorithm.
      * @param deltaT time step in s
@@ -171,7 +195,7 @@ public class ParticleSystem implements Serializable {
             p.updateStateRungeKuttaA(deltaT);
         }
         computeAcceleration();
-        for (Particle p : particles.values()) {            
+        for (Particle p : particles.values()) {
             p.updateStateRungeKuttaB(deltaT);
         }
         computeAcceleration();
@@ -239,12 +263,30 @@ public class ParticleSystem implements Serializable {
         for (Particle p : particles.values()) {
             p.computeAccelerationNewtonMechanics(particlesWithMass.values());
         }
-        // Compute acceleration using General Relativity
+        // Compute acceleration using General Relativity (PPN) or Curvature of Wave Propagation Method (CWPM)
         if (generalRelativityFlag) {
-            // Note that the acceleration computed by Newton mechanics
-            // is used to compute acceleration using General Relativity
-            for (Particle p : particles.values()) {
-                p.computeAccelerationGeneralRelativity(particlesWithMass.values());
+            if (!curvatureWavePropagationFlag) {
+                // Note that the acceleration computed by Newton mechanics
+                // is used to compute acceleration using General Relativity
+                for (Particle p : particles.values()) {
+                    p.computeAccelerationGeneralRelativity(particlesWithMass.values());
+                }
+            }
+            else {
+                // Note that the acceleration computed by Newton mechanics is used
+                // to compute acceleration using Curvature of Wave Propagation Method
+                Vector3D velocityCenterMass = new Vector3D();
+                double totalMu = 0.0;
+                for (Particle p : particles.values()) {
+                    velocityCenterMass.addVector(p.getVelocity().scalarProduct(p.getMu()));
+                    totalMu += p.getMu();
+                }
+                if (totalMu != 0.0) {
+                    velocityCenterMass = velocityCenterMass.scalarProduct(1.0 / totalMu);
+                }
+                for (Particle p : particles.values()) {
+                    p.computeAccelerationCurvatureWavePropagation(particlesWithMass.values(), velocityCenterMass);
+                }
             }
         }
     }
@@ -270,11 +312,11 @@ public class ParticleSystem implements Serializable {
             positionCenterMass = positionCenterMass.scalarProduct(1.0 / totalMu);
             velocityCenterMass = velocityCenterMass.scalarProduct(1.0 / totalMu);
         }
-            
+
         // Adjust position and velocity of all particles
         correctDrift(positionCenterMass,velocityCenterMass);
     }
-    
+
     /**
      * Correct for drift of the particle system by adjusting
      * position and velocity of all particles.
@@ -298,7 +340,7 @@ public class ParticleSystem implements Serializable {
         }
         return kineticEnergy;
     }
-    
+
     /**
      * Compute total potential energy of the particle system.
      * @return total potential energy in J

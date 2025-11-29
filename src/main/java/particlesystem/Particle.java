@@ -29,7 +29,7 @@ import java.util.Collection;
  * @author Nico Kuijpers
  */
 public class Particle implements Serializable {
-    
+
     // Default serialVersion id
     private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class Particle implements Serializable {
      */
     //  https://en.wikipedia.org/wiki/Gravitational_constant
     public static final double GRAVITATIONALCONSTANT = 6.6740831E-11;
-    
+
     /**
      * Light speed c = 299792458.0 m/s
      */
@@ -46,21 +46,21 @@ public class Particle implements Serializable {
     // https://ipnpr.jpl.nasa.gov/progress_report/42-196/196C.pdf
     // Page 47, Table 4
     public static final double LIGHTSPEED = 299792458.0;
-    public static final double LIGHTSPEEDSQUARE = 8987551787368176400.0;
-    
+    public static final double LIGHTSPEEDSQUARE = LIGHTSPEED * LIGHTSPEED;
+
     private double mass;
     private double mu;
     private Vector3D position;
     private Vector3D velocity;
-    private Vector3D acceleration = new Vector3D(); // GR computation
-    private Vector3D accelerationNewtonMechanics = new Vector3D(); // GR computation
+    private Vector3D acceleration = new Vector3D(); // DEBUG GR
+    private Vector3D accelerationNewtonMechanics = new Vector3D(); // DEBUG GR
     private double potentialEnergy;
 
     // Store position and velocity of former time step for
     // Runge-Kutta method and four-step Adams-Bashforth-Moulton method
     public Vector3D formerPosition;
     public Vector3D formerVelocity;
-    
+
     // Store intermediate state for Runge-Kutta method
     private Vector3D k1, k2, k3, k4;
     private Vector3D l1, l2, l3, l4;
@@ -92,7 +92,7 @@ public class Particle implements Serializable {
         this.position = position;
         this.velocity = velocity;
     }
-    
+
     /**
      * Constructor when standard gravitational parameter is known.
      * @param mass      mass in kg
@@ -114,7 +114,7 @@ public class Particle implements Serializable {
     public double getMass() {
         return mass;
     }
-    
+
     /**
      * Set mass of particle in kg.
      * Standard gravitational parameter will be adjusted accordingly
@@ -150,7 +150,7 @@ public class Particle implements Serializable {
     public Vector3D getPosition() {
         return position;
     }
-    
+
     /**
      * Set position of particle in m.
      * @param position in m
@@ -158,7 +158,7 @@ public class Particle implements Serializable {
     public void setPosition(Vector3D position) {
         this.position = position;
     }
-    
+
     /**
      * Get velocity of particle in m/s.
      * @return velocity in m/s
@@ -166,7 +166,7 @@ public class Particle implements Serializable {
     public Vector3D getVelocity() {
         return velocity;
     }
-    
+
     /**
      * Set velocity of particle in m/s.
      * @param velocity in m/s
@@ -183,10 +183,10 @@ public class Particle implements Serializable {
     public void addAcceleration(Vector3D acc) {
         this.acceleration.addVector(acc);
     }
-    
+
     /**
      * Get momentum of particle in kg m/s.
-     * Momentum p is defined by p = m * v, where m is mass 
+     * Momentum p is defined by p = m * v, where m is mass
      * and v is velocity.
      * @return momentum in kg m/s
      */
@@ -194,7 +194,7 @@ public class Particle implements Serializable {
         // https://en.wikipedia.org/wiki/Momentum
         return velocity.scalarProduct(mass);
     }
-    
+
     /**
      * Get kinetic energy of particle in J.
      * @return kinetic energy in J
@@ -205,7 +205,7 @@ public class Particle implements Serializable {
         double v = velocity.magnitude();
         return 0.5 * mass * v*v;
     }
-    
+
     /**
      * Get potential energy of particle in J.
      * @return potential energy in J
@@ -213,7 +213,7 @@ public class Particle implements Serializable {
     public double getPotentialEnergy() {
         return potentialEnergy;
     }
-    
+
     /**
      * Correct for drift in position and velocity
      * @param driftPosition  drift in position to correct for
@@ -223,7 +223,7 @@ public class Particle implements Serializable {
         position = position.minus(driftPosition);
         velocity = velocity.minus(driftVelocity);
     }
-    
+
     /**
      * Adjust kinetic energy of particle.
      * @param factor factor to adjust kinetic engergy
@@ -232,7 +232,7 @@ public class Particle implements Serializable {
         // Ekin = 0.5 * mass * v*v
         velocity = velocity.scalarProduct(Math.sqrt(factor));
     }
-    
+
     /**
      * Compute total acceleration applied to this particle using
      * Newton Mechanics.
@@ -258,10 +258,88 @@ public class Particle implements Serializable {
 
         // Set acceleration computed by Newton Mechanics
         // such that it can be used to compute acceleration by
-        // General Relativity
+        // General Relativity or Curvature of Wave Propagation Method
         accelerationNewtonMechanics = new Vector3D(acceleration);
     }
-    
+
+    /**
+     * Compute total acceleration applied to this particle using
+     * Curvature of Wave Propagation Method (CWPM) as proposed by Morris G. Anderson.
+     * @param particles          all particles
+     * @param velocityCenterMass velocity vector of center of mass
+     */
+    public void computeAccelerationCurvatureWavePropagation(Collection<Particle> particles, Vector3D velocityCenterMass) {
+
+        /*
+         * The gravitational acceleration of each body due to external
+         * point masses is derived from the Curvature of Wave Propagation Method (CWPM)
+         *
+         * Morris G. Anderson
+         * N-body Gravity Simulation by Curvature of Wave Propagation
+         * February 2025
+         * DOI: 10.13140/RG.2.2.35372.78722
+         * https://www.researchgate.net/publication/389211533_N-body_Gravity_Simulation_by_Curvature_of_Wave_Propagation
+         *
+         * Morris G. Anderson
+         * Time, Matter, and Gravity
+         * June 2004
+         * DOI: 10.13140/RG.2.2.34401.33125
+         * Edition: 1st
+         * Publisher: Morris Anderson
+         * Editor: Ruth Anderson
+         * https://www.researchgate.net/publication/347257538_Time_Matter_and_Gravity
+         */
+
+        // Compute local speed of light using Equation (1) from
+        // N-body Gravity Simulation by Curvature of Wave Propagation
+        // To ensure consistency, when modeling and initializing a CWPM simulation with vectors from HORIZONS,
+        // both the standard speed of light and the speed of light away from the Solar System’s influence (c_inf)
+        // should be set equal to 299792458 m/s
+        double lightSpeedInfinity = LIGHTSPEED;
+        double sum = 0.0;
+        for (Particle p : particles) {
+            if (p != this) {
+                double dist = this.position.euclideanDistance(p.position);
+                sum += p.mu / dist;
+            }
+        }
+        double localLightSpeed = lightSpeedInfinity * Math.exp((-2 * sum) / LIGHTSPEEDSQUARE);
+
+        // Compute local gradient of local speed of light using Equation (3) from
+        // N-body Gravity Simulation by Curvature of Wave Propagation
+        // Use Newtonian acceleration
+        Vector3D gradientLocalLightSpeed =
+                accelerationNewtonMechanics.scalarProduct(-(2*localLightSpeed) / LIGHTSPEEDSQUARE);
+
+        // Compute velocity vector relative to the velocity of center of mass
+        Vector3D velocityRelativeToCenterMass = this.velocity.minus(velocityCenterMass);
+
+        // Compute velocity vector as fraction of local speed of light
+        Vector3D betaVector = velocityRelativeToCenterMass.scalarProduct(1/localLightSpeed);
+        Vector3D betaUnitVector = betaVector.normalize();
+        double betaScalar = betaVector.magnitude();
+
+        // Compute curvature of wave propagation unit vector
+        Vector3D curvatureWavePropagationUnitVector =
+                betaUnitVector.crossProduct(gradientLocalLightSpeed.normalize().crossProduct(betaUnitVector));
+
+        // Ensure magnitude is equal to one even though the cross product of two unit vectors should be a unit vector
+        curvatureWavePropagationUnitVector = curvatureWavePropagationUnitVector.normalize();
+
+        // Radial acceleration
+        Vector3D accelerationRadial =
+                curvatureWavePropagationUnitVector.scalarProduct(-((betaScalar*betaScalar + 1)/2) * localLightSpeed *
+                        gradientLocalLightSpeed.dotProduct(curvatureWavePropagationUnitVector));
+
+        // Tangential acceleration
+        Vector3D accelerationTangential =
+                betaUnitVector.scalarProduct(((3*betaScalar*betaScalar - 1)/2) * localLightSpeed *
+                        gradientLocalLightSpeed.dotProduct(betaUnitVector));
+
+        // Acceleration determined using CWPM
+        acceleration = accelerationTangential.plus(accelerationRadial);
+    }
+
     /**
      * Compute total acceleration applied to this particle using
      * General Relativity.
@@ -274,27 +352,27 @@ public class Particle implements Serializable {
          * The gravitational acceleration of each body due to external
          * point masses is derived from the isotropic, parameterized
          * post-Newtonian (PPN) n-body metric.
-         * See Equation (27) from W.M. Folkner et al., 
+         * See Equation (27) from W.M. Folkner et al.,
          * The Planetary and Lunar Ephemerides DE430 and DE431,
          * IPN Progress Report 42-196, February 15, 2014
          * https://ipnpr.jpl.nasa.gov/progress_report/42-196/196C.pdf
          */
-        
-        /* 
+
+        /*
          * In Equation (27), the term acceleration of body B
          * appears in two terms on the right-hand side. Since
          * these terms are divided by c2, using the Newtonian
          * acceleration for these terms is accurate to O(c^(-2)).
          */
-        
+
         // beta is PPN parameter measuring the nonlinearity in super
         // position of gravity (Page 47, Table 4)
         double beta = 1.0;
-                
+
         // gamma is the PPN parameter measuring space curvature produced
         // by unit rest mass (Page 47, Table 4)
         double gamma = 1.0;
-        
+
         // Notation:
         // Particle A = this, Particle B = p, and Particle C = q
         // GM_A, GM_B, and GM_C = standard gravitational parameter mu = G*M for particle A, B, and C
@@ -306,18 +384,18 @@ public class Particle implements Serializable {
         // distAB = r_AB = Euclidean distance between Particle A and Particle B
         // diffPositionAB = vec_r_A - vec_r_B = difference between (x,y,z) position A and (x,y,z) position B
         // diffVelocityAB = vec_v_A - vec_v_B = difference between (x,y,z) velocity A and (x,y,z) velocity B
-        
+
         // Compute first term of Equation (27)
         Vector3D firstTermVector = new Vector3D();
         for (Particle p : particles) {
             if (p != this) {
                 // distAB = r_AB = Euclidean distance between A and B
                 double distAB = this.position.euclideanDistance(p.position);
-                
+
                 // accelerationFromParticle = GM_B (vec_r_B - vec_r_A) / r_AB^3
                 // Use perturbation forces from zonal coefficients for oblate planet
                 Vector3D accelerationFromParticle = new Vector3D(p.accelerationNewtonMechanics(this));
-                
+
                 // sumCnotA = (Sum C : C != A : GM_C / r_AC)
                 double sumCnotA = 0.0;
                 for (Particle q : particles) {
@@ -326,7 +404,7 @@ public class Particle implements Serializable {
                         sumCnotA = sumCnotA + q.mu/distAC;
                     }
                 }
-                
+
                 // sumCnotB = (Sum C : C != B : GM_C / r_BC)
                 double sumCnotB = 0.0;
                 for (Particle q : particles) {
@@ -335,102 +413,102 @@ public class Particle implements Serializable {
                         sumCnotB = sumCnotB + q.mu/distBC;
                     }
                 }
-                
+
                 // vAdivc = v_A/c
                 double vAdivc = this.velocity.magnitude()/LIGHTSPEED;
-                
+
                 // vBdivc = v_B/c
                 double vBdivc = p.velocity.magnitude()/LIGHTSPEED;
-                
+
                 // vAdotvB = vec_v_A . vec_v_B (= vector dot product of v_A and v_B)
                 double vAdotvB = this.velocity.dotProduct(p.velocity);
-                
+
                 // diffPositionAB = vec_r_A - vec_r_B
                 Vector3D diffPositionAB = this.position.minus(p.position);
-                
+
                 // diffPositionBA = vec_r_B - vec_r_A
                 Vector3D diffPositionBA = p.position.minus(this.position);
-                
+
                 // rAminrBdotvBdivrAB = (vec_r_A - vec_r_B) . vec_v_B / r_AB
                 double rAminrBdotvBdivrAB = diffPositionAB.dotProduct(p.velocity) / distAB;
-                
+
                 // rBminrAdotaB = (vec_r_B - vec_r_A) . vec_a_B
                 // Use acceleration computed using Newton Mechanics
                 double rBminrAdotaB = diffPositionBA.dotProduct(p.accelerationNewtonMechanics);
-                
+
                 // factorCurlyBraces = the part of Equation (27) between curly braces
-                double factorCurlyBraces = 
-                    1.0 - 
-                    (2*(beta + gamma)*sumCnotA)/(LIGHTSPEED*LIGHTSPEED) -
-                    ((2*beta - 1.0)*sumCnotB)/(LIGHTSPEED*LIGHTSPEED) +
-                    gamma*vAdivc*vAdivc + 
-                    (1.0 + gamma)*vBdivc*vBdivc - 
-                    (2.0*(1.0 + gamma)*vAdotvB)/(LIGHTSPEED*LIGHTSPEED) -
-                    (3.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rAminrBdotvBdivrAB*rAminrBdotvBdivrAB +
-                    (1.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rBminrAdotaB;
+                double factorCurlyBraces =
+                        1.0 -
+                                (2*(beta + gamma)*sumCnotA)/(LIGHTSPEED*LIGHTSPEED) -
+                                ((2*beta - 1.0)*sumCnotB)/(LIGHTSPEED*LIGHTSPEED) +
+                                gamma*vAdivc*vAdivc +
+                                (1.0 + gamma)*vBdivc*vBdivc -
+                                (2.0*(1.0 + gamma)*vAdotvB)/(LIGHTSPEED*LIGHTSPEED) -
+                                (3.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rAminrBdotvBdivrAB*rAminrBdotvBdivrAB +
+                                (1.0/(2.0*LIGHTSPEED*LIGHTSPEED))*rBminrAdotaB;
 
                 // Add accelerationFromParticle * factorCurlyBraces to the first term
                 firstTermVector.addVector(accelerationFromParticle.scalarProduct(factorCurlyBraces));
             }
         }
-        
+
         // Compute second term of Equation (27)
         Vector3D secondTermVector = new Vector3D();
         for (Particle p : particles) {
             if (p != this) {
                 // distAB = r_AB = Euclidean distance between A and B
                 double distAB = this.position.euclideanDistance(p.position);
-                
+
                 // factor = GM_B / r_AB^3
                 double factor = p.mu/(distAB*distAB*distAB);
-                
+
                 // diffPositionAB = vec_r_A - vec_r_B
                 Vector3D diffPositionAB = this.position.minus(p.position);
-                
+
                 // vAgamma = (2 + 2*gamma)*vec_v_A
                 Vector3D vAgamma = this.velocity.scalarProduct(2.0 + 2.0*gamma);
-                
+
                 // vBgamma = (1 + 2*gamma)*vec_v_B
                 Vector3D vBgamma = p.velocity.scalarProduct(1.0 + 2.0*gamma);
-                
+
                 // vAgammaminusvBgamma = (2 + 2*gamma)*vec_v_A - (1 + 2*gamma)*vec_v_B
                 Vector3D vAgammaminusvBgamma = vAgamma.minus(vBgamma);
-                
+
                 // dotProduct = [vec_r_A - vec_r_B].[(2 + 2*gamma)*vec_v_A - (1 + 2*gamma)*vec_v_B]
                 double dotProduct = diffPositionAB.dotProduct(vAgammaminusvBgamma);
-                
+
                 // diffVelocityAB = vec_v_A - vec_v_B
                 Vector3D diffVelocityAB = this.velocity.minus(p.velocity);
-               
+
                 // Add factor * dotProduct * (vec_v_A - vec_v_B) to the second term
                 secondTermVector.addVector(diffVelocityAB.scalarProduct(factor*dotProduct));
             }
         }
-        
+
         // Multiply second term vector with 1.0/c^2
         double secondTermFactor = 1.0/(LIGHTSPEED*LIGHTSPEED);
         secondTermVector = secondTermVector.scalarProduct(secondTermFactor);
-        
+
         // Compute third term of Equation (27)
         Vector3D thirdTermVector = new Vector3D();
         for (Particle p : particles) {
             if (p != this) {
                 // distAB = r_AB = Euclidean distance between A and B
                 double distAB = this.position.euclideanDistance(p.position);
-                
+
                 // factor = GM_B / r_AB
                 double factor = p.mu/distAB;
-                
+
                 // Add (GM_B / r_AB) * vec_a_B to the third term
                 // Use acceleration computed using Newton Mechanics
                 thirdTermVector.addVector(p.accelerationNewtonMechanics.scalarProduct(factor));
             }
         }
-        
+
         // Multiply third term vector with (3 + 4*gamma)/(2*c^2)
         double thirdTermFactor = (3.0 + 4.0*gamma) / (2*LIGHTSPEED*LIGHTSPEED);
         thirdTermVector = thirdTermVector.scalarProduct(thirdTermFactor);
-        
+
         // Add first, second, and third term to obtain acceleration
         acceleration = new Vector3D();
         acceleration.addVector(firstTermVector);
@@ -462,7 +540,7 @@ public class Particle implements Serializable {
         // p(n+1) = p(n) + deltaT * v(n+1/2)
         position.addVector(velocity.scalarProduct(deltaT));
     }
-    
+
     /**
      * Update velocity and position of particle using Runge-Kutta method.
      * Step 1: compute k1 and l1.
@@ -481,7 +559,7 @@ public class Particle implements Serializable {
         // Set position to compute forces for RK step B
         position = formerPosition.plus(l1.scalarProduct(0.5));
     }
-    
+
     /**
      * Update velocity and position of particle using Runge-Kutta method.
      * Step 2: compute k2 and l2.
@@ -497,7 +575,7 @@ public class Particle implements Serializable {
         // Set position to compute forces for RK step C
         position = formerPosition.plus(l2.scalarProduct(0.5));
     }
-    
+
     /**
      * Update velocity and position of particle using Runge-Kutta method.
      * Step 3: compute k3 and l3.
@@ -511,9 +589,9 @@ public class Particle implements Serializable {
         // Set velocity for General Relativity step D
         velocity = formerVelocity.plus(k3);
         // Set position to compute forces for RK step D
-        position = formerPosition.plus(l3);   
+        position = formerPosition.plus(l3);
     }
-    
+
     /**
      * Update velocity and position of particle using Runge-Kutta method.
      * Step 4: compute k4 and l4; compute new position and velocity.
@@ -635,20 +713,20 @@ public class Particle implements Serializable {
          * Acceleration = Gravitational force / mass, thus
          * Acceleration = (G*M)/r2 = mu/r2
          */
-        
+
         // Square of distance r2
         double distanceSquare = position.euclideanDistanceSquare(p.position);
 
         // Magnitude of acceleration = mu/r2
         double accelerationMagnitude = this.mu/distanceSquare;
-        
+
         // Direction of gravitational force
         Vector3D direction = (p.position).direction(this.position);
-        
+
         // Acceleration
         return direction.scalarProduct(accelerationMagnitude);
     }
-    
+
     /**
      * Compute contribution to potential energy by another particle.
      * @param p other particle
@@ -657,12 +735,12 @@ public class Particle implements Serializable {
     private double potentialEngergy(Particle p) {
         // Distance
         double distance = position.euclideanDistance(p.position);
-        
+
         // Contribution to potential energy
         // http://www.physics.arizona.edu/~varnes/Teaching/141Hspring2004/Notes/Lecture38.pdf
         // Use standard gravitional parameter mu = G*M of other particle
         double Epot  = -(p.mu * this.mass) / distance;
-        
+
         // Contribution to potential energy
         return Epot;
     }

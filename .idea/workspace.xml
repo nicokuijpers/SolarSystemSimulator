@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Oblateness max distance set to 5 mln km">
+    <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/jimObjModelImporterJFX.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/jimObjModelImporterJFX.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -318,7 +326,6 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1629283166751" />
@@ -481,14 +488,7 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-      <workItem from="1764431666893" duration="297000" />
-    </task>
-    <task id="LOCAL-00047" summary="Pluto as major planet renamed to Pluto System">
-      <created>1641557000027</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1641557000027</updated>
+      <workItem from="1764431666893" duration="1402000" />
     </task>
     <task id="LOCAL-00048" summary="Interface for ephemeris">
       <created>1641557097702</created>
@@ -826,7 +826,14 @@
       <option name="project" value="LOCAL" />
       <updated>1703857944031</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="Comment radio button CWPM">
+      <created>1764432166031</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1764432166032</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -938,7 +945,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update constants for Earth ascension and declination of z-axis" />
     <MESSAGE value="Update constants for Earth ascension and declination of z-axis - reference included" />
     <MESSAGE value="Draw shadow of Galilean moon first, then the moon itself" />
     <MESSAGE value="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment." />
@@ -963,7 +969,8 @@
     <MESSAGE value="Offset revolution for Halley's Comet adjusted for Giotto passage" />
     <MESSAGE value="Ephemeris Triton using BSP file; 5 min timestep to update planet systems" />
     <MESSAGE value="Oblateness max distance set to 5 mln km" />
-    <option name="LAST_COMMIT_MESSAGE" value="Oblateness max distance set to 5 mln km" />
+    <MESSAGE value="Comment radio button CWPM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Comment radio button CWPM" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
