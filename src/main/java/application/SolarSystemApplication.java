@@ -959,6 +959,7 @@ public class SolarSystemApplication extends Application {
         // Radio buttons to set simulation method
         // 1. Newton Mechanics
         // 2. General Relativity
+        // 3. Curvature of Wave Propagation Method
         rowIndex++;
         Label labelSimulationMethod = new Label("Simulation Method:");
         grid.add(labelSimulationMethod,1,rowIndex,20,1);

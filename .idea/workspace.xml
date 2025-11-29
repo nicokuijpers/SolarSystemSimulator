@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="Oblateness max distance set to 5 mln km">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ephemeris/EphemerisSolarSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +63,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="9d51118f-915b-4a74-9b59-43a9d6efa816" />
+        <option name="url" value="https://github.com/nicokuijpers/SolarSystemSimulator" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -415,8 +421,8 @@
       <item itemvalue="Application.MarinerTenExperiment" />
       <item itemvalue="Application.SolarSystemApplication" />
       <item itemvalue="Application.GiottoHalleyExperiment" />
-      <item itemvalue="JUnit.LambertProblemTest" />
       <item itemvalue="Application.SolarSystemMoonsExperiment" />
+      <item itemvalue="JUnit.LambertProblemTest" />
     </list>
     <recent_temporary>
       <list>
@@ -475,6 +481,7 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
+      <workItem from="1764431666893" duration="297000" />
     </task>
     <task id="LOCAL-00047" summary="Pluto as major planet renamed to Pluto System">
       <created>1641557000027</created>
@@ -902,7 +909,7 @@
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.obj" />
