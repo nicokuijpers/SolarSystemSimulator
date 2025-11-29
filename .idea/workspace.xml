@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/jimObjModelImporterJFX.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/jimObjModelImporterJFX.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/application/SolarSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/Particle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/particlesystem/ParticleSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/solarsystem/SolarSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/Particle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/particlesystem/ParticleSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/solarsystem/SolarSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -356,7 +349,7 @@
       <recent name="application" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SolarSystemApplication">
+  <component name="RunManager" selected="Application.MercuryPrecessionTwoParticleExperiment">
     <configuration name="GiottoHalleyExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.GiottoHalleyExperiment" />
       <module name="SolarSystemSimulator" />
@@ -372,6 +365,19 @@
     </configuration>
     <configuration name="MarinerTenExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.MarinerTenExperiment" />
+      <module name="SolarSystemSimulator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="experiments.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MercuryPrecessionTwoParticleExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="experiments.MercuryPrecessionTwoParticleExperiment" />
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
         <pattern>
@@ -409,35 +415,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LambertProblemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SolarSystemSimulator" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ephemeris.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ephemeris" />
-      <option name="MAIN_CLASS_NAME" value="ephemeris.LambertProblemTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.MarinerTenExperiment" />
       <item itemvalue="Application.SolarSystemApplication" />
       <item itemvalue="Application.GiottoHalleyExperiment" />
       <item itemvalue="Application.SolarSystemMoonsExperiment" />
-      <item itemvalue="JUnit.LambertProblemTest" />
+      <item itemvalue="Application.MercuryPrecessionTwoParticleExperiment" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MercuryPrecessionTwoParticleExperiment" />
         <item itemvalue="Application.SolarSystemApplication" />
         <item itemvalue="Application.SolarSystemMoonsExperiment" />
         <item itemvalue="Application.GiottoHalleyExperiment" />
         <item itemvalue="Application.MarinerTenExperiment" />
-        <item itemvalue="JUnit.LambertProblemTest" />
       </list>
     </recent_temporary>
   </component>
@@ -488,14 +479,7 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-      <workItem from="1764431666893" duration="1402000" />
-    </task>
-    <task id="LOCAL-00048" summary="Interface for ephemeris">
-      <created>1641557097702</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1641557097702</updated>
+      <workItem from="1764431666893" duration="4338000" />
     </task>
     <task id="LOCAL-00049" summary="Experiment with Florence and Earth">
       <created>1641557240989</created>
@@ -833,7 +817,14 @@
       <option name="project" value="LOCAL" />
       <updated>1764432166032</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="Curvature of Wave Propagation Method">
+      <created>1764433175617</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1764433175617</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -945,7 +936,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update constants for Earth ascension and declination of z-axis - reference included" />
     <MESSAGE value="Draw shadow of Galilean moon first, then the moon itself" />
     <MESSAGE value="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment." />
     <MESSAGE value="Solar System parameters for Gaspra and Ida" />
@@ -970,7 +960,8 @@
     <MESSAGE value="Ephemeris Triton using BSP file; 5 min timestep to update planet systems" />
     <MESSAGE value="Oblateness max distance set to 5 mln km" />
     <MESSAGE value="Comment radio button CWPM" />
-    <option name="LAST_COMMIT_MESSAGE" value="Comment radio button CWPM" />
+    <MESSAGE value="Curvature of Wave Propagation Method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Curvature of Wave Propagation Method" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
