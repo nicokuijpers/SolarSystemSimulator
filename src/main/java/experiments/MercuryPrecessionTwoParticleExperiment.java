@@ -43,11 +43,11 @@ public class MercuryPrecessionTwoParticleExperiment {
     private ParticleSystem particleSystem;
 
     /**
-     * Compute precession by simulating one century.
+     * Compute precession by simulating one ore more centuries.
      * @param grFlag flag to set Newton Mechanics (false) or General Relativity (true)
      * @param cwpmFlag flag to set Curvature of Wave Propagation Method (CWPM)
      * @param nrCenturies number of centuries to simulate
-     * @return precession [deg] over one century
+     * @return precession [deg]
      */
     private double computePrecession(boolean grFlag, boolean cwpmFlag, int nrCenturies) {
 

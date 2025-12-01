@@ -37,12 +37,13 @@ public class MercuryPrecessionSolarSystemExperiment {
     private SolarSystem solarSystem;
 
     /**
-     * Compute precession by simulating one century.
+     * Compute precession by simulating one or more centuries.
      * @param grFlag flag to set Newton Mechanics (false) or General Relativity (true)
+     * @param cwpmFlag flag to set Curvature of Wave Propagation Method (CWPM)
      * @param nrCenturies number of centuries to simulate
-     * @return precession [deg] over one century
+     * @return precession [deg]
      */
-    private double computePrecession(boolean grFlag, int nrCenturies) {
+    private double computePrecession(boolean grFlag, boolean cwpmFlag, int nrCenturies) {
 
         // Start date is January 1, 2000
         int startYear = 2000;
@@ -57,6 +58,9 @@ public class MercuryPrecessionSolarSystemExperiment {
 
         // Set flag to simulate with Newton Mechanics or General Relativity
         solarSystem.setGeneralRelativityFlag(grFlag);
+
+        // Set flag to simulate with Curvature of Wave Propagation Method (CWPM)
+        solarSystem.setCurvatureWavePropagationFlag(cwpmFlag);
 
         // Initial position of perihelion of Mercury
         Vector3D initialPositionPerihelionMercury = positionPerihelionMercury();
@@ -112,7 +116,7 @@ public class MercuryPrecessionSolarSystemExperiment {
         double factor = (double) 3600/nrCenturies;
 
         // Run experiment with Newton Mechanics
-        double precessionNewtonMechanics = experiment.computePrecession(false, nrCenturies);
+        double precessionNewtonMechanics = experiment.computePrecession(false, false, nrCenturies);
 
         // Print results
         // https://en.wikipedia.org/wiki/Tests_of_general_relativity#Perihelion_precession_of_Mercury
@@ -121,7 +125,7 @@ public class MercuryPrecessionSolarSystemExperiment {
         System.out.println("Simulated precession: " + (precessionNewtonMechanics * factor) + " arc seconds / century");
 
         // Run experiment with General Relativity
-        double precessionGeneralRelativity = experiment.computePrecession(true, nrCenturies);
+        double precessionGeneralRelativity = experiment.computePrecession(true, false, nrCenturies);
 
         // Print results
         // https://en.wikipedia.org/wiki/Tests_of_general_relativity#Perihelion_precession_of_Mercury
@@ -130,33 +134,60 @@ public class MercuryPrecessionSolarSystemExperiment {
         System.out.println("Simulated precession: " + (precessionGeneralRelativity * factor) + " arc seconds / century");
 
         // Difference
-        double differencePrecession = precessionGeneralRelativity - precessionNewtonMechanics;
+        double differencePrecessionGR = precessionGeneralRelativity - precessionNewtonMechanics;
         System.out.println("Difference in precession between Newton Mechanics and General Relativity:");
         System.out.println("Expected  : " + 42.98 + " arc seconds / century");
-        System.out.println("Simulated : " + (differencePrecession * factor) + " arc seconds / century");
+        System.out.println("Simulated : " + (differencePrecessionGR * factor) + " arc seconds / century");
+
+        // Run experiment with Curvature of Wave Propagation Method (CWPM)
+        double precessionCurvatureWavePropagation = experiment.computePrecession(true, true, nrCenturies);
+
+        // Print results
+        // https://en.wikipedia.org/wiki/Tests_of_general_relativity#Perihelion_precession_of_Mercury
+        System.out.println("Curvature of Wave Propagation Method:");
+        System.out.println("Observed precession: 574.10 +/- 0.65 arc seconds / century");
+        System.out.println("Simulated precession: " + (precessionCurvatureWavePropagation * factor) + " arc seconds / century");
+
+        // Difference
+        double differencePrecessionCWPM = precessionCurvatureWavePropagation - precessionNewtonMechanics;
+        System.out.println("Difference in precession between Newton Mechanics and Curvature of Wave Propagation Method:");
+        System.out.println("Expected  : " + 42.98 + " arc seconds / century");
+        System.out.println("Simulated : " + (differencePrecessionCWPM * factor) + " arc seconds / century");
     }
 
     /*
         Results after one hundred years of simulation (nrCenturies = 1)
         Newton Mechanics:
         Expected precession: 531.12 arc seconds / century
-        Simulated precession: 527.4653580745868 arc seconds / century
+        Simulated precession: 527.4573673426112 arc seconds / century
         General Relativity:
         Observed precession: 574.10 +/- 0.65 arc seconds / century
-        Simulated precession: 570.3827682686507 arc seconds / century
+        Simulated precession: 570.3820468740086 arc seconds / century
         Difference in precession between Newton Mechanics and General Relativity:
         Expected  : 42.98 arc seconds / century
-        Simulated : 42.9174101940639 arc seconds / century
+        Simulated : 42.92467953139738 arc seconds / century
+        Curvature of Wave Propagation Method:
+        Observed precession: 574.10 +/- 0.65 arc seconds / century
+        Simulated precession: 570.3772055347849 arc seconds / century
+        Difference in precession between Newton Mechanics and Curvature of Wave Propagation Method:
+        Expected  : 42.98 arc seconds / century
+        Simulated : 42.91983819217376 arc seconds / century
 
         Results after one thousand years of simulation (nrCenturies = 10)
         Newton Mechanics:
         Expected precession: 531.12 arc seconds / century
-        Simulated precession: 533.6512237625948 arc seconds / century
+        Simulated precession: 533.6432718198496 arc seconds / century
         General Relativity:
         Observed precession: 574.10 +/- 0.65 arc seconds / century
-        Simulated precession: 576.4943254858408 arc seconds / century
+        Simulated precession: 576.4936063580521 arc seconds / century
         Difference in precession between Newton Mechanics and General Relativity:
         Expected  : 42.98 arc seconds / century
-        Simulated : 42.843101723246086 arc seconds / century
+        Simulated : 42.85033453820256 arc seconds / century
+        Curvature of Wave Propagation Method:
+        Observed precession: 574.10 +/- 0.65 arc seconds / century
+        Simulated precession: 576.4933045267816 arc seconds / century
+        Difference in precession between Newton Mechanics and Curvature of Wave Propagation Method:
+        Expected  : 42.98 arc seconds / century
+        Simulated : 42.850032706932026 arc seconds / century
      */
 }
