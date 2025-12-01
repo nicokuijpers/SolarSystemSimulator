@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionSolarSystemExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionSolarSystemExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/MercuryPrecessionTwoParticleExperiment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SimulationAccuracyExperiment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/experiments/SimulationAccuracyExperiment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/experiments/SimulationAccuracyExperiment.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -350,20 +350,7 @@
       <recent name="application" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MercuryPrecessionSolarSystemExperiment">
-    <configuration name="GiottoHalleyExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="experiments.GiottoHalleyExperiment" />
-      <module name="SolarSystemSimulator" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="experiments.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.SimulationAccuracyExperiment">
     <configuration name="MercuryPrecessionSolarSystemExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.MercuryPrecessionSolarSystemExperiment" />
       <module name="SolarSystemSimulator" />
@@ -379,6 +366,19 @@
     </configuration>
     <configuration name="MercuryPrecessionTwoParticleExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.MercuryPrecessionTwoParticleExperiment" />
+      <module name="SolarSystemSimulator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="experiments.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SimulationAccuracyExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="experiments.SimulationAccuracyExperiment" />
       <module name="SolarSystemSimulator" />
       <extension name="coverage">
         <pattern>
@@ -418,18 +418,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.SolarSystemApplication" />
-      <item itemvalue="Application.GiottoHalleyExperiment" />
       <item itemvalue="Application.SolarSystemMoonsExperiment" />
       <item itemvalue="Application.MercuryPrecessionTwoParticleExperiment" />
       <item itemvalue="Application.MercuryPrecessionSolarSystemExperiment" />
+      <item itemvalue="Application.SimulationAccuracyExperiment" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.SimulationAccuracyExperiment" />
         <item itemvalue="Application.MercuryPrecessionSolarSystemExperiment" />
         <item itemvalue="Application.MercuryPrecessionTwoParticleExperiment" />
         <item itemvalue="Application.SolarSystemApplication" />
         <item itemvalue="Application.SolarSystemMoonsExperiment" />
-        <item itemvalue="Application.GiottoHalleyExperiment" />
       </list>
     </recent_temporary>
   </component>
@@ -480,14 +480,7 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-      <workItem from="1764431666893" duration="7372000" />
-    </task>
-    <task id="LOCAL-00050" summary="Test conversion for seconds and milliseconds">
-      <created>1641558941622</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1641558941622</updated>
+      <workItem from="1764431666893" duration="10271000" />
     </task>
     <task id="LOCAL-00051" summary="Test computation of angle between vectors">
       <created>1641559131984</created>
@@ -825,7 +818,14 @@
       <option name="project" value="LOCAL" />
       <updated>1764436450690</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <task id="LOCAL-00099" summary="Mercury precession Solar System with CWPM">
+      <created>1764577362234</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1764577362234</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -937,7 +937,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Spacecraft Galileo update corrections using results from SpacecraftGalileoExperiment." />
     <MESSAGE value="Solar System parameters for Gaspra and Ida" />
     <MESSAGE value="Galileo spacecraft Gaspra and Ida encounter" />
     <MESSAGE value="Silver color for Apollo 8 spacecraft" />
@@ -962,7 +961,8 @@
     <MESSAGE value="Comment radio button CWPM" />
     <MESSAGE value="Curvature of Wave Propagation Method" />
     <MESSAGE value="Mercury precession two particles with CWPM" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mercury precession two particles with CWPM" />
+    <MESSAGE value="Mercury precession Solar System with CWPM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mercury precession Solar System with CWPM" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/ephemeris/JulianDateConverterTest.java">
