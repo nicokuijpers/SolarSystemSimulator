@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorManual.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorManual.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -348,7 +349,7 @@
       <recent name="application" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SpacecraftExperiment">
+  <component name="RunManager" selected="Application.SolarSystemApplication">
     <configuration name="MercuryPrecessionSolarSystemExperiment" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="experiments.MercuryPrecessionSolarSystemExperiment" />
       <module name="SolarSystemSimulator" />
@@ -423,11 +424,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.SolarSystemApplication" />
         <item itemvalue="Application.SpacecraftExperiment" />
         <item itemvalue="Application.SimulationAccuracyExperiment" />
         <item itemvalue="Application.MercuryPrecessionSolarSystemExperiment" />
         <item itemvalue="Application.MercuryPrecessionTwoParticleExperiment" />
-        <item itemvalue="Application.SolarSystemApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -478,14 +479,7 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-      <workItem from="1764431666893" duration="18651000" />
-    </task>
-    <task id="LOCAL-00054" summary="Readme file includes links to .bsp files">
-      <created>1641561019730</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1641561019730</updated>
+      <workItem from="1764431666893" duration="20560000" />
     </task>
     <task id="LOCAL-00055" summary="Readme file includes hyper links to .bsp files">
       <created>1641561410007</created>
@@ -823,7 +817,14 @@
       <option name="project" value="LOCAL" />
       <updated>1764874708348</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="Update technical notes with computation times NM, PPN, CWPM">
+      <created>1764876638072</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1764876638072</updated>
+    </task>
+    <option name="localTasksCounter" value="104" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -935,7 +936,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Solution for Lambert's Problem" />
     <MESSAGE value="Spacecraft Mariner 10" />
     <MESSAGE value=" Spacecraft Mariner 10 visualization" />
     <MESSAGE value="Visualisation settings for New Horizons and Cassini" />
@@ -960,7 +960,8 @@
     <MESSAGE value="Accuracy experiment 600 years for NM, GR, CWPM" />
     <MESSAGE value="Spacecraft experiment NM and CWPM; Ultima Thule --&gt; Arrokoth" />
     <MESSAGE value="Update technical notes with results using CWPM" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update technical notes with results using CWPM" />
+    <MESSAGE value="Update technical notes with computation times NM, PPN, CWPM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update technical notes with computation times NM, PPN, CWPM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
