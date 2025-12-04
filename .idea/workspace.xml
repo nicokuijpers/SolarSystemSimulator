@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/experiments/SpacecraftExperiment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/spacecraft/NewHorizons.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -480,14 +479,7 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-      <workItem from="1764431666893" duration="16809000" />
-    </task>
-    <task id="LOCAL-00052" summary="Solar System Exception">
-      <created>1641559507991</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1641559507991</updated>
+      <workItem from="1764431666893" duration="17471000" />
     </task>
     <task id="LOCAL-00053" summary="Readme file includes links to .bsp files">
       <created>1641560891258</created>
@@ -825,7 +817,14 @@
       <option name="project" value="LOCAL" />
       <updated>1764606486645</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="Spacecraft experiment NM and CWPM; Ultima Thule --&gt; Arrokoth">
+      <created>1764873950493</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1764873950493</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -937,7 +936,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Galileo spacecraft Gaspra and Ida encounter" />
     <MESSAGE value="Silver color for Apollo 8 spacecraft" />
     <MESSAGE value="Solution for Lambert's Problem" />
     <MESSAGE value="Spacecraft Mariner 10" />
@@ -962,7 +960,8 @@
     <MESSAGE value="Mercury precession two particles with CWPM" />
     <MESSAGE value="Mercury precession Solar System with CWPM" />
     <MESSAGE value="Accuracy experiment 600 years for NM, GR, CWPM" />
-    <option name="LAST_COMMIT_MESSAGE" value="Accuracy experiment 600 years for NM, GR, CWPM" />
+    <MESSAGE value="Spacecraft experiment NM and CWPM; Ultima Thule --&gt; Arrokoth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Spacecraft experiment NM and CWPM; Ultima Thule --&gt; Arrokoth" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
