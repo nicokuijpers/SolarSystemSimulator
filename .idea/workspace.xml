@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e72a0bc4-6c29-4b10-a67c-fb732ae98422" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/SolarSystemSimulatorTechnicalNotes.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -479,14 +478,7 @@
       <workItem from="1629283443024" duration="3171000" />
       <workItem from="1629292007921" duration="126000" />
       <workItem from="1629292168460" duration="649000" />
-      <workItem from="1764431666893" duration="17471000" />
-    </task>
-    <task id="LOCAL-00053" summary="Readme file includes links to .bsp files">
-      <created>1641560891258</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1641560891258</updated>
+      <workItem from="1764431666893" duration="18651000" />
     </task>
     <task id="LOCAL-00054" summary="Readme file includes links to .bsp files">
       <created>1641561019730</created>
@@ -824,7 +816,14 @@
       <option name="project" value="LOCAL" />
       <updated>1764873950493</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="Update technical notes with results using CWPM">
+      <created>1764874708348</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1764874708348</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -936,7 +935,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Silver color for Apollo 8 spacecraft" />
     <MESSAGE value="Solution for Lambert's Problem" />
     <MESSAGE value="Spacecraft Mariner 10" />
     <MESSAGE value=" Spacecraft Mariner 10 visualization" />
@@ -961,7 +959,8 @@
     <MESSAGE value="Mercury precession Solar System with CWPM" />
     <MESSAGE value="Accuracy experiment 600 years for NM, GR, CWPM" />
     <MESSAGE value="Spacecraft experiment NM and CWPM; Ultima Thule --&gt; Arrokoth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Spacecraft experiment NM and CWPM; Ultima Thule --&gt; Arrokoth" />
+    <MESSAGE value="Update technical notes with results using CWPM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update technical notes with results using CWPM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
