@@ -99,11 +99,11 @@ public class NewHorizons extends Spacecraft implements Serializable {
     private static final GregorianCalendar correctionG =
             new GregorianCalendar(2015, 10, 5, 0, 0, 0);
 
-    // Schedule simulated correction on December 1, 2018, one month before Ultima Thule flyby
+    // Schedule simulated correction on December 1, 2018, one month before Arrokoth flyby
     private static final GregorianCalendar correctionH =
             new GregorianCalendar(2018, 11, 1, 0, 0, 0);
 
-    // Schedule simulated correction on January 1, 2019, shortly before Ultima Thule flyby
+    // Schedule simulated correction on January 1, 2019, shortly before Arrokoth flyby
     private static final GregorianCalendar correctionI =
             new GregorianCalendar(2019, 0, 1, 0, 0, 0);
 
@@ -116,8 +116,8 @@ public class NewHorizons extends Spacecraft implements Serializable {
     private static final GregorianCalendar plutoFlyBy =
             new GregorianCalendar(2015, 6, 14, 11, 49, 0);
 
-    // Ultima Thule fly by January 1, 2019, 05:33 UTC (velocity 14.3 km/s, distance 3,500 km)
-    private static final GregorianCalendar ultimaThuleFlyBy =
+    // Arrokoth fly by January 1, 2019, 05:33 UTC (velocity 14.3 km/s, distance 3,500 km)
+    private static final GregorianCalendar arrokothFlyBy =
             new GregorianCalendar(2019, 0, 1, 5, 33, 0);
 
     // End of trajectory January 1, 2025
@@ -402,7 +402,7 @@ public class NewHorizons extends Spacecraft implements Serializable {
         trajectories.add(
                 new SpacecraftTrajectory(correctionF, plutoFlyBy, "Sun", ORBITPARSCORRF));
 
-        // From Pluto to Ultima Thule
+        // From Pluto to Arrokoth
         trajectories.add(
                 new SpacecraftTrajectory(plutoFlyBy, correctionG, "Sun", ORBITPARSCORRF));
         trajectories.add(
@@ -410,11 +410,11 @@ public class NewHorizons extends Spacecraft implements Serializable {
         trajectories.add(
                 new SpacecraftTrajectory(correctionH, correctionI, "Sun", ORBITPARSCORRH));
         trajectories.add(
-                new SpacecraftTrajectory(correctionI, ultimaThuleFlyBy, "Sun", ORBITPARSCORRI));
+                new SpacecraftTrajectory(correctionI, arrokothFlyBy, "Sun", ORBITPARSCORRI));
 
-        // Beyond Ultima Thule
+        // Beyond Arrokoth
         trajectories.add(
-                new SpacecraftTrajectory(ultimaThuleFlyBy, endOfTrajectory, "Sun", ORBITPARSCORRI));
+                new SpacecraftTrajectory(arrokothFlyBy, endOfTrajectory, "Sun", ORBITPARSCORRI));
 
         return trajectories;
     }
@@ -432,10 +432,10 @@ public class NewHorizons extends Spacecraft implements Serializable {
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionF)));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), CalendarUtil.createGregorianCalendar(correctionG)));
 
-        // Corrections for New Horizons and Ultima Thule on December 1, 2018 and January 1, 2019 before fly by
+        // Corrections for New Horizons and Arrokoth on December 1, 2018 and January 1, 2019 before fly by
         List<String> bodyNames = new ArrayList<>();
         bodyNames.add(getName());
-        bodyNames.add("Ultima Thule");
+        bodyNames.add("Arrokoth");
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), correctionH, bodyNames));
         solarSystem.addSpacecraftEvent(new SpacecraftEvent(getName(), correctionI, bodyNames));
     }
