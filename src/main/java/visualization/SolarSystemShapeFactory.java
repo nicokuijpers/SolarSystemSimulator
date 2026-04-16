@@ -167,6 +167,9 @@ public class SolarSystemShapeFactory {
                 return createSpacecraft(bodyName, Color.LIGHTYELLOW);
             case "Apollo 8":
                 return createSpacecraft(bodyName, Color.SILVER);
+            case "Artemis II":
+                // TODO 3D model for Artemis II
+                return createSpacecraft("Apollo 8", Color.WHITE);
             case "ISS":
                 return createISS("ISS");
             default:

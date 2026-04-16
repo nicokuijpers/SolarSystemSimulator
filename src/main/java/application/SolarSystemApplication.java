@@ -229,6 +229,21 @@ public class SolarSystemApplication extends Application {
             CalendarUtil.createGregorianCalendar(1968, 12, 27, 15, 36, 52);
 
     /*
+     * Date/times in UTC to control 3D visualization from Artemis II
+     * January = 1, February = 2, etc
+     *
+     * Launch 1 April 2026 at 22:35:12 UTC
+     * Lunar observation 6 April 2026 from 00:00 till 06:00 UTC
+     * Splashdown 11 April 2026 at 00:07 UTC
+     */
+    private GregorianCalendar startLunarObservation =
+            CalendarUtil.createGregorianCalendar(2026, 4, 6, 0, 0, 0);
+    private GregorianCalendar endLunarObservation =
+            CalendarUtil.createGregorianCalendar(2026, 4, 6, 6, 0, 0);
+    private GregorianCalendar entryTrajectInitArtemisTwo =
+            CalendarUtil.createGregorianCalendar(2026, 4, 10, 23, 50, 0);
+
+    /*
      * Date/times in UTC to control 3D visualization from Pioneer 10 during flyby of Jupiter
      * January = 1, February = 2, etc
      *
@@ -730,7 +745,7 @@ public class SolarSystemApplication extends Application {
         // Screen to draw trajectories
         screen = new Canvas(SCREENWIDTH, SCREENHEIGHT);
         grid.add(screen, 0, 0, 1, 28);
-        // grid.add(screen, 0, 0, 1, 14); // USE FOR VIDEO SMALL RIGHT UPPER CORNER
+        //grid.add(screen, 0, 0, 1, 14); // USE FOR VIDEO SMALL RIGHT UPPER CORNER
         initTranslate();
         clearScreen();
 
@@ -775,6 +790,7 @@ public class SolarSystemApplication extends Application {
         trajectoryStartDate.put("Giotto", CalendarUtil.createGregorianCalendar(1985, 7, 2, 11, 23, 0));
         trajectoryStartDate.put("Rosetta", CalendarUtil.createGregorianCalendar(2004, 3, 2, 7, 17, 0));
         trajectoryStartDate.put("Apollo 8", CalendarUtil.createGregorianCalendar(1968, 12, 21, 12, 51, 0));
+        trajectoryStartDate.put("Artemis II", CalendarUtil.createGregorianCalendar(2026, 4, 2, 0, 35, 0));
         trajectoryStartDate.put("ISS", CalendarUtil.createGregorianCalendar(1998, 11, 21, 0, 0, 0));
         trajectoryStartDate.put("Galileo", CalendarUtil.createGregorianCalendar(1989, 10, 19, 1, 30, 0));
         trajectoryStartDate.put("Cassini", CalendarUtil.createGregorianCalendar(1997, 10, 15, 11, 30, 0));
@@ -2613,7 +2629,7 @@ public class SolarSystemApplication extends Application {
             gc.strokeLine(x + i * 0.1 * scaleLength, y - 4, x + i * 0.1 * scaleLength, y);
         }
 
-        /* VIDEO: USE CODE BELOW TO SHOW DATE IN RIGHT LOWER CORNER */
+        /* VIDEO: USE CODE BELOW TO SHOW DATE IN RIGHT LOWER CORNER *
         gc.setStroke(Color.LIGHTYELLOW);
         gc.setFill(Color.LIGHTYELLOW);
         gc.setFont(new Font("Arial", 16));
@@ -3168,6 +3184,13 @@ public class SolarSystemApplication extends Application {
                     pauseSimulation();
                 }
             }
+            if (currentSettings.getEventName().contains("Artemis II")) {
+                if (solarSystem.getSimulationDateTime().after(entryTrajectInitArtemisTwo)) {
+                    bodiesShown.remove("Artemis II");
+                    selectedBody = "Earth";
+                    pauseSimulation();
+                }
+            }
         }
     }
 
@@ -3680,13 +3703,42 @@ public class SolarSystemApplication extends Application {
                         checkBoxStepMode.setSelected(true);
                         startSimulationStepModeForward();
                         observedBody = "Earth";
-                        double value = Math.min(100.0, Math.max(1.0,(minDistance - 6.4E6) / 1.0E05));
-                        sliderZoomView.setValue(100.0 - 0.1*value);
+                        double value = Math.min(100.0, Math.max(1.0, (minDistance - 6.4E6) / 1.0E05));
+                        sliderZoomView.setValue(100.0 - 0.1 * value);
                         if (minDistance < 1.5E7) {
                             if (solarSystem.getSimulationDateTime().after(startEarthRise) &&
                                     solarSystem.getSimulationDateTime().before(endEarthRise)) {
                                 // Real-time simulation during Earth Rise
                                 sliderSimulationSpeed.setValue(0.0);
+                            } else {
+                                // Slow simulation near the Earth and the Moon
+                                if ("Earth".equals(closestBodyFound)) {
+                                    sliderSimulationSpeed.setValue(5.0);
+                                } else {
+                                    sliderSimulationSpeed.setValue(15.0);
+                                }
+                            }
+                        } else {
+                            // Fast simulation when flying from the Earth to the Moon and vice versa
+                            sliderSimulationSpeed.setValue(100.0);
+                        }
+                        if (solarSystem.getSimulationDateTime().after(entryTrajectInitApolloEight)) {
+                            bodiesShown.remove("Apollo 8");
+                            selectedBody = "Earth";
+                            radioTelescopeView.setSelected(true);
+                            pauseSimulation();
+                        }
+                    }
+                    else if ("Artemis II".equals(selectedBody)) {
+                        checkBoxStepMode.setSelected(true);
+                        startSimulationStepModeForward();
+                        double value = Math.min(100.0, Math.max(1.0,(minDistance - 6.4E6) / 1.0E05));
+                        sliderZoomView.setValue(100.0 - 0.1*value);
+                        if (minDistance < 1.5E7) {
+                            if (solarSystem.getSimulationDateTime().after(startLunarObservation) &&
+                                    solarSystem.getSimulationDateTime().before(endLunarObservation)) {
+                                // Slower simulation during lunar observation
+                                sliderSimulationSpeed.setValue(1.0);
                             } else{
                                 // Slow simulation near the Earth and the Moon
                                 if ("Earth".equals(closestBodyFound)) {
@@ -3700,8 +3752,8 @@ public class SolarSystemApplication extends Application {
                             // Fast simulation when flying from the Earth to the Moon and vice versa
                             sliderSimulationSpeed.setValue(100.0);
                         }
-                        if (solarSystem.getSimulationDateTime().after(entryTrajectInitApolloEight)) {
-                            bodiesShown.remove("Apollo 8");
+                        if (solarSystem.getSimulationDateTime().after(entryTrajectInitArtemisTwo)) {
+                            bodiesShown.remove("Artemis II");
                             selectedBody = "Earth";
                             radioTelescopeView.setSelected(true);
                             pauseSimulation();
@@ -4005,15 +4057,19 @@ public class SolarSystemApplication extends Application {
         events.add(shoe);
         VisualizationSettings pvnh = new VisualizationSettings();
         pvnh.setEventName("Spacecraft leaving the Solar System");
-        pvnh.setSimulationStartDateTime(trajectoryStartDate.get("Pioneer 10"));
+        //pvnh.setSimulationStartDateTime(trajectoryStartDate.get("Pioneer 10"));
+        pvnh.setSimulationStartDateTime(trajectoryStartDate.get("Voyager 2"));
+        //pvnh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
+        //        "Pluto System","Arrokoth","Pioneer 10","Pioneer 11","Voyager 1","Voyager 2","New Horizons")));
         pvnh.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Earth","Jupiter","Saturn","Uranus","Neptune",
-                "Pluto System","Arrokoth","Pioneer 10","Pioneer 11","Voyager 1","Voyager 2","New Horizons")));
+                "Voyager 1","Voyager 2")));
         pvnh.setSelectedBody("Sun");
         pvnh.setShowEphemeris(false);
         pvnh.setShowRuler(true);
         pvnh.setStepMode(false);
         pvnh.setValueTopFrontView(40);
-        pvnh.setValueZoomView(9);
+        //pvnh.setValueZoomView(9);
+        pvnh.setValueZoomView(12);
         pvnh.setValueSimulationSpeed(100);
         events.add(pvnh);
         VisualizationSettings pio10 = new VisualizationSettings();
@@ -4167,6 +4223,19 @@ public class SolarSystemApplication extends Application {
         ap8.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
         ap8.setAutomaticView(true);
         events.add(ap8);
+        VisualizationSettings art2 = new VisualizationSettings();
+        art2.setEventName("Launch Artemis II (2026-04-01  22.35)");
+        art2.setSimulationStartDateTime(trajectoryStartDate.get("Artemis II"));
+        art2.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Moon","Earth","Artemis II")));
+        art2.setSelectedBody("Artemis II");
+        art2.setShowEphemeris(false);
+        art2.setShowRuler(true);
+        art2.setStepMode(true);
+        art2.setValueZoomView(85);
+        art2.setValueSimulationSpeed(100);
+        art2.setViewMode(SolarSystemViewMode.FROMSPACECRAFT);
+        art2.setAutomaticView(true);
+        events.add(art2);
         VisualizationSettings iss = new VisualizationSettings();
         iss.setEventName("International Space Station (current time)");
         iss.setBodiesShown(new HashSet<>(Arrays.asList("Sun","Moon","Earth","ISS")));

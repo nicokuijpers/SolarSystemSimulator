@@ -51,7 +51,10 @@ public class SolarSystemVisualization extends Stage {
     // Screen size and scale
     private static final int SCREENWIDTH  = 900; // VIDEO USE 1920
     private static final int SCREENHEIGHT = 900; // VIDEO USE 1080
-    private static final int SCREENDEPTH  = 900;
+    private static final int SCREENDEPTH  = 900; // VIDEO USE SCREENWIDTH
+    //private static final int SCREENWIDTH  = 1940; // VIDEO USE 1920
+    //private static final int SCREENHEIGHT = 1100; // VIDEO USE 1080
+    //private static final int SCREENDEPTH = SCREENWIDTH;
     private static final double SCREENSCALE = 3.0 * SolarSystemParameters.ASTRONOMICALUNIT;
     private static final double FIELDOFVIEWFACTORTELESCOPE  = 1.0E9;
     private static final double FIELDOFVIEWFACTORSPACECRAFT = 1.0E7;
@@ -88,6 +91,7 @@ public class SolarSystemVisualization extends Stage {
     private static final double DIAMETERGIOTTO      = 2.5E5; //  250 km
     private static final double DIAMETERISS         = 2.0E5; //  200 km
     private static final double DIAMETERAPOLLO      = 2.0E5; //  200 km
+    private static final double DIAMETERARTEMIS     = 2.0E5; //  200 km
 
     // Factor ot determine the radius of the sphere representing the clouds of the Earth
     private static final double CLOUDFACTOR = 1.02; // 2 per cent larger than the Earth
@@ -227,8 +231,8 @@ public class SolarSystemVisualization extends Stage {
         bodies.put("Venus",venus);
         earth = new Sphere(0.05*screenDiameter("Earth"));
         bodies.put("Earth",earth);
-        moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
-        //moon = shapeFactory.createSphereHighRes("Moon", Color.LIGHTGRAY);
+        //moon = shapeFactory.createSphere("Moon", Color.LIGHTGRAY);
+        moon = shapeFactory.createSphereHighRes("Moon", Color.LIGHTGRAY);
         bodies.put("Moon",moon);
         mars = shapeFactory.createSphere("Mars", Color.RED);
         //mars = shapeFactory.createSphereHighRes("Mars", Color.RED);
@@ -316,6 +320,7 @@ public class SolarSystemVisualization extends Stage {
         spacecraftNames.add("Galileo");
         spacecraftNames.add("Cassini");
         spacecraftNames.add("Apollo 8");
+        spacecraftNames.add("Artemis II");
         spacecraftNames.add("ISS");
         spacecraftNames.add("Giotto");
 
@@ -704,6 +709,9 @@ public class SolarSystemVisualization extends Stage {
             case "Apollo 8":
                 diameter = DIAMETERAPOLLO;
                 break;
+            case "Artemis II":
+                diameter = DIAMETERARTEMIS;
+                break;
             case "Pallas":
             case "Juno":
                 diameter = SCALESMALLBODY * solarSystemParameters.getDiameter(bodyName);
@@ -799,10 +807,10 @@ public class SolarSystemVisualization extends Stage {
             Node node = bodies.get(name);
             if (node.isVisible()) {
                 if (spacecraftNames.contains(name)) {
-                    if ("Apollo 8".equals(name)) {
+                    if ("Apollo 8".equals(name) || "Artemis II".equals(name)) {
                         // Rotate spacecraft such that it is directed in the direction of movement
-                        Vector3D positionApollo = solarSystem.getParticle("Apollo 8").getPosition();
-                        double distanceToEarthKm = positionApollo.euclideanDistance(positionEarth)/1.0E3;
+                        Vector3D positionSpacecraft = solarSystem.getParticle(name).getPosition();
+                        double distanceToEarthKm = positionSpacecraft.euclideanDistance(positionEarth)/1.0E3;
                         Vector3D referenceVelocity;
                         if (distanceToEarthKm < 6400) {
                             referenceVelocity = solarSystem.getParticle("Earth").getVelocity();
@@ -1536,6 +1544,12 @@ public class SolarSystemVisualization extends Stage {
         }
         if ("Cassini".equals(selectedBody) && "Jupiter".equals(observedBody)) {
             fieldOfView *= 0.05;
+        }
+        if ("Artemis II".equals(selectedBody)) {
+            fieldOfView += (1.0E11 - distanceFromSurface)/5.0E9;
+            if ("Earth".equals(observedBody) && distanceFromSurface < 1.0E06) {
+                fieldOfView = 90.0;
+            }
         }
         fieldOfView = Math.min(Math.max(fieldOfView,4.0),90.0);
         if ("Galileo".equals(selectedBody) && "Jupiter".equals(observedBody) && shoemaker.isVisible()) {
